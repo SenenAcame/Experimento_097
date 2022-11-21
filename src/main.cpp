@@ -12,4 +12,5 @@ int main(){
     ECS::EntityManager_t EntityMan;
     EntityMan.createEntity(16, 16, 0x0000FF00);
     return 0;
+    
 }
