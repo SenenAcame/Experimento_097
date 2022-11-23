@@ -50,5 +50,8 @@ dir:
 	$(info $(ALLCS))
 	$(info $(ALLCSOBJ))
 
+clean:
+	rm -f -r "./obj"
+
 $(OBJSUBDIRS):
 	$(MKDIR) $(OBJSUBDIRS)

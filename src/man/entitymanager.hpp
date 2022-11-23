@@ -15,7 +15,7 @@ namespace ECS{
 	};
 
 	struct EntityManager_t{
-		using VecEntities = std::vector<Entity_t>;
+		using VecEntities_t = std::vector<Entity_t>;
 
 		static constexpr std::size_t kNUMINITIALENTITIES {1000};
 
@@ -23,11 +23,11 @@ namespace ECS{
 
 		void createEntity(uint32_t w, uint32_t h, uint32_t color);
 
-		const VecEntities& getEntities() const { return m_Entity; };
+		const VecEntities_t& getEntities() const { return m_Entity; };
 
 	private:
 		//No por punteros te comes la cache
-		VecEntities m_Entity {};
+		VecEntities_t m_Entity {};
 	};
 
 } //END
