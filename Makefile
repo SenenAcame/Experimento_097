@@ -36,6 +36,7 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 
 .PHONY: dir
 .PHONY: clean
+.PHONY: fmod
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
 	$(CC) -o $(APP) $(ALLOBJ) $(LIBS)
@@ -49,6 +50,9 @@ dir:
 	$(info $(ALLCPPS))
 	$(info $(ALLCS))
 	$(info $(ALLCSOBJ))
+
+fmod:
+	g++ -std=c++17 -o experiment_97 main.cpp -I . -I inc/FMOD/inc -L inc/FMOD/lib -lfmod -lfmodstudio -lGL -lm -lpthread -ldl -lrt -lX11 && cp -r assets bin/ && export LD_LIBRARY_PATH=./inc/FMOD/lib:$LD_LIBRARY_PATH && ./experiment_97
 
 $(OBJSUBDIRS):
 	$(MKDIR) $(OBJSUBDIRS)
