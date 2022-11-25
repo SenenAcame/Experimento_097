@@ -1,5 +1,5 @@
 extern "C"{
-    #include "tinyPTC/tinyptc.h"
+    #include "inc/tinyPTC/tinyptc.h"
 }
 #include "man/entitymanager.hpp"
 

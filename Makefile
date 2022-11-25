@@ -26,7 +26,9 @@ C		:= gcc
 MKDIR 	:= mkdir -p
 SRC		:= src
 OBJ		:= obj
-LIBS	:= -lX11
+LIBS	:= -lX11 -lGL -lm -lpthread -ldl -lrt -lfmod -lfmodstudio
+INCS	:= -I . -I src/inc/FMOD/inc -L src/inc/FMOD/lib
+EXPTR	:= && export LD_LIBRARY_PATH=./src/inc/FMOD/lib:$LD_LIBRARY_PATH 
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
 ALLCS      := $(shell find $(SRC)/ -type f -iname *.c)
@@ -36,10 +38,10 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 
 .PHONY: dir
 .PHONY: clean
-.PHONY: fmod
+#.PHONY: fmod
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CC) -o $(APP) $(ALLOBJ) $(LIBS)
+	$(CC) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(EXPTR)
 
 $(eval $(call EACHFILE,$(ALLCPPS),$(CC),$(CCFLAGS)))
 $(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS)))
@@ -51,8 +53,11 @@ dir:
 	$(info $(ALLCS))
 	$(info $(ALLCSOBJ))
 
-fmod:
-	g++ -std=c++17 -o experiment_97 main.cpp -I . -I inc/FMOD/inc -L inc/FMOD/lib -lfmod -lfmodstudio -lGL -lm -lpthread -ldl -lrt -lX11 && cp -r assets bin/ && export LD_LIBRARY_PATH=./inc/FMOD/lib:$LD_LIBRARY_PATH && ./experiment_97
+clean:
+	rm -f -r "./obj"
+
+#fmod:
+#	g++ -std=c++17 -o experiment_97 src/main.cpp src/man/entitymanager.cpp -I . -I src/inc/FMOD/inc -L src/inc/FMOD/lib -lfmod -lfmodstudio -lGL -lm -lpthread -ldl -lrt -lX11 && export LD_LIBRARY_PATH=./src/inc/FMOD/lib:$LD_LIBRARY_PATH 
 
 $(OBJSUBDIRS):
 	$(MKDIR) $(OBJSUBDIRS)
