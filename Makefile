@@ -28,7 +28,8 @@ SRC		:= src
 OBJ		:= obj
 LIBS	:= -lX11 -lGL -lm -lpthread -ldl -lrt -lfmod -lfmodstudio
 INCS	:= -I . -I src/inc/FMOD/inc -L src/inc/FMOD/lib
-EXPTR	:= && export LD_LIBRARY_PATH=./src/inc/FMOD/lib:$LD_LIBRARY_PATH 
+EXPTR	:= && export LD_LIBRARY_PATH=./src/inc/FMOD/lib:$$LD_LIBRARY_PATH
+STD17	:= -std=c++17
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
 ALLCS      := $(shell find $(SRC)/ -type f -iname *.c)
@@ -41,7 +42,7 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 #.PHONY: fmod
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CC) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(EXPTR)
+	$(CC) $(STD17) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(EXPTR)
 
 $(eval $(call EACHFILE,$(ALLCPPS),$(CC),$(CCFLAGS)))
 $(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS)))
