@@ -1,6 +1,7 @@
-extern "C"{
-    #include "tinyPTC/tinyptc.h"
-}
+//extern "C"{
+//    #include "tinyPTC/tinyptc.h"
+//}
+#include <irrlicht/irrlicht.h>
 #include "man/entitymanager.hpp"
 
 int main(){
