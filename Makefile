@@ -27,8 +27,10 @@ C		:= gcc
 MKDIR 	:= mkdir -p
 SRC		:= src
 OBJ		:= obj
-LIBS	:= -lX11
+LIBS	:= -Llib/ -lIrrlicht
 STD17	:= -std=c++17
+STD20	:= -std=c++20
+SANITIZE := -fsanitize=address
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
 ALLCS      := $(shell find $(SRC)/ -type f -iname *.c)
@@ -40,9 +42,9 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 .PHONY: clean
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CC) $(STD17) -o $(APP) $(ALLOBJ) $(LIBS)
+	$(CLANG) $(STD20) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE)
 
-$(eval $(call EACHFILE,$(ALLCPPS),$(CC),$(CCFLAGS),$(STD17)))
+$(eval $(call EACHFILE,$(ALLCPPS),$(CLANG),$(CCFLAGS),$(STD20)))
 $(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS),))
 
 dir:
