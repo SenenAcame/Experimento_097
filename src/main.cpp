@@ -4,12 +4,14 @@
 //#include <irrlicht/dimension2d.h>
 //#include <irrlicht/irrTypes.h>
 //#include <irrlicht/irrTypes.h>
-#include <irrlicht/SColor.h>
+//#include <irrlicht/SColor.h>
+#include <cstddef>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <iostream>
 #include <memory>
 #include <cstdint>
+#include <vector>
 
 
 struct TheEngine {
@@ -48,14 +50,36 @@ struct TheEngine {
     irr::gui::IGUIEnvironment * const guienv_ {device_ ? device_->getGUIEnvironment() : nullptr};
 };
 
-void game(){
-    TheEngine dev {640, 480};
-    dev.addStaticText();
-    while(dev.run()){
-        dev.beginScene();
-        dev.drawAll();
-        dev.endScene();
+struct Entity {
+    char c {'@'};
+};
+
+struct EntityManager {
+    EntityManager(std::size_t defaultsize = 100){
+        entities_.reserve(defaultsize);
     }
+    auto& createEntity(){ return entities_.emplace_back(); }
+    //void drawAll(){
+    //    for(auto& e: entities_){
+    //        std::cout << e.c << '\n';
+    //    }
+    //
+    //}
+    private:
+    std::vector<Entity> entities_{};
+};
+
+void game(){
+    EntityManager EM;
+    auto& e = EM.createEntity();
+//    EM.drawAll();
+//    TheEngine dev {640, 480};
+//    dev.addStaticText();
+//    while(dev.run()){
+//        dev.beginScene();
+//        dev.drawAll();
+//        dev.endScene();
+//    }
 }
 
 
