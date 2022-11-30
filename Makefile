@@ -42,9 +42,9 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 .PHONY: clean
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CLANG) $(STD20) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE)
+	$(CC) $(STD20) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE)
 
-$(eval $(call EACHFILE,$(ALLCPPS),$(CLANG),$(CCFLAGS),$(STD20)))
+$(eval $(call EACHFILE,$(ALLCPPS),$(CC),$(CCFLAGS),$(STD20)))
 $(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS),))
 
 dir:

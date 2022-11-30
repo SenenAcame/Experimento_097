@@ -5,7 +5,9 @@
 //#include <irrlicht/irrTypes.h>
 //#include <irrlicht/irrTypes.h>
 //#include <irrlicht/SColor.h>
-#include <cstddef>
+//#include <cstddef>
+//#include <irrlicht/ISceneNode.h>
+//#include <irrlicht/vector3d.h>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <iostream>
@@ -17,6 +19,7 @@
 struct TheEngine {
     TheEngine(uint32_t const w, uint32_t const h) :width_{w}, height_{h}{
         if(!device_) throw std::runtime_error("Couldn't initialize device!!");
+        smgr_->addCameraSceneNodeFPS();
     }
     bool run() const {return device_->run();}
     void addStaticText(){
@@ -32,6 +35,19 @@ struct TheEngine {
     }
     void endScene(){
         driver_->endScene();
+    }
+    auto* createSphere(){
+        auto* node = smgr_->addSphereSceneNode();
+        if (!node) throw std::runtime_error("Couldn't create sphere");
+
+        //auto* texture = driver_->getTexture("assets/wall.bmp");
+        //if (!texture) throw std::runtime_error("Couldn't create texture");
+
+        node->setPosition(irr::core::vector3df(0,0,30));
+        //node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+
+        return node;
     }
     private:
     using DestructorFunc = void (*)(irr::IrrlichtDevice*);
@@ -50,15 +66,34 @@ struct TheEngine {
     irr::gui::IGUIEnvironment * const guienv_ {device_ ? device_->getGUIEnvironment() : nullptr};
 };
 
-struct Entity {
-    char c {'@'};
+struct PhysicsComponent {
+    float  x{},  y{},  z{};
+    float vx{}, vy{}, vz{};
 };
 
+struct RenderComponent {
+    irr::scene::ISceneNode* node{};
+};
+
+struct Entity {
+    PhysicsComponent physics;
+    RenderComponent render;
+};
+
+template<typename Type>
 struct EntityManager {
+    using TypeProcessFunc = void (*)(Type&);
+
     EntityManager(std::size_t defaultsize = 100){
         entities_.reserve(defaultsize);
     }
     auto& createEntity(){ return entities_.emplace_back(); }
+
+    void forall(TypeProcessFunc process){
+        for(auto& e : entities_){
+            process(e);
+        }
+    }
     //void drawAll(){
     //    for(auto& e: entities_){
     //        std::cout << e.c << '\n';
@@ -69,21 +104,45 @@ struct EntityManager {
     std::vector<Entity> entities_{};
 };
 
-void game(){
-    EntityManager EM;
-    auto& e = EM.createEntity();
-//    EM.drawAll();
-//    TheEngine dev {640, 480};
-//    dev.addStaticText();
-//    while(dev.run()){
-//        dev.beginScene();
-//        dev.drawAll();
-//        dev.endScene();
-//    }
-}
+struct PhysicsSystem {
+    void update(EntityManager<Entity>& EM){
+        EM.forall([](Entity& e) {
+            e.physics.x += e.physics.vx;
+            e.physics.y += e.physics.vy;
+            e.physics.z += e.physics.vz;
+        });
+    }
+};
 
+struct RenderSystem {
+    void update(EntityManager<Entity>& EM, TheEngine& GFX){
+        EM.forall([](Entity& e) {
+            auto& phy {e.physics};
+            e.render.node->setPosition({phy.x, phy.y, phy.z});
+        });
+        GFX.beginScene();
+        GFX.drawAll();
+        GFX.endScene();
+    }
+};
+
+void game(){
+    TheEngine dev {640, 480};
+    EntityManager<Entity> EM;
+    PhysicsSystem   PhySys;
+    RenderSystem    RenSys;
+
+    auto& e = EM.createEntity();
+    e.render.node = dev.createSphere();
+    e.physics.z = 10.0f;
+    e.physics.vz = 0.2f;
+
+    while(dev.run()){
+        PhySys.update(EM);
+        RenSys.update(EM, dev);
+    }
+}
 
 int main(){
     game();
-    return 0;    
 }
