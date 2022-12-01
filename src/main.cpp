@@ -27,7 +27,7 @@ struct TheEngine {
                             irr::core::rect<irr::s32>(10,10,260,22), true);
     }
     void beginScene(){
-        driver_->beginScene(true, true, irr::video::SColor(255, 200, 101, 140));
+        driver_->beginScene(true, true, irr::video::SColor(255, 200, 100, 140));
     }
     void drawAll(){
         smgr_->drawAll();
@@ -40,7 +40,7 @@ struct TheEngine {
         auto* node = smgr_->addSphereSceneNode();
         if (!node) throw std::runtime_error("Couldn't create sphere");
 
-        //auto* texture = driver_->getTexture("assets/wall.bmp");
+        //auto* texture = driver_->getTexture("/usr/share/irrlicht/media/wall.bmp");
         //if (!texture) throw std::runtime_error("Couldn't create texture");
 
         node->setPosition(irr::core::vector3df(0,0,30));
@@ -94,12 +94,6 @@ struct EntityManager {
             process(e);
         }
     }
-    //void drawAll(){
-    //    for(auto& e: entities_){
-    //        std::cout << e.c << '\n';
-    //    }
-    //
-    //}
     private:
     std::vector<Entity> entities_{};
 };
