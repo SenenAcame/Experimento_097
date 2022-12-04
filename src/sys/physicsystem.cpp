@@ -1,4 +1,3 @@
-//#pragma once
 #include "physicsystem.hpp"
 
 void PhysicsSystem::update(EntityManager<Entity>& EM){

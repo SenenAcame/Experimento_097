@@ -1,4 +1,3 @@
-//#pragma once
 #include "rendersystem.hpp"
 
 void RenderSystem::update(EntityManager<Entity>& EM, TheEngine& GFX){
