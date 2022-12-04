@@ -4,7 +4,7 @@
 #include <memory>
 
 struct TheEngine {
-    TheEngine(uint32_t const w, uint32_t const h);
+    explicit TheEngine(uint32_t const w, uint32_t const h);
     bool run() const;
     void addStaticText();
     void beginScene();

@@ -14,8 +14,8 @@ void game(){
 
     auto& e = EM.createEntity();
     e.render.node = dev.createSphere();
-    e.physics.z = 10.0f;
-    e.physics.vz = 0.2f;
+    //e.physics->z = 10.0f;
+    //e.physics->vz = 0.2f;
 
     while(dev.run()){
         InpSys.update(EM);

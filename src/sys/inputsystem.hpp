@@ -4,6 +4,7 @@
 #include <X11/keysym.h>
 
 struct InputSystem {
+    explicit InputSystem() = default;
     void update(EntityManager<Entity>& EM);
 
     KeySym key_up    {XK_W};
