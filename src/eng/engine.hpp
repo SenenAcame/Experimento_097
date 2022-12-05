@@ -11,7 +11,7 @@ struct TheEngine {
     void drawAll();
     void endScene();
     auto* createSphere(){
-    auto* node = smgr_->addSphereSceneNode();
+        auto* node = smgr_->addSphereSceneNode();
         if (!node) throw std::runtime_error("Couldn't create sphere");
 
         //auto* texture = driver_->getTexture("/usr/share/irrlicht/media/wall.bmp");

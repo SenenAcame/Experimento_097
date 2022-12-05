@@ -8,6 +8,6 @@ struct Entity {
     explicit Entity() = default;
 
     PhysicsComponent* physics {nullptr};
-    RenderComponent  render;
-    InputComponent   input;
+    RenderComponent*  render  {nullptr};
+    InputComponent*   input   {nullptr};
 };
