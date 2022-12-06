@@ -1,33 +1,50 @@
 #pragma once
-#include <cstdint>
+#include <cstddef>
 #include <vector>
+#include "../cmp/entity.hpp"
+#include "componentstorage.hpp"
 
-namespace ECS{
-	
-	struct Entity_t{
-		//entity con sprite
-		explicit Entity_t(uint32_t _w, uint32_t _h) : w(_w), h(_h) {
-			sprite.reserve(w*h);
-		}
-		uint32_t x {0}, y {0};
-		uint32_t w {0}, h {0};
-		std::vector<uint32_t> sprite {};
-	};
+template<typename Type>
+struct EntityManager {
+    using TypeProcessFunc = void (*)(Type&);
+    static constexpr std::size_t kNUMINIT {100};
 
-	struct EntityManager_t{
-		using VecEntities = std::vector<Entity_t>;
+    explicit EntityManager(std::size_t kNUMENT = kNUMINIT){
+        entities_.reserve(kNUMENT);
+    }
 
-		static constexpr std::size_t kNUMINITIALENTITIES {1000};
+    auto& createEntity(){ 
+        auto& e = entities_.emplace_back();
 
-		explicit EntityManager_t();
+        auto& ph = storage.createPhysicsComponent();
+        auto& re  = storage.createRenderComponent();
+        auto& in   = storage.createInputComponent();
 
-		void createEntity(uint32_t w, uint32_t h, uint32_t color);
+        e.physics = &ph;
+        e.render = &re;
+        e.input = &in;
 
-		const VecEntities& getEntities() const { return m_Entity; };
+        //e.physics->z = 10.0f;
+        //e.physics->vz = 0.2f;
+        return e; 
+    }
 
-	private:
-		//No por punteros te comes la cache
-		VecEntities m_Entity {};
-	};
+    void forall(TypeProcessFunc process){
+        for(auto& e : entities_){
+            process(e);
+        }
+    }
 
-} //END
+    const std::vector<PhysicsComponent>& getPhysicsComponents() const {return storage.getPhysicsComponents();};
+          std::vector<PhysicsComponent>& getPhysicsComponents()       {return storage.getPhysicsComponents();};
+
+    const std::vector<RenderComponent>&  getRenderComponents()  const {return storage.getRenderComponents();};
+          std::vector<RenderComponent>&  getRenderComponents()        {return storage.getRenderComponents();};
+
+    const std::vector<InputComponent>&   getInputComponents()   const {return storage.getInputComponents();};
+          std::vector<InputComponent>&   getInputComponents()         {return storage.getInputComponents();};
+
+    private:
+    std::vector<Entity> entities_{};
+    ComponentStorage storage {kNUMINIT};
+};
