@@ -1,16 +1,12 @@
-#include <irrlicht/irrlicht.h>
-#include "eng/engine.hpp"
-#include "man/entitymanager.hpp"
-#include "sys/physicsystem.hpp"
-#include "sys/rendersystem.hpp"
-#include "sys/inputsystem.hpp"
+#include "main.hpp"
 
 void game(){
-    TheEngine dev {640, 480};
+    TheEngine dev {720, 480};
     EntityManager<Entity> EM;
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
     InputSystem     InpSys;
+    CollisionSystem ColSys;
 
     auto& e = EM.createEntity();
     e.render->node = dev.createSphere();
@@ -27,6 +23,7 @@ void game(){
     while(dev.run()){
         InpSys.update(EM);
         PhySys.update(EM);
+        ColSys.update(EM);
         RenSys.update(EM, dev);
     }
 }

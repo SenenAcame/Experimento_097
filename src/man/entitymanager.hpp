@@ -19,13 +19,13 @@ struct EntityManager {
         auto& ph = storage.createPhysicsComponent();
         auto& re  = storage.createRenderComponent();
         auto& in   = storage.createInputComponent();
+        auto& co   = storage.createCollisionComponent();
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
+        e.collision = &co;
 
-        //e.physics->z = 10.0f;
-        //e.physics->vz = 0.2f;
         return e; 
     }
 
@@ -35,14 +35,17 @@ struct EntityManager {
         }
     }
 
-    const std::vector<PhysicsComponent>& getPhysicsComponents() const {return storage.getPhysicsComponents();};
-          std::vector<PhysicsComponent>& getPhysicsComponents()       {return storage.getPhysicsComponents();};
+    const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return storage.getPhysicsComponents();};
+          std::vector<PhysicsComponent>&   getPhysicsComponents()         {return storage.getPhysicsComponents();};
 
-    const std::vector<RenderComponent>&  getRenderComponents()  const {return storage.getRenderComponents();};
-          std::vector<RenderComponent>&  getRenderComponents()        {return storage.getRenderComponents();};
+    const std::vector<RenderComponent>&    getRenderComponents()    const {return storage.getRenderComponents();};
+          std::vector<RenderComponent>&    getRenderComponents()          {return storage.getRenderComponents();};
 
-    const std::vector<InputComponent>&   getInputComponents()   const {return storage.getInputComponents();};
-          std::vector<InputComponent>&   getInputComponents()         {return storage.getInputComponents();};
+    const std::vector<InputComponent>&     getInputComponents()     const {return storage.getInputComponents();};
+          std::vector<InputComponent>&     getInputComponents()           {return storage.getInputComponents();};
+          
+    const std::vector<CollisionComponent>& getCollisionComponents() const {return storage.getCollisionComponents();};
+          std::vector<CollisionComponent>& getCollisionComponents()       {return storage.getCollisionComponents();};
 
     private:
     std::vector<Entity> entities_{};
