@@ -14,10 +14,10 @@ struct ComponentStorage{
     ComponentStorage& operator=(const ComponentStorage&) = delete;
     ComponentStorage& operator=(ComponentStorage&&)      = delete;
 
-    PhysicsComponent&   createPhysicsComponent();
-    RenderComponent&    createRenderComponent();
-    InputComponent&     createInputComponent();
-    CollisionComponent& createCollisionComponent();
+    PhysicsComponent&   createPhysicsComponent(std::size_t eid);
+    RenderComponent&    createRenderComponent(std::size_t eid);
+    InputComponent&     createInputComponent(std::size_t eid);
+    CollisionComponent& createCollisionComponent(std::size_t eid);
 
     const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return phyStora;};
           std::vector<PhysicsComponent>&   getPhysicsComponents()         {return phyStora;};

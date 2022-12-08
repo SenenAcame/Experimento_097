@@ -8,22 +8,22 @@ ComponentStorage::ComponentStorage(std::size_t initialize){
     colStora.reserve(initialize);
 }
 
-PhysicsComponent& ComponentStorage::createPhysicsComponent(){
-    auto& phy = phyStora.emplace_back();
+PhysicsComponent& ComponentStorage::createPhysicsComponent(std::size_t eid){
+    auto& phy = phyStora.emplace_back(eid);
     return phy;
 }
 
-RenderComponent& ComponentStorage::createRenderComponent(){
-    auto& ren = renStora.emplace_back();
+RenderComponent& ComponentStorage::createRenderComponent(std::size_t eid){
+    auto& ren = renStora.emplace_back(eid);
     return ren;
 }
 
-InputComponent& ComponentStorage::createInputComponent(){
-    auto& inp = inpStora.emplace_back();
+InputComponent& ComponentStorage::createInputComponent(std::size_t eid){
+    auto& inp = inpStora.emplace_back(eid);
     return inp;
 }
 
-CollisionComponent& ComponentStorage::createCollisionComponent(){
-    auto& col = colStora.emplace_back();
+CollisionComponent& ComponentStorage::createCollisionComponent(std::size_t eid){
+    auto& col = colStora.emplace_back(eid);
     return col;
 }

@@ -1,5 +1,6 @@
 #pragma once
+#include "component.hpp"
 
-struct CollisionComponent {
-    explicit CollisionComponent() = default;
+struct CollisionComponent : public Component{
+    explicit CollisionComponent(std::size_t eid) : Component(eid){};
 };

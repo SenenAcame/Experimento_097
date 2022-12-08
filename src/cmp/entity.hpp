@@ -12,4 +12,7 @@ struct Entity {
     RenderComponent*    render    {nullptr};
     InputComponent*     input     {nullptr};
     CollisionComponent* collision {nullptr};
+    
+    std::size_t entityID {++nextID};
+    inline static std::size_t nextID {0};
 };

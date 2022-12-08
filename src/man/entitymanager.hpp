@@ -1,11 +1,12 @@
 #pragma once
 #include <cstddef>
-#include <vector>
-#include "../cmp/entity.hpp"
+//#include <vector>
+//#include "../cmp/entity.hpp"
+#include "../util/gamecontext.hpp"
 #include "componentstorage.hpp"
 
 template<typename Type>
-struct EntityManager {
+struct EntityManager : public GameContext {
     using TypeProcessFunc = void (*)(Type&);
     static constexpr std::size_t kNUMINIT {100};
 
@@ -16,10 +17,10 @@ struct EntityManager {
     auto& createEntity(){ 
         auto& e = entities_.emplace_back();
 
-        auto& ph = storage.createPhysicsComponent();
-        auto& re  = storage.createRenderComponent();
-        auto& in   = storage.createInputComponent();
-        auto& co   = storage.createCollisionComponent();
+        auto& ph = storage.createPhysicsComponent(e.entityID);
+        auto& re  = storage.createRenderComponent(e.entityID);
+        auto& in   = storage.createInputComponent(e.entityID);
+        auto& co   = storage.createCollisionComponent(e.entityID);
 
         e.physics = &ph;
         e.render = &re;
@@ -34,6 +35,8 @@ struct EntityManager {
             process(e);
         }
     }
+    
+    const std::vector<Entity>& getEntities() const override {return entities_;};
 
     const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return storage.getPhysicsComponents();};
           std::vector<PhysicsComponent>&   getPhysicsComponents()         {return storage.getPhysicsComponents();};
