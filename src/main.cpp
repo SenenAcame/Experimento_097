@@ -2,7 +2,7 @@
 #include <iostream>
 
 void game(){
-    TheEngine dev {720, 480};
+    TheEngine dev {1080, 720};
     EntityManager<Entity> EM;
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
