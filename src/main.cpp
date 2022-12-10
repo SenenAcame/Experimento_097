@@ -1,5 +1,8 @@
 #include "main.hpp"
 #include <iostream>
+#include <irrlicht/IAnimatedMeshSceneNode.h>
+#include <irrlicht/IMesh.h>
+#include <irrlicht/IMeshSceneNode.h>
 
 void game(){
     TheEngine dev {1080, 720};
