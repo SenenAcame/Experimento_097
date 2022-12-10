@@ -1,8 +1,4 @@
 #include "main.hpp"
-#include <iostream>
-#include <irrlicht/IAnimatedMeshSceneNode.h>
-#include <irrlicht/IMesh.h>
-#include <irrlicht/IMeshSceneNode.h>
 
 void game(){
     TheEngine dev {1080, 720};
@@ -14,9 +10,11 @@ void game(){
 
     auto& e = EM.createEntity();
     e.render->node = dev.createSphere();
-    e.physics->z = 20.0f;
-    e.physics->x = 5.0f;
-    e.physics->vz = 0.1f;
+    e.physics->z = 50.0f;
+	e.physics->vx = 0.2f;
+//    e.physics->vy = 0.5f;
+//	  e.physics->vz = 0.3f;
+//    e.physics->vz = 0.1f;
 //    std::cout<<e.entityID<<"\n";
 //    std::cout<<e.physics->componentID<<"\n";
 //    std::cout<<e.physics->entityID<<"\n";
@@ -29,9 +27,10 @@ void game(){
 
     auto& e2 = EM.createEntity();
     e2.render->node = dev.createSphere();
-    e2.physics->z = 40.0f;
-    e2.physics->x = -5.0f;
-    e2.physics->vz = 0.05f;
+	e2.physics->x = -10.0f;
+    e2.physics->z = 50.0f;
+//    e2.physics->x = -5.0f;
+//    e2.physics->vz = 0.05f;
 //    std::cout<<e2.entityID<<"\n";
 //    std::cout<<e2.physics->componentID<<"\n";
 //    std::cout<<e2.physics->entityID<<"\n";

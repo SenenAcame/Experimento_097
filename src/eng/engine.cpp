@@ -22,7 +22,7 @@ TheEngine::TheEngine(uint32_t const w, uint32_t const h) :width_{w}, height_{h}{
     keyMap[7].KeyCode = irr::KEY_KEY_D;
     smgr_->addCameraSceneNodeFPS(
         /*irr::scene::ISceneNode *parent = */0,
-        /*irr::f32 rotateSpeed = */0.25f, 
+        /*irr::f32 rotateSpeed = */1.0f, 
         /*irr::f32 moveSpeed = */0.25f,
         /*irr::s32 id = */-1, 
         /*irr::SKeyMap *keyMapArray = */keyMap,
