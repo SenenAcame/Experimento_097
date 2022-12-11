@@ -2,7 +2,7 @@
 //#include <iostream>
 
 void CollisionSystem::update(EntityManager<Entity>& EM){
-    EM.forall([](Entity& e) {
+    auto bounce = [](Entity& e) {
         if(e.physics->x > 40.0 || e.physics->x < -40.0) {
             e.physics->x -= e.physics->vx; 
             e.physics->vx = -e.physics->vx;
@@ -15,7 +15,9 @@ void CollisionSystem::update(EntityManager<Entity>& EM){
             e.physics->z -= e.physics->vz; 
             e.physics->vz = -e.physics->vz;
         }
-    });
+    };
+
+    EM.forall(bounce);
 }
 
 void CollisionSystem::bounce(float& coor, float& vel){

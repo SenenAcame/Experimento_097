@@ -20,12 +20,12 @@ struct EntityManager : public GameContext {
         auto& ph = storage.createPhysicsComponent(e.entityID);
         auto& re  = storage.createRenderComponent(e.entityID);
         auto& in   = storage.createInputComponent(e.entityID);
-        auto& co   = storage.createCollisionComponent(e.entityID);
+    //    auto& co   = storage.createCollisionComponent(e.entityID);
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
-        e.collision = &co;
+    //    e.collision = &co;
 
         return e; 
     }
@@ -47,8 +47,8 @@ struct EntityManager : public GameContext {
     const std::vector<InputComponent>&     getInputComponents()     const {return storage.getInputComponents();};
           std::vector<InputComponent>&     getInputComponents()           {return storage.getInputComponents();};
           
-    const std::vector<CollisionComponent>& getCollisionComponents() const {return storage.getCollisionComponents();};
-          std::vector<CollisionComponent>& getCollisionComponents()       {return storage.getCollisionComponents();};
+    //const std::vector<CollisionComponent>& getCollisionComponents() const {return storage.getCollisionComponents();};
+    //      std::vector<CollisionComponent>& getCollisionComponents()       {return storage.getCollisionComponents();};
 
     private:
     std::vector<Entity> entities_{};
