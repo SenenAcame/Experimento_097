@@ -23,7 +23,7 @@ void game(){
     e3.render->node = dev.createSphere();
 	e3.physics->x = 30.0f;
     e3.physics->z = 50.0f;
-//    e3.physics->vx = 0.3f;
+    e3.physics->vx = 0.3f;
 
     while(dev.run()){
         InpSys.update(EM);
