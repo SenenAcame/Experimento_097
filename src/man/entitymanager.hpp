@@ -35,8 +35,9 @@ struct EntityManager : public GameContext {
             process(e);
         }
     }
-    
-    const std::vector<Entity>& getEntities() const override {return entities_;};
+
+    const std::vector<Type>& getEntities() const override {return entities_;};
+          std::vector<Type>& getEntities()       override {return entities_;};
 
     const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return storage.getPhysicsComponents();};
           std::vector<PhysicsComponent>&   getPhysicsComponents()         {return storage.getPhysicsComponents();};
@@ -51,6 +52,6 @@ struct EntityManager : public GameContext {
     //      std::vector<CollisionComponent>& getCollisionComponents()       {return storage.getCollisionComponents();};
 
     private:
-    std::vector<Entity> entities_{};
+    std::vector<Type> entities_{};
     ComponentStorage storage {kNUMINIT};
 };
