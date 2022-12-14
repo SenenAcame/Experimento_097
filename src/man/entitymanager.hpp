@@ -1,7 +1,5 @@
 #pragma once
 #include <cstddef>
-//#include <vector>
-//#include "../cmp/entity.hpp"
 #include "../util/gamecontext.hpp"
 #include "componentstorage.hpp"
 
@@ -20,12 +18,10 @@ struct EntityManager : public GameContext {
         auto& ph = storage.createPhysicsComponent(e.entityID);
         auto& re  = storage.createRenderComponent(e.entityID);
         auto& in   = storage.createInputComponent(e.entityID);
-    //    auto& co   = storage.createCollisionComponent(e.entityID);
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
-    //    e.collision = &co;
 
         return e; 
     }
@@ -44,31 +40,22 @@ struct EntityManager : public GameContext {
                 //phy.entityID;
                 //phy2.entityID;
                 if(phy.componentID!=phy2.componentID){
-                    if(/*phy.x < -50.0 ||*/ abs(phy.x - phy2.x) <= 8 /*|| phy.x > 50.0*/){
-
-                        if((phy.vx>0 && phy2.vx>0) || (phy.vx<0 && phy2.vx<0)){
-                            if(abs(phy.vx)>abs(phy2.vx)){
-                                phy.x -= phy.vx;
-                                phy.vx = -phy.vx;
-                                phy.y -= phy.vy;
-                                phy.vy = -phy.vy;
-                            }
-                        }
-                        else{
-                            phy.x -= phy.vx;
-                            phy.vx = -phy.vx;
-                            phy.y -= phy.vy;
-                            phy.vy = -phy.vy;
-                        }
-
+                    float dx = phy.x - phy2.x;
+                    float dy = phy.y - phy2.y;
+                    float dz = phy.z - phy2.z;
+                    float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
+                    if(distance <= 8.0){
+                        phy.x -= phy.vx;
+                        phy.vx = -phy.vx;
+                        phy.y -= phy.vy;
+                        phy.vy = -phy.vy;
+                        phy.z -= phy.vz;
+                        phy.vz = -phy.vz;
                     }
                 }
-
             }
         }
     }
-
-
 
     const std::vector<Type>& getEntities() const override {return entities_;};
           std::vector<Type>& getEntities()       override {return entities_;};
@@ -81,9 +68,6 @@ struct EntityManager : public GameContext {
 
     const std::vector<InputComponent>&     getInputComponents()     const {return storage.getInputComponents();};
           std::vector<InputComponent>&     getInputComponents()           {return storage.getInputComponents();};
-          
-    //const std::vector<CollisionComponent>& getCollisionComponents() const {return storage.getCollisionComponents();};
-    //      std::vector<CollisionComponent>& getCollisionComponents()       {return storage.getCollisionComponents();};
 
     private:
     std::vector<Type> entities_{};
