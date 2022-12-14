@@ -16,13 +16,13 @@ $(foreach F,$(1),$(eval $(call COMPILE,$(2),$(call C2Convert,$(O),$(O),$(call SR
 endef
 
 APP 	:= experiment_97
-CCFLAGS := -Wall -pedantic
+CCFLAGS := -Wall -pedantic -std=c++20
 CFLAGS	:= $(CCFLAGS)
 H		:= %.h
 O		:= %.o
 HPP     := %.hpp
-CC		:= g++
-C		:= gcc
+CC		:= ccache clang++
+C		:= ccache clang++
 MKDIR 	:= mkdir -p
 SRC		:= src
 OBJ		:= obj
