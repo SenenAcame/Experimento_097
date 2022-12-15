@@ -14,11 +14,11 @@ struct TheEngine {
         auto* node = smgr_->addSphereSceneNode();
         if (!node) throw std::runtime_error("Couldn't create sphere");
 
-        //auto* texture = driver_->getTexture("/usr/share/irrlicht/media/wall.bmp");
-        //if (!texture) throw std::runtime_error("Couldn't create texture");
+        auto* texture = driver_->getTexture("src/assets/wall.bmp");
+        if (!texture) throw std::runtime_error("Couldn't create texture");
 
         node->setPosition(irr::core::vector3df(0,0,30));
-        //node->setMaterialTexture(0, texture);
+        node->setMaterialTexture(0, texture);
         node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 
         return node;
