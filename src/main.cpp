@@ -1,3 +1,47 @@
+#include "main.hpp"
+
+void game(){
+    TheEngine dev {1080, 720};
+    EntityManager<Entity> EM;
+    PhysicsSystem   PhySys;
+    RenderSystem    RenSys;
+    InputSystem     InpSys;
+    CollisionSystem ColSys;
+
+    auto& e = EM.createEntity();
+    e.render->node = dev.createSphere();
+//    e.physics->x = 9.0f;
+//    e.physics->y = 9.0f;
+    e.physics->z = 50.0f;
+    e.physics->vx = 0.1f;
+    e.physics->vy = 0.1f;
+    e.physics->vz = 0.1f;
+
+    auto& e2 = EM.createEntity();
+    e2.render->node = dev.createSphere();
+    e2.physics->x = 30.0f;
+	e2.physics->y = 30.0f;
+    e2.physics->z = 80.0f;
+
+    auto& e3 = EM.createEntity();
+    e3.render->node = dev.createSphere();
+//    e3.physics->x = 30.0f;
+	e3.physics->x = -5.0f;
+    e3.physics->y = -10.0f;
+    e3.physics->z = 50.0f;
+
+    while(dev.run()){
+        InpSys.update(EM);
+        PhySys.update(EM);
+        ColSys.update(EM);
+        RenSys.update(EM, dev);
+    }
+}
+
+int main(){
+    game();
+}
+
 //extern "C"{
 //    #include "inc/FMOD/inc/fmod_errors.h"
 //}
@@ -265,39 +309,39 @@
 //    return 0;
 //}
 
-#include "sys/soundsystem.hpp"
-
-
-int main(){
-
-    SoundSystem_t soundsystem;
-    int n=0;
-    do{
-        std::cout<< "Press 1 to change team" << std::endl;
-        std::cout<< "Press 2 to change voice line" << std::endl;
-        std::cout<< "Press 3 to play the event" << std::endl;
-        std::cout<<std::endl;
-        std::cout<<"Team:"<<std::endl;
-        std::string out1 = soundsystem.getBankIndex() == 0 ? ">" : " ";
-        std::cout<< out1 << " Counter_Terror team" <<std::endl;
-        out1 = soundsystem.getBankIndex() == 1 ? ">" : " ";
-        std::cout<< out1 << " Terror team" <<std::endl;
-        std::cout<<std::endl;
-        std::cout<<"Line:"<<std::endl;
-        out1 = soundsystem.getDialogueIndex() == 0 ? ">" : " ";
-        std::cout<< out1 << " Agree!" <<std::endl;
-        out1 = soundsystem.getDialogueIndex() == 1 ? ">" : " ";
-        std::cout<< out1 << " Disagree!" <<std::endl;
-        out1 = soundsystem.getDialogueIndex() == 2 ? ">" : " ";
-        std::cout<< out1 << " Smoke!" <<std::endl;
-        std::cout<<std::endl;
-        std::cout<<"Press 8 to quit"<<std::endl;
-
-        std::cin >> n;
-        std::cout << "\x1B[2J\x1B[H";
-        soundsystem.controller(n);
-        soundsystem.update();
-    }while (n != 8);
-    soundsystem.close();
-    return 0;
-}
+//#include "sys/soundsystem.hpp"
+//
+//
+//int main(){
+//
+//    SoundSystem_t soundsystem;
+//    int n=0;
+//    do{
+//        std::cout<< "Press 1 to change team" << std::endl;
+//        std::cout<< "Press 2 to change voice line" << std::endl;
+//        std::cout<< "Press 3 to play the event" << std::endl;
+//        std::cout<<std::endl;
+//        std::cout<<"Team:"<<std::endl;
+//        std::string out1 = soundsystem.getBankIndex() == 0 ? ">" : " ";
+//        std::cout<< out1 << " Counter_Terror team" <<std::endl;
+//        out1 = soundsystem.getBankIndex() == 1 ? ">" : " ";
+//        std::cout<< out1 << " Terror team" <<std::endl;
+//        std::cout<<std::endl;
+//        std::cout<<"Line:"<<std::endl;
+//        out1 = soundsystem.getDialogueIndex() == 0 ? ">" : " ";
+//        std::cout<< out1 << " Agree!" <<std::endl;
+//        out1 = soundsystem.getDialogueIndex() == 1 ? ">" : " ";
+//        std::cout<< out1 << " Disagree!" <<std::endl;
+//        out1 = soundsystem.getDialogueIndex() == 2 ? ">" : " ";
+//        std::cout<< out1 << " Smoke!" <<std::endl;
+//        std::cout<<std::endl;
+//        std::cout<<"Press 8 to quit"<<std::endl;
+//
+//        std::cin >> n;
+//        std::cout << "\x1B[2J\x1B[H";
+//        soundsystem.controller(n);
+//        soundsystem.update();
+//    }while (n != 8);
+//    soundsystem.close();
+//    return 0;
+//}
