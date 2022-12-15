@@ -22,7 +22,7 @@ H		:= %.h
 O		:= %.o
 HPP     := %.hpp
 CC		:= ccache clang++
-C		:= ccache clang++
+C		:= ccache gcc
 MKDIR 	:= mkdir -p
 SRC		:= src
 OBJ		:= obj
@@ -43,8 +43,8 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 #.PHONY: fmod
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CC) $(STD17) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS)
 	$(EXPTR)
+	$(CC) $(STD17) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS)
 
 $(eval $(call EACHFILE,$(ALLCPPS),$(CC),$(CCFLAGS)))
 $(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS)))
