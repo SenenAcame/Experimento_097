@@ -27,15 +27,13 @@ C		 := ccache gcc
 MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
-LIBS	 := -lX11 -lGL -lm -lpthread -ldl -lrt -lfmod -lfmodstudio
+LIBS	 := -lX11 -lGL -lm -lpthread -ldl -lrt -lfmod -lfmodstudio -Llib/ -lIrrlicht
 INCS	 := -I src/inc/FMOD/inc -L src/inc/FMOD/lib
-#EXPTR	 := export LD_LIBRARY_PATH=./src/inc/FMOD/lib:$$LD_LIBRARY_PATH
 EXPTR	 := LD_LIBRARY_PATH=./src/inc/FMOD/lib
 STD17	 := -std=c++17
 STD20	 := -std=c++20
 SANITIZE := -fsanitize=address
 DINAMIC  := -Wl,-rpath=src/inc/lib
-
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
 ALLCS      := $(shell find $(SRC)/ -type f -iname *.c)
@@ -48,7 +46,7 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 .PHONY: play
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CLANG) $(STD20) -o $(APP) $(DINAMIC) $(ALLOBJ) $(INCS) $(LIBS) $(SANITIZE)
+	$(CLANG) $(STD20) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(SANITIZE)
 
 $(eval $(call EACHFILE,$(ALLCPPS),$(CLANG),$(CCFLAGS),$(STD20)))
 $(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS),))
