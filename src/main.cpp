@@ -6,11 +6,24 @@
 #include "sys/inputsystem.hpp"
 
 void game(){
+
+    
+
     TheEngine dev {640, 480};
     EntityManager<Entity> EM;
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
     InputSystem     InpSys;
+
+    //tengo que poner lo de entity.hpp en el manager de alguna forma
+    //using Player_t = Entity<Tags<TPlayer>, CPhysisc, CRender, CInput> ;
+    /*Player_t player{
+        
+        std::make_unique<CPhysics>(20.0f, 5.0f),
+        std::make_unique<CRender>(dev.createSphere),
+        std::make_unique<CInput>()
+
+    };*/
 
     auto& e = EM.createEntity();
     e.render->node = dev.createSphere();
