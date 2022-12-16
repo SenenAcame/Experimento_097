@@ -15,9 +15,9 @@ struct EntityManager : public GameContext {
     auto& createEntity(){ 
         auto& e = entities_.emplace_back();
 
-        auto& ph = storage.createPhysicsComponent(e.entityID);
-        auto& re  = storage.createRenderComponent(e.entityID);
-        auto& in   = storage.createInputComponent(e.entityID);
+        auto& ph = storage.createPhysicsComponent(e.getEntityID());
+        auto& re  = storage.createRenderComponent(e.getEntityID());
+        auto& in   = storage.createInputComponent(e.getEntityID());
 
         e.physics = &ph;
         e.render = &re;

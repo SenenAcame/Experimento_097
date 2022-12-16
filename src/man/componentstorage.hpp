@@ -2,7 +2,7 @@
 #include "../cmp/physicscomponent.hpp"
 #include "../cmp/rendercomponent.hpp"
 #include "../cmp/inputcomponent.hpp"
-#include "../cmp/collisioncomponent.hpp"
+//#include "../cmp/collisioncomponent.hpp"
 //#include <cstddef>
 #include <vector>
 
@@ -17,7 +17,7 @@ struct ComponentStorage{
     PhysicsComponent&   createPhysicsComponent(std::size_t eid);
     RenderComponent&    createRenderComponent(std::size_t eid);
     InputComponent&     createInputComponent(std::size_t eid);
-    CollisionComponent& createCollisionComponent(std::size_t eid);
+    //CollisionComponent& createCollisionComponent(std::size_t eid);
 
     const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return phyStora;};
           std::vector<PhysicsComponent>&   getPhysicsComponents()         {return phyStora;};
@@ -28,12 +28,12 @@ struct ComponentStorage{
     const std::vector<InputComponent>&     getInputComponents()     const {return inpStora;};
           std::vector<InputComponent>&     getInputComponents()           {return inpStora;};
 
-    const std::vector<CollisionComponent>& getCollisionComponents() const {return colStora;};
-          std::vector<CollisionComponent>& getCollisionComponents()       {return colStora;};
+    //const std::vector<CollisionComponent>& getCollisionComponents() const {return colStora;};
+    //      std::vector<CollisionComponent>& getCollisionComponents()       {return colStora;};
 
     private:
     std::vector<PhysicsComponent>   phyStora {};
     std::vector<RenderComponent>    renStora {};
     std::vector<InputComponent>     inpStora {};
-    std::vector<CollisionComponent> colStora {};
+    //std::vector<CollisionComponent> colStora {};
 };
