@@ -4,5 +4,5 @@
 
 struct RenderSystem {
     explicit RenderSystem() = default;
-    void update(EntityManager<Entity>& EM, TheEngine& GFX);
+    void update(EntityManager<Entity<Tags<TPlayer>, PhysicsComponent, RenderComponent, InputComponent>>& EM, TheEngine& GFX);
 };

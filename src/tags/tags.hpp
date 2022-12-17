@@ -11,7 +11,7 @@ struct Tags {
     template<typename Tag> 
     consteval static bool has() noexcept{ //static porque solo necesito el nombre
     //compara con todo lo que tenga en TagsPack
-        return (false || ... || std::is_same_v<tag, TagsPack>);  //((a || b) || c)
+        return (false || ... || std::is_same_v<Tag, TagsPack>);  //((a || b) || c)
         //return (std::is_same_v<tag, TagsPack> || ...);  //(a || (b || c))
         //return (std::is_same_v<Types, Tag> 
         //|| std::is_same_v<T2, Tag>)

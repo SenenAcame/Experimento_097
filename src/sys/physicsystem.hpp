@@ -3,5 +3,5 @@
 
 struct PhysicsSystem {
     explicit PhysicsSystem() = default;
-    void update(EntityManager<Entity>& EM);
+    void update(EntityManager<Entity<Tags<TPlayer>, PhysicsComponent, RenderComponent, InputComponent>>& EM);
 };

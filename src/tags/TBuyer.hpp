@@ -1,3 +1,3 @@
 #pragma once 
 
-struct TEnemy{};
+struct TBuyer{};

@@ -20,9 +20,9 @@ struct EntityManager {
         auto& re  = storage.createRenderComponent();
         auto& in   = storage.createInputComponent();
 
-        e.physics = &ph;
-        e.render = &re;
-        e.input = &in;
+        e.c1 = &ph;
+        e.c2 = &re;
+        e.c3 = &in;
 
         //e.physics->z = 10.0f;
         //e.physics->vz = 0.2f;
@@ -45,6 +45,6 @@ struct EntityManager {
           std::vector<InputComponent>&   getInputComponents()         {return storage.getInputComponents();};
 
     private:
-    std::vector<Entity> entities_{};
+    std::vector<Entity<Tags<TPlayer>, PhysicsComponent, RenderComponent, InputComponent> > entities_{};
     ComponentStorage storage {kNUMINIT};
 };
