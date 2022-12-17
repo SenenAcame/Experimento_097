@@ -4,7 +4,7 @@
 #include <memory>
 
 struct TheEngine {
-    explicit TheEngine(uint32_t const w, uint32_t const h);
+    explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
     bool run() const;
     void addStaticText();
     void beginScene();
@@ -29,11 +29,14 @@ struct TheEngine {
     using irrDeviceManaged = std::unique_ptr<irr::IrrlichtDevice, DestructorFunc>;
 
     static void destroy(irr::IrrlichtDevice* p){ p->drop(); };
+
     irr::u32 const width_{}, height_{};
+    irr::IEventReceiver* receive {};
+
     irrDeviceManaged device_ {
         irr::createDevice(irr::video::EDT_SOFTWARE, 
                             irr::core::dimension2d<irr::u32>(width_, height_), 
-                            16,false,false,false,0), 
+                            16,false,false,false,receive), 
         destroy
     };
     irr::video::IVideoDriver  * const driver_ {device_ ? device_->getVideoDriver()    : nullptr};

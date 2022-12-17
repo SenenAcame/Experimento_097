@@ -1,7 +1,7 @@
 #include "engine.hpp"
 #include <stdexcept>
 
-TheEngine::TheEngine(uint32_t const w, uint32_t const h) :width_{w}, height_{h}{
+TheEngine::TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r) :width_{w}, height_{h}, receive{r}{
     if(!device_) throw std::runtime_error("Couldn't initialize device!!");
 //    irr::SKeyMap keyMap[8];
 //    keyMap[0].Action  = irr::EKA_MOVE_FORWARD;
