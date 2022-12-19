@@ -34,7 +34,7 @@ INCS	 := -Ilib
 STD++	 := -std=c++20
 STD		 := -std=c17
 SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=lib/FMOD/lib
+DINAMIC  := -Wl,-rpath=libs/
 
 ifdef RELEASE
 	CCFLAGS += -O3
