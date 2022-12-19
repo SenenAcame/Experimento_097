@@ -4,7 +4,7 @@
 #include "../cmp/entity.hpp"
 #include "componentstorage.hpp"
 
-template<typename Type>
+template <typename Tags, typename C1, typename C2 , typename C3 = void>
 struct EntityManager {
     using TypeProcessFunc = void (*)(Type&);
     static constexpr std::size_t kNUMINIT {100};
