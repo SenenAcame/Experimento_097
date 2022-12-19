@@ -4,5 +4,5 @@
 
 struct CollisionSystem {
     explicit CollisionSystem() = default;
-    void update(EntityManager<Entity<Tags<TPlayer>, PhysicsComponent, RenderComponent, InputComponent>>& EM);
+    void update(EntityManager<Entity>& EM);
 };

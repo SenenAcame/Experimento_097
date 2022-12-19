@@ -13,6 +13,8 @@ struct Entity {
     InputComponent*   input   {nullptr};
     
     constexpr std::size_t getEntityID() const noexcept {return entityID;};
+    
+    unsigned char tipo;
 
     private:
     std::size_t entityID {++nextID};
