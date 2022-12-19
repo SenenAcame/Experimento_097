@@ -14,7 +14,7 @@ struct TheEngine {
         auto* node = smgr_->addSphereSceneNode();
         if (!node) throw std::runtime_error("Couldn't create sphere");
 
-        auto* texture = driver_->getTexture("src/assets/wall.bmp");
+        auto* texture = driver_->getTexture("assets/wall.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
 
         node->setPosition(irr::core::vector3df(0,0,30));

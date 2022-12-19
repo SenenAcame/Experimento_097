@@ -1,6 +1,6 @@
 define COMPILE
 $(3) : $(4) $(5)
-	$(1) $(2) $(7) -c -o $(3) $(4) $(6) $(8)
+	$(1) $(2) $(7) -c -o $(3) $(4) $(6)
 endef
 
 define SRC2OBJ
@@ -12,36 +12,34 @@ $(patsubst %.c,$(1),$(patsubst %.cpp,$(2),$(3)))
 endef
 
 define EACHFILE
-$(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(call SRC2OBJ)),$(F),$(call C2Convert,$(H),$(HPP),$(F)),$(4),$(5),$(6))))
+$(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(call SRC2OBJ)),$(F),$(call C2Convert,$(H),$(HPP),$(F)),$(4),$(5))))
 endef
 
-APP 	 := experiment_97
+APP 	 := libtinyPTC.a
 CCFLAGS  := -Wall -pedantic
 CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o
 HPP      := %.hpp
 CCACHE   := ccache
+CLANG	 := clang++
 CC		 := g++
 C		 := gcc
+AR		 := ar
+RANLIB	 := ranlib
+ARFLAGS  := -crs
 MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
-#LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
-LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib
-INCS	 := -Ilib
-#EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
 STD++	 := -std=c++20
 STD		 := -std=c17
-SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=lib/FMOD/lib
 
-ifdef RELEASE
-	CCFLAGS += -O3
-	FLAGS += -O3
-else
+ifdef DEBUG
 	CCFLAGS += -g
 	CFLAGS += -g
+else
+	CCFLAGS += -O3
+	CFLAGS += -O3
 endif
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
@@ -50,13 +48,14 @@ ALLOBJ	   := $(foreach F,$(ALLCPPS) $(ALLCS),$(call C2Convert,$(O),$(O),$(call S
 SUBDIRS    := $(shell find $(SRC)/ -type d)
 OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 
-.PHONY: dir clean play lib lib-clean
+.PHONY: dir clean play
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CC) $(STD++) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE) $(DINAMIC)
+	$(AR) $(ARFLAGS) $(APP) $(ALLOBJ)
+	$(RANLIB) $(APP)
 
-$(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++),$(INCS)))
-$(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD),$(INCS)))
+#$(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++)))
+$(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD)))
 
 dir:
 	$(info $(SUBDIRS))
@@ -68,14 +67,8 @@ dir:
 clean:
 	rm -f -r "./obj"
 
-play:
-	./$(APP)
-
-lib:
-	$(MAKE) -C lib
-
-lib-clean:
-	$(MAKE) -C lib clean
+#play:
+#	$(EXPTR) ./$(APP)
 
 $(OBJSUBDIRS):
 	$(MKDIR) $(OBJSUBDIRS)
