@@ -6,7 +6,7 @@ void game(){
     RenderSystem    RenSys;
     CollisionSystem ColSys;
     
-    EntityManager<Entity> EM;
+    //EntityManager<Entity> EM;
     
     TheEngine dev {1080, 720, &InpSys};
 
