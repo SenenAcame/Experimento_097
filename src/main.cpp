@@ -10,7 +10,7 @@ void game(){
 
     
 
-    TheEngine dev {640, 480};
+    //TheEngine dev {640, 480};
     EntityManager<Entity<Tags<TPlayer>, PhysicsComponent, RenderComponent, InputComponent>> EM;
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
