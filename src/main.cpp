@@ -1,13 +1,14 @@
 #include "main.hpp"
 
 void game(){
-    EntityManager<Entity> EM;
     InputSystem     InpSys;
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
-    TheEngine dev {1080, 720, &InpSys};
-    
     CollisionSystem ColSys;
+    
+    EntityManager<Entity> EM;
+    
+    TheEngine dev {1080, 720, &InpSys};
 
     auto& e = EM.createEntity();
     e.render->node = dev.createSphere();
@@ -19,10 +20,10 @@ void game(){
 //    e.physics->vy = 0.1f;
 //    e.physics->vz = 0.1f;
 
-    auto& e2 = EM.createEntity();
-    e2.render->node = dev.createSphere();
-    e2.physics->y = 30.0f;
-    e2.physics->z = 80.0f;
+//    auto& e2 = EM.createEntity();
+//    e2.render->node = dev.createSphere();
+//    e2.physics->y = 30.0f;
+//    e2.physics->z = 80.0f;
 
 //    auto& e3 = EM.createEntity();
 //    e3.render->node = dev.createSphere();
