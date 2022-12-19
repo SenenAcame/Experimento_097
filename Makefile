@@ -1,6 +1,6 @@
 define COMPILE
-$(2) : $(3) $(4)
-	$(1) $(6) -c -o $(2) $(3) $(5)
+$(3) : $(4) $(5)
+	$(1) $(2) $(7) -c -o $(3) $(4) $(6)
 endef
 
 define SRC2OBJ
@@ -12,7 +12,7 @@ $(patsubst %.c,$(1),$(patsubst %.cpp,$(2),$(3)))
 endef
 
 define EACHFILE
-$(foreach F,$(1),$(eval $(call COMPILE,$(2),$(call C2Convert,$(O),$(O),$(call SRC2OBJ)),$(F),$(call C2Convert,$(H),$(HPP),$(F)),$(3),$(4))))
+$(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(call SRC2OBJ)),$(F),$(call C2Convert,$(H),$(HPP),$(F)),$(4),$(5))))
 endef
 
 APP 	 := experiment_97
@@ -21,17 +21,18 @@ CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o
 HPP      := %.hpp
-CLANG	 := ccache clang++
-CC		 := ccache g++
-C		 := ccache gcc
+CCACHE   := ccache
+CLANG	 := clang++
+CC		 := g++
+C		 := gcc
 MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
 LIBS	 := -lX11 -lGL -lm -lpthread -ldl -lrt -lfmod -lfmodstudio -Llib/ -lIrrlicht
 INCS	 := -I src/inc/FMOD/inc -L src/inc/FMOD/lib
 EXPTR	 := LD_LIBRARY_PATH=./src/inc/FMOD/lib
-STD17	 := -std=c++17
-STD20	 := -std=c++20
+STD++	 := -std=c++20
+STD		 := -std=c17
 SANITIZE := -fsanitize=address
 DINAMIC  := -Wl,-rpath=src/inc/lib
 
@@ -41,15 +42,13 @@ ALLOBJ	   := $(foreach F,$(ALLCPPS) $(ALLCS),$(call C2Convert,$(O),$(O),$(call S
 SUBDIRS    := $(shell find $(SRC)/ -type d)
 OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 
-.PHONY: dir
-.PHONY: clean
-.PHONY: play
+.PHONY: dir clean play
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CLANG) $(STD20) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(SANITIZE)
+	$(CC) $(STD++) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(SANITIZE)
 
-$(eval $(call EACHFILE,$(ALLCPPS),$(CLANG),$(CCFLAGS),$(STD20)))
-$(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS),))
+$(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++)))
+$(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD)))
 
 dir:
 	$(info $(SUBDIRS))
