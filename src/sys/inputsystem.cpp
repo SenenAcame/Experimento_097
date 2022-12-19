@@ -42,21 +42,23 @@ void InputSystem::onkeyreleased(KeySym k){
 
 void InputSystem::update(EntityManager<Entity>& EM){
     auto lambda = [](Entity& e){
-        auto& phy = *(e.physics);
-        auto& inp = *(e.input);
-        phy.vx = 0;
-        phy.vy = 0;
-        if(keyboard.isKeyPressed(inp.key_left)){
-            phy.vx = -0.1;
-        }
-        if(keyboard.isKeyPressed(inp.key_right)){
-            phy.vx = 0.1;
-        }
-        if(keyboard.isKeyPressed(inp.key_up)){
-            phy.vy = 0.1;
-        }
-        if(keyboard.isKeyPressed(inp.key_down)){
-            phy.vy = -0.1;
+        if(e.tipo == 'p'){
+            auto& phy = *(e.physics);
+            auto& inp = *(e.input);
+            phy.vx = 0;
+            phy.vy = 0;
+            if(keyboard.isKeyPressed(inp.key_left)){
+                phy.vx = -0.1;
+            }
+            if(keyboard.isKeyPressed(inp.key_right)){
+                phy.vx = 0.1;
+            }
+            if(keyboard.isKeyPressed(inp.key_up)){
+                phy.vy = 0.1;
+            }
+            if(keyboard.isKeyPressed(inp.key_down)){
+                phy.vy = -0.1;
+            }
         }
     };
     EM.forall(lambda);

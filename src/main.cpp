@@ -11,6 +11,7 @@ void game(){
     TheEngine dev {1080, 720, &InpSys};
 
     auto& e = EM.createEntity();
+    e.tipo = 'p';
     e.render->node = dev.createSphere();
     e.physics->z = 50.0f;
 //    e.physics->x = 9.0f;
@@ -20,10 +21,11 @@ void game(){
 //    e.physics->vy = 0.1f;
 //    e.physics->vz = 0.1f;
 
-//    auto& e2 = EM.createEntity();
-//    e2.render->node = dev.createSphere();
-//    e2.physics->y = 30.0f;
-//    e2.physics->z = 80.0f;
+    auto& e2 = EM.createEntity();
+    e2.tipo = 'e';
+    e2.render->node = dev.createSphere();
+    e2.physics->y = 30.0f;
+    e2.physics->z = 50.0f;
 
 //    auto& e3 = EM.createEntity();
 //    e3.render->node = dev.createSphere();
