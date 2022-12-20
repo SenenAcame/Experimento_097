@@ -24,6 +24,18 @@ struct TheEngine {
         return node;
     };
     
+    auto& getDevice(){
+        return device_;
+    }
+
+    auto getSceneManager(){
+        return device_->getSceneManager();
+    }
+
+    auto getCamera(){
+        return device_->getSceneManager()->getActiveCamera();
+    }
+
     private:
     using DestructorFunc = void (*)(irr::IrrlichtDevice*);
     using irrDeviceManaged = std::unique_ptr<irr::IrrlichtDevice, DestructorFunc>;
