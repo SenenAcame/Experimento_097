@@ -17,7 +17,7 @@ void game(){
     e.render->node = dev.createSphere();
     e.physics->z = 50.0f;
 
-//    camera->setParent(e.render->node);
+    camera->setParent(e.render->node);
 //    e.physics->x = 9.0f;
 //    e.physics->y = 9.0f;
     
@@ -28,7 +28,7 @@ void game(){
     auto& e2 = EM.createEntity();
     e2.tipo = 'e';
     e2.render->node = dev.createSphere();
-//    e2.physics->y = 30.0f;
+    e2.physics->x = 30.0f;
     e2.physics->z = 100.0f;
 
 //    auto& e3 = EM.createEntity();
