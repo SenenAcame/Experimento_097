@@ -12,8 +12,8 @@ struct EntityManager : public GameContext {
         entities_.reserve(kNUMENT);
     }
 
-    auto& createEntity(){ 
-        auto& e = entities_.emplace_back();
+    Entity& createEntity(){ 
+        Entity& e = entities_.emplace_back();
 
         auto& ph = storage.createPhysicsComponent(e.getEntityID());
         auto& re  = storage.createRenderComponent(e.getEntityID());

@@ -53,17 +53,3 @@ void TheEngine::drawAll(){
 void TheEngine::endScene(){
     driver_->endScene();
 }
-//
-//auto* TheEngine::createSphere(){
-//    auto* node = smgr_->addSphereSceneNode();
-//    if (!node) throw std::runtime_error("Couldn't create sphere");
-//
-//    //auto* texture = driver_->getTexture("/usr/share/irrlicht/media/wall.bmp");
-//    //if (!texture) throw std::runtime_error("Couldn't create texture");
-//
-//    node->setPosition(irr::core::vector3df(0,0,30));
-//    //node->setMaterialTexture(0, texture);
-//    node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-//
-//    return node;
-//}

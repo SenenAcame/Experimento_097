@@ -1,42 +1,35 @@
 #include "main.hpp"
+#include <irrlicht/vector3d.h>
 
 void game(){
     InputSystem     InpSys;
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
     CollisionSystem ColSys;
-    
     EntityManager<Entity> EM;
-    
     TheEngine dev {1080, 720, &InpSys};
 
-    auto camera = dev.getCamera();
+    //auto camera = dev.getCamera();
+    //irr::core::vector3df tar = camera->getTarget();
+    //tar.X=50; tar.Y=0; tar.Z=50;
+    //camera->setTarget(tar);
 
     auto& e = EM.createEntity();
     e.tipo = 'p';
     e.render->node = dev.createSphere();
     e.physics->z = 50.0f;
-
-    camera->setParent(e.render->node);
-//    e.physics->x = 9.0f;
-//    e.physics->y = 9.0f;
     
-//    e.physics->vx = 0.1f;
-//    e.physics->vy = 0.1f;
-//    e.physics->vz = 0.1f;
+    //irr::core::vector3df posi(e.physics->x,e.physics->y+10,e.physics->z-20);
+    //camera->setPosition(posi);
+    //camera->setParent(e.render->node);
+    //irr::core::vector3df pos(0);
+    //camera->setRotation(pos);
 
     auto& e2 = EM.createEntity();
     e2.tipo = 'e';
     e2.render->node = dev.createSphere();
     e2.physics->x = 30.0f;
     e2.physics->z = 100.0f;
-
-//    auto& e3 = EM.createEntity();
-//    e3.render->node = dev.createSphere();
-//    e3.physics->x = 30.0f;
-//	  e3.physics->x = -5.0f;
-//    e3.physics->y = -10.0f;
-//    e3.physics->z = 50.0f;
 
     while(dev.run()){
         InpSys.update(EM);
@@ -213,107 +206,6 @@ int main(){
 //    ERRCHECK(localizedBank->unload());
 //    ERRCHECK(voicesBank->unload());
 //    ERRCHECK(soundSystem->unloadAll());
-//    return 0;
-//}
-
-//int main()
-//{
-//    FMOD::System* coreSystem;
-//    FMOD::Studio::System* soundSystem;
-//    std::string dialogueString;
-//    
-//    ERRCHECK(FMOD::Studio::System::create(&soundSystem));
-//    ERRCHECK(soundSystem->getCoreSystem(&coreSystem));
-//    ERRCHECK(coreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0));
-//    ERRCHECK(coreSystem->setOutput(FMOD_OUTPUTTYPE_AUTODETECT));
-//    ERRCHECK(soundSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
-//
-//    FMOD::Studio::Bank * masterBank = nullptr;
-//    FMOD::Studio::Bank* stringsBank = nullptr;
-//    FMOD::Studio::Bank* voicesBank = nullptr;
-//
-//    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &masterBank) );
-//    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &stringsBank) );
-//    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Voices.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &voicesBank) );
-//    
-//    unsigned int bankIndex = 0;
-//    static const char* const banks[] = { "assets/FMOD_BANKS/Dialogue_CT.bank", "assets/FMOD_BANKS/Dialogue_T.bank"};
-//    
-//    FMOD::Studio::Bank* localizedBank = nullptr;
-//    ERRCHECK(soundSystem->loadBankFile(banks[bankIndex], FMOD_STUDIO_LOAD_BANK_NORMAL, &localizedBank) );
-//
-//    FMOD::Studio::EventDescription* eventDescription = nullptr;
-//    ERRCHECK(soundSystem->getEvent("event:/Dialogue", &eventDescription) );
-//
-//    FMOD::Studio::EventInstance* eventInstance = nullptr;
-//    ERRCHECK(eventDescription->createInstance(&eventInstance));
-//
-//    unsigned int dialogueIndex = 0;
-//    static const char* const dialogue[] = {"agree", "disagree", "smoke"};
-//
-//    ProgrammerSoundContext programmerSoundContext;
-//    programmerSoundContext.system = soundSystem;
-//    programmerSoundContext.coreSystem = coreSystem;
-//    programmerSoundContext.dialogueString = dialogue[dialogueIndex];
-//
-//    ERRCHECK( eventInstance->setUserData(&programmerSoundContext) );
-//    ERRCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
-//
-//    int n = 3;
-//    do
-//    {
-//        if (n==1)
-//        {
-//            ERRCHECK( localizedBank->unload() );
-//
-//            bankIndex = (bankIndex < 1) ? bankIndex + 1 : 0;
-//            ERRCHECK( soundSystem->loadBankFile(banks[bankIndex], FMOD_STUDIO_LOAD_BANK_NORMAL, &localizedBank) );
-//        }
-//
-//        if (n==2)
-//        {
-//            dialogueIndex = (dialogueIndex < 2) ? dialogueIndex + 1 : 0;
-//            programmerSoundContext.dialogueString = dialogue[dialogueIndex];
-//        }
-//
-//        if (n==3)
-//        {
-//            ERRCHECK( eventInstance->start() );
-//        }
-//        
-//        ERRCHECK(soundSystem->update() );
-//
-//        std::cout<< "Press 1 to change team" << std::endl;
-//        std::cout<< "Press 2 to change voice line" << std::endl;
-//        std::cout<< "Press 3 to play the event" << std::endl;
-//        std::cout<<std::endl;
-//        std::cout<<"Team:"<<std::endl;
-//        std::string out1 = bankIndex == 0 ? ">" : " ";
-//        std::cout<< out1 << " Counter_Terror team" <<std::endl;
-//        out1 = bankIndex == 1 ? ">" : " ";
-//        std::cout<< out1 << " Terror team" <<std::endl;
-//        std::cout<<std::endl;
-//        std::cout<<"Line:"<<std::endl;
-//        out1 = dialogueIndex == 0 ? ">" : " ";
-//        std::cout<< out1 << " Agree!" <<std::endl;
-//        out1 = dialogueIndex == 1 ? ">" : " ";
-//        std::cout<< out1 << " Disagree!" <<std::endl;
-//        out1 = dialogueIndex == 2 ? ">" : " ";
-//        std::cout<< out1 << " Smoke!" <<std::endl;
-//        std::cout<<std::endl;
-//        std::cout<<"Press 8 to quit"<<std::endl;
-//
-//        std::cin >> n;
-//        std::cout << "\x1B[2J\x1B[H";
-//    }while (n != 8);
-//
-//    ERRCHECK(eventDescription->releaseAllInstances());
-//    ERRCHECK(masterBank->unload());
-//    ERRCHECK(stringsBank->unload());
-//    ERRCHECK(localizedBank->unload());
-//    ERRCHECK(voicesBank->unload());
-//    ERRCHECK(soundSystem->unloadAll());
-//
 //    return 0;
 //}
 
