@@ -2,7 +2,6 @@
 #include "physicscomponent.hpp"
 #include "rendercomponent.hpp"
 #include "inputcomponent.hpp"
-//#include "collisioncomponent.hpp"
 #include <cstddef>
 
 struct Entity {

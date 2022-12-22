@@ -17,6 +17,7 @@ void game(){
     auto& e = EM.createEntity();
     e.tipo = 'p';
     e.render->node = dev.createSphere();
+    e.physics->x = -30.0f;
     e.physics->z = 50.0f;
     
     //irr::core::vector3df posi(e.physics->x,e.physics->y+10,e.physics->z-20);
@@ -29,10 +30,17 @@ void game(){
     e2.tipo = 'e';
     e2.render->node = dev.createSphere();
     e2.physics->x = 30.0f;
-    e2.physics->z = 100.0f;
+    e2.physics->z = 50.0f;
+
+    auto& e3 = EM.createEntity();
+    e3.tipo = 'e';
+    e3.render->node = dev.createSphere();
+    e3.physics->x = 30.0f;
+    e3.physics->y = 30.0f;
+    e3.physics->z = 50.0f;
 
     while(dev.run()){
-        InpSys.update(EM);
+        InpSys.update(EM, dev);
         PhySys.update(EM);
         ColSys.update(EM);
         RenSys.update(EM, dev);

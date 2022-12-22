@@ -10,4 +10,5 @@ struct InputComponent : public Component {
     KeySym key_left  {XK_A};
     KeySym key_right {XK_D};
     KeySym key_down  {XK_S};
+    KeySym key_shot  {XK_P};
 };
