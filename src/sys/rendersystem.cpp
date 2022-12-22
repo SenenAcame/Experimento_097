@@ -1,13 +1,24 @@
 #include "rendersystem.hpp"
 
 void RenderSystem::update(EntityManager<Entity>& EM, TheEngine& GFX){
-    auto lambda = [](Entity& e) {
+    //auto lambda = [](Entity& e) {
+    //    auto& phy {e.physics};
+    //    
+    //    const irr::core::vector3df& newpos = {phy->x, phy->y, phy->z};
+//
+    //    e.render->node->setPosition(newpos);
+    //};
+    //
+    //EM.forall(lambda);
+//  
+    for(auto& e : EM.getEntities()){
         auto& phy {e.physics};
-        e.render->node->setPosition({phy->x, phy->y, phy->z});
-    };
-    
-    EM.forall(lambda);
-
+        const irr::core::vector3df& newpos = {phy->x, phy->y, phy->z};
+        auto& a = e.render;
+        auto& b = a->node;
+        b->setPosition(newpos);
+        //e.render->node->setPosition(newpos);
+    }
     GFX.beginScene();
     GFX.drawAll();
     GFX.endScene();

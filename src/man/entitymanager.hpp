@@ -4,11 +4,14 @@
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
 #include "../util/keyboard.hpp"
-
+#include <iostream>
+#include <vector>
+static int i=0;
 template<typename Type>
 struct EntityManager : public GameContext {
     using TypeProcessFunc = void (*)(Type&);
-    static constexpr std::size_t kNUMINIT {100};
+    static constexpr std::size_t kNUMINIT {10};
+    
 
     explicit EntityManager(std::size_t kNUMENT = kNUMINIT){
         entities_.reserve(kNUMENT);
@@ -33,7 +36,7 @@ struct EntityManager : public GameContext {
         bullet.tipo = 'b';
         bullet.physics->x = weapon.physics->x+5;
         bullet.physics->z = weapon.physics->z;
-        bullet.physics->vx = 1.0;
+        bullet.physics->vx = 1;
         return bullet;
     }
 
@@ -48,9 +51,55 @@ struct EntityManager : public GameContext {
         return cont;
     }
 
+    int findPhysics(Entity& e){
+        int cont = 0;
+        for(auto& phy : getPhysicsComponents()){
+            if(e.getEntityID()==phy.entityID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+    }
+
+    int findRender(Entity& e){
+        int cont = 0;
+        for(auto& ren : getRenderComponents()){
+            if(e.getEntityID()==ren.entityID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+    }
+
+    int findInput(Entity& e){
+        int cont = 0;
+        for(auto& inp : getInputComponents()){
+            if(e.getEntityID()==inp.entityID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+    }
+
     void destroyEntity(Entity& e){
+        i++;
+
+        //std::vector<PhysicsComponent>& phycomp  = getPhysicsComponents();
+        //std::vector<RenderComponent>& rendcomp = getRenderComponents();
+        //auto& inpcomp  = getInputComponents();
+
         e.render->node->remove();
+        
+        //phycomp.erase(phycomp.begin()+findPhysics(e));
+        //rendcomp.erase(rendcomp.begin()+findRender(e));
+        //inpcomp.erase(inpcomp.begin()+findInput(e));
+        
         entities_.erase(entities_.begin()+findEntity(e));
+
+        //std::cout<<i<<" "<<rendcomp.size()<<" "<<rendcomp.capacity()<<"\n";
     }
 
     void forall(TypeProcessFunc process){

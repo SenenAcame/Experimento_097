@@ -40,10 +40,11 @@ void game(){
     e3.physics->z = 50.0f;
 
     while(dev.run()){
+        RenSys.update(EM, dev);
         InpSys.update(EM, dev);
         PhySys.update(EM);
         ColSys.update(EM);
-        RenSys.update(EM, dev);
+        
     }
 }
 
