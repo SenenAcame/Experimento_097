@@ -10,7 +10,7 @@ static int i=0;
 template<typename Type>
 struct EntityManager : public GameContext {
     using TypeProcessFunc = void (*)(Type&);
-    static constexpr std::size_t kNUMINIT {10};
+    static constexpr std::size_t kNUMINIT {1000};
     
 
     explicit EntityManager(std::size_t kNUMENT = kNUMINIT){
@@ -36,7 +36,7 @@ struct EntityManager : public GameContext {
         bullet.tipo = 'b';
         bullet.physics->x = weapon.physics->x+5;
         bullet.physics->z = weapon.physics->z;
-        bullet.physics->vx = 1;
+        bullet.physics->vx = 0.2;
         return bullet;
     }
 
@@ -48,58 +48,68 @@ struct EntityManager : public GameContext {
             }
             ++cont;
         }
+        std::cout<<"Posicion de ents: "<<cont<<"\n";
         return cont;
     }
 
     int findPhysics(Entity& e){
         int cont = 0;
         for(auto& phy : getPhysicsComponents()){
-            if(e.getEntityID()==phy.entityID){
+            if(e.physics->componentID==phy.componentID){
                 break;
             }
             cont++;
         }
+        std::cout<<"Posicion de phy: "<<cont<<"\n";
         return cont;
+        
     }
 
     int findRender(Entity& e){
         int cont = 0;
         for(auto& ren : getRenderComponents()){
-            if(e.getEntityID()==ren.entityID){
+            if(e.render->componentID==ren.componentID){
                 break;
             }
             cont++;
         }
+        std::cout<<"Posicion de rend: "<<cont<<"\n";
         return cont;
+        
     }
 
     int findInput(Entity& e){
         int cont = 0;
         for(auto& inp : getInputComponents()){
-            if(e.getEntityID()==inp.entityID){
+            if(e.input->componentID==inp.componentID){
                 break;
             }
             cont++;
         }
+        std::cout<<"Posicion de inp: "<<cont<<"\n";
         return cont;
+        
     }
 
     void destroyEntity(Entity& e){
         i++;
 
+        //std::cout<<"Voy a destruir la ID: "<<e.render->componentID<<"\n";
+        //
         //std::vector<PhysicsComponent>& phycomp  = getPhysicsComponents();
-        //std::vector<RenderComponent>& rendcomp = getRenderComponents();
+        std::vector<RenderComponent>& rendcomp = getRenderComponents();
         //auto& inpcomp  = getInputComponents();
 
         e.render->node->remove();
-        
+        //e.render->node = nullptr;
+
         //phycomp.erase(phycomp.begin()+findPhysics(e));
         //rendcomp.erase(rendcomp.begin()+findRender(e));
         //inpcomp.erase(inpcomp.begin()+findInput(e));
-        
+        //
         entities_.erase(entities_.begin()+findEntity(e));
 
-        //std::cout<<i<<" "<<rendcomp.size()<<" "<<rendcomp.capacity()<<"\n";
+        std::cout<<i<<" "<<rendcomp.size()<<" "<<rendcomp.capacity()<<"\n";
     }
 
     void forall(TypeProcessFunc process){
@@ -110,29 +120,45 @@ struct EntityManager : public GameContext {
 
     void forall(std::vector<PhysicsComponent>& phyCMP){
         for(auto& e : entities_){
-            auto& phy = e.physics;
-            for(auto& e2 : entities_){
-                if(e.getEntityID()!=e2.getEntityID()){
-                    auto& phy2 = e2.physics;
-                    float dx = phy->x - phy2->x;
-                    float dy = phy->y - phy2->y;
-                    float dz = phy->z - phy2->z;
-                    float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
-                    if(distance <= 2.0){
-                        if(e.tipo=='b'){
-                            destroyEntity(e);
+            //if(e.physics != nullptr && e.render != nullptr && e.input != nullptr){
+                auto& phy = e.physics;
+                for(auto& e2 : entities_){
+                    //if(e2.physics != nullptr && e2.render != nullptr && e2.input != nullptr){
+                        if(e.getEntityID()!=e2.getEntityID()){
+                            auto& phy2 = e2.physics;
+                            float dx = phy->x - phy2->x;
+                            float dy = phy->y - phy2->y;
+                            float dz = phy->z - phy2->z;
+                            float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
+                            if(distance <= 1.0){
+                                if(e.tipo=='b'){
+                                    //for(auto& e : getRenderComponents()){
+                                    //    std::cout<<e.componentID<<" ";
+                                    //}
+                                    //std::cout<<"Antes de destroy";
+                                    //std::cout<<"\n";
+                                    //std::cout<<"Voy a destruir la ID: "<<e.componentID<<"\n";
+                                    destroyEntity(e);
+                                    //for(auto& e : getRenderComponents()){
+                                    //    std::cout<<e.componentID<<" ";
+                                    //}
+                                    //std::cout<<"Despues de destroy";
+                                    //std::cout<<"\n";
+                                    //std::cout<<"\n";
+                                }
+                                else{
+                                    phy->x -= phy->vx;
+                                    phy->vx = -phy->vx;
+                                    phy->y -= phy->vy;
+                                    phy->vy = -phy->vy;
+                                    phy->z -= phy->vz;
+                                    phy->vz = -phy->vz;
+                                }
+                            }
                         }
-                        else{
-                            phy->x -= phy->vx;
-                            phy->vx = -phy->vx;
-                            phy->y -= phy->vy;
-                            phy->vy = -phy->vy;
-                            phy->z -= phy->vz;
-                            phy->vz = -phy->vz;
-                        }
-                    }
+                    //}
                 }
-            }
+            //}
         }
     }
 
