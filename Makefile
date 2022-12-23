@@ -1,6 +1,6 @@
 define COMPILE
-$(2) : $(3) $(4)
-	$(1) $(6) -c -o $(2) $(3) $(5)
+$(3) : $(4) $(5)
+	$(1) $(2) $(7) -c -o $(3) $(4) $(6) $(8)
 endef
 
 define SRC2OBJ
@@ -12,7 +12,7 @@ $(patsubst %.c,$(1),$(patsubst %.cpp,$(2),$(3)))
 endef
 
 define EACHFILE
-$(foreach F,$(1),$(eval $(call COMPILE,$(2),$(call C2Convert,$(O),$(O),$(call SRC2OBJ)),$(F),$(call C2Convert,$(H),$(HPP),$(F)),$(3),$(4))))
+$(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(call SRC2OBJ)),$(F),$(call C2Convert,$(H),$(HPP),$(F)),$(4),$(5),$(6))))
 endef
 
 APP 	 := experiment_97
@@ -21,19 +21,28 @@ CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o
 HPP      := %.hpp
-CLANG	 := ccache clang++
-CC		 := ccache g++
-C		 := ccache gcc
+CCACHE   := ccache
+CC		 := g++
+C		 := gcc
 MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
-LIBS	 := -lX11 -lGL -lm -lpthread -ldl -lrt -lfmod -lfmodstudio -Llib/ -lIrrlicht
-INCS	 := -I src/inc/FMOD/inc -L src/inc/FMOD/lib
-EXPTR	 := LD_LIBRARY_PATH=./src/inc/FMOD/lib
-STD17	 := -std=c++17
-STD20	 := -std=c++20
+#LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
+LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib
+INCS	 := -Ilib
+#EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
+STD++	 := -std=c++20
+STD		 := -std=c17
 SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=src/inc/lib
+DINAMIC  := -Wl,-rpath=libs/
+
+ifdef RELEASE
+	CCFLAGS += -O3
+	FLAGS += -O3
+else
+	CCFLAGS += -g
+	CFLAGS += -g
+endif
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
 ALLCS      := $(shell find $(SRC)/ -type f -iname *.c)
@@ -41,15 +50,13 @@ ALLOBJ	   := $(foreach F,$(ALLCPPS) $(ALLCS),$(call C2Convert,$(O),$(O),$(call S
 SUBDIRS    := $(shell find $(SRC)/ -type d)
 OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 
-.PHONY: dir
-.PHONY: clean
-.PHONY: play
+.PHONY: dir clean play lib lib-clean
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CLANG) $(STD20) -o $(APP) $(ALLOBJ) $(INCS) $(LIBS) $(SANITIZE)
+	$(CC) $(STD++) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE) $(DINAMIC)
 
-$(eval $(call EACHFILE,$(ALLCPPS),$(CLANG),$(CCFLAGS),$(STD20)))
-$(eval $(call EACHFILE,$(ALLCS),$(C),$(CFLAGS),))
+$(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++),$(INCS)))
+$(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD),$(INCS)))
 
 dir:
 	$(info $(SUBDIRS))
@@ -62,7 +69,13 @@ clean:
 	rm -f -r "./obj"
 
 play:
-	$(EXPTR) ./$(APP)
+	./$(APP)
+
+lib:
+	$(MAKE) -C lib
+
+lib-clean:
+	$(MAKE) -C lib clean
 
 $(OBJSUBDIRS):
 	$(MKDIR) $(OBJSUBDIRS)

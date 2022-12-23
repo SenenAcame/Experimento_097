@@ -3,11 +3,11 @@
 #include <string>
 #include <iostream>
 extern "C"{
-    #include "../inc/FMOD/inc/fmod_errors.h"
+    #include <FMOD/src/fmod_errors.h>
 }
-#include "../inc/FMOD/inc/fmod.hpp"
-#include "../inc/FMOD/inc/fmod_studio.hpp"
-#include "../inc/FMOD/inc/common.hpp"
+#include <FMOD/src/fmod.hpp>
+#include <FMOD/src/fmod_studio.hpp>
+#include <FMOD/src/common.hpp>
 
 struct SoundSystem_t{
 

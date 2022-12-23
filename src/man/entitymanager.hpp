@@ -2,28 +2,95 @@
 #include <cstddef>
 #include "../util/gamecontext.hpp"
 #include "componentstorage.hpp"
+#include "../eng/engine.hpp"
+#include "../util/keyboard.hpp"
 
 template<typename Type>
 struct EntityManager : public GameContext {
     using TypeProcessFunc = void (*)(Type&);
-    static constexpr std::size_t kNUMINIT {100};
+    static constexpr std::size_t kNUMINIT {1000};
+    
 
     explicit EntityManager(std::size_t kNUMENT = kNUMINIT){
         entities_.reserve(kNUMENT);
     }
 
-    auto& createEntity(){ 
-        auto& e = entities_.emplace_back();
+    Entity& createEntity(){ 
+        Entity& e = entities_.emplace_back();
 
-        auto& ph = storage.createPhysicsComponent(e.entityID);
-        auto& re  = storage.createRenderComponent(e.entityID);
-        auto& in   = storage.createInputComponent(e.entityID);
+        auto& ph = storage.createPhysicsComponent(e.getEntityID());
+        auto& re  = storage.createRenderComponent(e.getEntityID());
+        auto& in   = storage.createInputComponent(e.getEntityID());
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
 
         return e; 
+    }
+
+    Entity& createBullet(Entity& weapon){
+        Entity& bullet = createEntity();
+        bullet.tipo = 'b';
+        bullet.physics->x = weapon.physics->x+1.1;
+        bullet.physics->y = weapon.physics->y;
+        bullet.physics->z = weapon.physics->z;
+        bullet.physics->vx = 0.2;
+        return bullet;
+    }
+
+    int findEntity(Entity& e){
+        int cont = 0;
+        for(auto& ent : entities_){
+            if(e.getEntityID()==ent.getEntityID()){
+                break;
+            }
+            ++cont;
+        }
+        return cont;
+    }
+
+    int findPhysics(Entity& e){
+        int cont = 0;
+        for(auto& phy : getPhysicsComponents()){
+            if(e.physics->componentID==phy.componentID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+    }
+
+    int findRender(Entity& e){
+        int cont = 0;
+        for(auto& ren : getRenderComponents()){
+            if(e.render->componentID==ren.componentID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+    }
+
+    int findInput(Entity& e){
+        int cont = 0;
+        for(auto& inp : getInputComponents()){
+            if(e.input->componentID==inp.componentID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+        
+    }
+
+    void destroyEntity(Entity& e){
+        //std::vector<PhysicsComponent>& phycomp  = getPhysicsComponents();
+        //std::vector<RenderComponent>& rendcomp = getRenderComponents();
+        //auto& inpcomp  = getInputComponents();
+
+        e.render->node->remove();
+        entities_.erase(entities_.begin()+findEntity(e));
     }
 
     void forall(TypeProcessFunc process){
@@ -33,30 +100,61 @@ struct EntityManager : public GameContext {
     }
 
     void forall(std::vector<PhysicsComponent>& phyCMP){
-        for(auto& phy : phyCMP){
-            for(auto& phy2 : phyCMP){
-                //Obtener id de entidad a partir del componente para que
-                //dependiendo del tipo de entidad haga una cosa u otra
-                //phy.entityID;
-                //phy2.entityID;
-                if(phy.componentID!=phy2.componentID){
-                    float dx = phy.x - phy2.x;
-                    float dy = phy.y - phy2.y;
-                    float dz = phy.z - phy2.z;
+        for(auto& e : entities_){
+            auto& phy = e.physics;
+            for(auto& e2 : entities_){
+                if(e.getEntityID()!=e2.getEntityID()){
+                    auto& phy2 = e2.physics;
+                    float dx = phy->x - phy2->x;
+                    float dy = phy->y - phy2->y;
+                    float dz = phy->z - phy2->z;
                     float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
-                    if(distance <= 8.0){
-                        phy.x -= phy.vx;
-                        phy.vx = -phy.vx;
-                        phy.y -= phy.vy;
-                        phy.vy = -phy.vy;
-                        phy.z -= phy.vz;
-                        phy.vz = -phy.vz;
+                    if(distance <= 1.0){
+                        if(e.tipo=='b'){
+                            destroyEntity(e);
+                        }
+                        else{
+                            phy->x -= phy->vx;
+                            phy->vx = -phy->vx;
+                            phy->y -= phy->vy;
+                            phy->vy = -phy->vy;
+                            phy->z -= phy->vz;
+                            phy->vz = -phy->vz;
+                        }
                     }
                 }
             }
         }
     }
 
+    void forall(TheEngine& eng, Keyboard& keyb){
+        for(Entity& e: entities_){
+            if(e.tipo == 'p'){
+                auto& phy = *(e.physics);
+                auto& inp = *(e.input);
+                phy.vx = 0;
+                phy.vy = 0;
+                if(keyb.isKeyPressed(inp.key_left)){
+                    phy.vx = -0.1;
+                }
+                if(keyb.isKeyPressed(inp.key_right)){
+                    phy.vx = 0.1;
+                }
+                if(keyb.isKeyPressed(inp.key_up)){
+                    phy.vy = 0.1;
+                }
+                if(keyb.isKeyPressed(inp.key_down)){
+                    phy.vy = -0.1;
+                }
+                if(keyb.isKeyPressed(inp.key_shot)){
+                    auto& bullet = createBullet(e);
+                    bullet.render->node = eng.addBullet();
+                    keyb.keyReleased(inp.key_shot);
+                }
+            }
+        }
+    }
+    
     const std::vector<Type>& getEntities() const override {return entities_;};
           std::vector<Type>& getEntities()       override {return entities_;};
 

@@ -1,11 +1,9 @@
 #include "componentstorage.hpp"
-//#include <cstddef>
 
 ComponentStorage::ComponentStorage(std::size_t initialize){
     phyStora.reserve(initialize);
     renStora.reserve(initialize);
     inpStora.reserve(initialize);
-    colStora.reserve(initialize);
 }
 
 PhysicsComponent& ComponentStorage::createPhysicsComponent(std::size_t eid){
@@ -21,9 +19,4 @@ RenderComponent& ComponentStorage::createRenderComponent(std::size_t eid){
 InputComponent& ComponentStorage::createInputComponent(std::size_t eid){
     auto& inp = inpStora.emplace_back(eid);
     return inp;
-}
-
-CollisionComponent& ComponentStorage::createCollisionComponent(std::size_t eid){
-    auto& col = colStora.emplace_back(eid);
-    return col;
 }
