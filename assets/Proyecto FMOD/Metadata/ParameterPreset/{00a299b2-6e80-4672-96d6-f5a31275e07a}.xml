@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{00a299b2-6e80-4672-96d6-f5a31275e07a}">
+		<property name="name">
+			<value>vozenemigo</value>
+		</property>
+		<relationship name="folder">
+			<destination>{0e251f62-fd56-4551-871c-3ec3d23ab2a5}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{06766304-75c1-4125-a87d-515c4ce7ab7a}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{06766304-75c1-4125-a87d-515c4ce7ab7a}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>11</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

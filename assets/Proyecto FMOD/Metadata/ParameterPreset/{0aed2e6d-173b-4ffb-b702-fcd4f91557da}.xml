@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0aed2e6d-173b-4ffb-b702-fcd4f91557da}">
+		<property name="name">
+			<value>armatipo</value>
+		</property>
+		<relationship name="folder">
+			<destination>{0e251f62-fd56-4551-871c-3ec3d23ab2a5}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{7a0fe6ec-d741-4d41-8aa8-3b56c6f851f1}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{7a0fe6ec-d741-4d41-8aa8-3b56c6f851f1}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>7</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
