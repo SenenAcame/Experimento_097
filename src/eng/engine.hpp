@@ -17,13 +17,89 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/wall.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
 
-        node->setPosition(irr::core::vector3df(0,0,30));
+        node->setPosition(irr::core::vector3df(0,0,0));
+        node->setRotation(irr::core::vector3df(0,-180,0));
+        node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+
+        return node;
+    };
+
+    auto* addBullet(){
+        auto* node = smgr_->addSphereSceneNode(
+            /*irr::f32 radius = */0.5F,
+            /*irr::s32 polyCount =*/ 16,
+            /*irr::scene::ISceneNode * parent =*/ 0,
+            /*irr::s32 id =*/ -1,
+            /*const core::vector3df & position =*/ irr::core::vector3df(0, 0, 0),
+            /*const core::vector3df & rotation =*/ irr::core::vector3df(0, 0, 0),
+            /*const core::vector3df & scale =*/ irr::core::vector3df(1.F, 1.F, 1.F));
+        if (!node) throw std::runtime_error("Couldn't create sphere");
+
+        auto* texture = driver_->getTexture("assets/wall.bmp");
+        if (!texture) throw std::runtime_error("Couldn't create texture");
+
+        node->setPosition(irr::core::vector3df(0,0,0));
+        node->setRotation(irr::core::vector3df(0,-180,0));
         node->setMaterialTexture(0, texture);
         node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 
         return node;
     };
     
+    irr::scene::IAnimatedMeshSceneNode* createPlayer(){
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/player_arm.obj");
+        if (!mesh){
+            device_->drop();
+            return nullptr;
+        }
+        irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
+        auto* texture = driver_->getTexture("assets/fire.bmp");
+        if (!texture) throw std::runtime_error("Couldn't create texture");
+        node->setMaterialTexture(0, texture);
+        return node;
+    };
+
+    irr::scene::IAnimatedMeshSceneNode* createMap(){
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/laboratorio.obj");
+        if (!mesh){
+            device_->drop();
+            return nullptr;
+        }
+        irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
+
+        auto* texture = driver_->getTexture("assets/wall.bmp");
+        if (!texture) throw std::runtime_error("Couldn't create texture");
+        node->setMaterialTexture(0, texture);
+        return node;
+    };
+
+    irr::scene::IAnimatedMeshSceneNode* createEnemy(){
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/enemy.obj");
+        if (!mesh){
+            device_->drop();
+            return nullptr;
+        }
+        irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
+        auto* texture = driver_->getTexture("assets/fire.bmp");
+        if (!texture) throw std::runtime_error("Couldn't create texture");
+        node->setMaterialTexture(0, texture);
+        return node;
+    };
+
+    irr::scene::IAnimatedMeshSceneNode* createWeapon1(){
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/pistola.obj");
+        if (!mesh){
+            device_->drop();
+            return nullptr;
+        }
+        irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
+        auto* texture = driver_->getTexture("assets/fire.bmp");
+        if (!texture) throw std::runtime_error("Couldn't create texture");
+        node->setMaterialTexture(0, texture);
+        return node;
+    };
+
     auto& getDevice(){return device_;}
     auto getSceneManager(){return device_->getSceneManager();}
     auto getCamera(){return device_->getSceneManager()->getActiveCamera();}

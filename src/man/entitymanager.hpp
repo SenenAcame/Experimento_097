@@ -4,9 +4,7 @@
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
 #include "../util/keyboard.hpp"
-#include <iostream>
-#include <vector>
-static int i=0;
+
 template<typename Type>
 struct EntityManager : public GameContext {
     using TypeProcessFunc = void (*)(Type&);
@@ -34,7 +32,7 @@ struct EntityManager : public GameContext {
     Entity& createBullet(Entity& weapon){
         Entity& bullet = createEntity();
         bullet.tipo = 'b';
-        bullet.physics->x = weapon.physics->x+5;
+        bullet.physics->x = weapon.physics->x+1.1;
         bullet.physics->z = weapon.physics->z;
         bullet.physics->vx = 0.2;
         return bullet;
@@ -48,7 +46,6 @@ struct EntityManager : public GameContext {
             }
             ++cont;
         }
-        std::cout<<"Posicion de ents: "<<cont<<"\n";
         return cont;
     }
 
@@ -60,9 +57,7 @@ struct EntityManager : public GameContext {
             }
             cont++;
         }
-        std::cout<<"Posicion de phy: "<<cont<<"\n";
         return cont;
-        
     }
 
     int findRender(Entity& e){
@@ -73,9 +68,7 @@ struct EntityManager : public GameContext {
             }
             cont++;
         }
-        std::cout<<"Posicion de rend: "<<cont<<"\n";
         return cont;
-        
     }
 
     int findInput(Entity& e){
@@ -86,30 +79,17 @@ struct EntityManager : public GameContext {
             }
             cont++;
         }
-        std::cout<<"Posicion de inp: "<<cont<<"\n";
         return cont;
         
     }
 
     void destroyEntity(Entity& e){
-        i++;
-
-        //std::cout<<"Voy a destruir la ID: "<<e.render->componentID<<"\n";
-        //
         //std::vector<PhysicsComponent>& phycomp  = getPhysicsComponents();
-        std::vector<RenderComponent>& rendcomp = getRenderComponents();
+        //std::vector<RenderComponent>& rendcomp = getRenderComponents();
         //auto& inpcomp  = getInputComponents();
 
         e.render->node->remove();
-        //e.render->node = nullptr;
-
-        //phycomp.erase(phycomp.begin()+findPhysics(e));
-        //rendcomp.erase(rendcomp.begin()+findRender(e));
-        //inpcomp.erase(inpcomp.begin()+findInput(e));
-        //
         entities_.erase(entities_.begin()+findEntity(e));
-
-        std::cout<<i<<" "<<rendcomp.size()<<" "<<rendcomp.capacity()<<"\n";
     }
 
     void forall(TypeProcessFunc process){
@@ -120,45 +100,29 @@ struct EntityManager : public GameContext {
 
     void forall(std::vector<PhysicsComponent>& phyCMP){
         for(auto& e : entities_){
-            //if(e.physics != nullptr && e.render != nullptr && e.input != nullptr){
-                auto& phy = e.physics;
-                for(auto& e2 : entities_){
-                    //if(e2.physics != nullptr && e2.render != nullptr && e2.input != nullptr){
-                        if(e.getEntityID()!=e2.getEntityID()){
-                            auto& phy2 = e2.physics;
-                            float dx = phy->x - phy2->x;
-                            float dy = phy->y - phy2->y;
-                            float dz = phy->z - phy2->z;
-                            float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
-                            if(distance <= 1.0){
-                                if(e.tipo=='b'){
-                                    //for(auto& e : getRenderComponents()){
-                                    //    std::cout<<e.componentID<<" ";
-                                    //}
-                                    //std::cout<<"Antes de destroy";
-                                    //std::cout<<"\n";
-                                    //std::cout<<"Voy a destruir la ID: "<<e.componentID<<"\n";
-                                    destroyEntity(e);
-                                    //for(auto& e : getRenderComponents()){
-                                    //    std::cout<<e.componentID<<" ";
-                                    //}
-                                    //std::cout<<"Despues de destroy";
-                                    //std::cout<<"\n";
-                                    //std::cout<<"\n";
-                                }
-                                else{
-                                    phy->x -= phy->vx;
-                                    phy->vx = -phy->vx;
-                                    phy->y -= phy->vy;
-                                    phy->vy = -phy->vy;
-                                    phy->z -= phy->vz;
-                                    phy->vz = -phy->vz;
-                                }
-                            }
+            auto& phy = e.physics;
+            for(auto& e2 : entities_){
+                if(e.getEntityID()!=e2.getEntityID()){
+                    auto& phy2 = e2.physics;
+                    float dx = phy->x - phy2->x;
+                    float dy = phy->y - phy2->y;
+                    float dz = phy->z - phy2->z;
+                    float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
+                    if(distance <= 1.0){
+                        if(e.tipo=='b'){
+                            destroyEntity(e);
                         }
-                    //}
+                        else{
+                            phy->x -= phy->vx;
+                            phy->vx = -phy->vx;
+                            phy->y -= phy->vy;
+                            phy->vy = -phy->vy;
+                            phy->z -= phy->vz;
+                            phy->vz = -phy->vz;
+                        }
+                    }
                 }
-            //}
+            }
         }
     }
 
@@ -168,7 +132,7 @@ struct EntityManager : public GameContext {
                 auto& phy = *(e.physics);
                 auto& inp = *(e.input);
                 phy.vx = 0;
-                phy.vz = 0;
+                phy.vy = 0;
                 if(keyb.isKeyPressed(inp.key_left)){
                     phy.vx = -0.1;
                 }
@@ -176,14 +140,14 @@ struct EntityManager : public GameContext {
                     phy.vx = 0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_up)){
-                    phy.vz = 0.1;
+                    phy.vy = 0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_down)){
-                    phy.vz = -0.1;
+                    phy.vy = -0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e);
-                    bullet.render->node = eng.createSphere();
+                    bullet.render->node = eng.addBullet();
                     keyb.keyReleased(inp.key_shot);
                 }
             }

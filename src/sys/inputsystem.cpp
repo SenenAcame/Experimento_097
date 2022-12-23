@@ -1,5 +1,4 @@
 #include "inputsystem.hpp"
-#include <iostream>
 
 void InputSystem::checkPressed(const irr::SEvent& event, KeySym k){
     if(event.KeyInput.PressedDown){
@@ -28,8 +27,8 @@ bool InputSystem::OnEvent(const irr::SEvent& event){
             case irr::KEY_KEY_P:
                 checkPressed(event, XK_P);
                 break; 
-            default:    
-                std::cout<<"Se ha pulsado otra tecla\n";
+            default:
+                break;
         }
     }
     return false;
@@ -44,26 +43,5 @@ void InputSystem::onkeyreleased(KeySym k){
 }
 
 void InputSystem::update(EntityManager<Entity>& EM, TheEngine& eng){
-    //auto lambda = [](Entity& e){
-    //    if(e.tipo == 'p'){
-    //        auto& phy = *(e.physics);
-    //        auto& inp = *(e.input);
-    //        phy.vx = 0;
-    //        phy.vz = 0;
-    //        if(keyboard.isKeyPressed(inp.key_left)){
-    //            phy.vx = -0.1;
-    //        }
-    //        if(keyboard.isKeyPressed(inp.key_right)){
-    //            phy.vx = 0.1;
-    //        }
-    //        if(keyboard.isKeyPressed(inp.key_up)){
-    //            phy.vz = 0.1;
-    //        }
-    //        if(keyboard.isKeyPressed(inp.key_down)){
-    //            phy.vz = -0.1;
-    //        }
-    //    }
-    //};
-    //
     EM.forall(eng, keyboard);
 }
