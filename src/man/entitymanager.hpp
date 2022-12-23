@@ -33,6 +33,7 @@ struct EntityManager : public GameContext {
         Entity& bullet = createEntity();
         bullet.tipo = 'b';
         bullet.physics->x = weapon.physics->x+1.1;
+        bullet.physics->y = weapon.physics->y;
         bullet.physics->z = weapon.physics->z;
         bullet.physics->vx = 0.2;
         return bullet;
