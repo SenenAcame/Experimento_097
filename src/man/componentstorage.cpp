@@ -20,3 +20,8 @@ InputComponent& ComponentStorage::createInputComponent(std::size_t eid){
     auto& inp = inpStora.emplace_back(eid);
     return inp;
 }
+
+SoundComponent& ComponentStorage::createSoundComponent(std::size_t eid){
+    auto& sou = souStora.emplace_back(eid);
+    return sou;
+}

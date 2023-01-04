@@ -2,6 +2,7 @@
 #include "../cmp/physicscomponent.hpp"
 #include "../cmp/rendercomponent.hpp"
 #include "../cmp/inputcomponent.hpp"
+#include "../cmp/soundcomponent.hpp"
 #include <vector>
 
 struct ComponentStorage{
@@ -15,6 +16,7 @@ struct ComponentStorage{
     PhysicsComponent&   createPhysicsComponent(std::size_t eid);
     RenderComponent&    createRenderComponent(std::size_t eid);
     InputComponent&     createInputComponent(std::size_t eid);
+    SoundComponent&     createSoundComponent(std::size_t eid);
 
     const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return phyStora;};
           std::vector<PhysicsComponent>&   getPhysicsComponents()         {return phyStora;};
@@ -25,8 +27,12 @@ struct ComponentStorage{
     const std::vector<InputComponent>&     getInputComponents()     const {return inpStora;};
           std::vector<InputComponent>&     getInputComponents()           {return inpStora;};
 
+    const std::vector<SoundComponent>&     getSoundComponents()     const {return souStora;};
+          std::vector<SoundComponent>&     getSoundComponents()           {return souStora;};
+
     private:
     std::vector<PhysicsComponent>   phyStora {};
     std::vector<RenderComponent>    renStora {};
     std::vector<InputComponent>     inpStora {};
+    std::vector<SoundComponent>     souStora {};
 };

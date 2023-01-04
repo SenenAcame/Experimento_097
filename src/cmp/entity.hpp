@@ -2,6 +2,7 @@
 #include "physicscomponent.hpp"
 #include "rendercomponent.hpp"
 #include "inputcomponent.hpp"
+#include "soundcomponent.hpp"
 #include <cstddef>
 
 struct Entity {
@@ -10,6 +11,7 @@ struct Entity {
     PhysicsComponent* physics {nullptr};
     RenderComponent*  render  {nullptr};
     InputComponent*   input   {nullptr};
+    SoundComponent*   sound   {nullptr};
     
     constexpr std::size_t getEntityID() const noexcept {return entityID;};
     
