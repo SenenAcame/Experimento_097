@@ -1,5 +1,6 @@
 #include "soundsystem.hpp"
 
+
 void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
 	if(result != FMOD_OK)
 	{
@@ -11,12 +12,6 @@ void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
 #define ERRCHECK(_result) ERRCHECK_FMOD(_result, __FILE__, __LINE__)
 
 FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void* parameters);
-
-struct ProgrammerSoundContext {
-    FMOD::System* coreSystem;
-    FMOD::Studio::System* system;
-    const char* dialogueString;
-};
 
 #define CHECK_RESULT(op) \
 { \
@@ -61,7 +56,7 @@ FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE t
     return FMOD_OK;
 }
 
-ProgrammerSoundContext programmerSoundContext;
+
 
 SoundSystem_t::SoundSystem_t(){
     init();
@@ -79,16 +74,6 @@ void SoundSystem_t::init(){
     ERRCHECK(soundSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
 
     chargebanks();
-
-    chargedialogue();
-
-    programmerSoundContext.system = soundSystem;
-    programmerSoundContext.coreSystem = coreSystem;
-    programmerSoundContext.dialogueString = dialogue[dialogueIndex];
-
-    ERRCHECK( eventInstance->setUserData(&programmerSoundContext) );
-    ERRCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
-
 }
 
 void SoundSystem_t::update(){
@@ -100,27 +85,38 @@ void SoundSystem_t::chargebanks(){
     stringsBank = nullptr;
     voicesBank = nullptr;
     
-    ERRCHECK(soundSystem->loadBankFile("src/assets/FMOD_BANKS/Master.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &masterBank) );
-    ERRCHECK(soundSystem->loadBankFile("src/assets/FMOD_BANKS/Master.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &stringsBank) );
-    ERRCHECK(soundSystem->loadBankFile("src/assets/FMOD_BANKS/Voices.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &voicesBank) );
+    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &masterBank) );
+    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &stringsBank) );
+    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Voices.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &voicesBank) );
 
-    banks[0] = "src/assets/FMOD_BANKS/Dialogue_CT.bank";
-    banks[1] = "src/assets/FMOD_BANKS/Dialogue_T.bank";
-}
+    banks[0] = "assets/FMOD_BANKS/Dialogue_CT.bank";
+    banks[1] = "assets/FMOD_BANKS/Dialogue_T.bank";
 
-void SoundSystem_t::chargedialogue(){
     localizedBank = nullptr;
     ERRCHECK(soundSystem->loadBankFile(banks[bankIndex], FMOD_STUDIO_LOAD_BANK_NORMAL, &localizedBank) );
 
     eventDescription = nullptr;
     ERRCHECK(soundSystem->getEvent("event:/Dialogue", &eventDescription) );
 
-    eventInstance = nullptr;
+}
+
+void SoundSystem_t::createinstance(Entity& e){
+
+    FMOD::Studio::EventInstance* eventInstance = nullptr;
     ERRCHECK(eventDescription->createInstance(&eventInstance));
 
     dialogue[0] = "agree";
     dialogue[1] = "disagree";
     dialogue[2] = "smoke";
+
+    e.sound->programmerSoundContext.system = soundSystem;
+    e.sound->programmerSoundContext.coreSystem = coreSystem;
+    e.sound->programmerSoundContext.dialogueString = dialogue[dialogueIndex];
+
+    ERRCHECK( eventInstance->setUserData(&e.sound->programmerSoundContext) );
+    ERRCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
+
+    e.sound->sound = eventInstance;
 }
 
 void SoundSystem_t::changebank(){
@@ -133,13 +129,16 @@ void SoundSystem_t::changebankunload(){
     changebank();
 }
 
-void SoundSystem_t::changesound(){
-    dialogueIndex = (dialogueIndex < 2) ? dialogueIndex + 1 : 0;
-    programmerSoundContext.dialogueString = dialogue[dialogueIndex];
+void SoundSystem_t::changesound(Entity& e ,unsigned int indice){
+    //dialogueIndex = (indice < 3 && indice >= 0) ? dialogueIndex = indice : 0;
+    //e.sound->programmerSoundContext.dialogueString = dialogue[dialogueIndex];
+    if(indice < 3 && indice >= 0)
+    e.sound->programmerSoundContext.dialogueString = dialogue[indice];
 }
 
-void SoundSystem_t::startsound(){
-    ERRCHECK( eventInstance->start() );
+void SoundSystem_t::startsound(Entity& e){
+    ERRCHECK( e.sound->sound->start() );
+    
 }
 
 void SoundSystem_t::close(){
@@ -152,7 +151,7 @@ void SoundSystem_t::close(){
 }
 
 void SoundSystem_t::controller(unsigned int n){
-    switch(n){
+    /*switch(n){
         case 1:
             changebankunload();
             break;
@@ -163,7 +162,7 @@ void SoundSystem_t::controller(unsigned int n){
 
         case 3:
             startsound();
-    }
+    }*/
 }
 
 unsigned int SoundSystem_t::getBankIndex(){
