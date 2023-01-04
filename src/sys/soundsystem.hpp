@@ -8,6 +8,7 @@ extern "C"{
 #include <FMOD/src/fmod.hpp>
 #include <FMOD/src/fmod_studio.hpp>
 #include <FMOD/src/common.hpp>
+#include "../man/entitymanager.hpp"
 
 struct SoundSystem_t{
 
@@ -24,7 +25,6 @@ struct SoundSystem_t{
 
     FMOD::Studio::Bank* localizedBank;
     FMOD::Studio::EventDescription* eventDescription;
-    FMOD::Studio::EventInstance* eventInstance;
 
     FMOD::Studio::Bank * masterBank;
     FMOD::Studio::Bank* stringsBank;
@@ -32,18 +32,20 @@ struct SoundSystem_t{
 
         void init();
         void chargebanks();
-        void chargedialogue();
         void changebank();
         void changebankunload();
-        void changesound();
-        void startsound();
+        
+        
 
     public:
         explicit SoundSystem_t();
         void controller(unsigned int);
         void update();
+        void createinstance(Entity&);
         void close();
         unsigned int getBankIndex();
         unsigned int getDialogueIndex();
+        void startsound(Entity&);
+        void changesound(Entity&,unsigned int);
     };
     
