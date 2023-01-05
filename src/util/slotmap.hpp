@@ -1,12 +1,8 @@
 #pragma once
 #include <array>
 #include <stdexcept>
-#include <utility>
-#include <vector>
-#include <cstddef>
 #include <cstdint>
 #include <cassert>
-#include <iostream>
 
 template <typename DataType, std::size_t Capacity>
 struct Slotmap {

@@ -3,6 +3,8 @@
 #include "cmp/rendercmp2.hpp"
 #include "cmp/physicscmp2.hpp"
 #include "cmp/inputcmp2.hpp"
+#include "man/cmpstorage2.hpp"
+#include "man/entityman2.hpp"
 #include <iostream>
 //#include <memory>
 
@@ -74,6 +76,7 @@ void game(){
         std::make_unique<RenderCmp2> ('@')
     };
     */
+    /*
     Entity2<PhysicsCmp2, RenderCmp2, InputCmp2> player{
         std::make_unique<PhysicsCmp2>(1,2,3,4,5,6),
         std::make_unique<RenderCmp2> ('@'),
@@ -84,7 +87,16 @@ void game(){
         std::make_unique<PhysicsCmp2>(1,2,3,4,5,6),
         std::make_unique<RenderCmp2> ('%')
     };
+    */
+    CmpStorage2<PhysicsCmp2, RenderCmp2, InputCmp2> CS;
+    std::cout<<CS.getMask<PhysicsCmp2>()<<"\n";
+    std::cout<<CS.getMask<RenderCmp2>()<<"\n";
+    std::cout<<CS.getMask<InputCmp2>()<<"\n";
 
+    auto& st = CS.getStorage<PhysicsCmp2>();
+
+    auto key = st.push_back(PhysicsCmp2{});
+    std::cout<<key.id<<" "<<key.gen<<"\n";
 }
 
 int main(){
