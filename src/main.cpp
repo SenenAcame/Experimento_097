@@ -71,23 +71,24 @@ void game(){
     }
     */
     /*
-    Entity2<PhysicsCmp2, RenderCmp2> ent{
-        std::make_unique<PhysicsCmp2>(1,2,3,4,5,6),
-        std::make_unique<RenderCmp2> ('@')
-    };
-    */
-    /*
     Entity2<PhysicsCmp2, RenderCmp2, InputCmp2> player{
         std::make_unique<PhysicsCmp2>(1,2,3,4,5,6),
         std::make_unique<RenderCmp2> ('@'),
         std::make_unique<InputCmp2>  ()
     };
-
-    Entity2<PhysicsCmp2, RenderCmp2> enemy{
-        std::make_unique<PhysicsCmp2>(1,2,3,4,5,6),
-        std::make_unique<RenderCmp2> ('%')
-    };
     */
+    using Entity_type = Entity2<PhysicsCmp2, RenderCmp2, InputCmp2>;
+
+    EntityMan2<Entity_type, PhysicsCmp2, RenderCmp2, InputCmp2> EM;
+    Entity_type& player = EM.createEntity();
+    
+    auto& k = player.getKey<PhysicsCmp2>();
+    std::cout<<k.id<<"\n";
+
+    auto& cmp = EM.getComponente(k);
+    std::cout<<cmp.x<<"\n";
+
+    /*
     CmpStorage2<PhysicsCmp2, RenderCmp2, InputCmp2> CS;
     std::cout<<CS.getMask<PhysicsCmp2>()<<"\n";
     std::cout<<CS.getMask<RenderCmp2>()<<"\n";
@@ -97,6 +98,7 @@ void game(){
 
     auto key = st.push_back(PhysicsCmp2{});
     std::cout<<key.id<<" "<<key.gen<<"\n";
+    */
 }
 
 int main(){

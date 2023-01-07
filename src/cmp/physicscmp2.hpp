@@ -1,6 +1,6 @@
 #pragma once
 
 struct PhysicsCmp2 {
-    int  x{},  y{},  z{};
-    int vx{}, vy{}, vz{};
+    int  x{1},  y{2},  z{3};
+    int vx{4}, vy{5}, vz{6};
 };

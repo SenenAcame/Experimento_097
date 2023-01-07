@@ -4,12 +4,22 @@
 #include <cstdint>
 #include <cassert>
 
+template<typename Cmp>
+struct Key {
+    using index_type = std::uint64_t;
+    using gen_type   = index_type;
+
+    index_type id{};
+    gen_type   gen{};
+};
+
 template <typename DataType, std::size_t Capacity>
 struct Slotmap {
     using value_type = DataType;
     using index_type = std::uint64_t;
+
     using gen_type   = index_type;
-    using key_type   = struct { index_type id; gen_type gen; };
+    using key_type   = Key<value_type>;
     using iterator   = value_type*;
     using const_iterator = value_type const*;
 
@@ -44,6 +54,12 @@ struct Slotmap {
         if (key.id >= Capacity || indices_[key.id].gen != key.gen) return false;
         return true;
     }
+
+    [[nodiscard]] constexpr value_type& at(key_type k){
+        assert(is_valid(k));
+        return data_[k.id];
+    }
+    
     [[nodiscard]] constexpr iterator begin() noexcept { return data_.begin(); }
     [[nodiscard]] constexpr iterator   end() noexcept { return data_.begin() + size_; }
     [[nodiscard]] constexpr iterator cbegin() const noexcept { return data_.cbegin(); }

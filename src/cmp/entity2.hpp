@@ -1,12 +1,13 @@
 #pragma once
 #include <memory>
+#include "../util/slotmap.hpp"
+
 
 template<typename C1, typename C2=void, typename C3=void>
 struct Entity2 {
-
-    std::unique_ptr<C1> c1{};
-    std::unique_ptr<C2> c2{};
-    std::unique_ptr<C3> c3{};
+    Key<C1> c1{};
+    Key<C2> c2{};
+    Key<C3> c3{};
 
     template<typename Comp>
     constexpr bool hasComp() const noexcept{
@@ -16,17 +17,17 @@ struct Entity2 {
     }
 
     template<typename Comp>
-    constexpr Comp& getComp(){
-        if constexpr      (std::is_same<C1, Comp>::value) return *c1;
-        else if constexpr (std::is_same<C2, Comp>::value) return *c2;
-        else if constexpr (std::is_same<C3, Comp>::value) return *c3;
+    constexpr Key<Comp>& getKey(){
+        if constexpr      (std::is_same<C1, Comp>::value) return c1;
+        else if constexpr (std::is_same<C2, Comp>::value) return c2;
+        else if constexpr (std::is_same<C3, Comp>::value) return c3;
     }
 
     template<typename Comp>
-    constexpr Comp const& getComp() const{
-        if constexpr      (std::is_same<C1, Comp>::value) return *c1;
-        else if constexpr (std::is_same<C2, Comp>::value) return *c2;
-        else if constexpr (std::is_same<C3, Comp>::value) return *c3;
+    constexpr Key<Comp> const& getKey() const{
+        if constexpr      (std::is_same<C1, Comp>::value) return c1;
+        else if constexpr (std::is_same<C2, Comp>::value) return c2;
+        else if constexpr (std::is_same<C3, Comp>::value) return c3;
     }
 };
 

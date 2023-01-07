@@ -23,6 +23,11 @@ struct CmpStorage2 {
     //}
 
     template<typename Comp>
+    [[nodiscard]] constexpr Comp& getComp(Key<Comp> k){
+        return getStorage<Comp>().at(k);
+    }
+
+    template<typename Comp>
     [[nodiscard]] static constexpr cmp_type getMask() noexcept { 
         return getMask(getCmpID<Comp>()); 
     }
