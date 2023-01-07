@@ -18,7 +18,6 @@ void SoundSystem_t::changesound(Entity& e ,unsigned int indice){
 
 void SoundSystem_t::startsound(Entity& e){
     facherita.startsound(e);
-    
 }
 
 void SoundSystem_t::close(){
