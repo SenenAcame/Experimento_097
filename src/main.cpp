@@ -80,13 +80,10 @@ void game(){
     using Entity_type = Entity2<PhysicsCmp2, RenderCmp2, InputCmp2>;
 
     EntityMan2<Entity_type, PhysicsCmp2, RenderCmp2, InputCmp2> EM;
-    Entity_type& player = EM.createEntity();
+    auto& player = EM.createEntity<PhysicsCmp2, RenderCmp2, InputCmp2>();
     
-    auto& k = player.getKey<PhysicsCmp2>();
-    std::cout<<k.id<<"\n";
-
-    auto& cmp = EM.getComponente(k);
-    std::cout<<cmp.x<<"\n";
+    auto& cmp = EM.getComponent(player.getKey<RenderCmp2>());
+    std::cout<<cmp.a<<"\n";
 
     /*
     CmpStorage2<PhysicsCmp2, RenderCmp2, InputCmp2> CS;

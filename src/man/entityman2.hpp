@@ -16,14 +16,12 @@ struct EntityMan2 {
         entities_.reserve(defaultsize);
     }
 
+    template<typename Comp0, typename Comp1, typename Comp2>
     auto& createEntity() {
         auto& e = entities_.emplace_back();
-        auto cmp = CMP0{};
-        e.c1 = cmpStorage_.template getStorage<CMP0>().push_back(cmp);
-        auto cmp2 = CMP1{};
-        e.c2 = cmpStorage_.template getStorage<CMP1>().push_back(cmp2);
-        auto cmp3 = CMP2{};
-        e.c3 = cmpStorage_.template getStorage<CMP2>().push_back(cmp3);
+        e.c1 = cmpStorage_.template getStorage<Comp0>().push_back(Comp0{});
+        e.c2 = cmpStorage_.template getStorage<Comp1>().push_back(Comp1{});
+        e.c3 = cmpStorage_.template getStorage<Comp2>().push_back(Comp2{});
         return e;
     }
 
@@ -34,7 +32,7 @@ struct EntityMan2 {
     }
 
     template<typename Comp>
-    auto& getComponente(Key<Comp> k){
+    auto& getComponent(Key<Comp> k){
         return cmpStorage_.getComp(k);
     }
 private:
