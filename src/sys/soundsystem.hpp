@@ -12,7 +12,7 @@ struct SoundSystem_t{
     public:
         explicit SoundSystem_t();
         void update();
-        void createinstance(Entity&);
+        void createinstance(Entity&, int);
         void close();
         void startsound(Entity&);
         void changesound(Entity&,unsigned int);

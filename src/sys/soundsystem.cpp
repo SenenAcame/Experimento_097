@@ -8,8 +8,8 @@ void SoundSystem_t::update(){
     facherita.update();
 }
 
-void SoundSystem_t::createinstance(Entity& e){
-    facherita.createinstance(e);
+void SoundSystem_t::createinstance(Entity& e,int tipo){
+    facherita.createinstance(e, tipo);
 }
 
 void SoundSystem_t::changesound(Entity& e ,unsigned int indice){

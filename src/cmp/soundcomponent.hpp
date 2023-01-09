@@ -10,11 +10,11 @@ extern "C"{
 struct ProgrammerSoundContext {
     FMOD::System* coreSystem;
     FMOD::Studio::System* system;
-    const char* dialogueString;
 };
 
 struct SoundComponent : public Component{
     explicit SoundComponent(std::size_t eid) : Component(eid){};
     ProgrammerSoundContext programmerSoundContext{};
     FMOD::Studio::EventInstance* sound{};
+    FMOD_STUDIO_PARAMETER_ID id;
 };

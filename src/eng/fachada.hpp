@@ -16,15 +16,27 @@ struct TheFachada{
 
         FMOD::System* coreSystem;
         FMOD::Studio::System* soundSystem;
-        std::string dialogueString;
 
-        unsigned int bankIndex;
-        unsigned int dialogueIndex;
-        const char* banks[2];
-        const char* dialogue[3];
+        FMOD::Studio::EventDescription* ambienteDescription;
+        FMOD::Studio::EventDescription* armaDescription;
+        FMOD::Studio::EventDescription* mejoraDescription;
+        FMOD::Studio::EventDescription* danyoDescription;
+        FMOD::Studio::EventDescription* moverseDescription;
+        FMOD::Studio::EventDescription* menuDescription;
+        FMOD::Studio::EventDescription* musicaDescription;
+        FMOD::Studio::EventDescription* enemigoDescription;
+        FMOD::Studio::EventDescription* personajeDescription;
 
-        FMOD::Studio::Bank* localizedBank;
-        FMOD::Studio::EventDescription* eventDescription;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramAmbiente;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramArma;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramMejora;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramDanyo;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramMoverse;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramMenu;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramMusica;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramEnemigo;
+        FMOD_STUDIO_PARAMETER_DESCRIPTION paramPersonaje;
+
 
         FMOD::Studio::Bank * masterBank;
         FMOD::Studio::Bank* stringsBank;
@@ -34,15 +46,12 @@ struct TheFachada{
     
         void init();
         void chargebanks();
-        void changebank();
-        void changebankunload();
         explicit TheFachada();
-        void controller(unsigned int);
         void update();
-        void createinstance(Entity&);
+        void createinstance(Entity&,int);
         void close();
-        unsigned int getBankIndex();
-        unsigned int getDialogueIndex();
         void startsound(Entity&);
         void changesound(Entity&,unsigned int);
+        void chargeparameters();
+        void createdescriptions();
     };
