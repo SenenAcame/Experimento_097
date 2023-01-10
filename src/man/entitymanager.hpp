@@ -153,6 +153,15 @@ struct EntityManager : public GameContext {
                     bullet.render->node = eng.addBullet();
                     keyb.keyReleased(inp.key_shot);
                 }
+                if(keyb.isKeyPressed(inp.key_sound1)){
+
+                }
+                if(keyb.isKeyPressed(inp.key_sound2)){
+
+                }
+                if(keyb.isKeyPressed(inp.key_sound3)){
+
+                }
             }
         }
     }

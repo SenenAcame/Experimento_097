@@ -23,7 +23,16 @@ bool InputSystem::OnEvent(const irr::SEvent& event){
                 break;
             case irr::KEY_KEY_D:
                 checkPressed(event, XK_D);
-                break;    
+                break;
+            case irr::KEY_KEY_B:
+                checkPressed(event, XK_B);
+                break; 
+            case irr::KEY_KEY_N:
+                checkPressed(event, XK_N);
+                break; 
+            case irr::KEY_KEY_M:
+                checkPressed(event, XK_M);
+                break; 
             case irr::KEY_KEY_P:
                 checkPressed(event, XK_P);
                 break; 
