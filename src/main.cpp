@@ -62,7 +62,7 @@ void game(){
 
     while(dev.run()){
         RenSys.update(EM, dev);
-        InpSys.update(EM, dev);
+        InpSys.update(EM, dev, SouSys);
         PhySys.update(EM);
         ColSys.update(EM);
         SouSys.update();

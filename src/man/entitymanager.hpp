@@ -4,6 +4,7 @@
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
 #include "../util/keyboard.hpp"
+#include "../sys/soundsystem.hpp"
 
 template<typename Type>
 struct EntityManager : public GameContext {
@@ -129,7 +130,7 @@ struct EntityManager : public GameContext {
         }
     }
 
-    void forall(TheEngine& eng, Keyboard& keyb){
+    void forall(TheEngine& eng, Keyboard& keyb, SoundSystem_t& sounsys){
         for(Entity& e: entities_){
             if(e.tipo == 'p'){
                 auto& phy = *(e.physics);

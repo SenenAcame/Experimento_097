@@ -40,7 +40,6 @@ struct TheFachada{
 
         FMOD::Studio::Bank * masterBank;
         FMOD::Studio::Bank* stringsBank;
-        FMOD::Studio::Bank* voicesBank;
 
     public:
     

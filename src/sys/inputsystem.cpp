@@ -1,4 +1,5 @@
 #include "inputsystem.hpp"
+#include "soundsystem.hpp"
 
 void InputSystem::checkPressed(const irr::SEvent& event, KeySym k){
     if(event.KeyInput.PressedDown){
@@ -51,6 +52,6 @@ void InputSystem::onkeyreleased(KeySym k){
     keyboard.keyReleased(k);
 }
 
-void InputSystem::update(EntityManager<Entity>& EM, TheEngine& eng){
-    EM.forall(eng, keyboard);
+void InputSystem::update(EntityManager<Entity>& EM, TheEngine& eng, SoundSystem_t& sounsys){
+    EM.forall(eng, keyboard, sounsys);
 }
