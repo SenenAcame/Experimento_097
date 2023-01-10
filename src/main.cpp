@@ -5,10 +5,30 @@
 #include "cmp/inputcmp2.hpp"
 #include "man/cmpstorage2.hpp"
 #include "man/entityman2.hpp"
+#include "util/gameengine.hpp"
+#include "util/metaprogramming.hpp"
 #include <iostream>
 //#include <memory>
 
+void seetype(auto) { std::cout<<__PRETTY_FUNCTION__<<"\n"; }
+
+struct TPlayer { static constexpr uint8_t id {0}; };
+struct TEnemy  { static constexpr uint8_t id {1}; };
+struct TBullet { static constexpr uint8_t id {2}; };
+
+using ComponentList = MP::Typelist<PhysicsCmp2, RenderCmp2, InputCmp2>;
+using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet>;
+
 void game(){
+    using GameEngine = GameEngine<ComponentList, TagList>;
+    GameEngine GE;
+
+    seetype(GameEngine::tags::mask_type{});
+
+    using cmps = MP::Typelist<int, float, char>;
+    using st   = MP::replace<std::tuple, cmps>::type;
+
+    seetype(GE.components_);
     /*
     InputSystem     InpSys;
     PhysicsSystem   PhySys;
@@ -77,6 +97,7 @@ void game(){
         std::make_unique<InputCmp2>  ()
     };
     */
+    /*
     using Entity_type = Entity2<PhysicsCmp2, RenderCmp2, InputCmp2>;
 
     EntityMan2<Entity_type, PhysicsCmp2, RenderCmp2, InputCmp2> EM;
@@ -84,7 +105,7 @@ void game(){
     
     auto& cmp = EM.getComponent(player.getKey<RenderCmp2>());
     std::cout<<cmp.a<<"\n";
-
+    */
     /*
     CmpStorage2<PhysicsCmp2, RenderCmp2, InputCmp2> CS;
     std::cout<<CS.getMask<PhysicsCmp2>()<<"\n";
