@@ -1,4 +1,5 @@
 #include "inputsystem.hpp"
+#include "soundsystem.hpp"
 
 void InputSystem::checkPressed(const irr::SEvent& event, KeySym k){
     if(event.KeyInput.PressedDown){
@@ -23,7 +24,16 @@ bool InputSystem::OnEvent(const irr::SEvent& event){
                 break;
             case irr::KEY_KEY_D:
                 checkPressed(event, XK_D);
-                break;    
+                break;
+            case irr::KEY_KEY_B:
+                checkPressed(event, XK_B);
+                break; 
+            case irr::KEY_KEY_N:
+                checkPressed(event, XK_N);
+                break; 
+            case irr::KEY_KEY_M:
+                checkPressed(event, XK_M);
+                break; 
             case irr::KEY_KEY_P:
                 checkPressed(event, XK_P);
                 break; 
@@ -42,6 +52,6 @@ void InputSystem::onkeyreleased(KeySym k){
     keyboard.keyReleased(k);
 }
 
-void InputSystem::update(EntityManager<Entity>& EM, TheEngine& eng){
-    EM.forall(eng, keyboard);
+void InputSystem::update(EntityManager<Entity>& EM, TheEngine& eng, SoundSystem_t& sounsys){
+    EM.forall(eng, keyboard, sounsys);
 }

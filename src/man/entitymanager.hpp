@@ -4,6 +4,7 @@
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
 #include "../util/keyboard.hpp"
+#include "../sys/soundsystem.hpp"
 
 template<typename Type>
 struct EntityManager : public GameContext {
@@ -21,10 +22,12 @@ struct EntityManager : public GameContext {
         auto& ph = storage.createPhysicsComponent(e.getEntityID());
         auto& re  = storage.createRenderComponent(e.getEntityID());
         auto& in   = storage.createInputComponent(e.getEntityID());
+        auto& so   = storage.createSoundComponent(e.getEntityID());
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
+        e.sound= &so;
 
         return e; 
     }
@@ -127,7 +130,7 @@ struct EntityManager : public GameContext {
         }
     }
 
-    void forall(TheEngine& eng, Keyboard& keyb){
+    void forall(TheEngine& eng, Keyboard& keyb, SoundSystem_t& sounsys){
         for(Entity& e: entities_){
             if(e.tipo == 'p'){
                 auto& phy = *(e.physics);
@@ -151,6 +154,15 @@ struct EntityManager : public GameContext {
                     bullet.render->node = eng.addBullet();
                     keyb.keyReleased(inp.key_shot);
                 }
+                if(keyb.isKeyPressed(inp.key_sound1)){
+                    sounsys.changesound(e,1);
+                }
+                if(keyb.isKeyPressed(inp.key_sound2)){
+                    sounsys.startsound(e); 
+                }
+                if(keyb.isKeyPressed(inp.key_sound3)){
+
+                }
             }
         }
     }
@@ -166,6 +178,9 @@ struct EntityManager : public GameContext {
 
     const std::vector<InputComponent>&     getInputComponents()     const {return storage.getInputComponents();};
           std::vector<InputComponent>&     getInputComponents()           {return storage.getInputComponents();};
+
+    const std::vector<SoundComponent>&     getSoundComponents()     const {return storage.getSoundComponents();};
+          std::vector<SoundComponent>&     getSoundComponents()           {return storage.getSoundComponents();};
 
     private:
     std::vector<Type> entities_{};

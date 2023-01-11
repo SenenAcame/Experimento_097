@@ -5,6 +5,7 @@ void game(){
     PhysicsSystem   PhySys;
     RenderSystem    RenSys;
     CollisionSystem ColSys;
+    SoundSystem_t   SouSys;
     EntityManager<Entity> EM;
     TheEngine dev {1080, 720, &InpSys};
 
@@ -45,6 +46,14 @@ void game(){
     e3.physics->z = 30.0f;
     e3.physics->x = 5.0f;
 
+//    Cosas para probar sonidos
+    SouSys.createinstance(e,8);                 //crear y asignarle instancia de sonido
+    //SouSys.changesound(e,1);                  //cambiar a sonido 2(0=Agree, 1=Disagree, 2=Smoke)
+    //SouSys.startsound(e);  
+//
+    SouSys.createinstance(e2,0);
+    SouSys.startsound(e2); 
+
     ///irr::scene::ICameraSceneNode *cam= dev.getCamera();
     ///cam->setPosition(irr::core::vector3df(0,0,-10));
     ///cam->setParent(e.render->node);
@@ -53,9 +62,10 @@ void game(){
 
     while(dev.run()){
         RenSys.update(EM, dev);
-        InpSys.update(EM, dev);
+        InpSys.update(EM, dev, SouSys);
         PhySys.update(EM);
         ColSys.update(EM);
+        SouSys.update();
     }
 }
 
