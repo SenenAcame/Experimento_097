@@ -3,6 +3,7 @@
 #include "../util/gamecontext.hpp"
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
+#include "../eng/matrix3.hpp"
 #include "../util/keyboard.hpp"
 
 template<typename Type>
@@ -25,6 +26,8 @@ struct EntityManager : public GameContext {
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
+        irr::core::vector3df vector(0,0,0);
+        e.setLookAtVector(vector);
 
         return e; 
     }
@@ -134,25 +137,81 @@ struct EntityManager : public GameContext {
                 auto& inp = *(e.input);
                 phy.vx = 0;
                 phy.vy = 0;
+                irr::core::vector3df PlayerPos = e.render->node->getAbsolutePosition();
+                e.setLookAtVector(TheEngine::normalizeVector3(e.getLookAtVector()));
+                irr::core::vector3df aux(0.0,1.0,0.0);
                 if(keyb.isKeyPressed(inp.key_left)){
-                    phy.vx = -0.1;
+                    phy.vx = -0.1; 
+                    irr::core::vector3df PosP(phy.x,phy.y,phy.z);
+                    PosP = TheEngine::SubVector3(
+                        PosP,
+                        TheEngine::MultyVector3(
+                           TheEngine:: ProductCross(e.getLookAtVector(),
+                            aux)
+                            ,0.07
+                        )
+                    );
+                    e.render->node->setPosition(PosP);
                 }
                 if(keyb.isKeyPressed(inp.key_right)){
                     phy.vx = 0.1;
+                    irr::core::vector3df PosP(phy.x,phy.y,phy.z);
+                    PosP = TheEngine::SubVector3(
+                        PosP,
+                        TheEngine::MultyVector3(
+                           TheEngine:: ProductCross(e.getLookAtVector(),
+                            aux)
+                            ,0.07
+                        )
+                    );
+                    e.render->node->setPosition(PosP);
+
                 }
                 if(keyb.isKeyPressed(inp.key_up)){
-                    phy.vy = 0.1;
+                    //phy.vy = 0.1;
+                    e.render->node->setPosition(TheEngine::addVector3(
+                            PlayerPos,
+                            TheEngine::MultyVector3(e.getLookAtVector(),0.07)
+                    ));
+                //std::cout<<"Este es el vector de lookAt: " << e.getLookAtVector().X<< ", "
+                //<< e.getLookAtVector().Y<< ", " << e.getLookAtVector().Z<< ", ";
+                //std::cout<<"Esta es la posicion de e: " << e.render->node->getAbsolutePosition().X<< ", "
+                //<< e.render->node->getAbsolutePosition().Y<< ", " << e.render->node->getAbsolutePosition().Z<< ", ";
+
                 }
                 if(keyb.isKeyPressed(inp.key_down)){
                     phy.vy = -0.1;
+                    e.render->node->setPosition(TheEngine::SubVector3(PlayerPos,
+                    TheEngine::MultyVector3(e.getLookAtVector(),0.07)
+                    ));
                 }
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e);
                     bullet.render->node = eng.addBullet();
                     keyb.keyReleased(inp.key_shot);
                 }
+
+                //e.setLookAtVector(TheEngine::tranformVector3(
+                //    e.getLookAtVector(), rotationMatrix3(
+                //        (3.14/4.0(4.0*75.0))*-(getMouseState().Position.X - getMouseState().LastPosition.X ),
+                //        0.0, 1.0, 0.0               
+                //    ))
+                //);
+//
+                //MouseState.LastPosition.X = MouseState.Position.X;
+                //MouseState.LastPosition.Y = MouseState.Position.Y;
+
+                e.setLookAtVector(TheEngine::addVector3(PlayerPos,e.getLookAtVector()));
+                
+                
+                //PlayerPos.X =e.physics->x;
+                //PlayerPos.Y =e.physics->y;
+                //PlayerPos.Z =e.physics->z;
+                //e.render->node->setPosition(PlayerPos);
+                
             }
         }
+
     }
     
     const std::vector<Type>& getEntities() const override {return entities_;};

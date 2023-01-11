@@ -2,6 +2,8 @@
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <memory>
+#include <math.h>
+#include "matrix3.hpp"
 
 struct TheEngine {
     explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
@@ -99,6 +101,96 @@ struct TheEngine {
         node->setMaterialTexture(0, texture);
         return node;
     };
+
+    static irr::core::vector3df normalizeVector3( irr::core::vector3df vector){
+
+        double lenght = sqrt(vector.X * vector.X + vector.Y*vector.Y + + vector.Z*vector.Z);
+        irr::core::vector3df unitVector(
+            unitVector.X = vector.X/lenght ,
+            unitVector.Y = vector.Y/lenght ,
+            unitVector.Z = vector.Z/lenght 
+        );
+
+        return unitVector;
+    };
+
+    static irr::core::vector3df addVector3( irr::core::vector3df vector, irr::core::vector3df vector2 ){
+
+        irr::core::vector3df result(0,0,0);
+        result.X = vector.X + vector2.X;
+        result.Y = vector.Y + vector2.Y;
+        result.Z = vector.Z + vector2.Z;
+
+        return result;
+    };
+
+    static irr::core::vector3df SubVector3( irr::core::vector3df vector, irr::core::vector3df vector2 ){
+
+        irr::core::vector3df result(0,0,0);
+        result.X = vector.X - vector2.X;
+        result.Y = vector.Y - vector2.Y;
+        result.Z = vector.Z - vector2.Z;
+
+        return result;
+    };
+
+    static irr::core::vector3df MultyVector3( irr::core::vector3df vector, float a ){
+
+        irr::core::vector3df result(0,0,0);
+        result.X = vector.X * a;
+        result.Y = vector.Y * a;
+        result.Z = vector.Z * a;
+
+        return result;
+    };
+
+    
+    static irr::core::vector3df ProductCross(irr::core::vector3df vector, irr::core::vector3df vector2){
+
+        irr::core::vector3df result(0,0,0);
+        result.X = vector.Y * vector2.Z - vector.Z * vector2.Y;
+        result.Y = vector.Z * vector2.X - vector.X * vector2.Z;
+        result.Z = vector.X * vector2.Y - vector.Y * vector2.X;
+
+        return result;
+
+    }
+
+    static float ProductVector3df (irr::core::vector3df vector, irr::core::vector3df vector2){
+
+        return vector.X*vector2.X+ vector.Y*vector2.Y+ vector.Z*vector2.Z;
+    }
+
+    static irr::core::vector3df tranformVector3(irr::core::vector3df vector, matrix3 matrix){
+
+        irr::core::vector3df result;
+        irr::core::vector3df resultx;
+        irr::core::vector3df resulty;
+        irr::core::vector3df resultz;
+        resultx.X = matrix.m00;
+        resultx.Y = matrix.m10;
+        resultx.Z = matrix.m20;
+
+        resulty.X = matrix.m01;
+        resulty.Y = matrix.m11;
+        resulty.Z = matrix.m21;
+
+        resultz.X = matrix.m02;
+        resultz.Y = matrix.m12;
+        resultz.Z = matrix.m22;
+
+
+        result.X = ProductVector3df(vector,resultx);
+        result.Y = ProductVector3df(vector,resulty);
+        result.Z = ProductVector3df(vector,resultz);
+        
+        return result;
+    }
+
+
+
+
+
 
     auto& getDevice(){return device_;}
     auto getSceneManager(){return device_->getSceneManager();}
