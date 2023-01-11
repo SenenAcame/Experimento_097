@@ -51,8 +51,8 @@ void game(){
     //SouSys.changesound(e,1);                  //cambiar a sonido 2(0=Agree, 1=Disagree, 2=Smoke)
     //SouSys.startsound(e);  
 //
-    //SouSys.createinstance(e2,8);
-    //SouSys.startsound(e2); 
+    SouSys.createinstance(e2,0);
+    SouSys.startsound(e2); 
 
     ///irr::scene::ICameraSceneNode *cam= dev.getCamera();
     ///cam->setPosition(irr::core::vector3df(0,0,-10));
