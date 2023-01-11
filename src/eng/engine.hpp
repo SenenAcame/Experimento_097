@@ -1,4 +1,5 @@
 #pragma once
+#include <irrlicht/EDriverTypes.h>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <memory>
@@ -74,14 +75,14 @@ struct TheEngine {
         return node;
     };
 
-    irr::scene::IAnimatedMeshSceneNode* createEnemy(){
+    irr::scene::IAnimatedMeshSceneNode* createEnemy(const irr::io::path asset){
         irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/enemy.obj");
         if (!mesh){
             device_->drop();
             return nullptr;
         }
         irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
-        auto* texture = driver_->getTexture("assets/fire.bmp");
+        auto* texture = driver_->getTexture(asset);
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
         return node;
@@ -94,7 +95,7 @@ struct TheEngine {
             return nullptr;
         }
         irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
-        auto* texture = driver_->getTexture("assets/fire.bmp");
+        auto* texture = driver_->getTexture("assets/portal7.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
         return node;

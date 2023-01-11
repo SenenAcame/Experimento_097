@@ -136,18 +136,18 @@ struct EntityManager : public GameContext {
                 auto& phy = *(e.physics);
                 auto& inp = *(e.input);
                 phy.vx = 0;
-                phy.vy = 0;
+                phy.vz = 0;
                 if(keyb.isKeyPressed(inp.key_left)){
-                    phy.vx = -0.1;
+                    phy.vz = 0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_right)){
-                    phy.vx = 0.1;
+                    phy.vz = -0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_up)){
-                    phy.vy = 0.1;
+                    phy.vx = 0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_down)){
-                    phy.vy = -0.1;
+                    phy.vx = -0.1;
                 }
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e);
