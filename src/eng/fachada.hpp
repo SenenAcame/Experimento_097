@@ -8,8 +8,9 @@ extern "C"{
 #include <FMOD/src/fmod.hpp>
 #include <FMOD/src/fmod_studio.hpp>
 #include <FMOD/src/common.hpp>
-#include "../man/entitymanager.hpp"
+//#include "../man/entitymanager.hpp"
 
+struct Entity;
 struct TheFachada{
 
     private:

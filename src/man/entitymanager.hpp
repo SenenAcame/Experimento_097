@@ -155,10 +155,10 @@ struct EntityManager : public GameContext {
                     keyb.keyReleased(inp.key_shot);
                 }
                 if(keyb.isKeyPressed(inp.key_sound1)){
-
+                    sounsys.changesound(e,1);
                 }
                 if(keyb.isKeyPressed(inp.key_sound2)){
-
+                    sounsys.startsound(e); 
                 }
                 if(keyb.isKeyPressed(inp.key_sound3)){
 

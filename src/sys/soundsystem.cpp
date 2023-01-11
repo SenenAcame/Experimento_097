@@ -1,4 +1,5 @@
 #include "soundsystem.hpp"
+#include "../man/entitymanager.hpp"
 
 SoundSystem_t::SoundSystem_t(){
     facherita.init();

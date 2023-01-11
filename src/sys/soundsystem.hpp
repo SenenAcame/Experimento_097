@@ -2,9 +2,10 @@
 
 #include <string>
 #include <iostream>
-#include "../man/entitymanager.hpp"
+//#include "../man/entitymanager.hpp"
 #include "../eng/fachada.hpp"
 
+struct Entity;
 struct SoundSystem_t{
     private:
         TheFachada facherita;

@@ -1,4 +1,5 @@
 #include "fachada.hpp"
+#include "../man/entitymanager.hpp"
 
 
 void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
@@ -191,7 +192,6 @@ void TheFachada::close(){
     ERRCHECK(personajeDescription->releaseAllInstances());
     ERRCHECK(masterBank->unload());
     ERRCHECK(stringsBank->unload());
-    ERRCHECK(voicesBank->unload());
     ERRCHECK(soundSystem->unloadAll());
 }
 
