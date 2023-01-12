@@ -11,7 +11,7 @@ void game(){
 
     auto cam = dev.getCamera();
 
-    //dev.getDevice()->getCursorControl()->setVisible(false);
+    dev.getDevice()->getCursorControl()->setVisible(false);
 
     cam->setFOV(1);
     cam->setPosition({-6,2,20});
