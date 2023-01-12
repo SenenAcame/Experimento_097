@@ -64,7 +64,7 @@ struct TheEngine {
     };
 
     irr::scene::IAnimatedMeshSceneNode* createMap(){
-        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/mapa_laboratorio.obj");
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/salas_visibles.obj");
         if (!mesh){
             device_->drop();
             return nullptr;
