@@ -10,7 +10,6 @@ void game(){
     TheEngine dev {1080, 720, &InpSys};
 
     auto cam = dev.getCamera();
-
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     cam->setFOV(1);
@@ -39,11 +38,15 @@ void game(){
     map.tipo = 'm';
     map.physics->y = -3.0f;
     
-    auto& e = EM.createEntity();
+    Entity& e = EM.createEntity();
     e.render->node = dev.createPlayer();
-    e.physics->z = 20.0f;
-    e.physics->x = -1.0f;
+    e.physics->z = 3.0f;
+    e.physics->x = 2.0f;
     e.tipo = 'p';
+
+    e.render->node->setParent(cam);
+    //cam->setParent(e.render->node);
+    //auto& v = cam->getTarget();
 
     auto& e2 = EM.createEntity();
     e2.tipo = 'e';
@@ -89,6 +92,7 @@ void game(){
         PhySys.update(EM);
         ColSys.update(EM);
         SouSys.update();
+        //std::cout<<v.X<<" "<<v.Y<<" "<<v.Z<<"\n";
     }
 }
 

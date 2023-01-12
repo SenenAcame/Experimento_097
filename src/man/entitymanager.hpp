@@ -137,18 +137,18 @@ struct EntityManager : public GameContext {
                 auto& inp   = *(e.input);
                 phy.vx = 0;
                 phy.vz = 0;
-                if(keyb.isKeyPressed(inp.key_left)){
-                    phy.vz = 0.2;
-                }
-                if(keyb.isKeyPressed(inp.key_right)){
-                    phy.vz = -0.2;
-                }
-                if(keyb.isKeyPressed(inp.key_up)){
-                    phy.vx = 0.2;
-                }
-                if(keyb.isKeyPressed(inp.key_down)){
-                    phy.vx = -0.2;
-                }
+               // if(keyb.isKeyPressed(inp.key_left)){
+               //     phy.vz = 0.2;
+               // }
+               // if(keyb.isKeyPressed(inp.key_right)){
+               //     phy.vz = -0.2;
+               // }
+               // if(keyb.isKeyPressed(inp.key_up)){
+               //     phy.vx = 0.2;
+               // }
+               // if(keyb.isKeyPressed(inp.key_down)){
+               //     phy.vx = -0.2;
+               // }
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e);
                     bullet.render->node = eng.addBullet();

@@ -58,6 +58,7 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/fire.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setRotation({0,90,0});
         return node;
     };
 
