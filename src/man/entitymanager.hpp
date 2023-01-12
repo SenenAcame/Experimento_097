@@ -134,20 +134,20 @@ struct EntityManager : public GameContext {
         for(Entity& e: entities_){
             if(e.tipo == 'p'){
                 auto& phy = *(e.physics);
-                auto& inp = *(e.input);
+                auto& inp   = *(e.input);
                 phy.vx = 0;
                 phy.vz = 0;
                 if(keyb.isKeyPressed(inp.key_left)){
-                    phy.vz = 0.1;
+                    phy.vz = 0.2;
                 }
                 if(keyb.isKeyPressed(inp.key_right)){
-                    phy.vz = -0.1;
+                    phy.vz = -0.2;
                 }
                 if(keyb.isKeyPressed(inp.key_up)){
-                    phy.vx = 0.1;
+                    phy.vx = 0.2;
                 }
                 if(keyb.isKeyPressed(inp.key_down)){
-                    phy.vx = -0.1;
+                    phy.vx = -0.2;
                 }
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e);
@@ -160,9 +160,9 @@ struct EntityManager : public GameContext {
                 if(keyb.isKeyPressed(inp.key_sound2)){
                     sounsys.startsound(e); 
                 }
-                if(keyb.isKeyPressed(inp.key_sound3)){
-
-                }
+                //if(keyb.isKeyPressed(inp.key_sound3)){
+//
+                //}
             }
         }
     }
