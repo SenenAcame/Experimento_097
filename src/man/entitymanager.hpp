@@ -1,10 +1,12 @@
 #pragma once
 #include <cstddef>
+#include <irrlicht/vector3d.h>
 #include "../util/gamecontext.hpp"
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
 #include "../util/keyboard.hpp"
 #include "../sys/soundsystem.hpp"
+#include <iostream>
 
 template<typename Type>
 struct EntityManager : public GameContext {
@@ -32,13 +34,16 @@ struct EntityManager : public GameContext {
         return e; 
     }
 
-    Entity& createBullet(Entity& weapon){
+    Entity& createBullet(Entity& weapon, irr::core::vector3df targetCamera){
         Entity& bullet = createEntity();
         bullet.tipo = 'b';
         bullet.physics->x = weapon.render->node->getParent()->getPosition().X+7;
         bullet.physics->y = weapon.render->node->getParent()->getPosition().Y-2;
         bullet.physics->z = weapon.render->node->getParent()->getPosition().Z-1;
         bullet.physics->vx = 0.2;
+        std::cout << "Target de camera: " <<targetCamera.X <<" " << targetCamera.Y <<" "<< targetCamera.Z;
+        
+        
         
         
         return bullet;
@@ -153,7 +158,7 @@ struct EntityManager : public GameContext {
                //     phy.vx = -0.2;
                // }
                 if(keyb.isKeyPressed(inp.key_shot)){
-                    auto& bullet = createBullet(e);
+                    auto& bullet = createBullet(e, eng.getCameraTarget());
                     bullet.render->node = eng.addBullet();
                     keyb.keyReleased(inp.key_shot);
                 }
