@@ -58,6 +58,7 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/fire.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         node->setRotation({45,-90,0});
         return node;
     };
@@ -73,6 +74,7 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/wall.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
 
@@ -86,6 +88,7 @@ struct TheEngine {
         auto* texture = driver_->getTexture(asset);
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
 
@@ -99,6 +102,7 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/portal7.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
 
@@ -117,7 +121,7 @@ struct TheEngine {
     irr::IEventReceiver* receive {};
 
     irrDeviceManaged device_ {
-        irr::createDevice(irr::video::EDT_SOFTWARE, 
+        irr::createDevice(irr::video::EDT_OPENGL, 
                             irr::core::dimension2d<irr::u32>(width_, height_), 
                             16,false,false,false,receive), 
         destroy
