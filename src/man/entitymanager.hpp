@@ -35,10 +35,12 @@ struct EntityManager : public GameContext {
     Entity& createBullet(Entity& weapon){
         Entity& bullet = createEntity();
         bullet.tipo = 'b';
-        bullet.physics->x = weapon.physics->x+1.1;
-        bullet.physics->y = weapon.physics->y;
-        bullet.physics->z = weapon.physics->z;
+        bullet.physics->x = weapon.render->node->getParent()->getPosition().X+7;
+        bullet.physics->y = weapon.render->node->getParent()->getPosition().Y-2;
+        bullet.physics->z = weapon.render->node->getParent()->getPosition().Z-1;
         bullet.physics->vx = 0.2;
+        
+        
         return bullet;
     }
 
@@ -135,6 +137,7 @@ struct EntityManager : public GameContext {
             if(e.tipo == 'p'){
                 auto& phy = *(e.physics);
                 auto& inp   = *(e.input);
+                //auto cam = e.render->node->getParent()->getPosition();
                 phy.vx = 0;
                 phy.vz = 0;
                // if(keyb.isKeyPressed(inp.key_left)){

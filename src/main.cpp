@@ -11,13 +11,12 @@ void game(){
 
     auto cam = dev.getCamera();
     dev.getDevice()->getCursorControl()->setVisible(false);
-
     cam->setFOV(1);
     cam->setPosition({-6,2,20});
     cam->setTarget({200,0,20});
-    cam->setNearValue(2);
-    
-    //cam->setFarValue(4000);
+
+    //cam->setNearValue(2);
+    //cam->setFarValue(5000);
     //auto camera = dev.getCamera();
     //irr::core::vector3df tar = camera->getTarget();
     //tar.X=50; tar.Y=0; tar.Z=50;
@@ -40,8 +39,10 @@ void game(){
     
     Entity& e = EM.createEntity();
     e.render->node = dev.createPlayer();
-    e.physics->z = 3.0f;
-    e.physics->x = 2.0f;
+    e.physics->x = 0.5f;
+    e.physics->y = -2.0f;
+    e.physics->z = 5.0f;
+    
     e.tipo = 'p';
 
     e.render->node->setParent(cam);
@@ -92,7 +93,6 @@ void game(){
         PhySys.update(EM);
         ColSys.update(EM);
         SouSys.update();
-        //std::cout<<v.X<<" "<<v.Y<<" "<<v.Z<<"\n";
     }
 }
 

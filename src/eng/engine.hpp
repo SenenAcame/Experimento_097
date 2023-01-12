@@ -58,12 +58,12 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/fire.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
-        node->setRotation({0,90,0});
+        node->setRotation({45,-90,0});
         return node;
     };
 
     irr::scene::IAnimatedMeshSceneNode* createMap(){
-        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/laboratorio.obj");
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/mapa_laboratorio.obj");
         if (!mesh){
             device_->drop();
             return nullptr;
