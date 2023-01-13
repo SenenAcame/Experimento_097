@@ -121,7 +121,7 @@ struct TheEngine {
     irr::IEventReceiver* receive {};
 
     irrDeviceManaged device_ {
-        irr::createDevice(irr::video::EDT_OPENGL, 
+        irr::createDevice(irr::video::EDT_BURNINGSVIDEO, 
                             irr::core::dimension2d<irr::u32>(width_, height_), 
                             16,false,false,false,receive), 
         destroy

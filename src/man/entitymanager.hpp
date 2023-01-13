@@ -41,11 +41,7 @@ struct EntityManager : public GameContext {
         bullet.physics->y = weapon.render->node->getParent()->getPosition().Y-2;
         bullet.physics->z = weapon.render->node->getParent()->getPosition().Z-1;
         bullet.physics->vx = 0.2;
-        std::cout << "Target de camera: " <<targetCamera.X <<" " << targetCamera.Y <<" "<< targetCamera.Z;
-        
-        
-        
-        
+        //std::cout << "Target de camera: " <<targetCamera.X <<" " << targetCamera.Y <<" "<< targetCamera.Z;
         return bullet;
     }
 
