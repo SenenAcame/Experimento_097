@@ -10,6 +10,16 @@ struct TheEngine {
     void beginScene();
     void drawAll();
     void endScene();
+    auto* createCube(){
+        auto* node = smgr_->addCubeSceneNode();
+        if (!node) throw std::runtime_error("Couldn't create cube");
+
+        node->setScale(irr::core::vector3df(0.1,0.5,0.2));
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        //node->setVisible(false);
+
+        return node;
+    }
     auto* createSphere(){
         auto* node = smgr_->addSphereSceneNode();
         if (!node) throw std::runtime_error("Couldn't create sphere");

@@ -113,16 +113,18 @@ struct EntityManager : public GameContext {
                     float dz = phy->z - phy2->z;
                     float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
                     if(distance <= 1.0){
-                        if(e.tipo=='b'){
+                        if(e.tipo=='b' && e2.tipo=='h'){
                             destroyEntity(e);
                         }
                         else{
-                            phy->x -= phy->vx;
-                            phy->vx = -phy->vx;
-                            phy->y -= phy->vy;
-                            phy->vy = -phy->vy;
-                            phy->z -= phy->vz;
-                            phy->vz = -phy->vz;
+                            if(e.tipo!='b'){
+                                phy->x -= phy->vx;
+                                phy->vx = -phy->vx;
+                                phy->y -= phy->vy;
+                                phy->vy = -phy->vy;
+                                phy->z -= phy->vz;
+                                phy->vz = -phy->vz;
+                            }
                         }
                     }
                 }

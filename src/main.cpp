@@ -40,6 +40,15 @@ void game(){
     e2.physics->z = 20.0f;
     e2.physics->x = 9.0f;
 
+    auto& h = EM.createEntity();
+    h.tipo = 'h';
+    h.render->node = dev.createCube();
+    h.physics->z = 20.0f;
+    h.physics->y = -0.4f;
+    h.physics->x = 9.0f;
+
+    
+
     auto& e3 = EM.createEntity();
     e3.tipo = 'w';
     e3.render->node = dev.createWeapon1();
