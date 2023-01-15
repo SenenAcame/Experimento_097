@@ -37,5 +37,5 @@ struct EntityMan2 {
     }
 private:
     std::vector<EntityType> entities_{};
-    CmpStorage2<CMP0, CMP1, CMP2> cmpStorage_{};
+    CmpStorage2<MP::Typelist<CMP0, CMP1, CMP2>, MP::Typelist<>> cmpStorage_{};
 };

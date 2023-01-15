@@ -6,7 +6,7 @@
 #include "man/cmpstorage2.hpp"
 #include "man/entityman2.hpp"
 #include "util/gameengine.hpp"
-#include "util/metaprogramming.hpp"
+//#include "util/metaprogramming.hpp"
 #include <iostream>
 //#include <memory>
 
@@ -22,13 +22,16 @@ using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet>;
 void game(){
     using GameEngine = GameEngine<ComponentList, TagList>;
     GameEngine GE;
+    CmpStorage2<ComponentList, TagList> CS;
 
-    seetype(GameEngine::tags::mask_type{});
+    seetype(CmpStorage2<ComponentList, TagList>::store_t{});
 
     using cmps = MP::Typelist<int, float, char>;
     using st   = MP::replace<std::tuple, cmps>::type;
 
-    seetype(GE.components_);
+    static_assert(GameEngine::cmps::mask<PhysicsCmp2, RenderCmp2>() == 0b011);
+
+    //seetype(GE.components_);
     /*
     InputSystem     InpSys;
     PhysicsSystem   PhySys;

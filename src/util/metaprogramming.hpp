@@ -71,4 +71,12 @@ namespace MP {
     using replace_t = typename replace<NEW, LIST>::type;
     template<template<typename...> class NEW, typename... Ts>
     struct replace<NEW, Typelist<Ts...>> { using type = NEW<Ts...>; };
+
+    //  INSERT TEMPLATE
+    template<template<typename...> class NEW, typename LIST>
+    struct insert{};
+    template<template<typename...> class NEW, typename LIST>
+    using insert_t = typename insert<NEW, LIST>::type;
+    template<template<typename...> class NEW, typename... Ts>
+    struct insert<NEW, Typelist<Ts...>> { using type = Typelist<NEW<Ts>...>; };
 }
