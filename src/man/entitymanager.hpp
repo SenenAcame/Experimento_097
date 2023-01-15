@@ -25,11 +25,13 @@ struct EntityManager : public GameContext {
         auto& re  = storage.createRenderComponent(e.getEntityID());
         auto& in   = storage.createInputComponent(e.getEntityID());
         auto& so   = storage.createSoundComponent(e.getEntityID());
+        auto& cl = storage.createColliderComponent(e.getEntityID());
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
         e.sound= &so;
+        e.collider = &cl;
 
         return e; 
     }
@@ -86,6 +88,18 @@ struct EntityManager : public GameContext {
         int cont = 0;
         for(auto& inp : getInputComponents()){
             if(e.input->componentID==inp.componentID){
+                break;
+            }
+            cont++;
+        }
+        return cont;
+        
+    }
+
+    int findCollision(Entity& e){
+        int cont = 0;
+        for(auto& inp : getColliderComponents()){
+            if(e.collider->componentID==inp.componentID){
                 break;
             }
             cont++;
@@ -189,6 +203,9 @@ struct EntityManager : public GameContext {
 
     const std::vector<SoundComponent>&     getSoundComponents()     const {return storage.getSoundComponents();};
           std::vector<SoundComponent>&     getSoundComponents()           {return storage.getSoundComponents();};
+          
+    const std::vector<ColliderComponent>&     getColliderComponents()     const {return storage.getColliderComponents();};
+          std::vector<ColliderComponent>&     getColliderComponents()           {return storage.getColliderComponents();};
 
     private:
     std::vector<Type> entities_{};

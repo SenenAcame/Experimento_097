@@ -25,3 +25,8 @@ SoundComponent& ComponentStorage::createSoundComponent(std::size_t eid){
     auto& sou = souStora.emplace_back(eid);
     return sou;
 }
+
+ColliderComponent& ComponentStorage::createColliderComponent(std::size_t eid){
+    auto& col = colStora.emplace_back(eid);
+    return col;
+}

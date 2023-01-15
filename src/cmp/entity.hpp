@@ -3,6 +3,7 @@
 #include "rendercomponent.hpp"
 #include "inputcomponent.hpp"
 #include "soundcomponent.hpp"
+#include "collisioncomponent.hpp"
 #include <cstddef>
 
 struct Entity {
@@ -12,6 +13,7 @@ struct Entity {
     RenderComponent*  render  {nullptr};
     InputComponent*   input   {nullptr};
     SoundComponent*   sound   {nullptr};
+    ColliderComponent* collider {nullptr};
     
     constexpr std::size_t getEntityID() const noexcept {return entityID;};
     
