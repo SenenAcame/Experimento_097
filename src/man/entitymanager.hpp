@@ -108,11 +108,30 @@ struct EntityManager : public GameContext {
             for(auto& e2 : entities_){
                 if(e.getEntityID()!=e2.getEntityID()){
                     auto& phy2 = e2.physics;
-                    float dx = phy->x - phy2->x;
-                    float dy = phy->y - phy2->y;
-                    float dz = phy->z - phy2->z;
-                    float distance = std::sqrt(dx*dx+dy*dy+dz*dz);
-                    if(distance <= 1.0){
+                    float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
+                    if(e.tipo=='h'){
+                        tamx=0.8;
+                        tamy=2.5;
+                        tamz=2;
+                    }
+                    if(e2.tipo=='h'){
+                        tamx2=0.8;
+                        tamy2=2.5;
+                        tamz2=2;
+                    }
+                    float dx, dy, dz;
+                    if((dx = phy->x - phy2->x) < 0)
+                        dx=-dx;
+                    dx -= (tamx + tamx2);
+                    
+                    if((dy = phy->y - phy2->y) < 0)
+                        dy=-dy;
+                    dy -= (tamy + tamy2);
+                    if((dz = phy->z - phy2->z) < 0)
+                        dz=-dz;
+                    dz -= (tamz + tamz2);
+
+                    if(dx<=0 && dy<=0 && dz<=0){
                         if(e.tipo=='b' && e2.tipo=='h'){
                             destroyEntity(e);
                         }

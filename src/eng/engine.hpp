@@ -16,7 +16,7 @@ struct TheEngine {
 
         node->setScale(irr::core::vector3df(0.1,0.5,0.2));
         node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-        //node->setVisible(false);
+        node->setVisible(false);
 
         return node;
     }
