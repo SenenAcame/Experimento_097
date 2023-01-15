@@ -36,6 +36,9 @@ void game(){
     map.render->node = dev.createMap();
     map.tipo = 'm';
     map.physics->y = -3.0f;
+    map.collider->width_x = 40.0f;
+    map.collider->width_y = 20.0f;
+    map.collider->height = 1.0f;
     
     Entity& e = EM.createEntity();
     e.render->node = dev.createPlayer();

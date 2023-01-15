@@ -10,4 +10,5 @@ struct ColliderComponent : public Component{
     float width_x{2};
     float width_y{2};
     float height{2};
+
 };
