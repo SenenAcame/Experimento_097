@@ -105,6 +105,27 @@ struct TheEngine {
         node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
+    //crear skybox para el entorno
+    //[las 3 lineas dentro de esta funcion tienen que estar antes del render loop]
+    irr::scene::IAnimatedMeshSceneNode* createSkybox(){
+        // driver_->setTextureCreationFlag(irr::video::TextureCreationFlag.CreateMipMaps, false);
+        // var:gb.scene.SceneNode skybox = smgr.AddSkyboxSceneNode("assets/irrlicht2_up.jpg","assets/irrlicht2_dn.jpg","assets/irrlicht2_lf.jpg", "assets/irrlicht2_rt.jpg","assets/irrlicht2_ft.jpg","assets/irrlicht2_bk.jpg" );
+        // driver.SetTextureCreationFlag(video.TextureCreationFlag.CreateMipMaps, true);
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/irrlicht2_up.jpg");
+        if(!mesh){
+            device_->drop();
+            return nullptr;
+        }
+        irr::scene::ISceneNode* node = smgr_->addSkyBoxSceneNode( mesh );
+            // driver_->getTexture("assets/irrlicht2_up.jpg"),
+            // driver_->getTexture("assets/irrlicht2_dn.jpg"),
+            // driver_->getTexture("assets/irrlicht2_lf.jpg"),
+            // driver_->getTexture("assets/irrlicht2_rt.jpg"),
+            // driver_->getTexture("assets/irrlicht2_ft.jpg"),
+            // driver_->getTexture("assets/irrlicht2_bk.jpg")
+
+        return node;
+    };
 
     auto& getDevice(){return device_;}
     auto getSceneManager(){return device_->getSceneManager();}
