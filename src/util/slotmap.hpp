@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cassert>
 
-template<typename Cmp>
+template<typename CMP>
 struct Key {
     using index_type = std::uint64_t;
     using gen_type   = index_type;

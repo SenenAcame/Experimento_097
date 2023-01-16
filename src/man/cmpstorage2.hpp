@@ -7,7 +7,7 @@
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct CmpStorage2 {
-    using cmp_info = cmps_traits<TAGLIST>;
+    using cmp_info = cmps_traits<CMPLIST>;
     using tag_info = tags_traits<TAGLIST>;
     template<typename LIST>
     using to_tuple = MP::replace_t<std::tuple, LIST>;

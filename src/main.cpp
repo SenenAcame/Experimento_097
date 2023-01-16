@@ -19,17 +19,27 @@ struct TBullet { static constexpr uint8_t id {2}; };
 using ComponentList = MP::Typelist<PhysicsCmp2, RenderCmp2, InputCmp2>;
 using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet>;
 
+void printEntity(EntityMan2<ComponentList, TagList>::Entity const& e){
+    std::cout<<e.hasCMP<PhysicsCmp2>();
+    std::cout<<e.hasCMP<RenderCmp2>();
+    std::cout<<e.hasCMP<InputCmp2>();
+    std::cout<<"\n";
+}
+
 void game(){
-    using GameEngine = GameEngine<ComponentList, TagList>;
-    GameEngine GE;
-    CmpStorage2<ComponentList, TagList> CS;
+    //using GameEngine = GameEngine<ComponentList, TagList>;
+    //GameEngine GE;
+    //CmpStorage2<ComponentList, TagList> CS;
+    EntityMan2<ComponentList, TagList> EM;
+    EntityMan2<ComponentList, TagList>::Entity e;
+    int a = EM.addComponent<PhysicsCmp2>(e);
+    //int a2 = EM.addComponent<InputCmp2>(e);
+    //std::cout<<a<<"\n";
+    printEntity(e);
+    //seetype();
 
-    seetype(CmpStorage2<ComponentList, TagList>::store_t{});
-
-    using cmps = MP::Typelist<int, float, char>;
-    using st   = MP::replace<std::tuple, cmps>::type;
-
-    static_assert(GameEngine::cmps::mask<PhysicsCmp2, RenderCmp2>() == 0b011);
+    //using cmps = MP::Typelist<int, float, char>;
+    //using st   = MP::replace<std::tuple, cmps>::type;
 
     //seetype(GE.components_);
     /*
