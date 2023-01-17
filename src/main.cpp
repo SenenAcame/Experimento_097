@@ -39,15 +39,7 @@ void game(){
     e2.render->node = dev.createEnemy();
     e2.physics->z = 20.0f;
     e2.physics->x = 9.0f;
-
-    auto& h = EM.createEntity();
-    h.tipo = 'h';
-    h.render->node = dev.createCube();
-    h.physics->z = 20.0f;
-    h.physics->y = -0.4f;
-    h.physics->x = 9.0f;
-
-    
+    e2.collision->hitbox = dev.createCube(e2.physics->x, e2.physics->y, e2.physics->z, 1, 5, 2); //posicion x, posicion y, posicion z, tamaño x, tamaño y, tamaño z
 
     auto& e3 = EM.createEntity();
     e3.tipo = 'w';

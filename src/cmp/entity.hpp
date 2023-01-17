@@ -3,15 +3,17 @@
 #include "rendercomponent.hpp"
 #include "inputcomponent.hpp"
 #include "soundcomponent.hpp"
+#include "collisioncomponent.hpp"
 #include <cstddef>
 
 struct Entity {
     explicit Entity() = default;
 
-    PhysicsComponent* physics {nullptr};
-    RenderComponent*  render  {nullptr};
-    InputComponent*   input   {nullptr};
-    SoundComponent*   sound   {nullptr};
+    PhysicsComponent*       physics     {nullptr};
+    RenderComponent*        render      {nullptr};
+    InputComponent*         input       {nullptr};
+    SoundComponent*         sound       {nullptr};
+    CollisionComponent*     collision   {nullptr};
     
     constexpr std::size_t getEntityID() const noexcept {return entityID;};
     

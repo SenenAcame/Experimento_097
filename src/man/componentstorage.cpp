@@ -4,6 +4,8 @@ ComponentStorage::ComponentStorage(std::size_t initialize){
     phyStora.reserve(initialize);
     renStora.reserve(initialize);
     inpStora.reserve(initialize);
+    souStora.reserve(initialize);
+    colStora.reserve(initialize);
 }
 
 PhysicsComponent& ComponentStorage::createPhysicsComponent(std::size_t eid){
@@ -24,4 +26,9 @@ InputComponent& ComponentStorage::createInputComponent(std::size_t eid){
 SoundComponent& ComponentStorage::createSoundComponent(std::size_t eid){
     auto& sou = souStora.emplace_back(eid);
     return sou;
+}
+
+CollisionComponent& ComponentStorage::createCollisionComponent(std::size_t eid){
+    auto& col = colStora.emplace_back(eid);
+    return col;
 }

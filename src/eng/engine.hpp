@@ -10,13 +10,13 @@ struct TheEngine {
     void beginScene();
     void drawAll();
     void endScene();
-    auto* createCube(){
+    auto* createCube(float x, float y, float z, float tamx, float tamy, float tamz){
         auto* node = smgr_->addCubeSceneNode();
         if (!node) throw std::runtime_error("Couldn't create cube");
-
-        node->setScale(irr::core::vector3df(0.1,0.5,0.2));
+        node->setPosition(irr::core::vector3df(x,y,z));
+        node->setScale(irr::core::vector3df(tamx/10,tamy/10,tamz/10));
         node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-        node->setVisible(false);
+        //node->setVisible(false);
 
         return node;
     }

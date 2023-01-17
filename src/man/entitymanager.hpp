@@ -23,11 +23,13 @@ struct EntityManager : public GameContext {
         auto& re  = storage.createRenderComponent(e.getEntityID());
         auto& in   = storage.createInputComponent(e.getEntityID());
         auto& so   = storage.createSoundComponent(e.getEntityID());
+        auto& co   = storage.createCollisionComponent(e.getEntityID());
 
         e.physics = &ph;
         e.render = &re;
         e.input = &in;
         e.sound= &so;
+        e.collision= &co;
 
         return e; 
     }
@@ -109,12 +111,12 @@ struct EntityManager : public GameContext {
                 if(e.getEntityID()!=e2.getEntityID()){
                     auto& phy2 = e2.physics;
                     float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
-                    if(e.tipo=='h'){
+                    if(e.tipo=='e'){
                         tamx=0.8;
                         tamy=2.5;
                         tamz=2;
                     }
-                    if(e2.tipo=='h'){
+                    if(e2.tipo=='e'){
                         tamx2=0.8;
                         tamy2=2.5;
                         tamz2=2;
@@ -132,7 +134,7 @@ struct EntityManager : public GameContext {
                     dz -= (tamz + tamz2);
 
                     if(dx<=0 && dy<=0 && dz<=0){
-                        if(e.tipo=='b' && e2.tipo=='h'){
+                        if(e.tipo=='b' && e2.tipo=='e'){
                             destroyEntity(e);
                         }
                         else{

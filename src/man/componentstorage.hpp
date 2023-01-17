@@ -3,6 +3,7 @@
 #include "../cmp/rendercomponent.hpp"
 #include "../cmp/inputcomponent.hpp"
 #include "../cmp/soundcomponent.hpp"
+#include "../cmp/collisioncomponent.hpp"
 #include <vector>
 
 struct ComponentStorage{
@@ -13,10 +14,11 @@ struct ComponentStorage{
     ComponentStorage& operator=(const ComponentStorage&) = delete;
     ComponentStorage& operator=(ComponentStorage&&)      = delete;
 
-    PhysicsComponent&   createPhysicsComponent(std::size_t eid);
-    RenderComponent&    createRenderComponent(std::size_t eid);
-    InputComponent&     createInputComponent(std::size_t eid);
-    SoundComponent&     createSoundComponent(std::size_t eid);
+    PhysicsComponent&         createPhysicsComponent(std::size_t eid);
+    RenderComponent&          createRenderComponent(std::size_t eid);
+    InputComponent&           createInputComponent(std::size_t eid);
+    SoundComponent&           createSoundComponent(std::size_t eid);
+    CollisionComponent&       createCollisionComponent(std::size_t eid);
 
     const std::vector<PhysicsComponent>&   getPhysicsComponents()   const {return phyStora;};
           std::vector<PhysicsComponent>&   getPhysicsComponents()         {return phyStora;};
@@ -30,9 +32,13 @@ struct ComponentStorage{
     const std::vector<SoundComponent>&     getSoundComponents()     const {return souStora;};
           std::vector<SoundComponent>&     getSoundComponents()           {return souStora;};
 
+    const std::vector<CollisionComponent>& getCollisionComponents() const {return colStora;};
+          std::vector<CollisionComponent>& getCollisionComponents()       {return colStora;};
+
     private:
-    std::vector<PhysicsComponent>   phyStora {};
-    std::vector<RenderComponent>    renStora {};
-    std::vector<InputComponent>     inpStora {};
-    std::vector<SoundComponent>     souStora {};
+    std::vector<PhysicsComponent>         phyStora {};
+    std::vector<RenderComponent>          renStora {};
+    std::vector<InputComponent>           inpStora {};
+    std::vector<SoundComponent>           souStora {};
+    std::vector<CollisionComponent>       colStora {};
 };
