@@ -20,28 +20,29 @@ using ComponentList = MP::Typelist<PhysicsCmp2, RenderCmp2, InputCmp2>;
 using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet>;
 
 void printEntity(EntityMan2<ComponentList, TagList>::Entity const& e){
-    std::cout<<e.hasCMP<PhysicsCmp2>();
+    std::cout<<"Mascara de componentes: "<<e.hasCMP<PhysicsCmp2>();
     std::cout<<e.hasCMP<RenderCmp2>();
     std::cout<<e.hasCMP<InputCmp2>();
     std::cout<<"\n";
 }
 
+void printTagEntity(EntityMan2<ComponentList, TagList>::Entity const& e){
+    std::cout<<"Mascara de tags: "<<e.hasTAG<TPlayer>();
+    std::cout<<e.hasTAG<TEnemy>();
+    std::cout<<e.hasTAG<TBullet>();
+    std::cout<<"\n";
+}
+
 void game(){
-    //using GameEngine = GameEngine<ComponentList, TagList>;
-    //GameEngine GE;
-    //CmpStorage2<ComponentList, TagList> CS;
     EntityMan2<ComponentList, TagList> EM;
-    EntityMan2<ComponentList, TagList>::Entity e;
-    int a = EM.addComponent<PhysicsCmp2>(e);
-    //int a2 = EM.addComponent<InputCmp2>(e);
-    //std::cout<<a<<"\n";
-    printEntity(e);
-    //seetype();
+    //EntityMan2<ComponentList, TagList>::Entity e;
+    auto& e = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(e,1,2,3);
 
-    //using cmps = MP::Typelist<int, float, char>;
-    //using st   = MP::replace<std::tuple, cmps>::type;
+    printTagEntity(e);
 
-    //seetype(GE.components_);
+
+
     /*
     InputSystem     InpSys;
     PhysicsSystem   PhySys;
@@ -102,33 +103,6 @@ void game(){
         PhySys.update(EM);
         ColSys.update(EM);
     }
-    */
-    /*
-    Entity2<PhysicsCmp2, RenderCmp2, InputCmp2> player{
-        std::make_unique<PhysicsCmp2>(1,2,3,4,5,6),
-        std::make_unique<RenderCmp2> ('@'),
-        std::make_unique<InputCmp2>  ()
-    };
-    */
-    /*
-    using Entity_type = Entity2<PhysicsCmp2, RenderCmp2, InputCmp2>;
-
-    EntityMan2<Entity_type, PhysicsCmp2, RenderCmp2, InputCmp2> EM;
-    auto& player = EM.createEntity<PhysicsCmp2, RenderCmp2, InputCmp2>();
-    
-    auto& cmp = EM.getComponent(player.getKey<RenderCmp2>());
-    std::cout<<cmp.a<<"\n";
-    */
-    /*
-    CmpStorage2<PhysicsCmp2, RenderCmp2, InputCmp2> CS;
-    std::cout<<CS.getMask<PhysicsCmp2>()<<"\n";
-    std::cout<<CS.getMask<RenderCmp2>()<<"\n";
-    std::cout<<CS.getMask<InputCmp2>()<<"\n";
-
-    auto& st = CS.getStorage<PhysicsCmp2>();
-
-    auto key = st.push_back(PhysicsCmp2{});
-    std::cout<<key.id<<" "<<key.gen<<"\n";
     */
 }
 

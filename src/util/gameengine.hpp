@@ -36,11 +36,11 @@ struct cmps_traits : common_traits<CMPLIST> {};
 template <typename TAGLIST>
 struct tags_traits : common_traits<TAGLIST> {};
 
-template<typename CMPS, typename TAGS>
-struct GameEngine{
-    using cmps = cmps_traits<CMPS>;
-    using tags = tags_traits<TAGS>; 
-    using st_type = MP::replace_t<std::tuple, CMPS>;
-
-    st_type components_{};
-};
+//template<typename CMPS, typename TAGS>
+//struct GameEngine{
+//    using cmps = cmps_traits<CMPS>;
+//    using tags = tags_traits<TAGS>; 
+//    using st_type = MP::replace_t<std::tuple, CMPS>;
+//
+//    st_type components_{};
+//};

@@ -44,6 +44,16 @@ struct Slotmap {
     [[nodiscard]] constexpr key_type    push_back(value_type const& value) {
         return push_back(value_type{value});
     }
+    [[nodiscard]] constexpr DataType& operator[](key_type const& k) noexcept {
+        assert(is_valid(k));
+        auto dataID = indices_[k.id].id;
+        return data_[dataID];
+    }
+    [[nodiscard]] constexpr DataType const& operator[](key_type const& k) const noexcept {
+        assert(is_valid(k));
+        auto dataID = indices_[k.id].id;
+        return data_[dataID];
+    }
     constexpr void clear() noexcept { freelist_init(); }
     constexpr bool erase(key_type key) noexcept {
         if(!is_valid(key)) return false;
