@@ -17,7 +17,7 @@ struct CmpStorage2 {
 
     template<typename CMP>
     [[nodiscard]] constexpr auto& getStorage() noexcept {
-        constexpr auto id {cmp_info::template id<CMP>()};
+        constexpr auto id { cmp_info::template id<CMP>() };
         return std::get<id>(components_);
     }
 private:

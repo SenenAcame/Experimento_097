@@ -13,12 +13,10 @@
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct EntityMan2 {
-    struct Entity;
-    using TypeProccessFunc = void (*)(Entity&);
     using cmp_storage = CmpStorage2<CMPLIST, TAGLIST, Capacity>;
 
     struct Entity {
-        using key_list = MP::insert_t<Key, CMPLIST>;
+        using key_list    = MP::insert_t<Key, CMPLIST>;
         using key_storage = MP::replace_t<std::tuple, key_list>;
 
         template<typename CMP>
@@ -62,24 +60,27 @@ struct EntityMan2 {
         static inline std::size_t nextID { 1 };
     };
 
-    EntityMan2(std::size_t defaultsize = 100) { entities_.reserve(defaultsize); }
+    EntityMan2(std::size_t defaultsize = Capacity) { entities_.reserve(defaultsize); }
 
     template<typename CMP, typename... InitParam>
     CMP& addComponent(Entity& e, InitParam&&... initVal) {
+        if(e.template hasCMP<CMP>()){ return getComponent<CMP>(e); }
+        return createComponent<CMP>(e, initVal...);
+    }
+
+    template<typename CMP>
+    CMP& getComponent(Entity const& e) {
         auto& st = cmpStorage_.template getStorage<CMP>();
-        Key<CMP> k;
-        if(e.template hasCMP<CMP>()){
-            k = e.template getKey<CMP>();
-        }
-        else{
-            k = st.push_back(CMP{ std::forward<InitParam>(initVal)... });
-            e.template addCMP<CMP>(k);
-        }
+        Key<CMP> k = e.template getKey<CMP>();
         return st[k];
     }
 
     template<typename CMP>
-    auto& getComponent(Key<CMP> k) { return cmpStorage_.getComp(k); }
+    CMP const& getComponent(Entity const& e) const{
+        auto& st = cmpStorage_.template getStorage<CMP>();
+        Key<CMP> k = e.template getKey<CMP>();
+        return st[k];
+    }
 
     template<typename TAG>
     void addTag(Entity& e) { e.template addTAG<TAG>(); }
@@ -97,6 +98,14 @@ struct EntityMan2 {
     }
 
 private:
+    template<typename CMP, typename... InitParam>
+    CMP& createComponent(Entity& e, InitParam&&... initVal) {
+        auto& st = cmpStorage_.template getStorage<CMP>();
+        Key<CMP> k = st.push_back(CMP{ std::forward<InitParam>(initVal)... });
+        e.template addCMP<CMP>(k);
+        return st[k];
+    }
+
     std::vector<Entity> entities_{};
     cmp_storage cmpStorage_{};
 };

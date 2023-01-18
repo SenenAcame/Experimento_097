@@ -1,5 +1,6 @@
 #include "main.hpp"
 #include "util/types.hpp"
+#include "sys/physys2.hpp"
 
 //void printEntity(Enty const& e){
 //    std::cout<<"Mascara de componentes: "<<e.hasCMP<PhysicsCmp2>();
@@ -16,15 +17,28 @@
 //}
 
 void game(){
-    /*
-    InputSystem     InpSys;
-    PhysicsSystem   PhySys;
-    RenderSystem    RenSys;
-    CollisionSystem ColSys;
-    EntityManager<Entity> EM;
-    TheEngine dev {1080, 720, &InpSys};
-    */
+    EntyMan EM;
+    InputSystem InpSys;
+    PhySys2     PhySys;
+    TheEngine   dev {1080, 720, &InpSys};
 
+    Enty& e1 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(e1);
+    EM.addComponent<RenderCmp2>(e1, dev.createSphere());
+
+    while(true){
+        PhySys.update(EM);
+    }
+
+    /*
+    InputSystem           InpSys;
+    PhysicsSystem         PhySys;
+    RenderSystem          RenSys;
+    CollisionSystem       ColSys;
+    EntityManager<Entity> EM;
+    TheEngine             dev {1080, 720, &InpSys};
+    */
+    
     //auto camera = dev.getCamera();
     //irr::core::vector3df tar = camera->getTarget();
     //tar.X=50; tar.Y=0; tar.Z=50;
@@ -69,6 +83,7 @@ void game(){
     ///cam->setParent(e.render->node);
     //cam->bindTargetAndRotation(true); 
     //falta poner lookat al vector posicionActual + vectorForWard	
+    
     /*
     while(dev.run()){
         RenSys.update(EM, dev);
