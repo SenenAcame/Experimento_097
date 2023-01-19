@@ -6,8 +6,8 @@ struct PhySys2 {
     using SYSTAGs = MP::Typelist<>;
 
     void update(EntyMan& EM) {
-        EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, PhysicsCmp2& p) {
+        EM.foreach<PhysicsCmp2>(
+            [&](PhysicsCmp2& p) {
                 p.x += p.vx;
                 p.y += p.vy;
                 p.z += p.vz;

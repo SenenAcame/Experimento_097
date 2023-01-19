@@ -1,8 +1,9 @@
 #include "main.hpp"
-#include "cmp/inputcmp2.hpp"
 #include "sys/rensys2.hpp"
-#include "util/types.hpp"
 #include "sys/physys2.hpp"
+#include "sys/colsys2.hpp"
+#include "sys/inpsys2.hpp"
+#include "util/types.hpp"
 
 //void printEntity(Enty const& e){
 //    std::cout<<"Mascara de componentes: "<<e.hasCMP<PhysicsCmp2>();
@@ -20,26 +21,27 @@
 
 void game(){
     EntyMan EM;
-    InputSystem InpSys;
     PhySys2     PhySys;
     RenSys2     RenSys;
+    ColSys2     ColSys;
+    InpSys2     InpSys;
+
     TheEngine   dev {1080, 720, &InpSys};
 
     Enty& e1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e1, 5.f, 0.f, 20.f, 0.f, 0.1f, 0.f);
+    EM.addComponent<PhysicsCmp2>(e1, 5.f, 0.f, 20.f, -0.05f, 0.0f, 0.f);
     EM.addComponent<RenderCmp2> (e1, dev.createSphere());
 
     Enty& e2 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.f, 0.05f, 0.f);
+    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.f, 0.0f, 0.f);
     EM.addComponent<RenderCmp2> (e2, dev.createSphere());
-
-    Enty& e3 = EM.createEntity();
-    EM.addComponent<InputCmp2>(e3);
-    EM.addComponent<RenderCmp2> (e3);
+    EM.addComponent<InputCmp2>  (e2);
 
     while(dev.run()){
-        PhySys.update(EM);
         RenSys.update(EM, dev);
+        PhySys.update(EM);
+        InpSys.update(EM, dev);
+        ColSys.update(EM);
     }
 
     /*

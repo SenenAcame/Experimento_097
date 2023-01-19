@@ -6,7 +6,7 @@
 #include "../cmp/physicscmp2.hpp"
 #include "../cmp/inputcmp2.hpp"
 #include "cmpstorage2.hpp"
-//#include <iostream>
+#include <iostream>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct EntityMan2 {
@@ -48,6 +48,8 @@ struct EntityMan2 {
             if(hasTAG<TAG>())
                 tagmask -= cmp_storage::tag_info::template mask<TAG>();
         }
+
+        [[nodiscard]] size_t constexpr getID()  const noexcept{ return id; }
 
         private:
         std::size_t id { nextID++ };
@@ -96,6 +98,17 @@ struct EntityMan2 {
 
     template<typename CMPs, typename TAGs>
     void foreach(auto&& process){ foreach_impl(process, CMPs{}, TAGs{}); }
+
+    template<typename CMP>
+    void foreach(auto&& process) {
+        auto& sm = cmpStorage_.template getStorage<CMP>();
+        for(auto& a : sm) {
+            process(a);
+        }
+    }
+
+    auto& getEntities() { return entities_; }
+    auto& getStorage()  { return cmpStorage_; }
 
 private:
     template<typename... CMPs, typename... TAGs>
