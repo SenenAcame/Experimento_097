@@ -3,7 +3,7 @@
 void game(){
     InputSystem     InpSys;
     PhysicsSystem   PhySys;
-    RenderSystem    RenSys;
+    RenderSystem    RenSys(720, 640);
     CollisionSystem ColSys;
     SoundSystem_t   SouSys;
     EntityManager<Entity> EM;
