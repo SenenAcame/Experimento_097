@@ -1,6 +1,7 @@
 #pragma once 
 #include "metaprogramming.hpp"
 #include <cstddef>
+#include <cstdint>
 #include <tuple>
 
 template<typename LIST>
@@ -20,7 +21,7 @@ struct common_traits {
     consteval static uint8_t size() noexcept { return LIST::size(); }
 
     template <typename TAG>
-    consteval static uint id() noexcept {
+    consteval static uint16_t id() noexcept {
         static_assert(LIST::template contains<TAG>());
         return LIST::template pos<TAG>(); 
     }

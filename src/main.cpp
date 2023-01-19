@@ -1,4 +1,6 @@
 #include "main.hpp"
+#include "cmp/inputcmp2.hpp"
+#include "sys/rensys2.hpp"
 #include "util/types.hpp"
 #include "sys/physys2.hpp"
 
@@ -20,14 +22,24 @@ void game(){
     EntyMan EM;
     InputSystem InpSys;
     PhySys2     PhySys;
+    RenSys2     RenSys;
     TheEngine   dev {1080, 720, &InpSys};
 
     Enty& e1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e1);
-    EM.addComponent<RenderCmp2>(e1, dev.createSphere());
+    EM.addComponent<PhysicsCmp2>(e1, 5.f, 0.f, 20.f, 0.f, 0.1f, 0.f);
+    EM.addComponent<RenderCmp2> (e1, dev.createSphere());
 
-    while(true){
+    Enty& e2 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.f, 0.05f, 0.f);
+    EM.addComponent<RenderCmp2> (e2, dev.createSphere());
+
+    Enty& e3 = EM.createEntity();
+    EM.addComponent<InputCmp2>(e3);
+    EM.addComponent<RenderCmp2> (e3);
+
+    while(dev.run()){
         PhySys.update(EM);
+        RenSys.update(EM, dev);
     }
 
     /*

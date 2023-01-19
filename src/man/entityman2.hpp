@@ -2,14 +2,11 @@
 #include <cstddef>
 #include <tuple>
 #include <vector>
-#include "../cmp/entity2.hpp"
 #include "../cmp/rendercmp2.hpp"
 #include "../cmp/physicscmp2.hpp"
 #include "../cmp/inputcmp2.hpp"
 #include "cmpstorage2.hpp"
-#include "componentstorage.hpp"
-
-#include <iostream>
+//#include <iostream>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct EntityMan2 {
@@ -97,7 +94,20 @@ struct EntityMan2 {
         }
     }
 
+    template<typename CMPs, typename TAGs>
+    void foreach(auto&& process){ foreach_impl(process, CMPs{}, TAGs{}); }
+
 private:
+    template<typename... CMPs, typename... TAGs>
+    void foreach_impl(auto&& process, MP::Typelist<CMPs...>, MP::Typelist<TAGs...>) {
+        for(auto& e : entities_){
+            bool hasCMPs = (true && ... && e.template hasCMP<CMPs>());
+            bool hasTAGs = (true && ... && e.template hasTAG<TAGs>());
+            if(hasCMPs && hasTAGs)
+                process(e, getComponent<CMPs>(e)...);
+        }
+    }
+
     template<typename CMP, typename... InitParam>
     CMP& createComponent(Entity& e, InitParam&&... initVal) {
         auto& st = cmpStorage_.template getStorage<CMP>();
