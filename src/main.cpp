@@ -46,6 +46,7 @@ void game(){
     e.tipo = 'p';
 
     e.render->node->setParent(cam);
+
     //cam->setParent(e.render->node);
     //auto& v = cam->getTarget();
 

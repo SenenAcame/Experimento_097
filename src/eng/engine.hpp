@@ -109,7 +109,7 @@ struct TheEngine {
     auto& getDevice(){return device_;}
     auto getSceneManager(){return device_->getSceneManager();}
     auto getCamera(){return device_->getSceneManager()->getActiveCamera();}
-    auto getCameraTarget(){return device_->getSceneManager()->getActiveCamera()->getTarget();}
+    
 
     private:
     using DestructorFunc = void (*)(irr::IrrlichtDevice*);
