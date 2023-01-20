@@ -179,18 +179,19 @@ struct EntityManager : public GameContext {
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e);
                     bullet.render->node = eng.addBullet();
-                    bullet.physics->x = eng.getCamera()->getPosition().X+7;
-                    bullet.physics->y = eng.getCamera()->getPosition().Y-2;
-                    bullet.physics->z = eng.getCamera()->getPosition().Z-1;
+                    bullet.physics->x = eng.getCamera()->getPosition().X;
+                    bullet.physics->y = eng.getCamera()->getPosition().Y;
+                    bullet.physics->z = eng.getCamera()->getPosition().Z;
 
-                    bullet.physics->vx = cos(
-                        (eng.getCamera()->getRotation().X * M_PI/180) 
-                        ) * 0.2;
-                    bullet.physics->vy = sin(
-                        ((eng.getCamera()->getRotation().Y-90) * M_PI/180)
-                        ) * 0.2;
-                    bullet.physics->vz = 0;
-                    
+                    bullet.physics->vx = sin(
+                        (eng.getCamera()->getRotation().Y) * M_PI/180.0f
+                    )*0.2f; //eje x va con la rotacion y sin
+                    bullet.physics->vy = -sin(
+                        eng.getCamera()->getRotation().X * M_PI/180.0f
+                        ) * 0.2f; //Si no va con sin pon el -
+                    bullet.physics->vz = cos(
+                        (eng.getCamera()->getRotation().Y) * M_PI/180.0f
+                    )*0.2f; //eje x va con la rotacion y cos
                     //bullet.render->node->setPosition(e.render->node->getParent()->getPosition().X+7,
                     //e.render->node->getParent()->getPosition().Y-2,
                     //e.render->node->getParent()->getPosition().Z-1);
@@ -202,12 +203,8 @@ struct EntityManager : public GameContext {
                    // bullet.physics->vz = cameraRot.Z * 0.2; 
                    // 
 
-                   std::cout << "Valores Operacion: " <<eng.getCamera()->getRotation().Y <<" " << M_PI <<" Y tiene da "
-                   << eng.getCamera()->getRotation().Y * M_PI/180 << " con cos da  " << sin(
-                        (eng.getCamera()->getRotation().Y * M_PI/180) 
-                        ) << " y por 0.2 es "<< cos(
-                        (eng.getCamera()->getRotation().Y * M_PI/180) 
-                        ) * 0.2;
+                   
+
                     //std::cout << "Rot de camera: " <<cameraRot.X <<" " << cameraRot.Y <<" "<< cameraRot.Z;
                     //std::cout << "Rot weapon: " <<e.render->node->getRotation().X <<" " << e.render->node->getRotation().Y <<" "<< e.render->node->getRotation().Z;
                     //bullet.render->node->setPosition(eng.getCamera()->getPosition());
