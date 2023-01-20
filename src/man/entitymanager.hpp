@@ -114,12 +114,12 @@ struct EntityManager : public GameContext {
                 if(e.getEntityID()!=e2.getEntityID()){
                     auto& phy2 = e2.physics;
                     float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
-                    if(e.tipo=='e'){
+                    if(e.tipo=='e' || e.tipo=='p'){
                         tamx=0.8;
                         tamy=2.5;
                         tamz=2;
                     }
-                    if(e2.tipo=='e'){
+                    if(e2.tipo=='e' || e.tipo=='p'){
                         tamx2=0.8;
                         tamy2=2.5;
                         tamz2=2;
@@ -143,11 +143,11 @@ struct EntityManager : public GameContext {
                         else{
                             if(e.tipo!='b'){
                                 phy->x -= phy->vx;
-                                phy->vx = -phy->vx;
+                                //phy->vx = -phy->vx;
                                 phy->y -= phy->vy;
-                                phy->vy = -phy->vy;
+                                //phy->vy = -phy->vy;
                                 phy->z -= phy->vz;
-                                phy->vz = -phy->vz;
+                                //phy->vz = -phy->vz;
                             }
                         }
                     }

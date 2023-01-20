@@ -66,13 +66,15 @@ void game(){
     e4.tipo = 'e';
     e4.render->node = dev.createEnemy("assets/portal1.bmp");
     e4.physics->z = 25.0f;
-    e4.physics->x = 9.0f;
+    e4.physics->x = 9.0f;    
+    e4.collision->hitbox = dev.createCube(e4.physics->x, e4.physics->y, e4.physics->z, 1, 5, 2); //posicion x, posicion y, posicion z, tamaño x, tamaño y, tamaño z
 
     auto& e5 = EM.createEntity();
     e5.tipo = 'e';
     e5.render->node = dev.createEnemy("assets/faerie2.bmp");
     e5.physics->z = 15.0f;
     e5.physics->x = 9.0f;
+    e5.collision->hitbox = dev.createCube(e5.physics->x, e5.physics->y, e5.physics->z, 1, 5, 2); //posicion x, posicion y, posicion z, tamaño x, tamaño y, tamaño z
 
 //    Cosas para probar sonidos
     SouSys.createinstance(e,8);                 //crear y asignarle instancia de sonido
