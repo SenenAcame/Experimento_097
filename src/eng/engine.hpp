@@ -1,4 +1,5 @@
 #pragma once
+#include <irrlicht/EDriverTypes.h>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <memory>
@@ -67,11 +68,13 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/fire.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        node->setRotation({45,-90,0});
         return node;
     };
 
     irr::scene::IAnimatedMeshSceneNode* createMap(){
-        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/laboratorio.obj");
+        irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/salas_visibles.obj");
         if (!mesh){
             device_->drop();
             return nullptr;
@@ -81,19 +84,21 @@ struct TheEngine {
         auto* texture = driver_->getTexture("assets/wall.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
 
-    irr::scene::IAnimatedMeshSceneNode* createEnemy(){
+    irr::scene::IAnimatedMeshSceneNode* createEnemy(const irr::io::path asset){
         irr::scene::IAnimatedMesh* mesh = smgr_->getMesh("assets/enemy.obj");
         if (!mesh){
             device_->drop();
             return nullptr;
         }
         irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
-        auto* texture = driver_->getTexture("assets/fire.bmp");
+        auto* texture = driver_->getTexture(asset);
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
 
@@ -104,15 +109,17 @@ struct TheEngine {
             return nullptr;
         }
         irr::scene::IAnimatedMeshSceneNode* node = smgr_->addAnimatedMeshSceneNode( mesh );
-        auto* texture = driver_->getTexture("assets/fire.bmp");
+        auto* texture = driver_->getTexture("assets/portal7.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
         node->setMaterialTexture(0, texture);
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         return node;
     };
 
     auto& getDevice(){return device_;}
     auto getSceneManager(){return device_->getSceneManager();}
     auto getCamera(){return device_->getSceneManager()->getActiveCamera();}
+    auto getCameraTarget(){return device_->getSceneManager()->getActiveCamera()->getTarget();}
 
     private:
     using DestructorFunc = void (*)(irr::IrrlichtDevice*);
@@ -124,7 +131,7 @@ struct TheEngine {
     irr::IEventReceiver* receive {};
 
     irrDeviceManaged device_ {
-        irr::createDevice(irr::video::EDT_SOFTWARE, 
+        irr::createDevice(irr::video::EDT_BURNINGSVIDEO, 
                             irr::core::dimension2d<irr::u32>(width_, height_), 
                             16,false,false,false,receive), 
         destroy

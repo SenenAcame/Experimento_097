@@ -9,6 +9,14 @@ void game(){
     EntityManager<Entity> EM;
     TheEngine dev {1080, 720, &InpSys};
 
+    auto cam = dev.getCamera();
+    dev.getDevice()->getCursorControl()->setVisible(false);
+    cam->setFOV(1);
+    cam->setPosition({-6,2,20});
+    cam->setTarget({200,0,20});
+
+    //cam->setNearValue(2);
+    //cam->setFarValue(5000);
     //auto camera = dev.getCamera();
     //irr::core::vector3df tar = camera->getTarget();
     //tar.X=50; tar.Y=0; tar.Z=50;
@@ -29,14 +37,21 @@ void game(){
     map.tipo = 'm';
     map.physics->y = -3.0f;
     
-    auto& e = EM.createEntity();
+    Entity& e = EM.createEntity();
     e.render->node = dev.createPlayer();
-    e.physics->z = 20.0f;
+    e.physics->x = 0.5f;
+    e.physics->y = -2.0f;
+    e.physics->z = 5.0f;
+    
     e.tipo = 'p';
+
+    e.render->node->setParent(cam);
+    //cam->setParent(e.render->node);
+    //auto& v = cam->getTarget();
 
     auto& e2 = EM.createEntity();
     e2.tipo = 'e';
-    e2.render->node = dev.createEnemy();
+    e2.render->node = dev.createEnemy("assets/fire.bmp");
     e2.physics->z = 20.0f;
     e2.physics->x = 9.0f;
     e2.collision->hitbox = dev.createCube(e2.physics->x, e2.physics->y, e2.physics->z, 1, 5, 2); //posicion x, posicion y, posicion z, tamaño x, tamaño y, tamaño z
@@ -46,6 +61,18 @@ void game(){
     e3.render->node = dev.createWeapon1();
     e3.physics->z = 30.0f;
     e3.physics->x = 5.0f;
+
+    auto& e4 = EM.createEntity();
+    e4.tipo = 'e';
+    e4.render->node = dev.createEnemy("assets/portal1.bmp");
+    e4.physics->z = 25.0f;
+    e4.physics->x = 9.0f;
+
+    auto& e5 = EM.createEntity();
+    e5.tipo = 'e';
+    e5.render->node = dev.createEnemy("assets/faerie2.bmp");
+    e5.physics->z = 15.0f;
+    e5.physics->x = 9.0f;
 
 //    Cosas para probar sonidos
     SouSys.createinstance(e,8);                 //crear y asignarle instancia de sonido

@@ -1,5 +1,7 @@
 #include "inputsystem.hpp"
 #include "soundsystem.hpp"
+#include <irrlicht/Keycodes.h>
+//#include <irrlicht/IEventReceiver.h>
 
 void InputSystem::checkPressed(const irr::SEvent& event, KeySym k){
     if(event.KeyInput.PressedDown){
@@ -36,11 +38,24 @@ bool InputSystem::OnEvent(const irr::SEvent& event){
                 break; 
             case irr::KEY_KEY_P:
                 checkPressed(event, XK_P);
-                break; 
+                break;
+            case irr::KEY_ESCAPE:
+                exit(0);
+                break;
             default:
                 break;
         }
-    }
+    } 
+    //else 
+    //    if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
+    //        switch(event.MouseInput.Event){
+    //            case irr::EMIE_MOUSE_MOVED:
+    //
+    //                break;
+    //            default:
+    //                break;
+    //        }
+    //    }
     return false;
 }
 

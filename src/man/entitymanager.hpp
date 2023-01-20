@@ -1,10 +1,12 @@
 #pragma once
 #include <cstddef>
+#include <irrlicht/vector3d.h>
 #include "../util/gamecontext.hpp"
 #include "componentstorage.hpp"
 #include "../eng/engine.hpp"
 #include "../util/keyboard.hpp"
 #include "../sys/soundsystem.hpp"
+#include <iostream>
 
 template<typename Type>
 struct EntityManager : public GameContext {
@@ -34,13 +36,14 @@ struct EntityManager : public GameContext {
         return e; 
     }
 
-    Entity& createBullet(Entity& weapon){
+    Entity& createBullet(Entity& weapon, irr::core::vector3df targetCamera){
         Entity& bullet = createEntity();
         bullet.tipo = 'b';
-        bullet.physics->x = weapon.physics->x+1.1;
-        bullet.physics->y = weapon.physics->y;
-        bullet.physics->z = weapon.physics->z;
+        bullet.physics->x = weapon.render->node->getParent()->getPosition().X+7;
+        bullet.physics->y = weapon.render->node->getParent()->getPosition().Y-2;
+        bullet.physics->z = weapon.render->node->getParent()->getPosition().Z-1;
         bullet.physics->vx = 0.2;
+        //std::cout << "Target de camera: " <<targetCamera.X <<" " << targetCamera.Y <<" "<< targetCamera.Z;
         return bullet;
     }
 
@@ -157,23 +160,24 @@ struct EntityManager : public GameContext {
         for(Entity& e: entities_){
             if(e.tipo == 'p'){
                 auto& phy = *(e.physics);
-                auto& inp = *(e.input);
+                auto& inp   = *(e.input);
+                //auto cam = e.render->node->getParent()->getPosition();
                 phy.vx = 0;
-                phy.vy = 0;
-                if(keyb.isKeyPressed(inp.key_left)){
-                    phy.vx = -0.1;
-                }
-                if(keyb.isKeyPressed(inp.key_right)){
-                    phy.vx = 0.1;
-                }
-                if(keyb.isKeyPressed(inp.key_up)){
-                    phy.vy = 0.1;
-                }
-                if(keyb.isKeyPressed(inp.key_down)){
-                    phy.vy = -0.1;
-                }
+                phy.vz = 0;
+               // if(keyb.isKeyPressed(inp.key_left)){
+               //     phy.vz = 0.2;
+               // }
+               // if(keyb.isKeyPressed(inp.key_right)){
+               //     phy.vz = -0.2;
+               // }
+               // if(keyb.isKeyPressed(inp.key_up)){
+               //     phy.vx = 0.2;
+               // }
+               // if(keyb.isKeyPressed(inp.key_down)){
+               //     phy.vx = -0.2;
+               // }
                 if(keyb.isKeyPressed(inp.key_shot)){
-                    auto& bullet = createBullet(e);
+                    auto& bullet = createBullet(e, eng.getCameraTarget());
                     bullet.render->node = eng.addBullet();
                     keyb.keyReleased(inp.key_shot);
                 }
@@ -183,9 +187,9 @@ struct EntityManager : public GameContext {
                 if(keyb.isKeyPressed(inp.key_sound2)){
                     sounsys.startsound(e); 
                 }
-                if(keyb.isKeyPressed(inp.key_sound3)){
-
-                }
+                //if(keyb.isKeyPressed(inp.key_sound3)){
+//
+                //}
             }
         }
     }
