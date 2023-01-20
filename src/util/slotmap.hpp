@@ -55,13 +55,20 @@ struct Slotmap {
         return data_[dataID];
     }
     constexpr void clear() noexcept { freelist_init(); }
-    constexpr bool erase(key_type key) noexcept {
-        if(!is_valid(key)) return false;
+
+    constexpr void erase(key_type key) noexcept {
+        assert(is_valid(key));
         free(key);
-        return true;
     }
+    //constexpr bool erase(key_type key) noexcept {
+    //    if(!is_valid(key)) return false;
+    //        free(key);
+    //    return true;
+    //}
+    
     [[nodiscard]] constexpr bool is_valid(key_type key) const noexcept{
-        if (key.id >= Capacity || indices_[key.id].gen != key.gen) return false;
+        if (key.id >= Capacity || indices_[key.id].gen != key.gen) 
+            return false;
         return true;
     }
 

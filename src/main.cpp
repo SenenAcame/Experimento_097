@@ -1,4 +1,7 @@
 #include "main.hpp"
+#include "cmp/inputcmp2.hpp"
+#include "cmp/physicscmp2.hpp"
+#include "cmp/rendercmp2.hpp"
 #include "sys/rensys2.hpp"
 #include "sys/physys2.hpp"
 #include "sys/colsys2.hpp"
@@ -20,22 +23,37 @@
 //}
 
 void game(){
-    EntyMan EM;
+    EntyMan     EM;
     PhySys2     PhySys;
     RenSys2     RenSys;
     ColSys2     ColSys;
     InpSys2     InpSys;
-
     TheEngine   dev {1080, 720, &InpSys};
 
     Enty& e1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e1, 5.f, 0.f, 20.f, -0.05f, 0.0f, 0.f);
+    EM.addComponent<PhysicsCmp2>(e1, 5.f, 0.f, 20.f, 0.f, 0.f, 0.f);
     EM.addComponent<RenderCmp2> (e1, dev.createSphere());
+    EM.addComponent<InputCmp2>  (e1);
 
     Enty& e2 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.f, 0.0f, 0.f);
+    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.1f, 0.f, 0.f);
     EM.addComponent<RenderCmp2> (e2, dev.createSphere());
-    EM.addComponent<InputCmp2>  (e2);
+
+    //if(e2.hasCMP<PhysicsCmp2>())
+    //    std::cout<<"Componente existe\n";
+    //else
+    //    std::cout<<"Componente no existe\n";
+    //
+    //if(e2.hasCMP<RenderCmp2>())
+    //    std::cout<<"Componente existe\n";
+    //else
+    //    std::cout<<"Componente no existe\n";
+    //
+    //if(e2.hasCMP<InputCmp2>())
+    //    std::cout<<"Componente existe\n";
+    //else
+    //    std::cout<<"Componente no existe\n";
+
 
     while(dev.run()){
         RenSys.update(EM, dev);

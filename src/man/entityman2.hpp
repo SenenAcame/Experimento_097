@@ -1,6 +1,4 @@
 #pragma once
-#include <cstddef>
-#include <tuple>
 #include <vector>
 #include "../cmp/rendercmp2.hpp"
 #include "../cmp/physicscmp2.hpp"
@@ -32,6 +30,13 @@ struct EntityMan2 {
         [[nodiscard]] constexpr Key<CMP> getKey() const{
             assert(hasCMP<CMP>());
             return std::get<Key<CMP>>(st_key);
+        }
+
+        template<typename CMP>
+        constexpr void removeCMP() {
+            //if(hasCMP<CMP>())
+            assert(hasCMP<CMP>());
+            cmpmask -= cmp_storage::cmp_info::template mask<CMP>();
         }
 
         template<typename TAG>
@@ -89,6 +94,32 @@ struct EntityMan2 {
 
     Entity& createEntity() { return entities_.emplace_back(); }
 
+    void destroyEntity(Entity& e) {
+        //std::cout<<"Entro\n";
+        size_t i{};
+        for(auto& del : entities_) {
+            if(e.getID() == del.getID()) {
+                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2>(e);
+                entities_.erase(entities_.begin()+i);
+                break;
+            }
+            ++i;
+        }
+    }
+
+    template<typename... CMPs>
+    void removeComponents(Entity& e){
+        assert(sizeof...(CMPs) !=0);
+        (... && removeComponent<CMPs>(e));
+    }
+    
+    template<typename CMP>
+    bool removeComponent(Entity& e) {
+        if(e.template hasCMP<CMP>())
+            deleteComponent<CMP>(e);
+        return true;
+    }
+
     template<typename T>
     void forall(T process) {
         for(auto& e : entities_){
@@ -127,6 +158,15 @@ private:
         Key<CMP> k = st.push_back(CMP{ std::forward<InitParam>(initVal)... });
         e.template addCMP<CMP>(k);
         return st[k];
+    }
+
+    template<typename CMP>
+    constexpr bool deleteComponent(Entity& e) noexcept{
+        assert(e.template hasCMP<CMP>());
+        auto k = e.template getKey<CMP>();
+        cmpStorage_.template getStorage<CMP>().erase(k);
+        e.template removeCMP<CMP>();
+        return true;
     }
 
     std::vector<Entity> entities_{};
