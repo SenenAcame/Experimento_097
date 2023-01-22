@@ -15,4 +15,5 @@ using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet>;
 using EntyMan       = EntityMan2<ComponentList, TagList>;
 using Enty          = EntyMan::Entity;
 
-void seetype(auto) { std::cout<<__PRETTY_FUNCTION__<<"\n"; }
+template<typename T>
+void seetype(T) { std::cout<<__PRETTY_FUNCTION__<<"\n"; }

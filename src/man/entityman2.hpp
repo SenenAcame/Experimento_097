@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <vector>
 #include "../cmp/rendercmp2.hpp"
 #include "../cmp/physicscmp2.hpp"
@@ -146,8 +147,9 @@ private:
         for(auto& e : entities_){
             bool hasCMPs = (true && ... && e.template hasCMP<CMPs>());
             bool hasTAGs = (true && ... && e.template hasTAG<TAGs>());
-            if(hasCMPs && hasTAGs)
+            if(hasCMPs && hasTAGs){
                 process(e, getComponent<CMPs>(e)...);
+            }
         }
     }
 

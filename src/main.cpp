@@ -1,59 +1,43 @@
 #include "main.hpp"
 #include "cmp/inputcmp2.hpp"
 #include "cmp/physicscmp2.hpp"
-#include "cmp/rendercmp2.hpp"
 #include "sys/rensys2.hpp"
 #include "sys/physys2.hpp"
 #include "sys/colsys2.hpp"
 #include "sys/inpsys2.hpp"
 #include "util/types.hpp"
 
-//void printEntity(Enty const& e){
-//    std::cout<<"Mascara de componentes: "<<e.hasCMP<PhysicsCmp2>();
-//    std::cout<<e.hasCMP<RenderCmp2>();
-//    std::cout<<e.hasCMP<InputCmp2>();
-//    std::cout<<"\n";
-//}
-//
-//void printTagEntity(Enty const& e){
-//    std::cout<<"Mascara de tags: "<<e.hasTAG<TPlayer>();
-//    std::cout<<e.hasTAG<TEnemy>();
-//    std::cout<<e.hasTAG<TBullet>();
-//    std::cout<<"\n";
-//}
-
 void game2() {
-    EntyMan     EM;
-    PhySys2     PhySys;
-    RenSys2     RenSys;
-    ColSys2     ColSys;
-    InpSys2     InpSys;
-    TheEngine   dev {1080, 720, &InpSys};
+    EntyMan   EM;
+    PhySys2   PhySys;
+    RenSys2   RenSys;
+    ColSys2   ColSys;
+    InpSys2   InpSys;
+    TheEngine dev {1080, 720, &InpSys};
+    dev.getDevice()->getCursorControl()->setVisible(false);
+    auto cam = dev.getCamera();
 
-    Enty& e1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e1, 5.f, 0.f, 20.f, 0.f, 0.f, 0.f);
-    EM.addComponent<RenderCmp2> (e1, dev.createSphere());
-    EM.addComponent<InputCmp2>  (e1);
+    Enty& map = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
+    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
 
-    Enty& e2 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.f, 0.f, 0.f);
-    EM.addComponent<RenderCmp2> (e2, dev.createSphere());
+    Enty& player = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.f, .z=5.f});
+    EM.addComponent<RenderCmp2> (player, dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam));
+    EM.addComponent<InputCmp2>  (player);
+    EM.addTag<TPlayer>(player);
+    
+    Enty& enemy1 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{.x=9.f, .z=20.f});
+    EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
 
-    //if(e2.hasCMP<PhysicsCmp2>())
-    //    std::cout<<"Componente existe\n";
-    //else
-    //    std::cout<<"Componente no existe\n";
-    //
-    //if(e2.hasCMP<RenderCmp2>())
-    //    std::cout<<"Componente existe\n";
-    //else
-    //    std::cout<<"Componente no existe\n";
-    //
-    //if(e2.hasCMP<InputCmp2>())
-    //    std::cout<<"Componente existe\n";
-    //else
-    //    std::cout<<"Componente no existe\n";
+    Enty& enemy2 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=9.f, .z=25.f});
+    EM.addComponent<RenderCmp2> (enemy2, dev.createModel("assets/enemy.obj","assets/portal1.bmp"));
 
+    Enty& enemy3 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
+    EM.addComponent<RenderCmp2> (enemy3, dev.createModel("assets/enemy.obj","assets/faerie2.bmp"));
 
     while(dev.run()){
         RenSys.update(EM, dev);
@@ -96,53 +80,50 @@ void game(){
     //camera->setRotation(pos);
 
     auto& map = EM.createEntity();
-    map.render->node = dev.createMap();
+    map.render->node = dev.createModel("assets/salas_visibles.obj","assets/wall.bmp");
     map.tipo = 'm';
     map.physics->y = -3.0f;
     
-    Entity& e = EM.createEntity();
-    e.render->node = dev.createPlayer();
-    e.physics->x = 0.5f;
-    e.physics->y = -2.0f;
-    e.physics->z = 5.0f;
-    
-    e.tipo = 'p';
-
-    e.render->node->setParent(cam);
+    Entity& player = EM.createEntity();
+    player.render->node = dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam);
+    player.physics->x = 0.5f;
+    player.physics->y = -2.0f;
+    player.physics->z = 5.0f;
+    player.tipo = 'p';
     //cam->setParent(e.render->node);
     //auto& v = cam->getTarget();
 
-    auto& e2 = EM.createEntity();
-    e2.tipo = 'e';
-    e2.render->node = dev.createEnemy("assets/fire.bmp");
-    e2.physics->z = 20.0f;
-    e2.physics->x = 9.0f;
+    auto& enemy1 = EM.createEntity();
+    enemy1.tipo = 'e';
+    enemy1.render->node = dev.createModel("assets/enemy.obj","assets/fire.bmp");
+    enemy1.physics->z = 20.0f;
+    enemy1.physics->x = 9.0f;
 
-    auto& e3 = EM.createEntity();
-    e3.tipo = 'w';
-    e3.render->node = dev.createWeapon1();
-    e3.physics->z = 30.0f;
-    e3.physics->x = 5.0f;
+    auto& weapon = EM.createEntity();
+    weapon.tipo = 'w';
+    weapon.render->node = dev.createModel("assets/pistola.obj","assets/portal7.bmp");
+    weapon.physics->z = 30.0f;
+    weapon.physics->x = 5.0f;
 
-    auto& e4 = EM.createEntity();
-    e4.tipo = 'e';
-    e4.render->node = dev.createEnemy("assets/portal1.bmp");
-    e4.physics->z = 25.0f;
-    e4.physics->x = 9.0f;
+    auto& enemy2 = EM.createEntity();
+    enemy2.tipo = 'e';
+    enemy2.render->node = dev.createModel("assets/enemy.obj","assets/portal1.bmp");
+    enemy2.physics->z = 25.0f;
+    enemy2.physics->x = 9.0f;
 
-    auto& e5 = EM.createEntity();
-    e5.tipo = 'e';
-    e5.render->node = dev.createEnemy("assets/faerie2.bmp");
-    e5.physics->z = 15.0f;
-    e5.physics->x = 9.0f;
+    auto& enemy3 = EM.createEntity();
+    enemy3.tipo = 'e';
+    enemy3.render->node = dev.createModel("assets/enemy.obj","assets/faerie2.bmp");
+    enemy3.physics->z = 15.0f;
+    enemy3.physics->x = 9.0f;
 
-//    Cosas para probar sonidos
-    SouSys.createinstance(e,8);                 //crear y asignarle instancia de sonido
+    //    Cosas para probar sonidos
+    SouSys.createinstance(player,8);            //crear y asignarle instancia de sonido
     //SouSys.changesound(e,1);                  //cambiar a sonido 2(0=Agree, 1=Disagree, 2=Smoke)
     //SouSys.startsound(e);  
-//
-    SouSys.createinstance(e2,0);
-    SouSys.startsound(e2); 
+    //
+    SouSys.createinstance(enemy1,0);
+    SouSys.startsound(enemy1); 
 
     ///irr::scene::ICameraSceneNode *cam= dev.getCamera();
     ///cam->setPosition(irr::core::vector3df(0,0,-10));
@@ -160,6 +141,6 @@ void game(){
 }
 
 int main(){
-    game();
-    //game2();
+    //game();
+    game2();
 }

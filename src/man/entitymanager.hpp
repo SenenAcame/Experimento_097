@@ -155,7 +155,7 @@ struct EntityManager : public GameContext {
                // }
                 if(keyb.isKeyPressed(inp.key_shot)){
                     auto& bullet = createBullet(e, eng.getCameraTarget());
-                    bullet.render->node = eng.addBullet();
+                    bullet.render->node = eng.createSphere(0.5);
                     keyb.keyReleased(inp.key_shot);
                 }
                 if(keyb.isKeyPressed(inp.key_sound1)){
@@ -165,7 +165,6 @@ struct EntityManager : public GameContext {
                     sounsys.startsound(e); 
                 }
                 //if(keyb.isKeyPressed(inp.key_sound3)){
-//
                 //}
             }
         }

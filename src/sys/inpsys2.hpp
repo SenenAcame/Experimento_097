@@ -5,29 +5,31 @@
 #include <iostream>
 
 struct InpSys2 : public irr::IEventReceiver{
-    using SYSCMPs = MP::Typelist<InputCmp2, PhysicsCmp2>;
+    using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2>;
     using SYSTAGs = MP::Typelist<>;
 
     void update(EntyMan& EM, TheEngine& eng) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, InputCmp2& i, PhysicsCmp2& p) {
-                p.vx = 0;
-                p.vy = 0;
-                if(keyboard.isKeyPressed(i.key_left)){
-                    //std::cout<<"A\n";
-                    //p.vx = -0.1;
+            [&](Enty&, InputCmp2& i, RenderCmp2& r) {
+                if(keyboard.isKeyPressed(i.key_shot)){
+                    Enty& bullet = EM.createEntity();
+                    EM.addComponent<PhysicsCmp2>(
+                        bullet, PhysicsCmp2{
+                            .x =r.n->getParent()->getPosition().X+7,
+                            .y =r.n->getParent()->getPosition().Y-2,
+                            .z =r.n->getParent()->getPosition().Z-1,
+                            .vx=0.2f
+                        }
+                    );
+                    EM.addComponent<RenderCmp2>(bullet, eng.createSphere(0.5));
+                    EM.addTag<TBullet>(bullet);
+                    keyboard.keyReleased(i.key_shot);
                 }
-                if(keyboard.isKeyPressed(i.key_right)){
-                    //std::cout<<"D\n";
-                    //p.vx = 0.1;
+                if(keyboard.isKeyPressed(i.key_sound1)){
+                    
                 }
-                if(keyboard.isKeyPressed(i.key_up)){
-                    //std::cout<<"W\n";
-                    //p.vy = 0.1;
-                }
-                if(keyboard.isKeyPressed(i.key_down)){
-                    //std::cout<<"S\n";
-                    //p.vy = -0.1;
+                if(keyboard.isKeyPressed(i.key_sound2)){
+                    
                 }
             }
         );
@@ -47,10 +49,22 @@ struct InpSys2 : public irr::IEventReceiver{
                     break;
                 case irr::KEY_KEY_D:
                     checkPressed(event, XK_D);
-                    break;    
+                    break;
+                case irr::KEY_KEY_B:
+                    checkPressed(event, XK_B);
+                    break; 
+                case irr::KEY_KEY_N:
+                    checkPressed(event, XK_N);
+                    break; 
+                case irr::KEY_KEY_M:
+                    checkPressed(event, XK_M);
+                    break; 
                 case irr::KEY_KEY_P:
                     checkPressed(event, XK_P);
-                    break; 
+                    break;
+                case irr::KEY_ESCAPE:
+                    exit(0);
+                    break;
                 default:
                     break;
             }
