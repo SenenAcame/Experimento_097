@@ -64,14 +64,12 @@ void game2() {
 }
 
 void game(){
-    /*
     InputSystem           InpSys;
     PhysicsSystem         PhySys;
     RenderSystem          RenSys;
     CollisionSystem       ColSys;
     EntityManager<Entity> EM;
     TheEngine             dev {1080, 720, &InpSys};
-    */
     
     //auto camera = dev.getCamera();
     //irr::core::vector3df tar = camera->getTarget();
@@ -88,7 +86,6 @@ void game(){
     //irr::core::vector3df pos(0);
     //camera->setRotation(pos);
 
-    /*
     auto& map = EM.createEntity();
     map.render->node = dev.createMap();
     map.tipo = 'm';
@@ -110,7 +107,6 @@ void game(){
     e3.render->node = dev.createWeapon1();
     e3.physics->z = 30.0f;
     e3.physics->x = 5.0f;
-    */
 
     ///irr::scene::ICameraSceneNode *cam= dev.getCamera();
     ///cam->setPosition(irr::core::vector3df(0,0,-10));
@@ -118,14 +114,12 @@ void game(){
     //cam->bindTargetAndRotation(true); 
     //falta poner lookat al vector posicionActual + vectorForWard	
     
-    /*
     while(dev.run()){
         RenSys.update(EM, dev);
         InpSys.update(EM, dev);
         PhySys.update(EM);
         ColSys.update(EM);
     }
-    */
 }
 
 int main(){
