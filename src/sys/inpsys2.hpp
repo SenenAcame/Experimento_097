@@ -2,13 +2,35 @@
 #include "../util/keyboard.hpp"
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
+#include <iostream>
 
 struct InpSys2 : public irr::IEventReceiver{
-    using SYSCMPs = MP::Typelist<InputCmp2>;
+    using SYSCMPs = MP::Typelist<InputCmp2, PhysicsCmp2>;
     using SYSTAGs = MP::Typelist<>;
 
     void update(EntyMan& EM, TheEngine& eng) {
-        
+        EM.foreach<SYSCMPs, SYSTAGs>(
+            [&](Enty& e, InputCmp2& i, PhysicsCmp2& p) {
+                p.vx = 0;
+                p.vy = 0;
+                if(keyboard.isKeyPressed(i.key_left)){
+                    //std::cout<<"A\n";
+                    //p.vx = -0.1;
+                }
+                if(keyboard.isKeyPressed(i.key_right)){
+                    //std::cout<<"D\n";
+                    //p.vx = 0.1;
+                }
+                if(keyboard.isKeyPressed(i.key_up)){
+                    //std::cout<<"W\n";
+                    //p.vy = 0.1;
+                }
+                if(keyboard.isKeyPressed(i.key_down)){
+                    //std::cout<<"S\n";
+                    //p.vy = -0.1;
+                }
+            }
+        );
     }
 
     virtual bool OnEvent(const irr::SEvent& event) {

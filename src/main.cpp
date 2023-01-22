@@ -22,7 +22,7 @@
 //    std::cout<<"\n";
 //}
 
-void game(){
+void game2() {
     EntyMan     EM;
     PhySys2     PhySys;
     RenSys2     RenSys;
@@ -36,7 +36,7 @@ void game(){
     EM.addComponent<InputCmp2>  (e1);
 
     Enty& e2 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.1f, 0.f, 0.f);
+    EM.addComponent<PhysicsCmp2>(e2, -5.f, 0.f, 20.f, 0.f, 0.f, 0.f);
     EM.addComponent<RenderCmp2> (e2, dev.createSphere());
 
     //if(e2.hasCMP<PhysicsCmp2>())
@@ -61,7 +61,9 @@ void game(){
         InpSys.update(EM, dev);
         ColSys.update(EM);
     }
+}
 
+void game(){
     /*
     InputSystem           InpSys;
     PhysicsSystem         PhySys;
@@ -128,4 +130,5 @@ void game(){
 
 int main(){
     game();
+    //game2();
 }

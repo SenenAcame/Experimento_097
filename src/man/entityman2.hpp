@@ -95,7 +95,6 @@ struct EntityMan2 {
     Entity& createEntity() { return entities_.emplace_back(); }
 
     void destroyEntity(Entity& e) {
-        //std::cout<<"Entro\n";
         size_t i{};
         for(auto& del : entities_) {
             if(e.getID() == del.getID()) {
