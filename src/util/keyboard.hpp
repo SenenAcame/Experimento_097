@@ -16,8 +16,8 @@ struct Keyboard{
     Keyboard& operator=(Keyboard&&)      = delete;
 
     bool isKeyPressed(KeySym k) noexcept;
-    void keyPressed(KeySym k)   noexcept;
-    void keyReleased(KeySym k)  noexcept;
+    void keyPressed  (KeySym k) noexcept;
+    void keyReleased (KeySym k) noexcept;
 
 private:
     OptIter getIterator(KeySym k) noexcept;
