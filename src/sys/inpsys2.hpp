@@ -2,6 +2,7 @@
 #include "../util/keyboard.hpp"
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
+#include <cmath>
 #include <iostream>
 
 struct InpSys2 : public irr::IEventReceiver{
@@ -15,10 +16,12 @@ struct InpSys2 : public irr::IEventReceiver{
                     Enty& bullet = EM.createEntity();
                     EM.addComponent<PhysicsCmp2>(
                         bullet, PhysicsCmp2{
-                            .x =r.n->getParent()->getPosition().X+7,
-                            .y =r.n->getParent()->getPosition().Y-2,
-                            .z =r.n->getParent()->getPosition().Z-1,
-                            .vx=0.2f
+                            .x =r.n->getParent()->getPosition().X,
+                            .y =r.n->getParent()->getPosition().Y,
+                            .z =r.n->getParent()->getPosition().Z,
+                            .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 0.4f,
+                            .vy=-sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 0.4f,
+                            .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 0.4f
                         }
                     );
                     EM.addComponent<RenderCmp2>(bullet, eng.createSphere(0.5));
