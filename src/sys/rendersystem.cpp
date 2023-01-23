@@ -4,6 +4,7 @@
 #include <imgui/src/imgui_impl_opengl3.h>
 #include <optional>
 #include <stdio.h>
+#include "../cmp/debug.hpp"
 
 RenderSystem::RenderSystem(uint32_t w, uint32_t h)
     : m_w{w}, m_h{h}
@@ -87,13 +88,13 @@ void RenderSystem::ImGui_renderFrameBuffer() const noexcept{
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     */
 }
-void RenderSystem::ImGui_renderUI() const noexcept{
+void RenderSystem::ImGui_renderUI(EntityManager<Entity>& EM) const noexcept{
     auto& io { ImGui::GetIO() };
 
     ImGui::Begin("Window test");
     ImGui::Text("Hola Mundo, ImGui!");
     static bool dbgWindow { false };
-    {
+    { // MAIN WINDOW
         static bool showFPS { true };
         if(ImGui::Button("Boton")){
             if(showFPS==true)   showFPS=false;
@@ -110,7 +111,14 @@ void RenderSystem::ImGui_renderUI() const noexcept{
     }
     {//Debug Window
         if(dbgWindow){
+            Debug& dbgB {EM.getDbgBoard()};
+            static int fps_i {60};
+            static int fps_s {60};
         ImGui::Begin("Debug Window");
+        ImGui::SliderInt("FPS", &fps_i, 1, 100, NULL, 0);
+        ImGui::SliderInt("simFPS", &fps_s, 1, 100, NULL, 0);
+        dbgB.simfps = fps_s;
+        dbgB.fps = fps_i;
         ImGui::End();
         } 
     }
@@ -135,7 +143,7 @@ void RenderSystem::update(EntityManager<Entity>& EM, TheEngine& GFX){
     GFX.drawAll();
     GFX.endScene();
     glClear(GL_COLOR_BUFFER_BIT);
-    ImGui_renderUI();
+    ImGui_renderUI(EM);
     ImGui_renderFrameBuffer();
     ImGui_postRender();
 }

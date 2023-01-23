@@ -16,7 +16,7 @@ private:
 void ImGui_preRender() const noexcept;
 void ImGui_postRender() const noexcept;
 void ImGui_renderFrameBuffer() const noexcept;
-void ImGui_renderUI() const noexcept;
+void ImGui_renderUI(EntityManager<Entity>& EM) const noexcept;
     unsigned int const m_h, m_w;
     GLFWwindow* m_window {nullptr};
     std::unique_ptr<uint32_t[]> m_framebuffer;

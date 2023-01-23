@@ -86,8 +86,9 @@ void game(){
     ///cam->setParent(e.render->node);
     //cam->bindTargetAndRotation(true); 
     //falta poner lookat al vector posicionActual + vectorForWard	
-
+    
     while(dev.run()){
+        uint64_t nanos {1000000000/EM.getDbgBoard().fps};
         RenSys.update(EM, dev);
         InpSys.update(EM, dev, SouSys);
         PhySys.update(EM);
