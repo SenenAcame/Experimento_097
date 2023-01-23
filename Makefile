@@ -21,7 +21,7 @@ CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o
 HPP      := %.hpp
-CCACHE   := ccache
+#CCACHE   := ccache
 CC		 := g++
 C		 := gcc
 MKDIR 	 := mkdir -p
@@ -30,11 +30,11 @@ OBJ		 := obj
 #LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
 LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib
 INCS	 := -Ilib
-#EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
+EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
 STD++	 := -std=c++20
 STD		 := -std=c17
 SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=libs/
+DINAMIC  := -Wl,-rpath=lib/FMOD/LIBS
 
 ifdef RELEASE
 	CCFLAGS += -O3
@@ -69,7 +69,7 @@ clean:
 	rm -f -r "./obj"
 
 play:
-	./$(APP)
+	$(EXPTR) ./$(APP)
 
 lib:
 	$(MAKE) -C lib

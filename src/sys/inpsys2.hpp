@@ -20,11 +20,12 @@ struct InpSys2 : public irr::IEventReceiver{
                             .y =r.n->getParent()->getPosition().Y,
                             .z =r.n->getParent()->getPosition().Z,
                             .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 0.4f,
-                            .vy=-sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 0.4f,
+                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 0.4f,
                             .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 0.4f
                         }
                     );
                     EM.addComponent<RenderCmp2>(bullet, eng.createSphere(0.5));
+                    EM.addComponent<EstadoCmp> (bullet);
                     EM.addTag<TBullet>(bullet);
                     keyboard.keyReleased(i.key_shot);
                 }

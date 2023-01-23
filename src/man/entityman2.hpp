@@ -139,6 +139,14 @@ struct EntityMan2 {
     }
 
     auto& getEntities() { return entities_; }
+    auto& getEntityById(auto id) { 
+        for(auto& cont:entities_){
+            if(cont.getID()== id){
+                return cont;
+                break;
+            }
+        }
+    }
     auto& getStorage()  { return cmpStorage_; }
 
 private:
