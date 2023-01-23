@@ -27,7 +27,8 @@ struct ColSys2 {
                                  if(dist <= 0.5 && dist!=0.0){
                             //         std::cout<<"Impacto\n";
                             //         //marcar el estado a he colisionado con el id de E
-                                     EM.getComponent<EstadoCmp>(a).colision = 1;
+                                    //00000010 --> colision,
+                                     EM.getComponent<EstadoCmp>(a).colision = 1<<1;
                                      EM.getComponent<EstadoCmp>(a).entityCol = e.getID();
                                      //std::cout<<EM.getComponent<EstadoCmp>(a).colision <<"Impacto\n";
                                      //std::cout<<EM.getComponent<EstadoCmp>(a).entityCol <<"Impacto\n";

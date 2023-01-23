@@ -37,7 +37,8 @@ struct EntityMan2 {
         constexpr void removeCMP() {
             //if(hasCMP<CMP>())
             assert(hasCMP<CMP>());
-            cmpmask -= cmp_storage::cmp_info::template mask<CMP>();
+            cmpmask -= cmp_storage::cmp_info::template mask<CMP>(); //RESTA de bit
+            //devuelve un 1 espaciado con un valor de id
         }
 
         template<typename TAG>
