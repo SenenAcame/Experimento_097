@@ -7,6 +7,7 @@
 #include "sys/physys2.hpp"
 #include "sys/colsys2.hpp"
 #include "sys/inpsys2.hpp"
+#include "sys/nodemapsys.hpp"
 #include "util/types.hpp"
 
 void game2() {
@@ -16,13 +17,15 @@ void game2() {
     ColSys2   ColSys;
     InpSys2   InpSys;
     AISys     AISys;
+    NodeMapSys  MapSys;
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
 
-    //Enty& map = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
-    //EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
+    Enty& map = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
+    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.f, .z=5.f});
