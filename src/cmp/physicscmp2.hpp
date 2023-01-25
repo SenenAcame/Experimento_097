@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include <cstdint>
 
 struct PhysicsCmp2 {
@@ -8,5 +9,8 @@ struct PhysicsCmp2 {
     double v_ang {0};
     double orien {0};
 
+    static constexpr double kMxLin {5.0};
+    static constexpr double kMxAng {6 * M_PI};
+    static constexpr double kEpsil {0.5};
     static constexpr uint8_t id {0};
 };

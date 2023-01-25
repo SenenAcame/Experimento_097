@@ -1,27 +1,28 @@
 #pragma once
 #include "../util/types.hpp"
-#include <iostream>
+#include <cmath>
+//#include <iostream>
 
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs = MP::Typelist<>;
+    constexpr static double factor = 1.0/60;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, PhysicsCmp2& p) {
-                //if(e.hasTAG<TPlayer>()){
-                //    auto& r = EM.getComponent<RenderCmp2>(e);
-                //    p.x = r.n->getParent()->getPosition().X;
-                //    p.y = r.n->getParent()->getPosition().Y;
-                //    p.z = r.n->getParent()->getPosition().Z;
-                //    std::cout<<p.x<<" "<<p.y<<" "<<p.z<<" "<<"\n";
-                //}
-                //else{
-                    //std::cout<<"oe\n";
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.z += p.vz;
-                //}
+            [&](Enty&, PhysicsCmp2& p) {
+
+                p.orien += factor * p.v_ang;
+
+                if(p.orien > 2*M_PI) p.orien -= 2*M_PI;
+                if(p.orien < 0)      p.orien += 2*M_PI;
+
+                p.vx =  p.v_lin * std::sin(p.orien);
+                p.vz =  p.v_lin * std::cos(p.orien);
+
+                p.x += factor * p.vx;
+                p.y += factor * p.vy;
+                p.z += factor * p.vz;
             }
         );
     }
