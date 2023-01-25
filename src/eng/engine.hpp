@@ -34,6 +34,7 @@ struct TheEngine {
             return nullptr;
         }
         auto node = loadNode(mesh, asset);
+        //node->setRotation({0,90,0});
         return node;
     }
 

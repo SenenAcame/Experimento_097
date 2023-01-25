@@ -9,7 +9,7 @@ struct RenSys2 {
     void update(EntyMan& EM, TheEngine& GFX) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, PhysicsCmp2 const& p, RenderCmp2& r){
-                r.n->setPosition({p.x, p.y, p.z});
+                r.n->setPosition({static_cast<float>(p.x), static_cast<float>(p.y), static_cast<float>(p.z)});
             }
         );
         drawAll(GFX);
