@@ -1,28 +1,34 @@
 #pragma once
 #include "../util/types.hpp"
 #include <cmath>
+#include <numbers>
 //#include <iostream>
 
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs = MP::Typelist<>;
-    constexpr static double factor = 1.0/60;
+    constexpr static double dt = 1.0/60;
+    static constexpr double PI { std::numbers::pi };
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty&, PhysicsCmp2& p) {
+            [&](Enty& e, PhysicsCmp2& p) {
+                if(e.hasTAG<TBullet>()){
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.z += p.vz;
+                }
+                else{
+                    p.orien += dt * p.v_ang;
+                    if      (p.orien > 2*PI) p.orien -= 2*PI;
+                    else if (p.orien < 0)    p.orien += 2*PI;
 
-                p.orien += factor * p.v_ang;
+                    p.vx =  p.v_lin * std::cos(p.orien);
+                    p.vz =  p.v_lin * std::sin(p.orien);
 
-                if(p.orien > 2*M_PI) p.orien -= 2*M_PI;
-                if(p.orien < 0)      p.orien += 2*M_PI;
-
-                p.vx =  p.v_lin * std::sin(p.orien);
-                p.vz =  p.v_lin * std::cos(p.orien);
-
-                p.x += factor * p.vx;
-                p.y += factor * p.vy;
-                p.z += factor * p.vz;
+                    p.x += dt * p.vx;
+                    p.z += dt * p.vz;
+                }
             }
         );
     }
