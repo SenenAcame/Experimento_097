@@ -23,9 +23,9 @@ void game2() {
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
 
-    //Enty& map = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
-    //EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
+    Enty& map = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
+    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
 
     //EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
 
@@ -36,15 +36,15 @@ void game2() {
     EM.addTag      <TPlayer>    (player);
     
     Enty& enemy1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{ .x= 0.0, .y=0.0, .z=50.0, .orien=0.0, .v_lin=0.0, .v_ang=0.0 });
+    EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
-    EM.addComponent<AICmp>      (enemy1, -30.0, 30.0, true, 1.0, 0.1, SB::Seek);
+    EM.addComponent<AICmp>      (enemy1, -10.0, -20.0, true, 1.0, 0.001, SB::Seek);
     EM.addTag      <TEnemy>     (enemy1);
 
     Enty& enemy2 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=-50.0f, .z=-25.0f});
+    EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
     EM.addComponent<RenderCmp2> (enemy2, dev.createModel("assets/enemy.obj","assets/portal1.bmp"));
-    EM.addComponent<AICmp>      (enemy2, -30.0, 30.0, true, 1.0, 2.0, SB::Arrive);
+    EM.addComponent<AICmp>      (enemy2, -10.0, -20.0, true, 5.0, 2.0, SB::Seek);
     EM.addTag      <TEnemy>     (enemy2);
 
     //Enty& enemy3 = EM.createEntity();
