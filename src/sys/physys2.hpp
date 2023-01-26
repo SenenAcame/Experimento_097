@@ -28,6 +28,15 @@ struct PhySys2 {
 
                     p.x += dt * p.vx;
                     p.z += dt * p.vz;
+
+                    p.v_lin += dt * p.a_lin;
+                    p.v_ang += dt * p.a_ang;
+                    p.v_lin = irr::core::clamp(p.v_lin, -p.kMxVLin, p.kMxVLin);
+                    p.v_ang = irr::core::clamp(p.v_ang, -p.kMxVAng, p.z);
+
+                    auto roz = dt * std::fabs(p.v_lin) * (p.kRoz);
+                    if(p.v_lin > 0) p.v_lin -= roz;
+                    else            p.v_lin += roz;
                 }
             }
         );
