@@ -26,19 +26,24 @@ void game2() {
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.f, .z=5.f});
     EM.addComponent<RenderCmp2> (player, dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam));
-    EM.addComponent<InputCmp2>  (player); 
+    EM.addComponent<InputCmp2>  (player);
+    EM.addComponent<EstadoCmp> (player);
+    EM.addComponent<EstadisticaCmp> (player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<InventarioCmp> (player);
     EM.addTag<TPlayer>(player);
+
     
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{.x=9.f, .z=20.f});
     EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
-    //EM.addComponent<EstadoCmp> (enemy1);
+    EM.addComponent<EstadoCmp> (enemy1);
+    EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addTag<TEnemy>(enemy1);
 
     Enty& enemy2 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=9.f, .z=25.f});
     EM.addComponent<RenderCmp2> (enemy2, dev.createModel("assets/enemy.obj","assets/portal1.bmp"));
-    //EM.addComponent<EstadoCmp> (enemy2);
+    EM.addComponent<EstadoCmp> (enemy2);
     EM.addTag<TEnemy>(enemy2);
 
     Enty& enemy3 = EM.createEntity();

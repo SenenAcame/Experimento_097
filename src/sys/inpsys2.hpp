@@ -13,7 +13,9 @@ struct InpSys2 : public irr::IEventReceiver{
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty&, InputCmp2& i, RenderCmp2& r) {
                 if(keyboard.isKeyPressed(i.key_shot)){
+                    //cambiar por funcion de disparo en funcion de inventario array y el modelo arma
                     Enty& bullet = EM.createEntity();
+                    EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f});
                     EM.addComponent<PhysicsCmp2>(
                         bullet, PhysicsCmp2{
                             .x =r.n->getParent()->getPosition().X,

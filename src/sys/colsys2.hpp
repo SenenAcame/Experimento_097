@@ -14,7 +14,7 @@ struct ColSys2 {
                     //    //Aqui las que no tienen estado
                     //   
                     //}
-                    if(a.hasTAG<TEnemy>() || a.hasTAG<TBullet>() ){
+                    if(a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>() ){
                         if(a.hasCMP<EstadoCmp>()){
                             
                             if( EM.getComponent<EstadoCmp>(a).colision == 0){
@@ -30,6 +30,9 @@ struct ColSys2 {
                                     //00000010 --> colision,
                                      EM.getComponent<EstadoCmp>(a).colision = 1<<1;
                                      EM.getComponent<EstadoCmp>(a).entityCol = e.getID();
+                                     if(a.hasTAG<TPlayer>() && EM.getComponent<EstadoCmp>(a).colision ==1){
+                                         std::cout<<"Soy player y he chocado\n";
+                                     }
                                      //std::cout<<EM.getComponent<EstadoCmp>(a).colision <<"Impacto\n";
                                      //std::cout<<EM.getComponent<EstadoCmp>(a).entityCol <<"Impacto\n";
 
