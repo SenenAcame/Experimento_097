@@ -13,7 +13,7 @@ struct PhysicsCmp2 {
     double a_lin {0};
     double a_ang {0};
 
-    static constexpr double kMxVLin {7.0};
+    static constexpr double kMxVLin {10.0};
     static constexpr double kMxALin {kMxVLin/0.5};
     static constexpr double kMxVAng {3 * std::numbers::pi};
     static constexpr double kMxAAng {kMxVAng/3.0};
