@@ -18,16 +18,16 @@ void game2() {
     ColSys2   ColSys;
     InpSys2   InpSys;
     AISys     AISys;
-    //NodeMapSys  MapSys;
+    NodeMapSys  MapSys;
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
 
-    //Enty& map = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
-    //EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
-
-    //EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
+    Enty& map = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
+    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
+    EM.addTag<TMap>(map);
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
@@ -53,6 +53,7 @@ void game2() {
 
     while(dev.run()){
         RenSys.update(EM, dev);
+        MapSys.update(EM);
         AISys. update(EM);
         PhySys.update(EM);
         InpSys.update(EM, dev);
