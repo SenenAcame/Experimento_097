@@ -55,6 +55,7 @@ void game2() {
 
     Enty& weaponsou = EM.createEntity();
     EM.addComponent<SoundCmp>   (weaponsou, SouSys.createinstance(1));
+    EM.addTag      <TWeapon>        (weaponsou);
 
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
@@ -90,10 +91,10 @@ void game2() {
     while(dev.run()){
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
-        AISys.   update(EM, dt);
+        AISys.   update(EM, dt, SouSys);
         PhySys.  update(EM, dt);
-        InpSys.  update(EM, dev);
-        ColSys.  update(EM);
+        InpSys.  update(EM, dev, SouSys);
+        ColSys.  update(EM, SouSys);
         SouSys.  update();
         LogicSys.update(EM);
     }

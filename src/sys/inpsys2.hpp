@@ -10,7 +10,7 @@ struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2>;
     using SYSTAGs = MP::Typelist<>;
 
-    void update(EntyMan& EM, TheEngine& eng) {
+    void update(EntyMan& EM, TheEngine& eng, SoundSystem_t& SS) {
         auto& bb = EM.getBoard();
         auto cam   = eng.getCamera();
         EM.foreach<SYSCMPs, SYSTAGs>(
@@ -62,6 +62,12 @@ struct InpSys2 : public irr::IEventReceiver{
                         EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                         EM.addComponent<EstadoCmp> (bullet);
                         EM.addTag<TBullet>(bullet);
+                        for(auto& a : EM.getEntities()){
+                            if(a.hasTAG<TWeapon>()){
+                                SS.changesound(EM.getComponent<SoundCmp>(a),2);
+                                SS.startsound(EM.getComponent<SoundCmp>(a));
+                            }
+                        }
                     }
                     keyboard.keyReleased(i.key_shot);
                 }
@@ -88,7 +94,12 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(i.key_reloadALLAmmo)){
                     EM.getComponent<InventarioCmp>(player).ammo1=10;
                     EM.getComponent<InventarioCmp>(player).ammo2=5;
-
+                    for(auto& a : EM.getEntities()){
+                        if(a.hasTAG<TWeapon>()){
+                            SS.changesound(EM.getComponent<SoundCmp>(a),1);
+                            SS.startsound(EM.getComponent<SoundCmp>(a));
+                        }
+                    }
                 }
                 if(keyboard.isKeyPressed(i.key_weapon1)){
                     EM.getComponent<InventarioCmp>(player).inventary[EM.getComponent<InventarioCmp>(player).equipada] = 1;

@@ -16,8 +16,8 @@ struct LogicSystem {
                             if(stats.hitpoints <=0){
                                 p.alive=1; //set to destroy
                             }
-                            std::cout<<"SOY Jugador: "<<e.getID()<<"Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
-                            " y ahora tengo" <<stats.hitpoints<<"\n";
+                            //std::cout<<"SOY Jugador: "<<e.getID()<<"Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
+                            //" y ahora tengo" <<stats.hitpoints<<"\n";
                         }
                     }
                     else if(e.hasTAG<TEnemy>()){

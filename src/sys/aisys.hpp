@@ -8,39 +8,39 @@ struct AISys {
     using SYSTAGs = MP::Typelist<>;
     static constexpr auto PI { std::numbers::pi };
 
-    constexpr double arcTan(double const y, double const x) const noexcept{
+     double arcTan(double const y, double const x) const {
         double arctan = std::atan2(y, x);
         while (arctan < 0) arctan += 2*PI;
         return arctan;
     }
 
-    constexpr double capLimits(double const value, double const limit) const noexcept{
+     double capLimits(double const value, double const limit) const {
         return irr::core::clamp(value, -limit, limit);
     }
 
-    constexpr double distancePoints(double const a, double const b) const noexcept{
+     double distancePoints(double const a, double const b) const {
         return a - b;
     }
 
-    constexpr double distanceModule(double const x, double const y) const noexcept{
+     double distanceModule(double const x, double const y) const {
         return std::sqrt(x*x + y*y);
     }
 
-    constexpr double distanceAngle(double const a, double const b) const noexcept{
+     double distanceAngle(double const a, double const b) const {
         double angDist = a - b;
         while (angDist >  PI) angDist -= 2*PI;
         while (angDist < -PI) angDist += 2*PI;
         return angDist;
     }
 
-    constexpr double angularVelocity(double const dx, double const dz, double const orien, double const time) const{
+     double angularVelocity(double const dx, double const dz, double const orien, double const time) const{
         auto t_ang      { arcTan(dz, dx) };
         auto t_ang_dist { distanceAngle(t_ang, orien) };
         double ang_vel  { t_ang_dist / time };
         return ang_vel;
     }
 
-    constexpr void arrive(AICmp& a, PhysicsCmp2& p) const noexcept{
+     void arrive(AICmp& a, PhysicsCmp2& p) const {
         p.v_ang = p.a_lin = 0;
 
         auto t_dx       { distancePoints(a.ox, p.x) };
@@ -58,7 +58,7 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-    constexpr void seek(AICmp& a, PhysicsCmp2& p) const noexcept{
+     void seek(AICmp& a, PhysicsCmp2& p) const {
         p.v_ang = p.a_lin = 0;
 
         auto t_dx       { distancePoints(a.ox, p.x) };
@@ -87,7 +87,7 @@ struct AISys {
         }
     }
 
-    void update(EntyMan& EM, double dt) {
+    void update(EntyMan& EM, double dt, SoundSystem_t& SS) {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
@@ -95,7 +95,18 @@ struct AISys {
                 if(e.hasCMP<EstadoCmp>()){
                     auto& est = EM.getComponent<EstadoCmp>(e);
                     if(est.alive){ 
+                        if(a.enable){
+                        SS.changesound(EM.getComponent<SoundCmp>(e),2);
+                        SS.startsound(EM.getComponent<SoundCmp>(e));
+                        for(auto& en : EM.getEntities()){
+                            if(en.hasTAG<TPlayer>()){
+                                SS.changesound(EM.getComponent<SoundCmp>(en),1);
+                                SS.startsound(EM.getComponent<SoundCmp>(en));
+                            }
+                        }
+                        }
                         a.enable=false;
+                        
                     }
                 }
 
