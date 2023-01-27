@@ -50,7 +50,7 @@ void game2() {
 void game(){
     InputSystem     InpSys;
     PhysicsSystem   PhySys;
-    RenderSystem    RenSys;
+    RenderSystem    RenSys(720, 640);
     CollisionSystem ColSys;
     SoundSystem_t   SouSys;
     EntityManager<Entity> EM;
@@ -132,6 +132,7 @@ void game(){
     //falta poner lookat al vector posicionActual + vectorForWard	
     
     while(dev.run()){
+        uint64_t nanos {1000000000/EM.getDbgBoard().fps};
         RenSys.update(EM, dev);
         InpSys.update(EM, dev, SouSys);
         PhySys.update(EM);

@@ -7,6 +7,7 @@
 #include "../util/keyboard.hpp"
 #include "../sys/soundsystem.hpp"
 #include <iostream>
+#include "../cmp/debug.hpp"
 
 template<typename Type>
 struct EntityManager : public GameContext {
@@ -16,6 +17,7 @@ struct EntityManager : public GameContext {
 
     explicit EntityManager(std::size_t kNUMENT = kNUMINIT){
         entities_.reserve(kNUMENT);
+        dbgBoard;
     }
 
     Entity& createEntity(){ 
@@ -185,7 +187,12 @@ struct EntityManager : public GameContext {
     const std::vector<SoundComponent>&     getSoundComponents()     const {return storage.getSoundComponents();};
           std::vector<SoundComponent>&     getSoundComponents()           {return storage.getSoundComponents();};
 
+    const Debug&                           getDbgBoard()            const {return dbgBoard;};
+          Debug&                           getDbgBoard()                  {return dbgBoard;};
+    void setFps(double d) {dbgBoard.fps = d;};
+
     private:
     std::vector<Type> entities_{};
     ComponentStorage storage {kNUMINIT};
+    Debug dbgBoard;
 };
