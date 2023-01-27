@@ -30,7 +30,7 @@ void game2() {
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
-    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
+    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/salas_visibles.obj","assets/textures/wall.bmp"));
     EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
     EM.addComponent<SoundCmp>   (map, SouSys.createinstance(0));
     EM.addTag      <TMap>       (map);
@@ -38,7 +38,7 @@ void game2() {
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
-    EM.addComponent<RenderCmp2>     (player, dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam));
+    EM.addComponent<RenderCmp2>     (player, dev.createPlayer("assets/models/player_arm.obj","assets/textures/fire.bmp", cam));
     EM.addComponent<InputCmp2>      (player);
     EM.addComponent<EstadoCmp>      (player);
     EM.addComponent<EstadisticaCmp> (player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
@@ -59,7 +59,7 @@ void game2() {
 
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
-    EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
+    EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
     EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
     EM.addComponent<EstadoCmp>      (enemy1);
     EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
@@ -68,7 +68,7 @@ void game2() {
 
     Enty& enemy2 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
-    EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/enemy.obj","assets/portal1.bmp"));
+    EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
     EM.addComponent<AICmp>          (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .cooldown=0.1 });
     EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<EstadoCmp>      (enemy2);
@@ -77,7 +77,7 @@ void game2() {
 
     Enty& enemy3 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
-    EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/enemy.obj","assets/faerie2.bmp"));
+    EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
     EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
     EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
     EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});

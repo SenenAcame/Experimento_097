@@ -96,17 +96,16 @@ struct AISys {
                     auto& est = EM.getComponent<EstadoCmp>(e);
                     if(est.alive){ 
                         if(a.enable){
-                        SS.changesound(EM.getComponent<SoundCmp>(e),2);
-                        SS.startsound(EM.getComponent<SoundCmp>(e));
-                        for(auto& en : EM.getEntities()){
-                            if(en.hasTAG<TPlayer>()){
-                                SS.changesound(EM.getComponent<SoundCmp>(en),1);
-                                SS.startsound(EM.getComponent<SoundCmp>(en));
+                            SS.changesound(EM.getComponent<SoundCmp>(e),2);
+                            SS.startsound(EM.getComponent<SoundCmp>(e));
+                            for(auto& en : EM.getEntities()){
+                                if(en.hasTAG<TPlayer>()){
+                                    SS.changesound(EM.getComponent<SoundCmp>(en),1);
+                                    SS.startsound(EM.getComponent<SoundCmp>(en));
+                                }
                             }
                         }
-                        }
                         a.enable=false;
-                        
                     }
                 }
 
