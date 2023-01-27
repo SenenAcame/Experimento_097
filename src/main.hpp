@@ -7,3 +7,4 @@
 #include "sys/soundsystem.hpp"
 #include "sys/collisionsystem.hpp"
 #include "cmp/debug.hpp"
+#include "eng/GlgEngine.hpp"
