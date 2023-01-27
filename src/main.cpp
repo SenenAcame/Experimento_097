@@ -38,13 +38,13 @@ void game2() {
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
-    EM.addComponent<AICmp>      (enemy1, -10.0, -20.0, true, 1.0, 0.1, SB::Arrive, 0.5);
+    EM.addComponent<AICmp>      (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
     EM.addTag      <TEnemy>     (enemy1);
 
     Enty& enemy2 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
     EM.addComponent<RenderCmp2> (enemy2, dev.createModel("assets/enemy.obj","assets/portal1.bmp"));
-    EM.addComponent<AICmp>      (enemy2, -10.0, -20.0, true, 5.0, 2.0, SB::Seek, 0.1);
+    EM.addComponent<AICmp>      (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .cooldown=0.1 });
     EM.addTag      <TEnemy>     (enemy2);
 
     //Enty& enemy3 = EM.createEntity();

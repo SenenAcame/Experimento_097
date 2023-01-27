@@ -4,6 +4,7 @@
 #include "../eng/engine.hpp"
 #include <cmath>
 #include <iostream>
+#include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2>;
@@ -73,6 +74,16 @@ struct InpSys2 : public irr::IEventReceiver{
                     break;
                 default:
                     break;
+            }
+        }
+        else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
+            switch(event.MouseInput.Event) {
+                case irr::EMIE_LMOUSE_PRESSED_DOWN:
+                    irr::SEvent ev ;
+                    ev.KeyInput.PressedDown = true;
+                    checkPressed( ev, XK_P);
+                break;
+                default: break;
             }
         }
         return false;
