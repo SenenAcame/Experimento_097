@@ -11,22 +11,33 @@ struct InpSys2 : public irr::IEventReceiver{
 
     void update(EntyMan& EM, TheEngine& eng) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty&, InputCmp2& i, RenderCmp2& r) {
+            [&](Enty& player, InputCmp2& i, RenderCmp2& r) {
                 if(keyboard.isKeyPressed(i.key_shot)){
                     //cambiar por funcion de disparo en funcion de inventario array y el modelo arma
+                    //std::cout<<"Arma equipada: " <<EM.getComponent<InventarioCmp>(player).equipada<<
+                    "\n";
                     Enty& bullet = EM.createEntity();
-                    EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f});
+                    if(EM.getComponent<InventarioCmp>(player).equipada==0){ //pistol
+                        EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=20.f, .speed=0.8f, .bulletRad=0.1f});
+                    }
+                    else if (EM.getComponent<InventarioCmp>(player).equipada==1){ //escopeta
+                        EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f, .bulletRad=0.5f});
+                    }
                     EM.addComponent<PhysicsCmp2>(
                         bullet, PhysicsCmp2{
                             .x =r.n->getParent()->getPosition().X,
                             .y =r.n->getParent()->getPosition().Y,
                             .z =r.n->getParent()->getPosition().Z,
-                            .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 0.4f,
-                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 0.4f,
-                            .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 0.4f
+                            .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                            EM.getComponent<EstadisticaCmp>(bullet).speed,
+                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 
+                            EM.getComponent<EstadisticaCmp>(bullet).speed,
+                            .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                            EM.getComponent<EstadisticaCmp>(bullet).speed
                         }
                     );
-                    EM.addComponent<RenderCmp2>(bullet, eng.createSphere(0.5));
+                    
+                    EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                     EM.addComponent<EstadoCmp> (bullet);
                     EM.addTag<TBullet>(bullet);
                     keyboard.keyReleased(i.key_shot);
@@ -36,6 +47,20 @@ struct InpSys2 : public irr::IEventReceiver{
                 }
                 if(keyboard.isKeyPressed(i.key_sound2)){
                     
+                }
+                if(keyboard.isKeyPressed(i.key_weapon1)){
+                    EM.getComponent<InventarioCmp>(player).inventary[EM.getComponent<InventarioCmp>(player).equipada] = 1;
+                    EM.getComponent<InventarioCmp>(player).equipada = 0;
+                    EM.getComponent<InventarioCmp>(player).inventary[0] = 2;
+                }
+                if(keyboard.isKeyPressed(i.key_weapon2)){
+                    
+                    if(EM.getComponent<InventarioCmp>(player).inventary[1] != 0){
+                        
+                        EM.getComponent<InventarioCmp>(player).inventary[EM.getComponent<InventarioCmp>(player).equipada] = 1;
+                        EM.getComponent<InventarioCmp>(player).equipada = 1;
+                        EM.getComponent<InventarioCmp>(player).inventary[1] = 2;
+                    }
                 }
             }
         );
@@ -67,6 +92,12 @@ struct InpSys2 : public irr::IEventReceiver{
                     break; 
                 case irr::KEY_KEY_P:
                     checkPressed(event, XK_P);
+                    break;
+                case irr::KEY_KEY_1:
+                    checkPressed(event,XK_1);
+                    break;
+                    case irr::KEY_KEY_2:
+                    checkPressed(event,XK_2);
                     break;
                 case irr::KEY_ESCAPE:
                     exit(0);

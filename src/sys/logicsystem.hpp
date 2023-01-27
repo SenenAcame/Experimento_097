@@ -29,10 +29,10 @@ struct LogicSystem {
                             stats.hitpoints -= EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).damage;
                             if(stats.hitpoints <=0){
                                 p.alive=1; //set to destroy
-                                std::cout<<"Ahora tengo estado "<<p.alive<<"\n";
+                                //std::cout<<"Ahora tengo estado "<<p.alive<<"\n";
                             }
-                            std::cout<<"SOY ENTIDAD: "<<e.getID()<<" Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
-                            " y ahora tengo" <<stats.hitpoints<<"\n";
+                           // std::cout<<"SOY ENTIDAD: "<<e.getID()<<" Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
+                           // " y ahora tengo" <<stats.hitpoints<<"\n";
                         }
                         else if(EM.getEntityById(p.entityCol).hasTAG<TPlayer>()){
 
