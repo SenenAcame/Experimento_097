@@ -9,9 +9,12 @@ struct InputCmp2 {
     KeySym key_right  {XK_D};
     KeySym key_down   {XK_S};
     KeySym key_shot   {XK_P};
+    KeySym key_reloadALLAmmo   {XK_R};
+    KeySym key_weapon1{XK_1};
+    KeySym key_weapon2{XK_2};
     KeySym key_sound1 {XK_B};
     KeySym key_sound2 {XK_N};
     KeySym key_sound3 {XK_M};
 
-    static constexpr uint8_t id {2};
+    static constexpr uint8_t id {2}; //00000100
 };

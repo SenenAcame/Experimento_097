@@ -9,6 +9,7 @@
 #include "sys/colsys2.hpp"
 #include "sys/inpsys2.hpp"
 #include "sys/nodemapsys.hpp"
+#include "sys/logicsystem.hpp"
 #include "util/types.hpp"
 
 void game2() {
@@ -19,6 +20,7 @@ void game2() {
     InpSys2   InpSys;
     AISys     AISys;
     NodeMapSys  MapSys;
+    LogicSystem LogicSys;
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
@@ -33,13 +35,20 @@ void game2() {
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
     EM.addComponent<RenderCmp2> (player, dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam));
     EM.addComponent<InputCmp2>  (player);
-    EM.addTag      <TPlayer>    (player);
+    EM.addComponent<EstadoCmp> (player);
+    EM.addComponent<EstadisticaCmp> (player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<InventarioCmp> (player);
+    EM.addTag<TPlayer>(player);
+
     
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
     EM.addComponent<AICmp>      (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
     EM.addTag      <TEnemy>     (enemy1);
+    EM.addComponent<EstadoCmp> (enemy1);
+    EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addTag<TEnemy>(enemy1);
 
     Enty& enemy2 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
@@ -50,8 +59,14 @@ void game2() {
     //Enty& enemy3 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>(enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
     //EM.addComponent<RenderCmp2> (enemy3, dev.createModel("assets/enemy.obj","assets/faerie2.bmp"));
+    EM.addComponent<EstadoCmp> (enemy2);
+    EM.addTag<TEnemy>(enemy2);
 
     constexpr double dt = 1.0/60;
+    EM.addComponent<EstadoCmp> (enemy3);
+    EM.addTag<TEnemy>(enemy3);
+
+
 
     while(dev.run()){
         RenSys.update(EM, dev);
@@ -60,6 +75,8 @@ void game2() {
         PhySys.update(EM, dt);
         InpSys.update(EM, dev);
         ColSys.update(EM);
+        LogicSys.update(EM);
+
     }
 }
 
