@@ -92,6 +92,13 @@ struct AISys {
 
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, AICmp& a, PhysicsCmp2& p) {
+                if(e.hasCMP<EstadoCmp>()){
+                    auto& est = EM.getComponent<EstadoCmp>(e);
+                    if(est.alive){ 
+                        a.enable=false;
+                    }
+                }
+
                 percept(bb, a, dt);
 
                 if(!a.enable) return;

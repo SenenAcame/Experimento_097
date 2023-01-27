@@ -10,13 +10,11 @@ struct LogicSystem {
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& e, EstadoCmp& p, EstadisticaCmp& stats) {
                 if(p.colision !=0){
-
                     if(e.hasTAG<TPlayer>()){
                         if(EM.getEntityById(p.entityCol).hasTAG<TEnemy>()){
                             stats.hitpoints -=EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).damage;
                             if(stats.hitpoints <=0){
                                 p.alive=1; //set to destroy
-                                std::cout<<"Ahora tengo estado "<<p.alive<<"\n";
                             }
                             std::cout<<"SOY Jugador: "<<e.getID()<<"Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
                             " y ahora tengo" <<stats.hitpoints<<"\n";
@@ -53,18 +51,13 @@ struct LogicSystem {
                             if(EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).hitpoints<=0){
                                 EM.getComponent<EstadoCmp>(EM.getEntityById(p.entityCol)).alive = 1; //set to destroy
                             }
-                           
                         }
                         p.alive = 1; //set to destroy
-                        
-                        
                     }
                     ////valores por defecto
                     p.colision = 0;
                     p.entityCol = 0;
                 }
-                
-                
             }
         );
     }

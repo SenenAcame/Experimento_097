@@ -18,7 +18,7 @@ struct TBullet { static constexpr uint8_t id {2}; };
 struct TMap    { static constexpr uint8_t id {3}; };
 
 using ComponentList = MP::Typelist<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>;
-using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TMap>;
+using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap>;
 using EntyMan       = EntityMan2<ComponentList, TagList>;
 using Enty          = EntyMan::Entity;
 

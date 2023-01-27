@@ -27,5 +27,5 @@ struct nodo {
 struct NodoCmp {
     std::vector<nodo> nodos;
 
-    static constexpr uint8_t id {5};
+    static constexpr uint8_t id {8};
 };

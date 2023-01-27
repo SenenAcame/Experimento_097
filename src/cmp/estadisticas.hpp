@@ -7,5 +7,5 @@ struct EstadisticaCmp {
     float  bulletRad{}; 
     
 
-    static constexpr uint8_t id {4}; //0001000
+    static constexpr uint8_t id {6}; //0001000
 };
