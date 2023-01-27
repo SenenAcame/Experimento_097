@@ -49,10 +49,10 @@ struct AISys {
 
         if  (t_lin_dist < a.arrivalRadius) { a.enable = false; return; }
 
+        auto t_ang_vel  { angularVelocity(t_dx, t_dz, p.orien, a.timeArrive) };
+
         auto t_lin_vel  { capLimits(t_lin_dist/a.timeArrive, p.kMxVLin) };
         auto t_lin_acc  { (t_lin_vel - p.v_lin)/a.timeArrive };
-
-        auto t_ang_vel  { angularVelocity(t_dx, t_dz, p.orien, a.timeArrive) };
 
         p.a_lin = capLimits(t_lin_acc, p.kMxALin);
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
@@ -73,9 +73,27 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-    void update(EntyMan& EM) {
+    void percept(BlackBoardCmp& board, AICmp& ai, double delta) {
+        ai.time += delta;
+        if( ai.time <= ai.cooldown ) return;
+
+        ai.time -= ai.cooldown;
+
+        if(board.tactive) {
+            ai.ox = board.tx;
+            ai.oz = board.tz;
+            ai.behaviour = board.behaviour;
+            board.tactive = false;
+        }
+    }
+
+    void update(EntyMan& EM, double dt) {
+        auto& bb = EM.getBoard();
+
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, AICmp& a, PhysicsCmp2& p) {
+                percept(bb, a, dt);
+
                 if(!a.enable) return;
 
                 switch(a.behaviour){

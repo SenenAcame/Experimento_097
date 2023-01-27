@@ -10,6 +10,8 @@ struct InpSys2 : public irr::IEventReceiver{
     using SYSTAGs = MP::Typelist<>;
 
     void update(EntyMan& EM, TheEngine& eng) {
+        auto& bb = EM.getBoard();
+        auto cam   = eng.getCamera();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty&, InputCmp2& i, RenderCmp2& r) {
                 if(keyboard.isKeyPressed(i.key_shot)){
@@ -34,6 +36,7 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(i.key_sound2)){
                     
                 }
+                bb = { cam->getPosition().X, cam->getPosition().Z, SB::Seek, true };
             }
         );
     }
