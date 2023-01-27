@@ -9,6 +9,7 @@ struct InputCmp2 {
     KeySym key_right  {XK_D};
     KeySym key_down   {XK_S};
     KeySym key_shot   {XK_P};
+    KeySym key_reloadALLAmmo   {XK_R};
     KeySym key_weapon1{XK_1};
     KeySym key_weapon2{XK_2};
     KeySym key_sound1 {XK_B};

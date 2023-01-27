@@ -15,31 +15,51 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(i.key_shot)){
                     //cambiar por funcion de disparo en funcion de inventario array y el modelo arma
                     //std::cout<<"Arma equipada: " <<EM.getComponent<InventarioCmp>(player).equipada<<
-                    "\n";
-                    Enty& bullet = EM.createEntity();
-                    if(EM.getComponent<InventarioCmp>(player).equipada==0){ //pistol
-                        EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=20.f, .speed=0.8f, .bulletRad=0.1f});
+                    //"\n";
+                    int ammo=0;
+                    switch (EM.getComponent<InventarioCmp>(player).equipada)
+                    {
+                    case 0:
+                        ammo = EM.getComponent<InventarioCmp>(player).ammo1;
+                        break;
+                    case 1:
+                        ammo = EM.getComponent<InventarioCmp>(player).ammo2;
+                        break;
+
+                    default:
+                        break;
                     }
-                    else if (EM.getComponent<InventarioCmp>(player).equipada==1){ //escopeta
-                        EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f, .bulletRad=0.5f});
-                    }
-                    EM.addComponent<PhysicsCmp2>(
-                        bullet, PhysicsCmp2{
-                            .x =r.n->getParent()->getPosition().X,
-                            .y =r.n->getParent()->getPosition().Y,
-                            .z =r.n->getParent()->getPosition().Z,
-                            .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
-                            EM.getComponent<EstadisticaCmp>(bullet).speed,
-                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 
-                            EM.getComponent<EstadisticaCmp>(bullet).speed,
-                            .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
-                            EM.getComponent<EstadisticaCmp>(bullet).speed
-                        }
-                    );
                     
-                    EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
-                    EM.addComponent<EstadoCmp> (bullet);
-                    EM.addTag<TBullet>(bullet);
+                    if(ammo>0){
+                        Enty& bullet = EM.createEntity();
+                        if(EM.getComponent<InventarioCmp>(player).equipada==0){ //pistol
+                            EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=20.f, .speed=0.8f, .bulletRad=0.1f});
+                            ammo-=1;
+                            EM.getComponent<InventarioCmp>(player).ammo1-=1;
+                        }
+                        else if (EM.getComponent<InventarioCmp>(player).equipada==1){ //escopeta
+                            EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f, .bulletRad=0.5f});
+                            ammo-=1;
+                            EM.getComponent<InventarioCmp>(player).ammo2-=1;
+                        }
+                        EM.addComponent<PhysicsCmp2>(
+                            bullet, PhysicsCmp2{
+                                .x =r.n->getParent()->getPosition().X,
+                                .y =r.n->getParent()->getPosition().Y,
+                                .z =r.n->getParent()->getPosition().Z,
+                                .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                                EM.getComponent<EstadisticaCmp>(bullet).speed,
+                                .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 
+                                EM.getComponent<EstadisticaCmp>(bullet).speed,
+                                .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                                EM.getComponent<EstadisticaCmp>(bullet).speed
+                            }
+                        );
+
+                        EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+                        EM.addComponent<EstadoCmp> (bullet);
+                        EM.addTag<TBullet>(bullet);
+                    }
                     keyboard.keyReleased(i.key_shot);
                 }
                 if(keyboard.isKeyPressed(i.key_sound1)){
@@ -61,6 +81,11 @@ struct InpSys2 : public irr::IEventReceiver{
                         EM.getComponent<InventarioCmp>(player).equipada = 1;
                         EM.getComponent<InventarioCmp>(player).inventary[1] = 2;
                     }
+                }
+                if(keyboard.isKeyPressed(i.key_reloadALLAmmo)){
+                    EM.getComponent<InventarioCmp>(player).ammo1=10;
+                    EM.getComponent<InventarioCmp>(player).ammo2=5;
+
                 }
             }
         );
@@ -92,6 +117,9 @@ struct InpSys2 : public irr::IEventReceiver{
                     break; 
                 case irr::KEY_KEY_P:
                     checkPressed(event, XK_P);
+                    break;
+                case irr::KEY_KEY_R:
+                    checkPressed(event, XK_R);
                     break;
                 case irr::KEY_KEY_1:
                     checkPressed(event,XK_1);
