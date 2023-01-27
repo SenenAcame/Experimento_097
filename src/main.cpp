@@ -4,6 +4,7 @@
 #include "cmp/physicscmp2.hpp"
 #include "eng/engine.hpp"
 #include "sys/aisys.hpp"
+#include "cmp/soundcmp2.hpp"
 #include "sys/rensys2.hpp"
 #include "sys/physys2.hpp"
 #include "sys/colsys2.hpp"
@@ -21,6 +22,8 @@ void game2() {
     AISys     AISys;
     NodeMapSys  MapSys;
     LogicSystem LogicSys;
+    SoundSystem_t   SouSys;
+
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
@@ -30,6 +33,8 @@ void game2() {
     EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
     EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
     EM.addTag<TMap>(map);
+    EM.addComponent<SoundCmp>   (map, SouSys.createinstance(0));
+    EM.addTag<TMap>(map);
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
@@ -38,9 +43,15 @@ void game2() {
     EM.addComponent<EstadoCmp> (player);
     EM.addComponent<EstadisticaCmp> (player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<InventarioCmp> (player);
+    EM.addComponent<SoundCmp>   (player, SouSys.createinstance(8));
     EM.addTag<TPlayer>(player);
+    Enty& playerwalksou = EM.createEntity();
+    EM.addComponent<SoundCmp>   (playerwalksou, SouSys.createinstance(4));
+    Enty& playerdamagesou = EM.createEntity();
+    EM.addComponent<SoundCmp>   (playerdamagesou, SouSys.createinstance(3));
+    Enty& weaponsou = EM.createEntity();
+    EM.addComponent<SoundCmp>   (weaponsou, SouSys.createinstance(1));
 
-    
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
@@ -49,6 +60,7 @@ void game2() {
     EM.addComponent<EstadoCmp> (enemy1);
     EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addTag<TEnemy>(enemy1);
+    EM.addComponent<SoundCmp>   (enemy1, SouSys.createinstance(7));
 
     Enty& enemy2 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
@@ -66,7 +78,14 @@ void game2() {
     EM.addComponent<EstadoCmp> (enemy3);
     EM.addTag<TEnemy>(enemy3);
 
+    EM.addComponent<SoundCmp>   (enemy2, SouSys.createinstance(7));
 
+    Enty& enemy3 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
+    EM.addComponent<RenderCmp2> (enemy3, dev.createModel("assets/enemy.obj","assets/faerie2.bmp"));
+    EM.addComponent<SoundCmp>   (enemy3, SouSys.createinstance(7));
+
+    SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
     while(dev.run()){
         RenSys.update(EM, dev);
@@ -77,6 +96,7 @@ void game2() {
         ColSys.update(EM);
         LogicSys.update(EM);
 
+        SouSys.update();
     }
 }
 
@@ -151,12 +171,12 @@ void game(){
     enemy3.physics->x = 9.0f;
 
     //    Cosas para probar sonidos
-    SouSys.createinstance(player,8);            //crear y asignarle instancia de sonido
+    //SouSys.createinstance(player,8);            //crear y asignarle instancia de sonido
     //SouSys.changesound(e,1);                  //cambiar a sonido 2(0=Agree, 1=Disagree, 2=Smoke)
     //SouSys.startsound(e);  
     //
-    SouSys.createinstance(enemy1,0);
-    SouSys.startsound(enemy1); 
+    //SouSys.createinstance(enemy1,0);
+    //SouSys.startsound(enemy1); 
 
     ///irr::scene::ICameraSceneNode *cam= dev.getCamera();
     ///cam->setPosition(irr::core::vector3df(0,0,-10));

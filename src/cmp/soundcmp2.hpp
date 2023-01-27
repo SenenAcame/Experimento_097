@@ -1,5 +1,5 @@
 #pragma once
-#include "component.hpp"
+#include <cstdint>
 extern "C"{
     #include <FMOD/src/fmod_errors.h>
 }
@@ -7,14 +7,16 @@ extern "C"{
 #include <FMOD/src/fmod_studio.hpp>
 #include <FMOD/src/common.hpp>
 
-/*struct ProgrammerSoundContext {
+struct ProgrammerSoundContext {
     FMOD::System* coreSystem;
     FMOD::Studio::System* system;
-};*/
-
-struct SoundComponent : public Component{
-    explicit SoundComponent(std::size_t eid) : Component(eid){};
-   // ProgrammerSoundContext programmerSoundContext{};
     FMOD::Studio::EventInstance* sound{};
     FMOD_STUDIO_PARAMETER_ID id;
+};
+
+struct SoundCmp{
+    ProgrammerSoundContext programmerSoundContext{};
+
+    static constexpr uint8_t id {7};
+    
 };

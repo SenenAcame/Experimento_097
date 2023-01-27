@@ -2,10 +2,8 @@
 
 #include <string>
 #include <iostream>
-//#include "../man/entitymanager.hpp"
 #include "../eng/fachada.hpp"
 
-struct Entity;
 struct SoundSystem_t{
     private:
         TheFachada facherita;
@@ -13,9 +11,9 @@ struct SoundSystem_t{
     public:
         explicit SoundSystem_t();
         void update();
-        void createinstance(Entity&, int);
+        ProgrammerSoundContext createinstance(int);
         void close();
-        void startsound(Entity&);
-        void changesound(Entity&,unsigned int);
+        void startsound(SoundCmp&);
+        void changesound(SoundCmp&,unsigned int);
     };
     
