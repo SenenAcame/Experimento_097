@@ -1,5 +1,4 @@
 #include "fachada.hpp"
-#include "../man/entitymanager.hpp"
 
 
 void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
@@ -118,65 +117,68 @@ void TheFachada::createdescriptions(){
     ERRCHECK(soundSystem->getEvent("event:/Voces/Personaje", &personajeDescription) );
 }
 
-void TheFachada::createinstance(Entity& e, int tipo){
+ProgrammerSoundContext TheFachada::createinstance(int tipo){
 
+    ProgrammerSoundContext sound;
     FMOD::Studio::EventInstance* eventInstance = nullptr;
 
     switch(tipo){
         case 0:
             ERRCHECK(ambienteDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramAmbiente.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramAmbiente.id), 0.0f));
             break;
         case 1:
             ERRCHECK(armaDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramArma.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramArma.id), 0.0f));
             break;
             
         case 2:
             ERRCHECK(mejoraDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramMejora.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMejora.id), 0.0f));
             break;
         case 3:
             ERRCHECK(danyoDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramDanyo.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramDanyo.id), 0.0f));
             break;
         case 4:
             ERRCHECK(moverseDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramMoverse.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMoverse.id), 0.0f));
             break;
         case 5:
             ERRCHECK(menuDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramMenu.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMenu.id), 0.0f));
             break;
         case 6:
             ERRCHECK(musicaDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramMusica.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMusica.id), 0.0f));
             break;
         case 7:
             ERRCHECK(enemigoDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramEnemigo.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramEnemigo.id), 0.0f));
             break;
         default:
             ERRCHECK(personajeDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((e.sound->id=paramPersonaje.id), 0.0f));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramPersonaje.id), 0.0f));
     }
 
-    e.sound->programmerSoundContext.system = soundSystem;
-    e.sound->programmerSoundContext.coreSystem = coreSystem;
+    sound.system = soundSystem;
+    sound.coreSystem = coreSystem;
 
-    ERRCHECK( eventInstance->setUserData(&e.sound->programmerSoundContext) );
+    ERRCHECK( eventInstance->setUserData(&sound) );
     ERRCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
 
     
-    e.sound->sound = eventInstance;
+    sound.sound = eventInstance;
+
+    return sound;
 }
 
-void TheFachada::changesound(Entity& e ,unsigned int indice){
-    ERRCHECK(e.sound->sound->setParameterByID(e.sound->id, indice));
+void TheFachada::changesound(SoundCmp& s ,unsigned int indice){
+    ERRCHECK(s.programmerSoundContext.sound->setParameterByID(s.programmerSoundContext.id, indice));
 }
 
-void TheFachada::startsound(Entity& e){
-    ERRCHECK( e.sound->sound->start() );
+void TheFachada::startsound(SoundCmp& s){
+    ERRCHECK( s.programmerSoundContext.sound->start() );
     
 }
 

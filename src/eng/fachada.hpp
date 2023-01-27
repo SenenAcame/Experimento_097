@@ -2,15 +2,14 @@
 
 #include <string>
 #include <iostream>
+#include "../util/types.hpp"
 extern "C"{
     #include <FMOD/src/fmod_errors.h>
 }
 #include <FMOD/src/fmod.hpp>
 #include <FMOD/src/fmod_studio.hpp>
 #include <FMOD/src/common.hpp>
-//#include "../man/entitymanager.hpp"
 
-struct Entity;
 struct TheFachada{
 
     private:
@@ -48,10 +47,10 @@ struct TheFachada{
         void chargebanks();
         explicit TheFachada();
         void update();
-        void createinstance(Entity&,int);
+        ProgrammerSoundContext createinstance(int);
         void close();
-        void startsound(Entity&);
-        void changesound(Entity&,unsigned int);
+        void startsound(SoundCmp&);
+        void changesound(SoundCmp&,unsigned int);
         void chargeparameters();
         void createdescriptions();
     };
