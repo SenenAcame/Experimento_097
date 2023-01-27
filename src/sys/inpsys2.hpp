@@ -4,12 +4,15 @@
 #include "../eng/engine.hpp"
 #include <cmath>
 #include <iostream>
+#include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2>;
     using SYSTAGs = MP::Typelist<>;
 
     void update(EntyMan& EM, TheEngine& eng) {
+        auto& bb = EM.getBoard();
+        auto cam   = eng.getCamera();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty&, InputCmp2& i, RenderCmp2& r) {
                 if(keyboard.isKeyPressed(i.key_shot)){
@@ -34,6 +37,7 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(i.key_sound2)){
                     
                 }
+                bb = { cam->getPosition().X, cam->getPosition().Z, SB::Seek, true };
             }
         );
     }
@@ -70,6 +74,16 @@ struct InpSys2 : public irr::IEventReceiver{
                     break;
                 default:
                     break;
+            }
+        }
+        else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
+            switch(event.MouseInput.Event) {
+                case irr::EMIE_LMOUSE_PRESSED_DOWN:
+                    irr::SEvent ev ;
+                    ev.KeyInput.PressedDown = true;
+                    checkPressed( ev, XK_P);
+                break;
+                default: break;
             }
         }
         return false;

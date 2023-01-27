@@ -1,10 +1,14 @@
 #include "main.hpp"
+#include "cmp/aicmp.hpp"
 #include "cmp/inputcmp2.hpp"
 #include "cmp/physicscmp2.hpp"
+#include "eng/engine.hpp"
+#include "sys/aisys.hpp"
 #include "sys/rensys2.hpp"
 #include "sys/physys2.hpp"
 #include "sys/colsys2.hpp"
 #include "sys/inpsys2.hpp"
+#include "sys/nodemapsys.hpp"
 #include "util/types.hpp"
 
 void game2() {
@@ -13,6 +17,8 @@ void game2() {
     RenSys2   RenSys;
     ColSys2   ColSys;
     InpSys2   InpSys;
+    AISys     AISys;
+    NodeMapSys  MapSys;
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
@@ -20,28 +26,38 @@ void game2() {
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
     EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
+    EM.addTag<TMap>(map);
 
     Enty& player = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.f, .z=5.f});
+    EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
     EM.addComponent<RenderCmp2> (player, dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam));
     EM.addComponent<InputCmp2>  (player);
-    EM.addTag<TPlayer>(player);
+    EM.addTag      <TPlayer>    (player);
     
     Enty& enemy1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{.x=9.f, .z=20.f});
+    EM.addComponent<PhysicsCmp2>(enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2> (enemy1, dev.createModel("assets/enemy.obj","assets/fire.bmp"));
+    EM.addComponent<AICmp>      (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
+    EM.addTag      <TEnemy>     (enemy1);
 
     Enty& enemy2 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=9.f, .z=25.f});
+    EM.addComponent<PhysicsCmp2>(enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
     EM.addComponent<RenderCmp2> (enemy2, dev.createModel("assets/enemy.obj","assets/portal1.bmp"));
+    EM.addComponent<AICmp>      (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .cooldown=0.1 });
+    EM.addTag      <TEnemy>     (enemy2);
 
-    Enty& enemy3 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
-    EM.addComponent<RenderCmp2> (enemy3, dev.createModel("assets/enemy.obj","assets/faerie2.bmp"));
+    //Enty& enemy3 = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>(enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
+    //EM.addComponent<RenderCmp2> (enemy3, dev.createModel("assets/enemy.obj","assets/faerie2.bmp"));
+
+    constexpr double dt = 1.0/60;
 
     while(dev.run()){
         RenSys.update(EM, dev);
-        PhySys.update(EM);
+        MapSys.update(EM);
+        AISys. update(EM, dt);
+        PhySys.update(EM, dt);
         InpSys.update(EM, dev);
         ColSys.update(EM);
     }

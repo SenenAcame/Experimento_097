@@ -34,6 +34,7 @@ struct TheEngine {
             return nullptr;
         }
         auto node = loadNode(mesh, asset);
+        //node->setRotation({0,90,0});
         return node;
     }
 
@@ -42,7 +43,8 @@ struct TheEngine {
         node->setRotation({45,-90,0});
         node->setParent(cam);
         cam->setFOV(1);
-        cam->setTarget({200,0,20});
+        //cam->setTarget({200,0,20});
+        cam->setPosition({-10,0,-20});
         return node;
     };
 

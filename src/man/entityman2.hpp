@@ -1,9 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <vector>
-#include "../cmp/rendercmp2.hpp"
-#include "../cmp/physicscmp2.hpp"
-#include "../cmp/inputcmp2.hpp"
+#include "../cmp/blackboardcmp.hpp"
 #include "cmpstorage2.hpp"
 #include <iostream>
 
@@ -140,6 +138,7 @@ struct EntityMan2 {
 
     auto& getEntities() { return entities_; }
     auto& getStorage()  { return cmpStorage_; }
+    auto& getBoard()    { return blackboard_; }
 
 private:
     template<typename... CMPs, typename... TAGs>
@@ -170,6 +169,7 @@ private:
         return true;
     }
 
+    BlackBoardCmp       blackboard_ {};
     std::vector<Entity> entities_{};
-    cmp_storage cmpStorage_{};
+    cmp_storage         cmpStorage_{};
 };
