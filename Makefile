@@ -29,7 +29,7 @@ SRC		 := src
 OBJ		 := obj
 LIBDIR	 := lib
 #LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
-LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib -L$(LIBDIR) -limgui -lGL #-lglfw -lGLEW 
+LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib -L$(LIBDIR) -limgui -lGL -lglfw -lGLEW 
 INCS	 := -Ilib
 #EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/
 STD++	 := -std=c++20
