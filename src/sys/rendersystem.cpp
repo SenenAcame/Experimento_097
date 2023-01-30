@@ -111,7 +111,7 @@ void RenderSystem::ImGui_renderUI(EntyMan& EM) const noexcept{
     }
     {//Debug Window
         if(dbgWindow){
-            Debug& dbgB {EM.getComponent<dbgBoard>};
+            Debug& dbgB {EM.getDbgBoard()};
             static int fps_i {60};
             static int fps_s {60};
         ImGui::Begin("Debug Window");
@@ -124,7 +124,7 @@ void RenderSystem::ImGui_renderUI(EntyMan& EM) const noexcept{
     }
 }
 
-void RenderSystem::update(EntyMan EM, TheEngine& GFX){
+void RenderSystem::update(EntyMan& EM, TheEngine& GFX){
     ImGui_preRender();
 
     //auto lambda = [](Entity& e) {

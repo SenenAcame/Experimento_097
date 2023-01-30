@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <vector>
 #include "../cmp/blackboardcmp.hpp"
+#include "../cmp/debug.hpp"
 #include "cmpstorage2.hpp"
 #include <iostream>
 
@@ -148,6 +149,7 @@ struct EntityMan2 {
     }
     auto& getStorage()  { return cmpStorage_; }
     auto& getBoard()    { return blackboard_; }
+    auto& getDbgBoard() { return dbgBoard_;   }
 
 private:
     template<typename... CMPs, typename... TAGs>
@@ -181,5 +183,5 @@ private:
     BlackBoardCmp       blackboard_ {};
     std::vector<Entity> entities_{};
     cmp_storage         cmpStorage_{};
-    Debug               dbgBoard{};
+    Debug               dbgBoard_{};
 };

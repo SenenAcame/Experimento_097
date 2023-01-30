@@ -1,5 +1,5 @@
 #pragma once
-#include "../man/entitymanager.hpp"
+#include "../util/types.hpp"
 #include "../eng/engine.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

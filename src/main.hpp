@@ -4,6 +4,6 @@
 //#include "sys/physicsystem.hpp"
 #include "sys/rendersystem.hpp"
 //#include "sys/inputsystem.hpp"
-//#include "sys/soundsystem.hpp"
+#include "sys/soundsystem.hpp"
 //#include "sys/collisionsystem.hpp"
 //#include "cmp/debug.hpp"
