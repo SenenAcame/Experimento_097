@@ -59,7 +59,7 @@ struct TheEngine {
             /*const core::vector3df & scale =*/ irr::core::vector3df(1.F, 1.F, 1.F));
         if (!node) throw std::runtime_error("Couldn't create sphere");
 
-        auto* texture = driver_->getTexture("assets/wall.bmp");
+        auto* texture = driver_->getTexture("assets/textures/wall.bmp");
         if (!texture) throw std::runtime_error("Couldn't create texture");
 
         node->setPosition(irr::core::vector3df(0,0,0));
