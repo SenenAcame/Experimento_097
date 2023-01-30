@@ -17,7 +17,7 @@ void game2() {
     EntyMan       EM;
     PhySys2       PhySys;
     RenSys2       RenSys;
-    RenderSystem  imgui(720, 640);
+    //RenderSystem  imgui(720, 640);
     ColSys2       ColSys;
     InpSys2       InpSys;
     AISys         AISys;
@@ -91,7 +91,7 @@ void game2() {
     
     while(dev.run()){
         RenSys.  update(EM, dev);
-        imgui.   update(EM, dev);
+        //imgui.   update(EM, dev);
         MapSys.  update(EM);
         AISys.   update(EM, dt, SouSys);
         PhySys.  update(EM, dt);
