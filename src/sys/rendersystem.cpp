@@ -111,7 +111,7 @@ void RenderSystem::ImGui_renderUI(EntyMan& EM) const noexcept{
     }
     {//Debug Window
         if(dbgWindow){
-            Debug& dbgB {EM.getDbgBoard()};
+            Debug& dbgB {EM.getComponent<dbgBoard>};
             static int fps_i {60};
             static int fps_s {60};
         ImGui::Begin("Debug Window");

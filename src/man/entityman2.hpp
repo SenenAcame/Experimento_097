@@ -181,4 +181,5 @@ private:
     BlackBoardCmp       blackboard_ {};
     std::vector<Entity> entities_{};
     cmp_storage         cmpStorage_{};
+    Debug               dbgBoard{};
 };
