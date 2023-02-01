@@ -7,8 +7,8 @@
 #include "../cmp/inventario.hpp"
 #include "../cmp/aicmp.hpp"
 #include "../cmp/nodocmp.hpp"
-#include "../man/entityman2.hpp"
 #include "../cmp/soundcmp2.hpp"
+#include "../man/entityman2.hpp"
 #include "gameengine.hpp"
 #include <iostream>
 

@@ -2,9 +2,6 @@
 #include "../util/keyboard.hpp"
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
-#include <cmath>
-#include <iostream>
-#include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2>;

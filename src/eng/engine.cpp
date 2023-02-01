@@ -1,5 +1,4 @@
 #include "engine.hpp"
-#include <stdexcept>
 
 TheEngine::TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r) :width_{w}, height_{h}, receive{r}{
     if(!device_) throw std::runtime_error("Couldn't initialize device!!");

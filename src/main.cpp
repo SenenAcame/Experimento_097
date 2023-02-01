@@ -1,17 +1,4 @@
 #include "main.hpp"
-#include "cmp/aicmp.hpp"
-#include "cmp/inputcmp2.hpp"
-#include "cmp/physicscmp2.hpp"
-#include "eng/engine.hpp"
-#include "sys/aisys.hpp"
-#include "cmp/soundcmp2.hpp"
-#include "sys/rensys2.hpp"
-#include "sys/physys2.hpp"
-#include "sys/colsys2.hpp"
-#include "sys/inpsys2.hpp"
-#include "sys/nodemapsys.hpp"
-#include "sys/logicsystem.hpp"
-#include "util/types.hpp"
 
 void game2() {
     EntyMan       EM;

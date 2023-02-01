@@ -1,6 +1,5 @@
 #pragma once
 #include "../util/types.hpp"
-#include <iostream>
 
 struct LogicSystem {
     using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp>;

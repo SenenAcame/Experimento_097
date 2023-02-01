@@ -1,9 +1,7 @@
 #pragma once
-#include <cstddef>
-#include <vector>
 #include "../cmp/blackboardcmp.hpp"
+#include "../util/types.hpp"
 #include "cmpstorage2.hpp"
-#include <iostream>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct EntityMan2 {
@@ -98,12 +96,20 @@ struct EntityMan2 {
         size_t i{};
         for(auto& del : entities_) {
             if(e.getID() == del.getID()) {
-                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2>(e);
+                if(e.template hasCMP<RenderCmp2>())
+                    removeRender(e);
+
+                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp>(e);
                 entities_.erase(entities_.begin()+i);
                 break;
             }
             ++i;
         }
+    }
+
+    void removeRender(Entity& e) {
+        RenderCmp2& r = getComponent<RenderCmp2>(e);
+        r.n->remove();
     }
 
     template<typename... CMPs>
@@ -118,6 +124,14 @@ struct EntityMan2 {
             deleteComponent<CMP>(e);
         return true;
     }
+
+    //template<>
+    //bool removeComponent(Entity& e) {
+    //    if(e.template hasCMP<RenderCmp2>())
+    //        deleteComponent<RenderCmp2>(e);
+    //    return true;
+    //}
+//
 
     template<typename T>
     void forall(T process) {

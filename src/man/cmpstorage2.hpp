@@ -1,9 +1,7 @@
 #pragma once
-#include <cstddef>
 #include <tuple>
 #include "../util/slotmap.hpp"
 #include "../util/gameengine.hpp"
-#include "componentstorage.hpp"
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct CmpStorage2 {

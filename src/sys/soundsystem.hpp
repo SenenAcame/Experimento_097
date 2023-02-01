@@ -1,7 +1,4 @@
 #pragma once
-
-#include <string>
-#include <iostream>
 #include "../eng/fachada.hpp"
 
 struct SoundSystem_t{

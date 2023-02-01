@@ -1,6 +1,4 @@
 #pragma once
-#include <irrlicht/EDriverTypes.h>
-#include <irrlicht/ICameraSceneNode.h>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <memory>

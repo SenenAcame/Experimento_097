@@ -1,8 +1,8 @@
 #pragma once
-#include <iostream>
+#include "../util/types.hpp"
 #include <vector>
 #include <algorithm>
-#include "../util/types.hpp"
+
 
 struct NodeMapSys {
 

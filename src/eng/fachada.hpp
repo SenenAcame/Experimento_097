@@ -1,7 +1,5 @@
 #pragma once
-
 #include <string>
-#include <iostream>
 #include "../util/types.hpp"
 extern "C"{
     #include <FMOD/src/fmod_errors.h>

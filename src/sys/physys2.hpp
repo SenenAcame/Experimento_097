@@ -2,7 +2,6 @@
 #include "../util/types.hpp"
 #include <cmath>
 #include <numbers>
-//#include <iostream>
 
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
