@@ -57,9 +57,9 @@ struct ColSys2 {
                                  //auto dz = p.z - EM.getComponent<PhysicsCmp2>(a).z;
                                  //auto dist = std::sqrt(dx*dx+dy*dy+dz*dz);
                                  //if(dist <= 0.5 && dist!=0.0){
-                                    std::cout << phy.x << " , " << phy2.x << std::endl;
-                                    std::cout << phy.y << " , " << phy2.y << std::endl;
-                                    std::cout << phy.z << " , " << phy2.z << std::endl<< std::endl;
+                                    //std::cout << phy.x << " , " << phy2.x << std::endl;
+                                    //std::cout << phy.y << " , " << phy2.y << std::endl;
+                                    //std::cout << phy.z << " , " << phy2.z << std::endl<< std::endl;
                             //         std::cout<<"Impacto\n";
                             //         //marcar el estado a he colisionado con el id de E
                                     //00000010 --> colision,

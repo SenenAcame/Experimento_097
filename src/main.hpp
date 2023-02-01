@@ -8,5 +8,6 @@
 #include "sys/inpsys2.hpp"
 #include "sys/nodemapsys.hpp"
 #include "sys/logicsystem.hpp"
+#include "sys/destroysys.hpp"
 #include "util/types.hpp"
 #include "cmp/debug.hpp"
