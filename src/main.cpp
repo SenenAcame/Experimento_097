@@ -11,6 +11,7 @@
 #include "sys/inpsys2.hpp"
 #include "sys/nodemapsys.hpp"
 #include "sys/logicsystem.hpp"
+#include "sys/spawnsys.hpp"
 #include "util/types.hpp"
 
 void game2() {
@@ -23,6 +24,7 @@ void game2() {
     NodeMapSys    MapSys;
     LogicSystem   LogicSys;
     SoundSystem_t SouSys;
+    SpawnSystem   SpawnSys;
 
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
@@ -84,6 +86,12 @@ void game2() {
     EM.addComponent<EstadoCmp>      (enemy3);
     EM.addTag      <TEnemy>         (enemy3);
 
+    Enty& spawn = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>    (spawn, PhysicsCmp2{.x=10.f, .z=20.f});
+    EM.addComponent<EstadoCmp>      (spawn);
+    EM.addTag      <TSpawn>         (spawn);
+
+
     SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
     constexpr double dt = 1.0/60;
@@ -97,6 +105,7 @@ void game2() {
         ColSys.  update(EM, SouSys);
         SouSys.  update();
         LogicSys.update(EM);
+        SpawnSys.update(EM,dev, SouSys);
     }
 }
 
