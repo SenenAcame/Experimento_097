@@ -96,10 +96,11 @@ struct EntityMan2 {
         size_t i{};
         for(auto& del : entities_) {
             if(e.getID() == del.getID()) {
-                if(e.template hasCMP<RenderCmp2>())
+                if(e.template hasCMP<RenderCmp2>()){
                     removeRender(e);
+                }
 
-                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp>(e);
+                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>(e);
                 entities_.erase(entities_.begin()+i);
                 break;
             }

@@ -37,14 +37,14 @@ void game2() {
 
 
     Enty& playerwalksou = EM.createEntity();
-    EM.addComponent<SoundCmp>   (playerwalksou, SouSys.createinstance(4));
+    EM.addComponent<SoundCmp>(playerwalksou, SouSys.createinstance(4));
 
     Enty& playerdamagesou = EM.createEntity();
-    EM.addComponent<SoundCmp>   (playerdamagesou, SouSys.createinstance(3));
+    EM.addComponent<SoundCmp>(playerdamagesou, SouSys.createinstance(3));
 
     Enty& weaponsou = EM.createEntity();
-    EM.addComponent<SoundCmp>   (weaponsou, SouSys.createinstance(1));
-    EM.addTag      <TWeapon>        (weaponsou);
+    EM.addComponent<SoundCmp>(weaponsou, SouSys.createinstance(1));
+    EM.addTag      <TWeapon> (weaponsou);
 
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
@@ -55,39 +55,48 @@ void game2() {
     EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
     EM.addTag      <TEnemy>         (enemy1);
 
-    //Enty& enemy2 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
-    //EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
-    //EM.addComponent<AICmp>          (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .cooldown=0.1 });
-    //EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-    //EM.addComponent<EstadoCmp>      (enemy2);
-    //EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
-    //EM.addTag      <TEnemy>         (enemy2);    
+    Enty& enemy2 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
+    EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
+    EM.addComponent<AICmp>          (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .cooldown=0.1 });
+    EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<EstadoCmp>      (enemy2);
+    EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
+    EM.addTag      <TEnemy>         (enemy2);    
 //
-    //Enty& enemy3 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
-    //EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
-    //EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
-    //EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
-    //EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-    //EM.addComponent<EstadoCmp>      (enemy3);
-    //EM.addTag      <TEnemy>         (enemy3);
+    Enty& enemy3 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
+    EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
+    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
+    EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
+    EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<EstadoCmp>      (enemy3);
+    EM.addTag      <TEnemy>         (enemy3);
 
     SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
     constexpr double dt = 1.0/60;
     
     while(dev.run()){
+        //std::cout<<"0\n";
         RenSys.  update(EM, dev);
+        //std::cout<<"1\n";
         MapSys.  update(EM);
+        //std::cout<<"2\n";
         AISys.   update(EM, dt, SouSys);
+        //std::cout<<"3\n";
         PhySys.  update(EM, dt);
+        //std::cout<<"4\n";
         InpSys.  update(EM, dev, SouSys);
+        //std::cout<<"5\n";
         ColSys.  update(EM, SouSys);
+        //std::cout<<"6\n";
         SouSys.  update();
+        //std::cout<<"7\n";
         LogicSys.update(EM);
-
-        DestSys.update(EM);
+        //std::cout<<"8\n";
+        DestSys. update(EM);
+        //std::cout<<"Fin\n";
     }
 }
 

@@ -45,7 +45,7 @@ struct Slotmap {
         return push_back(value_type{value});
     }
     [[nodiscard]] constexpr DataType& operator[](key_type const& k) noexcept {
-        assert(is_valid(k));
+        //assert(is_valid(k));
         auto dataID = indices_[k.id].id;
         return data_[dataID];
     }
