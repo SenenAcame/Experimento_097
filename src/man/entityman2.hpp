@@ -2,7 +2,7 @@
 #include "../cmp/blackboardcmp.hpp"
 #include "../util/types.hpp"
 #include "cmpstorage2.hpp"
-#include <cstddef>
+//#include <iostream>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct EntityMan2 {
@@ -90,19 +90,6 @@ struct EntityMan2 {
         return st[k];
     }
 
-    template<typename TAG>
-    void addTag(Entity& e) { e.template addTAG<TAG>(); }
-
-    template<typename TAG>
-    void removeTag(Entity& e) { e.template removeTAG<TAG>(); }
-
-    Entity& createEntity() { return entities_.emplace_back(); }
-
-    void removeRender(Entity& e) {
-        RenderCmp2& r = getComponent<RenderCmp2>(e);
-        r.n->remove();
-    }
-
     template<typename... CMPs>
     void removeComponents(Entity& e){
         assert(sizeof...(CMPs) !=0);
@@ -115,6 +102,14 @@ struct EntityMan2 {
             deleteComponent<CMP>(e);
         return true;
     }
+
+    template<typename TAG>
+    void addTag(Entity& e) { e.template addTAG<TAG>(); }
+
+    template<typename TAG>
+    void removeTag(Entity& e) { e.template removeTAG<TAG>(); }
+
+    Entity& createEntity() { return new_entities_.emplace_back(); }
 
     //template<>
     //bool removeComponent(Entity& e) {
@@ -143,9 +138,11 @@ struct EntityMan2 {
 
     void update() {
         destroy_entities();
+        transfer_entities();
     }
 
     auto& getEntities() { return entities_; }
+
     auto& getEntityById(auto id) { 
         for(auto& cont:entities_){
             if(cont.getID()== id){
@@ -154,20 +151,16 @@ struct EntityMan2 {
             }
         }
     }
+
     auto& getStorage()  { return cmpStorage_; }
+
     auto& getBoard()    { return blackboard_; }
 
 private:
     void destroy_entities(){
-        for(auto i{entities_.size()}; i!=0; i--){
+        for(auto i {entities_.size()}; i != 0; i--){
             auto& e = entities_[i-1];
-            if(e.getDestroy()){
-                if(e.template hasCMP<RenderCmp2>()){
-                    removeRender(e);
-                }
-                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>(e);
-                entities_.erase(entities_.begin()+(i-1));
-            }
+            if(e.getDestroy()) { removeEntity(e, i-1); }
         }
     }
 
@@ -199,7 +192,28 @@ private:
         return true;
     }
 
-    BlackBoardCmp       blackboard_ {};
-    std::vector<Entity> entities_{};
-    cmp_storage         cmpStorage_{};
+    void removeRender(Entity& e) {
+        RenderCmp2& r = getComponent<RenderCmp2>(e);
+        r.n->remove();
+    }
+
+    void removeEntity(Entity& e, auto i) {
+        if(e.template hasCMP<RenderCmp2>()){
+            removeRender(e);
+        }
+        removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>(e);
+        entities_.erase(entities_.begin() + i);
+    }
+
+    void transfer_entities() {
+        for(auto& e : new_entities_) {
+            entities_.push_back(std::move(e));
+        }
+        new_entities_.clear();
+    }
+
+    BlackBoardCmp       blackboard_   {};
+    std::vector<Entity> entities_     {};
+    std::vector<Entity> new_entities_ {};
+    cmp_storage         cmpStorage_   {};
 };

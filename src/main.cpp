@@ -61,7 +61,7 @@ void game2() {
     EM.addComponent<EstadoCmp>      (enemy2);
     EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
     EM.addTag      <TEnemy>         (enemy2);    
-//
+
     Enty& enemy3 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=-19.f, .z=30.f});
     EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
@@ -76,6 +76,8 @@ void game2() {
     constexpr double dt = 1.0/60;
     
     while(dev.run()){
+        EM.      update();
+
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
         AISys.   update(EM, dt, SouSys);
@@ -84,8 +86,6 @@ void game2() {
         ColSys.  update(EM, SouSys);
         SouSys.  update();
         LogicSys.update(EM);
-
-        EM.      update();
     }
 }
 
