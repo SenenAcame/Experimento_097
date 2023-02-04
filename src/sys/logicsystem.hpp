@@ -13,7 +13,8 @@ struct LogicSystem {
                         if(EM.getEntityById(p.entityCol).hasTAG<TEnemy>()){
                             stats.hitpoints -=EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).damage;
                             if(stats.hitpoints <=0){
-                                p.alive=1; //set to destroy
+                                //p.alive=1; //set to destroy
+                                e.setDestroy();
                             }
                             //std::cout<<"SOY Jugador: "<<e.getID()<<"Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
                             //" y ahora tengo" <<stats.hitpoints<<"\n";
@@ -25,7 +26,8 @@ struct LogicSystem {
                             
                             stats.hitpoints -= EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).damage;
                             if(stats.hitpoints <=0){
-                                p.alive=1; //set to destroy
+                                //p.alive=1; //set to destroy
+                                e.setDestroy();
                                 //std::cout<<"Ahora tengo estado "<<p.alive<<"\n";
                             }
                            // std::cout<<"SOY ENTIDAD: "<<e.getID()<<" Tenia: "<<stats.hitpoints<<" HE CHOCADO CON UNA BALA: "<<p.entityCol<<
@@ -35,7 +37,8 @@ struct LogicSystem {
 
                             EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).hitpoints -= stats.damage;
                             if(EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).hitpoints<=0){
-                                EM.getComponent<EstadoCmp>(EM.getEntityById(p.entityCol)).alive = 1; //set to destroy
+                                //EM.getComponent<EstadoCmp>(EM.getEntityById(p.entityCol)).alive = 1; //set to destroy
+                                EM.getEntityById(p.entityCol).setDestroy();
                             }
 
                         }
@@ -48,10 +51,12 @@ struct LogicSystem {
                         if(EM.getEntityById(p.entityCol).hasTAG<TEnemy>()){
                             EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).hitpoints -= stats.damage;
                             if(EM.getComponent<EstadisticaCmp>(EM.getEntityById(p.entityCol)).hitpoints<=0){
-                                EM.getComponent<EstadoCmp>(EM.getEntityById(p.entityCol)).alive = 1; //set to destroy
+                                //EM.getComponent<EstadoCmp>(EM.getEntityById(p.entityCol)).alive = 1;
+                                EM.getEntityById(p.entityCol).setDestroy(); //set to destroy
                             }
                         }
-                        p.alive = 1; //set to destroy
+                        //p.alive = 1; //set to destroy
+                        e.setDestroy();
                     }
                     ////valores por defecto
                     p.colision = 0;

@@ -2,6 +2,7 @@
 #include "../cmp/blackboardcmp.hpp"
 #include "../util/types.hpp"
 #include "cmpstorage2.hpp"
+#include <cstddef>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
 struct EntityMan2 {
@@ -52,6 +53,10 @@ struct EntityMan2 {
                 tagmask -= cmp_storage::tag_info::template mask<TAG>();
         }
 
+        constexpr void setDestroy() { destroy = true; }
+
+        constexpr bool getDestroy() { return destroy; }
+
         [[nodiscard]] size_t constexpr getID()  const noexcept{ return id; }
 
         private:
@@ -59,6 +64,7 @@ struct EntityMan2 {
         smallest_mask_type<CMPLIST> cmpmask;
         smallest_mask_type<TAGLIST> tagmask;
         key_storage st_key{};
+        bool destroy { false };
         static inline std::size_t nextID { 1 };
     };
 
@@ -92,22 +98,6 @@ struct EntityMan2 {
 
     Entity& createEntity() { return entities_.emplace_back(); }
 
-    void destroyEntity(Entity& e) {
-        size_t i{};
-        for(auto& del : entities_) {
-            if(e.getID() == del.getID()) {
-                if(e.template hasCMP<RenderCmp2>()){
-                    removeRender(e);
-                }
-
-                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>(e);
-                entities_.erase(entities_.begin()+i);
-                break;
-            }
-            ++i;
-        }
-    }
-
     void removeRender(Entity& e) {
         RenderCmp2& r = getComponent<RenderCmp2>(e);
         r.n->remove();
@@ -132,7 +122,6 @@ struct EntityMan2 {
     //        deleteComponent<RenderCmp2>(e);
     //    return true;
     //}
-//
 
     template<typename T>
     void forall(T process) {
@@ -152,6 +141,10 @@ struct EntityMan2 {
         }
     }
 
+    void update() {
+        destroy_entities();
+    }
+
     auto& getEntities() { return entities_; }
     auto& getEntityById(auto id) { 
         for(auto& cont:entities_){
@@ -165,6 +158,19 @@ struct EntityMan2 {
     auto& getBoard()    { return blackboard_; }
 
 private:
+    void destroy_entities(){
+        for(auto i{entities_.size()}; i!=0; i--){
+            auto& e = entities_[i-1];
+            if(e.getDestroy()){
+                if(e.template hasCMP<RenderCmp2>()){
+                    removeRender(e);
+                }
+                removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>(e);
+                entities_.erase(entities_.begin()+(i-1));
+            }
+        }
+    }
+
     template<typename... CMPs, typename... TAGs>
     void foreach_impl(auto&& process, MP::Typelist<CMPs...>, MP::Typelist<TAGs...>) {
         for(auto& e : entities_){

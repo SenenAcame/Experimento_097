@@ -1,5 +1,4 @@
 #include "main.hpp"
-#include "sys/destroysys.hpp"
 
 void game2() {
     EntyMan       EM;
@@ -11,7 +10,6 @@ void game2() {
     NodeMapSys    MapSys;
     LogicSystem   LogicSys;
     SoundSystem_t SouSys;
-    DestroySys    DestSys;
 
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
@@ -65,11 +63,11 @@ void game2() {
     EM.addTag      <TEnemy>         (enemy2);    
 //
     Enty& enemy3 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
+    EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=-19.f, .z=30.f});
     EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
-    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
+    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=1 });
     EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
-    EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=1.f});
     EM.addComponent<EstadoCmp>      (enemy3);
     EM.addTag      <TEnemy>         (enemy3);
 
@@ -78,25 +76,16 @@ void game2() {
     constexpr double dt = 1.0/60;
     
     while(dev.run()){
-        //std::cout<<"0\n";
         RenSys.  update(EM, dev);
-        //std::cout<<"1\n";
         MapSys.  update(EM);
-        //std::cout<<"2\n";
         AISys.   update(EM, dt, SouSys);
-        //std::cout<<"3\n";
         PhySys.  update(EM, dt);
-        //std::cout<<"4\n";
         InpSys.  update(EM, dev, SouSys);
-        //std::cout<<"5\n";
         ColSys.  update(EM, SouSys);
-        //std::cout<<"6\n";
         SouSys.  update();
-        //std::cout<<"7\n";
         LogicSys.update(EM);
-        //std::cout<<"8\n";
-        DestSys. update(EM);
-        //std::cout<<"Fin\n";
+
+        EM.      update();
     }
 }
 

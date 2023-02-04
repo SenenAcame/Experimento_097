@@ -79,12 +79,12 @@ struct AISys {
 
         ai.time -= ai.cooldown;
 
-        if(board.tactive) {
+        //if(board.tactive) {
             ai.ox = board.tx;
             ai.oz = board.tz;
             ai.behaviour = board.behaviour;
-            board.tactive = false;
-        }
+        //    board.tactive = false;
+        //}
     }
 
     void update(EntyMan& EM, double dt, SoundSystem_t& SS) {
@@ -92,21 +92,18 @@ struct AISys {
 
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, AICmp& a, PhysicsCmp2& p) {
-                if(e.hasCMP<EstadoCmp>()){
-                    auto& est = EM.getComponent<EstadoCmp>(e);
-                    if(est.alive){ 
-                        if(a.enable){
-                            SS.changesound(EM.getComponent<SoundCmp>(e),2);
-                            SS.startsound(EM.getComponent<SoundCmp>(e));
-                            for(auto& en : EM.getEntities()){
-                                if(en.hasTAG<TPlayer>()){
-                                    SS.changesound(EM.getComponent<SoundCmp>(en),1);
-                                    SS.startsound(EM.getComponent<SoundCmp>(en));
-                                }
+                if(e.getDestroy()){  
+                    if(a.enable){
+                        SS.changesound(EM.getComponent<SoundCmp>(e),2);
+                        SS.startsound(EM.getComponent<SoundCmp>(e));
+                        for(auto& en : EM.getEntities()){
+                            if(en.hasTAG<TPlayer>()){
+                                SS.changesound(EM.getComponent<SoundCmp>(en),1);
+                                SS.startsound(EM.getComponent<SoundCmp>(en));
                             }
                         }
-                        a.enable=false;
                     }
+                    a.enable=false;
                 }
 
                 percept(bb, a, dt);
