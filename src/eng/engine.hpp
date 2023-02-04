@@ -42,7 +42,7 @@ struct TheEngine {
         node->setParent(cam);
         cam->setFOV(1);
         //cam->setTarget({200,0,20});
-        cam->setPosition({-10,0,-20});
+        cam->setPosition({-20,0,-20});
         return node;
     };
 
