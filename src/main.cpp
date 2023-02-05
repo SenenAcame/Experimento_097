@@ -80,7 +80,7 @@ void game2() {
 
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
-        AISys.   update(EM, dt, SouSys);
+        AISys.   update(EM, dt, SouSys, dev);
         PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);
         ColSys.  update(EM, SouSys);

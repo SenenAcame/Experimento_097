@@ -73,9 +73,31 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-     void shoot(AICmp& a, PhysicsCmp2& p) const {
+     void shoot(AICmp& a, PhysicsCmp2& p, EntyMan& EM, TheEngine& eng, Enty& enem) const {
         if(a.shoot){
             std::cout<<"Dispara\n"<<"Puum\n";
+            auto dPX=distancePoints(a.ox,p.x);
+            auto dPZ=distancePoints(a.oz,p.z);
+            auto dM=distanceModule(dPX, dPZ);
+
+            RenderCmp2& r = EM.getComponent<RenderCmp2>(enem);
+            Enty& bullet = EM.createEntity();
+            auto& stats= EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f, .bulletRad=0.5f});  
+            EM.addComponent<PhysicsCmp2>(
+                bullet, PhysicsCmp2{
+                    .x =p.x,
+                    .y =p.y,
+                    .z =p.z,
+                    .vx= cos(dPX/dM)*stats.speed,
+                    .vy= 0,
+                    .vz= sin(dPZ/dM)*stats.speed
+                }
+            );
+
+            EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+            EM.addComponent<EstadoCmp> (bullet);
+            //EM.getComponent<EstadisticaCmp>(enem).ishoot =true;
+            EM.addTag<TEneBullet>(bullet);
             a.shoot = false;
         }
     }
@@ -95,7 +117,7 @@ struct AISys {
         //}
     }
 
-    void update(EntyMan& EM, double dt, SoundSystem_t& SS) {
+    void update(EntyMan& EM, double dt, SoundSystem_t& SS, TheEngine& dev) {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
@@ -121,7 +143,7 @@ struct AISys {
                 switch(a.behaviour){
                     case SB::Arrive: arrive(a,p); break;
                     case SB::Seek:   seek  (a,p); break;
-                    case SB::Shoot:  shoot (a,p); break;
+                    case SB::Shoot:  shoot (a, p, EM, dev, e); break;
                 }
             }
         );
