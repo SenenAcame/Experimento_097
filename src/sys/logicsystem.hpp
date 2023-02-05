@@ -3,12 +3,12 @@
 #include <iostream>
 
 struct LogicSystem {
-    using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp>;
+    using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp, RenderCmp2>;
     using SYSTAGs = MP::Typelist<>;
 
-    void update(EntyMan& EM) {
+    void update(EntyMan& EM, TheEngine& eng ) {
         EM.foreach<SYSCMPs, SYSTAGs >(
-            [&](Enty& e, EstadoCmp& p, EstadisticaCmp& stats) {
+            [&](Enty& e, EstadoCmp& p, EstadisticaCmp& stats, RenderCmp2& r) {
                 if(p.colision !=0){
                     if(e.hasTAG<TPlayer>()){
                         if(EM.getEntityById(p.entityCol).hasTAG<TEnemy>()){
@@ -20,7 +20,7 @@ struct LogicSystem {
                             //" y ahora tengo" <<stats.hitpoints<<"\n";
                         }
                     }
-                    else if(e.hasTAG<TEnemy>()){
+                    else if(e.hasTAG<TEnemy>()){ 
                         
                         if(EM.getEntityById(p.entityCol).hasTAG<TBullet>()){
                             
@@ -54,10 +54,13 @@ struct LogicSystem {
                         }
                         p.alive = 1; //set to destroy
                     }
+
                     ////valores por defecto
                     p.colision = 0;
                     p.entityCol = 0;
                 }
+
+                
             }
         );
     }

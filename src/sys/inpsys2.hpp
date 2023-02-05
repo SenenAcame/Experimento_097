@@ -34,40 +34,67 @@ struct InpSys2 : public irr::IEventReceiver{
                     }
                     
                     if(ammo>0){
-                        Enty& bullet = EM.createEntity();
+                        
                         if(EM.getComponent<InventarioCmp>(player).equipada==0){ //pistol
+                            Enty& bullet = EM.createEntity();
                             EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=20.f, .speed=0.8f, .bulletRad=0.1f});
                             ammo-=1;
                             EM.getComponent<InventarioCmp>(player).ammo1-=1;
+                            EM.addComponent<PhysicsCmp2>(
+                                bullet, PhysicsCmp2{
+                                    .x =r.n->getParent()->getPosition().X,
+                                    .y =r.n->getParent()->getPosition().Y,
+                                    .z =r.n->getParent()->getPosition().Z,
+                                    .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                                    EM.getComponent<EstadisticaCmp>(bullet).speed,
+                                    .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 
+                                    EM.getComponent<EstadisticaCmp>(bullet).speed,
+                                    .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                                    EM.getComponent<EstadisticaCmp>(bullet).speed
+                                }
+                            );
+
+                            EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+                            EM.addComponent<EstadoCmp> (bullet);
+                            EM.addTag<TBullet>(bullet);
+                            
                         }
                         else if (EM.getComponent<InventarioCmp>(player).equipada==1){ //escopeta
-                            EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f, .bulletRad=0.5f});
-                            ammo-=1;
-                            EM.getComponent<InventarioCmp>(player).ammo2-=1;
-                        }
-                        EM.addComponent<PhysicsCmp2>(
-                            bullet, PhysicsCmp2{
-                                .x =r.n->getParent()->getPosition().X,
-                                .y =r.n->getParent()->getPosition().Y,
-                                .z =r.n->getParent()->getPosition().Z,
-                                .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
-                                EM.getComponent<EstadisticaCmp>(bullet).speed,
-                                .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 
-                                EM.getComponent<EstadisticaCmp>(bullet).speed,
-                                .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
-                                EM.getComponent<EstadisticaCmp>(bullet).speed
-                            }
-                        );
+                                
+                                ammo-=1;
+                                EM.getComponent<InventarioCmp>(player).ammo2-=1;
+                            for(int i = 3; i>0; i--){
+                                
+                                Enty& bullet = EM.createEntity();
+                                EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.4f
+                                , .bulletRad=0.5f});  
+                                EM.addComponent<PhysicsCmp2>(
+                                    bullet, PhysicsCmp2{
+                                        .x =r.n->getParent()->getPosition().X,
+                                        .y =r.n->getParent()->getPosition().Y,
+                                        .z =r.n->getParent()->getPosition().Z,
+                                        .vx= sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                                        EM.getComponent<EstadisticaCmp>(bullet).speed,
+                                        .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * 
+                                        (EM.getComponent<EstadisticaCmp>(bullet).speed +i*0.5),
+                                        .vz= cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * 
+                                        (EM.getComponent<EstadisticaCmp>(bullet).speed +i*0.1)
+                                    }
+                                );
 
-                        EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
-                        EM.addComponent<EstadoCmp> (bullet);
-                        EM.addTag<TBullet>(bullet);
+                                EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+                                EM.addComponent<EstadoCmp> (bullet);
+                                EM.addTag<TBullet>(bullet);
+                            }
+                            
+                        }
                         for(auto& a : EM.getEntities()){
                             if(a.hasTAG<TWeapon>()){
                                 SS.changesound(EM.getComponent<SoundCmp>(a),2);
                                 SS.startsound(EM.getComponent<SoundCmp>(a));
                             }
                         }
+                        
                     }
                     keyboard.keyReleased(i.key_shot);
                 }

@@ -5,7 +5,7 @@
 #include "cmpstorage2.hpp"
 #include <iostream>
 
-template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
+template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
 struct EntityMan2 {
     using cmp_storage = CmpStorage2<CMPLIST, TAGLIST, Capacity>;
 

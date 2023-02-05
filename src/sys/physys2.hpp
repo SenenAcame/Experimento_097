@@ -13,7 +13,7 @@ struct PhySys2 {
     void update(EntyMan& EM, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, PhysicsCmp2& p) {
-                if(e.hasTAG<TBullet>()){
+                if(e.hasTAG<TBullet>() || e.hasTAG<TEnemyBullet>()){
                     p.x += p.vx;
                     p.y += p.vy;
                     p.z += p.vz;
