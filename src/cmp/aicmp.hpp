@@ -3,7 +3,8 @@
 
 enum class SB{
     Arrive,
-    Seek
+    Seek,
+    Shoot
 };
 
 struct AICmp {
@@ -12,6 +13,7 @@ struct AICmp {
     double arrivalRadius { 1.0 };
     double timeArrive    { 0.5 };
     SB     behaviour     { SB::Arrive };
+    bool   shoot         { false };
 
     double cooldown      { 0.1 };
     double time          { 0.0 };

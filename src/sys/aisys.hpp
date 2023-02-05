@@ -73,6 +73,13 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
+     void shoot(AICmp& a, PhysicsCmp2& p) const {
+        if(a.shoot){
+            std::cout<<"Dispara\n"<<"Puum\n";
+            a.shoot = false;
+        }
+    }
+
     void percept(BlackBoardCmp& board, AICmp& ai, double delta) {
         ai.time += delta;
         if( ai.time <= ai.cooldown ) return;
@@ -82,7 +89,8 @@ struct AISys {
         //if(board.tactive) {
             ai.ox = board.tx;
             ai.oz = board.tz;
-            ai.behaviour = board.behaviour;
+            //ai.behaviour = board.behaviour;
+            ai.shoot = board.shoot;
         //    board.tactive = false;
         //}
     }
@@ -113,6 +121,7 @@ struct AISys {
                 switch(a.behaviour){
                     case SB::Arrive: arrive(a,p); break;
                     case SB::Seek:   seek  (a,p); break;
+                    case SB::Shoot:  shoot (a,p); break;
                 }
             }
         );

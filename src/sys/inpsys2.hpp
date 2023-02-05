@@ -38,7 +38,7 @@ struct InpSys2 : public irr::IEventReceiver{
                         }
                     }
                 }
-                bb = { cam->getPosition().X, cam->getPosition().Z, SB::Seek, true };
+                bb = { cam->getPosition().X, cam->getPosition().Z, true , true };
             }
         );
     } 
