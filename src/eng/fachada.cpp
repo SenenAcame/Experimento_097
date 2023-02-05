@@ -173,14 +173,29 @@ ProgrammerSoundContext TheFachada::createinstance(int tipo){
     return sound;
 }
 
-void TheFachada::changesound(SoundCmp& s ,unsigned int indice){
-    ERRCHECK(s.programmerSoundContext.sound->setParameterByID(s.programmerSoundContext.id, indice));
+void TheFachada::changesound(SoundCmp& s){
+    ERRCHECK(s.programmerSoundContext.sound->setParameterByID(s.programmerSoundContext.id, s.parametro));
 }
 
 void TheFachada::startsound(SoundCmp& s){
+    if(isPlaying(s))
+        stopsound(s);
     ERRCHECK( s.programmerSoundContext.sound->start() );
     
 }
+
+void TheFachada::stopsound(SoundCmp& s){
+    ERRCHECK( s.programmerSoundContext.sound->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT) );
+}
+
+bool TheFachada::isPlaying(SoundCmp& s)
+    {
+        FMOD_STUDIO_PLAYBACK_STATE* state=nullptr;
+        bool devol=false;
+        if(s.programmerSoundContext.sound->getPlaybackState(state) != FMOD_STUDIO_PLAYBACK_STOPPED)
+            devol=true;
+        return devol;
+    }
 
 void TheFachada::close(){
     ERRCHECK(ambienteDescription->releaseAllInstances());

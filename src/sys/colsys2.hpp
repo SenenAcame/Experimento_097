@@ -5,7 +5,7 @@ struct ColSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs = MP::Typelist<>;
 
-    void update(EntyMan& EM, SoundSystem_t& SS) {
+    void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, PhysicsCmp2& p) {
                 //para todas las e comparo con todas las a
@@ -46,8 +46,8 @@ struct ColSys2 {
 
                                 if(dx<=0 && dy<=0 && dz<=0){
                                     if(a.hasTAG<TBullet>()&&e.hasTAG<TEnemy>()){
-                                        SS.changesound(EM.getComponent<SoundCmp>(e),0);
-                                        SS.startsound(EM.getComponent<SoundCmp>(e));
+                                        EM.getComponent<SoundCmp>(e).parametro=0;
+                                        EM.getComponent<SoundCmp>(e).play=true;
                                     }
                                     
                                 //std::cout<<"Impacto\n";

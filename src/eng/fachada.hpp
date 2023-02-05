@@ -50,7 +50,9 @@ struct TheFachada{
         ProgrammerSoundContext createinstance(int);
         void close();
         void startsound(SoundCmp&);
-        void changesound(SoundCmp&,unsigned int);
+        void stopsound(SoundCmp&);
+        bool isPlaying(SoundCmp&);
+        void changesound(SoundCmp&);
         void chargeparameters();
         void createdescriptions();
     };

@@ -61,13 +61,14 @@ struct InpSys2 : public irr::IEventReceiver{
 
                         EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                         EM.addComponent<EstadoCmp> (bullet);
+                        EM.addComponent<SoundCmp>  (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                         EM.addTag<TBullet>(bullet);
-                        for(auto& a : EM.getEntities()){
-                            if(a.hasTAG<TWeapon>()){
-                                SS.changesound(EM.getComponent<SoundCmp>(a),2);
-                                SS.startsound(EM.getComponent<SoundCmp>(a));
-                            }
-                        }
+                        //for(auto& a : EM.getEntities()){
+                        //    if(a.hasTAG<TWeapon>()){
+                        //        EM.getComponent<SoundCmp>(a).parametro=2;
+                        //    EM.getComponent<SoundCmp>(a).play=true;
+                        //    }
+                        //}
                     }
                     keyboard.keyReleased(i.key_shot);
                 }
@@ -96,8 +97,9 @@ struct InpSys2 : public irr::IEventReceiver{
                     EM.getComponent<InventarioCmp>(player).ammo2=5;
                     for(auto& a : EM.getEntities()){
                         if(a.hasTAG<TWeapon>()){
-                            SS.changesound(EM.getComponent<SoundCmp>(a),1);
-                            SS.startsound(EM.getComponent<SoundCmp>(a));
+                            EM.getComponent<SoundCmp>(a).parametro=1;
+                            EM.getComponent<SoundCmp>(a).cambia=true;
+                            EM.getComponent<SoundCmp>(a).play=true;
                         }
                     }
                 }
