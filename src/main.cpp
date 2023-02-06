@@ -47,7 +47,7 @@ void game2() {
     Enty& enemy1 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .shoot=false, .cooldown=2. });
+    EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .shoot=false, .cooldown=1. });
     EM.addComponent<EstadoCmp>      (enemy1);
     EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));

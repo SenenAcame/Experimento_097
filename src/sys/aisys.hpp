@@ -75,25 +75,25 @@ struct AISys {
 
      void shoot(AICmp& a, PhysicsCmp2& p, EntyMan& EM, TheEngine& eng, Enty& enem) const {
         if(a.shoot){
-            std::cout<<"Dispara\n"<<"Puum\n";
+            //std::cout<<"Dispara\n"<<"Puum\n";
             auto dPX=distancePoints(a.ox,p.x);
             auto dPZ=distancePoints(a.oz,p.z);
             auto dM=distanceModule(dPX, dPZ);
 
             RenderCmp2& r = EM.getComponent<RenderCmp2>(enem);
             Enty& bullet = EM.createEntity();
-            auto& stats= EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f, .bulletRad=0.5f});  
+            auto& stats= EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f, .bulletRad=0.5f}); 
             EM.addComponent<PhysicsCmp2>(
                 bullet, PhysicsCmp2{
                     .x =p.x,
                     .y =p.y,
                     .z =p.z,
-                    .vx= cos(dPX/dM)*stats.speed,
+                    .vx= dPX/dM*stats.speed,
                     .vy= 0,
-                    .vz= sin(dPZ/dM)*stats.speed
+                    .vz= dPZ/dM*stats.speed
                 }
             );
-
+            
             EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp> (bullet);
             //EM.getComponent<EstadisticaCmp>(enem).ishoot =true;
