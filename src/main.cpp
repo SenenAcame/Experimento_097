@@ -26,7 +26,7 @@ void game2() {
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
     EM.addComponent<RenderCmp2> (map, dev.createModel("assets/salas_visibles.obj","assets/wall.bmp"));
-    EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
+    MapSys.createNodes(EM.addComponent<NodoCmp>    (map));
     EM.addTag<TMap>(map);
 
     Enty& player = EM.createEntity();

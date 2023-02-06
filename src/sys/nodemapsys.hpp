@@ -25,8 +25,8 @@ struct NodeMapSys {
             //Me devuelve la posicion 0,0 y salta error en 111
 
 
-            //std::cout << i << ". " << mapa.nodos.at(i).x + mapa.nodos.at(i).tamx << " >= " << p.x << " , " << mapa.nodos.at(i).x - mapa.nodos.at(i).tamx << " <= " << p.x << std::endl;
-            //std::cout << mapa.nodos.at(i).z + mapa.nodos.at(i).tamz << " >= " << p.z << " , " << mapa.nodos.at(i).z - mapa.nodos.at(i).tamz << " <= " << p.z << std::endl << std::endl;
+            std::cout << i << ". " << mapa.nodos.at(i).x + mapa.nodos.at(i).tamx << " >= " << p.x << " , " << mapa.nodos.at(i).x - mapa.nodos.at(i).tamx << " <= " << p.x << std::endl;
+            std::cout << mapa.nodos.at(i).z + mapa.nodos.at(i).tamz << " >= " << p.z << " , " << mapa.nodos.at(i).z - mapa.nodos.at(i).tamz << " <= " << p.z << std::endl << std::endl;
             if((mapa.nodos.at(i).x + mapa.nodos.at(i).tamx) >= p.x && (mapa.nodos.at(i).x - mapa.nodos.at(i).tamx) <= p.x && (mapa.nodos.at(i).z + mapa.nodos.at(i).tamz) >= p.z && (mapa.nodos.at(i).z - mapa.nodos.at(i).tamz) <= p.z){
                 return mapa.nodos.at(i);
             }
@@ -58,7 +58,7 @@ struct NodeMapSys {
     };
 
     void update(EntyMan& EM){
-    /*    std::vector<nodo> ruta;
+        std::vector<nodo> ruta;
         std::vector<nodo> novalen;
         nodo final;
         nodo player = findNodePlayer(EM);
@@ -68,19 +68,20 @@ struct NodeMapSys {
                 EM.foreach<PhyCMPs, EneTAGs>(
                     [&](Enty& en, PhysicsCmp2& p) {
                         enemy = findNodeEne(EM, p, mapa);
-                        final = findRute(enemy, player, &ruta, &novalen);
+                        final = findRute(enemy, player, ruta, novalen);
+
                         std::cout << "final " << final.x << " , " << final.z << std::endl << std::endl;
-                        ruta.clear();
-                        novalen.clear();
                     }
                 );
             }
         );
-*/
+
     };
 
-    nodo findRute(nodo enemy, nodo player, std::vector<nodo>* ruta, std::vector<nodo>* novalen){
+    nodo findRute(nodo& enemy, nodo& player, std::vector<nodo>& ruta, std::vector<nodo>& novalen){
         
+        if((enemy.x==0 && enemy.z==0) || (player.x==0 && player.z==0))
+            return {0,0,0,0};
         nodo next = enemy;
         bool final = true;
         bool entra = true;
@@ -88,7 +89,7 @@ struct NodeMapSys {
         float dist=10000.0f;
         if(next.x == player.x && next.z == player.z){
             final=false;
-            ruta->push_back(next);
+            ruta.push_back(next);
         }
         else if(next.x == 0 && next.z==0){
             final=false;
@@ -97,9 +98,11 @@ struct NodeMapSys {
             final=false;
         }
         while(final){
+            
             for(int i=0; i<next.nodos.size() && final; i++){
-                for(int j=0; j<novalen->size();j++){
-                    if(next.nodos.at(i).x == novalen->at(j).x && next.nodos.at(i).z == novalen->at(j).z){
+                
+                for(int j=0; j<novalen.size();j++){
+                    if(next.nodos.at(i).x == novalen.at(j).x && next.nodos.at(i).z == novalen.at(j).z){
                         novale=false;
                     }
                 }
@@ -118,80 +121,78 @@ struct NodeMapSys {
                 }
             }
             if(entra){
-                ruta->pop_back();
-                novalen->push_back(next);
+                ruta.pop_back();
+                novalen.push_back(next);
                 next = enemy;
             }
             else{
-                ruta->push_back(next);
+                ruta.push_back(next);
                 if(next.x == player.x && next.z == player.z){
                     final=false;
                 }
                 else{
                     findRute(next, player, ruta, novalen);
+                    final=false;
                 }
             }
         }
-        return ruta->at(0);
+        return ruta.at(0);
     }
 
-    std::vector<nodo> createNodes(){
-        std::vector<nodo> nodos;
+    void createNodes(NodoCmp& n){
 
-        nodos.push_back(createNode(31.27,   -144.49,    22.91,  20.83));
-        nodos.push_back(createNode(57.66,   -144.49,    3.47,   20.83));
-        nodos.push_back(createNode(66,      -144.49,    4.86,   20.83));
-        nodos.push_back(createNode(66,      -88.2,      4.79,   34.73));
-        nodos.push_back(createNode(57.66,   -88.2,      3.47,   34.73));
+        n.nodos.push_back(createNode(31.27,   -144.49,    22.91,  20.83));
+        n.nodos.push_back(createNode(57.66,   -144.49,    3.47,   20.83));
+        n.nodos.push_back(createNode(66,      -144.49,    4.86,   20.83));
+        n.nodos.push_back(createNode(66,      -88.2,      4.79,   34.73));
+        n.nodos.push_back(createNode(57.66,   -88.2,      3.47,   34.73));
 
-        nodos.push_back(createNode(34.97,   -88.2,      19.22,  34.73));
-        nodos.push_back(createNode(12.28,   -88.2,      3.47,   34.73));
-        nodos.push_back(createNode(-9,      -108.04,    3.54,   15.61));
-        nodos.push_back(createNode(-9,      -88.96,     3.54,   3.47));
-        nodos.push_back(createNode(-9,      -69.84,     3.54,   15.64));
+        n.nodos.push_back(createNode(34.97,   -88.2,      19.22,  34.73));
+        n.nodos.push_back(createNode(12.28,   -88.2,      3.47,   34.73));
+        n.nodos.push_back(createNode(-9,      -108.04,    3.54,   15.61));
+        n.nodos.push_back(createNode(-9,      -88.96,     3.54,   3.47));
+        n.nodos.push_back(createNode(-9,      -69.84,     3.54,   15.64));
 
-        nodos.push_back(createNode(-17.68,  -108.04,    5.14,   15.61));
-        nodos.push_back(createNode(-17.68,  -88.95,     5.14,   3.47));
-        nodos.push_back(createNode(-17.68,  -69.83,     5.14,   15.6));
-        nodos.push_back(createNode(-17.68,  -48.98,     5.14,   5.21));
-        nodos.push_back(createNode(-1.91,   -48.98,     10.71,  5.21));
+        n.nodos.push_back(createNode(-17.68,  -108.04,    5.14,   15.61));
+        n.nodos.push_back(createNode(-17.68,  -88.95,     5.14,   3.47));
+        n.nodos.push_back(createNode(-17.68,  -69.83,     5.14,   15.6));
+        n.nodos.push_back(createNode(-17.68,  -48.98,     5.14,   5.21));
+        n.nodos.push_back(createNode(-1.91,   -48.98,     10.71,  5.21));
 
-        nodos.push_back(createNode(12.28,   -48.98,     3.47,   5.21));
-        nodos.push_back(createNode(28.64,   -48.98,     12.89,  5.21));
-        nodos.push_back(createNode(45.18,   -48.98,     3.64,   5.21));
-        nodos.push_back(createNode(53.33,   -48.98,     4.08,   5.21));
-        nodos.push_back(createNode(53.33,   -9.04,      4.08,   34.73));
+        n.nodos.push_back(createNode(12.28,   -48.98,     3.47,   5.21));
+        n.nodos.push_back(createNode(28.64,   -48.98,     12.89,  5.21));
+        n.nodos.push_back(createNode(45.18,   -48.98,     3.64,   5.21));
+        n.nodos.push_back(createNode(53.33,   -48.98,     4.08,   5.21));
+        n.nodos.push_back(createNode(53.33,   -9.04,      4.08,   34.73));
 
-        nodos.push_back(createNode(45.18,   -9.04,      3.64,   34.73));
-        nodos.push_back(createNode(14.53,   -28.14,     27,     15.64));
-        nodos.push_back(createNode(14.53,   -28.14,     27,     3.47));
-        nodos.push_back(createNode(14.53,   10.06,      27,     15.62));
-        nodos.push_back(createNode(-17.68,  -28.14,     5.2,    15.65));
+        n.nodos.push_back(createNode(45.18,   -9.04,      3.64,   34.73));
+        n.nodos.push_back(createNode(14.53,   -28.14,     27,     15.64));
+        n.nodos.push_back(createNode(14.53,   -28.14,     27,     3.47));
+        n.nodos.push_back(createNode(14.53,   10.06,      27,     15.62));
+        n.nodos.push_back(createNode(-17.68,  -28.14,     5.2,    15.65));
 
-        nodos.push_back(createNode(-17.68,  -28.14,     5.2,    3.47));
-        nodos.push_back(createNode(-36.79,  -35.13,     13.88,  8.64));
-        nodos.push_back(createNode(-36.79,  -12.72,     13.88,  13.72));
-        nodos.push_back(createNode(-36.79,  13.33,      13.88,  12.32));
-        nodos.push_back(createNode(-17.68,  37.02,      5.21,   42.58));
+        n.nodos.push_back(createNode(-17.68,  -28.14,     5.2,    3.47));
+        n.nodos.push_back(createNode(-36.79,  -35.13,     13.88,  8.64));
+        n.nodos.push_back(createNode(-36.79,  -12.72,     13.88,  13.72));
+        n.nodos.push_back(createNode(-36.79,  13.33,      13.88,  12.32));
+        n.nodos.push_back(createNode(-17.68,  37.02,      5.21,   42.58));
 
-        nodos.push_back(createNode(-54.06,  67.66,      31.25,  11.94));
-        nodos.push_back(createNode(-54.06,  83.08,      31.25,  3.47));
-        nodos.push_back(createNode(-74.94,  107.81,     10.37,  3.47));
-        nodos.push_back(createNode(-74.94,  116.49,     10.37,  5.21));
-        nodos.push_back(createNode(-61.1,   98.92,      3.47,   12.37));
+        n.nodos.push_back(createNode(-54.06,  67.66,      31.25,  11.94));
+        n.nodos.push_back(createNode(-54.06,  83.08,      31.25,  3.47));
+        n.nodos.push_back(createNode(-74.94,  107.81,     10.37,  3.47));
+        n.nodos.push_back(createNode(-74.94,  116.49,     10.37,  5.21));
+        n.nodos.push_back(createNode(-61.1,   98.92,      3.47,   12.37));
 
-        nodos.push_back(createNode(-61.1,   116.49,     3.47,   5.21));
-        nodos.push_back(createNode(-43.69,  98.92,      12.37,  20.84));
-        nodos.push_back(createNode(-40.21,  116.49,     17.41,  5.21));
-        nodos.push_back(createNode(-17.64,  83.08,      5.16,   3.47));
-        nodos.push_back(createNode(-17.64,  98.92,      5.16,   12.37));
+        n.nodos.push_back(createNode(-61.1,   116.49,     3.47,   5.21));
+        n.nodos.push_back(createNode(-43.69,  98.92,      12.37,  20.84));
+        n.nodos.push_back(createNode(-40.21,  116.49,     17.41,  5.21));
+        n.nodos.push_back(createNode(-17.64,  83.08,      5.16,   3.47));
+        n.nodos.push_back(createNode(-17.64,  98.92,      5.16,   12.37));
 
-        nodos.push_back(createNode(-17.64,  116.49,     5.16,   5.21));
-        nodos.push_back(createNode(-17.64,  146.01,     5.16,   24.31));
-        nodosContinuos(&nodos);
-
-        return nodos;
-    };
+        n.nodos.push_back(createNode(-17.64,  116.49,     5.16,   5.21));
+        n.nodos.push_back(createNode(-17.64,  146.01,     5.16,   24.31));
+        nodosContinuos(&n.nodos);
+    }
 
     void nodosContinuos(std::vector<nodo>* nodos){
 

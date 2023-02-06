@@ -11,17 +11,14 @@ struct nodo {
             z=0;
             tamx=0;
             tamz=0;
-        };
+        }
         nodo(float posx, float posz, float tamax, float tamaz){
             x=posx;
             z=posz;
             tamx=tamax;
             tamz=tamaz;
         };
-        ~nodo(){
-            if(!nodos.empty())
-                nodos.clear();
-        };
+
 };
 
 struct NodoCmp {
