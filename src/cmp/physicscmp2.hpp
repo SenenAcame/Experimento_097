@@ -19,5 +19,5 @@ struct PhysicsCmp2 {
     static constexpr double kMxAAng {kMxVAng/3.0};
     static constexpr double kEpsil  {0.1};
     static constexpr double kRoz    {0.5};
-    static constexpr uint8_t id     {0}; //00000001
+    static constexpr uint8_t id     {0}; //0000000001
 };

@@ -12,5 +12,5 @@ struct InventarioCmp {
     int ammo2 = 5;
     int magazine2=1;
 
-    static constexpr uint8_t id {5}; //0000100
+    static constexpr uint8_t id {5}; //0000100000
 };
