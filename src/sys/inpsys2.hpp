@@ -130,8 +130,9 @@ private:
                 .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
             }
         );
-        EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
-        EM.addComponent<EstadoCmp> (bullet);
+        EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+        EM.addComponent<EstadoCmp>  (bullet);
+        EM.addComponent<SelfDestCmp>(bullet);
         EM.addTag<TBullet>(bullet);
         for(auto& a : EM.getEntities()){
             if(a.hasTAG<TWeapon>()){

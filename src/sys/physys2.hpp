@@ -6,7 +6,6 @@
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs = MP::Typelist<>;
-    //constexpr static double dt = 1.0/60;
     static constexpr double PI { std::numbers::pi };
 
     void update(EntyMan& EM, double dt) {

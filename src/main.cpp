@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "sys/selfdestsys.hpp"
 
 void game2() {
     EntyMan       EM;
@@ -10,6 +11,7 @@ void game2() {
     NodeMapSys    MapSys;
     LogicSystem   LogicSys;
     SoundSystem_t SouSys;
+    SelfDestSys   DestSys;
 
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
@@ -44,14 +46,14 @@ void game2() {
     EM.addComponent<SoundCmp>(weaponsou, SouSys.createinstance(1));
     EM.addTag      <TWeapon> (weaponsou);
 
-    Enty& enemy1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
-    EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .shoot=false, .cooldown=1. });
-    EM.addComponent<EstadoCmp>      (enemy1);
-    EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-    EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
-    EM.addTag      <TEnemy>         (enemy1);
+    //Enty& enemy1 = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
+    //EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+    //EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .shoot=false, .cooldown=1. });
+    //EM.addComponent<EstadoCmp>      (enemy1);
+    //EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    //EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
+    //EM.addTag      <TEnemy>         (enemy1);
 
     //Enty& enemy2 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
@@ -86,6 +88,7 @@ void game2() {
         ColSys.  update(EM, SouSys);
         SouSys.  update();
         LogicSys.update(EM);
+        DestSys. update(EM, dt);
     }
 }
 

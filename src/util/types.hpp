@@ -8,6 +8,7 @@
 #include "../cmp/aicmp.hpp"
 #include "../cmp/nodocmp.hpp"
 #include "../cmp/soundcmp2.hpp"
+#include "../cmp/selfdestcmp.hpp"
 #include "../man/entityman2.hpp"
 #include "gameengine.hpp"
 #include <iostream>
@@ -20,7 +21,17 @@ struct TWeapon    { static constexpr uint8_t id {4}; };
 struct TEneBullet { static constexpr uint8_t id {5}; };
 
 
-using ComponentList = MP::Typelist<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>;
+using ComponentList = MP::Typelist<
+    PhysicsCmp2, 
+    RenderCmp2, 
+    InputCmp2, 
+    EstadoCmp, 
+    EstadisticaCmp, 
+    InventarioCmp, 
+    AICmp, 
+    NodoCmp, 
+    SoundCmp,
+    SelfDestCmp>;
 using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet>;
 using EntyMan       = EntityMan2<ComponentList, TagList>;
 using Enty          = EntyMan::Entity;
