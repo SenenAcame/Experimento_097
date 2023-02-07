@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "chrono"
 #include "cmp/aicmp.hpp"
 #include "cmp/inputcmp2.hpp"
 #include "cmp/physicscmp2.hpp"
@@ -13,6 +14,8 @@
 #include "sys/logicsystem.hpp"
 #include "sys/spawnsys.hpp"
 #include "util/types.hpp"
+
+//auto time_now(){ std::chrono::high_resolution_clock::now();}
 
 void game2() {
     EntyMan       EM;
@@ -80,7 +83,7 @@ void game2() {
     Enty& enemy3 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=9.f, .z=30.f});
     EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
-    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1,.behaviour=SB::Shoot, .cooldown=10000.f, });
+    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=10000.f, });
     EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
     EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f, .enemyRange=true});
     EM.addComponent<EstadoCmp>      (enemy3);
@@ -95,8 +98,16 @@ void game2() {
     SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
     constexpr double dt = 1.0/60;
-    
+    //actual moment ini
+    auto start = std::chrono::high_resolution_clock::now();
+    int64_t maxFPS = 60;
+    int64_t nanos_per_frame = 1000000000/maxFPS;
+    int64_t frames =0;
+
     while(dev.run()){
+        auto frame_start = std::chrono::high_resolution_clock::now();
+
+
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
         AISys.   update(EM, dt, SouSys, dev);
@@ -106,7 +117,24 @@ void game2() {
         SouSys.  update();
         LogicSys.update(EM, dev);
         SpawnSys.update(EM,dev, SouSys);
+
+        while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame)
+        {}
+        
+        ++frames;
     }
+
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    auto ellapse =  (end - start).count(); //how many nano sec has pass
+    auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+
+    std::cout << "TIMEPO (s): " << ellapseS << "\n";
+    std::cout <<" Frames " << frames<< "\n";
+    std::cout <<" FPS " << double(frames)/ellapseS << "\n";
+
+    //actual moment end
+    //ellapse = end-start
 }
 
 //void game(){
