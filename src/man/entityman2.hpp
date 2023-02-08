@@ -141,10 +141,8 @@ struct EntityMan2 {
         transfer_entities();
     }
 
-    auto& getEntities() { return entities_; }
-
     auto& getEntityById(auto id) { 
-        for(auto& cont:entities_){
+        for(auto& cont : entities_){
             if(cont.getID()== id){
                 return cont;
                 break;
@@ -152,8 +150,8 @@ struct EntityMan2 {
         }
     }
 
+    auto& getEntities() { return entities_; }
     auto& getStorage()  { return cmpStorage_; }
-
     auto& getBoard()    { return blackboard_; }
 
 private:
@@ -201,7 +199,8 @@ private:
         if(e.template hasCMP<RenderCmp2>()){
             removeRender(e);
         }
-        removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>(e);
+        removeComponents<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
+                        InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp>(e);
         entities_.erase(entities_.begin() + i);
     }
 

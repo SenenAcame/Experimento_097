@@ -8,21 +8,31 @@
 #include "../cmp/aicmp.hpp"
 #include "../cmp/nodocmp.hpp"
 #include "../cmp/soundcmp2.hpp"
+#include "../cmp/selfdestcmp.hpp"
 #include "../man/entityman2.hpp"
 #include "gameengine.hpp"
 #include <iostream>
 
-struct TPlayer { static constexpr uint8_t id {0}; };
-struct TEnemy  { static constexpr uint8_t id {1}; };
-struct TBullet { static constexpr uint8_t id {2}; };
-struct TMap    { static constexpr uint8_t id {3}; };
-struct TWeapon { static constexpr uint8_t id {4}; };
-struct TSpawn  { static constexpr uint8_t id {5}; };
-struct TEnemyBullet  { static constexpr uint8_t id {6}; };
+struct TPlayer    { static constexpr uint8_t id {0}; };
+struct TEnemy     { static constexpr uint8_t id {1}; };
+struct TBullet    { static constexpr uint8_t id {2}; };
+struct TMap       { static constexpr uint8_t id {3}; };
+struct TWeapon    { static constexpr uint8_t id {4}; };
+struct TEneBullet { static constexpr uint8_t id {5}; };
 
 
-using ComponentList = MP::Typelist<PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, InventarioCmp, AICmp, NodoCmp, SoundCmp>;
-using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TSpawn, TEnemyBullet>;
+using ComponentList = MP::Typelist<
+    PhysicsCmp2, 
+    RenderCmp2, 
+    InputCmp2, 
+    EstadoCmp, 
+    EstadisticaCmp, 
+    InventarioCmp, 
+    AICmp, 
+    NodoCmp, 
+    SoundCmp,
+    SelfDestCmp>;
+using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet>;
 using EntyMan       = EntityMan2<ComponentList, TagList>;
 using Enty          = EntyMan::Entity;
 

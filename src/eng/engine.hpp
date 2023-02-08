@@ -16,35 +16,9 @@ struct TheEngine {
     void drawAll();
     void endScene();
 
-    auto loadNode(AnimatedMesh* model, Path text) {
-        AnimatedMeshNode* node = smgr_->addAnimatedMeshSceneNode(model);
-        auto* texture = driver_->getTexture(text);
-        if (!texture) throw std::runtime_error("Couldn't create texture");
-        node->setMaterialTexture(0, texture);
-        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-        return node;
-    }
-
-    AnimatedMeshNode* createModel(Path obj, Path asset) {
-        AnimatedMesh* mesh = smgr_->getMesh(obj);
-        if (!mesh){
-            device_->drop();
-            return nullptr;
-        }
-        auto node = loadNode(mesh, asset);
-        //node->setRotation({0,90,0});
-        return node;
-    }
-
-    AnimatedMeshNode* createPlayer(Path obj, Path asset, irr::scene::ICameraSceneNode* cam){
-        auto node = createModel(obj, asset);
-        node->setRotation({45,-90,0});
-        node->setParent(cam);
-        cam->setFOV(1);
-        //cam->setTarget({200,0,20});
-        cam->setPosition({-20,0,-20});
-        return node;
-    };
+    auto loadNode(AnimatedMesh* model, Path text);
+    AnimatedMeshNode* createModel(Path obj, Path asset);
+    AnimatedMeshNode* createPlayer(Path obj, Path asset, irr::scene::ICameraSceneNode* cam);
 
     auto* createSphere(float r = 5.0f){
         auto* node = smgr_->addSphereSceneNode(

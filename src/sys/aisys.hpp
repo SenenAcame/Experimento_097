@@ -8,39 +8,39 @@ struct AISys {
     using SYSTAGs = MP::Typelist<>;
     static constexpr auto PI { std::numbers::pi };
 
-     double arcTan(double const y, double const x) const {
+    constexpr double arcTan(double const y, double const x) const noexcept{
         double arctan = std::atan2(y, x);
         while (arctan < 0) arctan += 2*PI;
         return arctan;
     }
 
-     double capLimits(double const value, double const limit) const {
+    double capLimits(double const value, double const limit) const noexcept{
         return irr::core::clamp(value, -limit, limit);
     }
 
-     double distancePoints(double const a, double const b) const {
+    constexpr double distancePoints(double const a, double const b) const noexcept{
         return a - b;
     }
 
-     double distanceModule(double const x, double const y) const {
+    constexpr double distanceModule(double const x, double const y) const noexcept{
         return std::sqrt(x*x + y*y);
     }
 
-     double distanceAngle(double const a, double const b) const {
+    constexpr double distanceAngle(double const a, double const b) const noexcept{
         double angDist = a - b;
         while (angDist >  PI) angDist -= 2*PI;
         while (angDist < -PI) angDist += 2*PI;
         return angDist;
     }
 
-     double angularVelocity(double const dx, double const dz, double const orien, double const time) const{
+    constexpr double angularVelocity(double const dx, double const dz, double const orien, double const time) const noexcept{
         auto t_ang      { arcTan(dz, dx) };
         auto t_ang_dist { distanceAngle(t_ang, orien) };
         double ang_vel  { t_ang_dist / time };
         return ang_vel;
     }
 
-     void arrive(AICmp& a, PhysicsCmp2& p) const {
+    constexpr void arrive(AICmp& a, PhysicsCmp2& p) const noexcept{
         p.v_ang = p.a_lin = 0;
 
         auto t_dx       { distancePoints(a.ox, p.x) };
@@ -58,7 +58,7 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-     void seek(AICmp& a, PhysicsCmp2& p) const {
+    void seek(AICmp& a, PhysicsCmp2& p) const noexcept{
         p.v_ang = p.a_lin = 0;
 
         auto t_dx       { distancePoints(a.ox, p.x) };
@@ -73,51 +73,45 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-    void shoot(AICmp& a, PhysicsCmp2& p, TheEngine& eng, EntyMan& EM, Enty& enem) const {
-        
-        RenderCmp2& r = EM.getComponent<RenderCmp2>(enem);
-        auto dPX=distancePoints(a.ox,p.x);
-        //auto dPY=distancePoints();
-        auto dPZ=distancePoints(a.oz,p.z);
-        auto dM=distanceModule(dPX, dPZ);
-        
-        Enty& bullet = EM.createEntity();
-        auto& stats=EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f
-        , .bulletRad=0.5f});  
-        EM.addComponent<PhysicsCmp2>(
-            bullet, PhysicsCmp2{
-                .x =p.x,
-                .y =p.y,
-                .z =p.z,
-                .vx= cos(dPX/dM)*stats.speed,
-                .vy= 0,
-                .vz= sin(dPZ/dM)*stats.speed
-            }
-        );
+    constexpr void shoot(AICmp& a, PhysicsCmp2& p, EntyMan& EM, TheEngine& eng, Enty& enem) const noexcept{
+        if(a.shoot){
+            auto dPX = distancePoints(a.ox,p.x);
+            auto dPZ = distancePoints(a.oz,p.z);
+            auto dM  = distanceModule(dPX, dPZ);
 
-        EM.addComponent<RenderCmp2>(bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
-        EM.addComponent<EstadoCmp> (bullet);
-        EM.addTag<TEnemyBullet>(bullet);
-        EM.getComponent<EstadisticaCmp>(enem).ishoot =true;
-        std::cout<<EM.getComponent<PhysicsCmp2>(EM.getEntityById(bullet.getID())
-        ).vx <<"\n";
+            Enty& bullet  = EM.createEntity();
+            auto& stats = EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f, .bulletRad=0.5f}); 
+            EM.addComponent<PhysicsCmp2>(
+                bullet, PhysicsCmp2{
+                    .x  = p.x,
+                    .y  = p.y,
+                    .z  = p.z,
+                    .vx = dPX/dM * stats.speed,
+                    .vy = 0,
+                    .vz = dPZ/dM * stats.speed
+                }
+            );
+            
+            EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+            EM.addComponent<EstadoCmp>  (bullet);
+            EM.addComponent<SelfDestCmp>(bullet);
+            EM.addTag<TEneBullet>(bullet);
+            a.shoot = false;
+        }
     }
 
-    void percept(BlackBoardCmp& board, AICmp& ai, double delta) {
+    constexpr void percept(BlackBoardCmp& board, AICmp& ai, double delta) noexcept{
         ai.time += delta;
         if( ai.time <= ai.cooldown ) return;
 
         ai.time -= ai.cooldown;
 
-        //if(board.tactive) {
-            ai.ox = board.tx;
-            ai.oz = board.tz;
-            ai.behaviour = board.behaviour;
-        //    board.tactive = false;
-        //}
+        ai.ox = board.tx;
+        ai.oz = board.tz;
+        ai.shoot = board.shoot;
     }
 
-    void update(EntyMan& EM, double dt, SoundSystem_t& SS, TheEngine& device) {
+    void update(EntyMan& EM, double dt, SoundSystem_t& SS, TheEngine& dev) {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
@@ -143,7 +137,7 @@ struct AISys {
                 switch(a.behaviour){
                     case SB::Arrive: arrive(a,p); break;
                     case SB::Seek:   seek  (a,p); break;
-                    case SB::Shoot:  shoot (a,p,device,EM,e);break;
+                    case SB::Shoot:  shoot (a, p, EM, dev, e); break;
                 }
             }
         );

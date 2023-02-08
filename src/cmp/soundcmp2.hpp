@@ -17,6 +17,5 @@ struct ProgrammerSoundContext {
 struct SoundCmp{
     ProgrammerSoundContext programmerSoundContext{};
 
-    static constexpr uint8_t id {7};
-    
+    static constexpr uint8_t id {7}; //0010000000
 };

@@ -13,9 +13,10 @@ struct AICmp {
     double arrivalRadius { 1.0 };
     double timeArrive    { 0.5 };
     SB     behaviour     { SB::Arrive };
+    bool   shoot         { false };
 
     double cooldown      { 0.1 };
     double time          { 0.0 };
 
-    static constexpr uint8_t id {4};
+    static constexpr uint8_t id {4}; //0000010000
 };

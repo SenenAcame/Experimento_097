@@ -16,6 +16,7 @@
 #include "util/types.hpp"
 
 //auto time_now(){ std::chrono::high_resolution_clock::now();}
+#include "sys/selfdestsys.hpp"
 
 void game2() {
     EntyMan       EM;
@@ -28,6 +29,7 @@ void game2() {
     LogicSystem   LogicSys;
     SoundSystem_t SouSys;
     SpawnSystem   SpawnSys;
+    SelfDestSys   DestSys;
 
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
@@ -39,7 +41,6 @@ void game2() {
     EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
     EM.addComponent<SoundCmp>   (map, SouSys.createinstance(0));
     EM.addTag      <TMap>       (map);
-    
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
@@ -51,7 +52,6 @@ void game2() {
     EM.addComponent<SoundCmp>       (player, SouSys.createinstance(8));
     EM.addTag      <TPlayer>        (player);
 
-
     Enty& playerwalksou = EM.createEntity();
     EM.addComponent<SoundCmp>(playerwalksou, SouSys.createinstance(4));
 
@@ -62,30 +62,30 @@ void game2() {
     EM.addComponent<SoundCmp>(weaponsou, SouSys.createinstance(1));
     EM.addTag      <TWeapon> (weaponsou);
 
-    //Enty& enemy1 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
-    //EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    //EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=0.5 });
-    //EM.addComponent<EstadoCmp>      (enemy1);
-    //EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-    //EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
-    //EM.addTag      <TEnemy>         (enemy1);
-//
-    //Enty& enemy2 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
-    //EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
-    //EM.addComponent<AICmp>          (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .cooldown=0.1 });
-    //EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-    //EM.addComponent<EstadoCmp>      (enemy2);
-    //EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
-    //EM.addTag      <TEnemy>         (enemy2);    
+    Enty& enemy1 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
+    EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+    EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
+    EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
+    EM.addComponent<EstadoCmp>      (enemy1);
+    EM.addTag      <TEnemy>         (enemy1);
+
+    Enty& enemy2 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
+    EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
+    EM.addComponent<AICmp>          (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .behaviour=SB::Arrive, .cooldown=0.1 });
+    EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
+    EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<EstadoCmp>      (enemy2); 
+    EM.addTag      <TEnemy>         (enemy2);    
 
     Enty& enemy3 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=-19.f, .z=30.f});
     EM.addComponent<RenderCmp2>     (enemy3, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
-    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .cooldown=1 });
-    EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
+    EM.addComponent<AICmp>          (enemy3, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
     EM.addComponent<EstadisticaCmp> (enemy3, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=1.f});
+    EM.addComponent<SoundCmp>       (enemy3, SouSys.createinstance(7));
     EM.addComponent<EstadoCmp>      (enemy3);
     EM.addTag      <TEnemy>         (enemy3);
 
@@ -113,6 +113,7 @@ void game2() {
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
         AISys.   update(EM, dt, SouSys, dev);
+        AISys.   update(EM, dt, SouSys, dev);
         PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);
         ColSys.  update(EM, SouSys);
@@ -124,6 +125,7 @@ void game2() {
         {}
         
         ++frames;
+        DestSys. update(EM, dt);
     }
 
     

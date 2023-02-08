@@ -16,5 +16,5 @@ struct InputCmp2 {
     KeySym key_sound2 {XK_N};
     KeySym key_sound3 {XK_M};
 
-    static constexpr uint8_t id {2}; //00000100
+    static constexpr uint8_t id {2}; //0000000100
 };

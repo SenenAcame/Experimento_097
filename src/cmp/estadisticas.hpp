@@ -2,7 +2,6 @@
 #include <cstdint>
 
 struct EstadisticaCmp {
-     
     float hitpoints{}, damage{}, speed{};
     float  bulletRad{}; 
     bool enemyRange = false;

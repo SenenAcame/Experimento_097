@@ -6,18 +6,12 @@
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs = MP::Typelist<>;
-    //constexpr static double dt = 1.0/60;
     static constexpr double PI { std::numbers::pi };
 
     void update(EntyMan& EM, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, PhysicsCmp2& p) {
-                if(e.hasTAG<TBullet>() || e.hasTAG<TEnemyBullet>()){
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.z += p.vz;
-                }
-                else{
+                if(e.hasTAG<TEnemy>()) {
                     p.orien += dt * p.v_ang;
                     if      (p.orien > 2*PI) p.orien -= 2*PI;
                     else if (p.orien < 0)    p.orien += 2*PI;
@@ -36,6 +30,11 @@ struct PhySys2 {
                     auto roz = dt * std::fabs(p.v_lin) * (p.kRoz);
                     if(p.v_lin > 0) p.v_lin -= roz;
                     else            p.v_lin += roz;
+                }
+                else {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.z += p.vz;
                 }
             }
         );
