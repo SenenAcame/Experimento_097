@@ -79,7 +79,6 @@ struct AISys {
             auto dPZ = distancePoints(a.oz,p.z);
             auto dM  = distanceModule(dPX, dPZ);
 
-            RenderCmp2& r = EM.getComponent<RenderCmp2>(enem);
             Enty& bullet  = EM.createEntity();
             auto& stats = EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f, .bulletRad=0.5f}); 
             EM.addComponent<PhysicsCmp2>(
@@ -107,13 +106,9 @@ struct AISys {
 
         ai.time -= ai.cooldown;
 
-        //if(board.tactive) {
-            ai.ox = board.tx;
-            ai.oz = board.tz;
-            //ai.behaviour = board.behaviour;
-            ai.shoot = board.shoot;
-        //    board.tactive = false;
-        //}
+        ai.ox = board.tx;
+        ai.oz = board.tz;
+        ai.shoot = board.shoot;
     }
 
     void update(EntyMan& EM, double dt, SoundSystem_t& SS, TheEngine& dev) {
