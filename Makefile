@@ -16,27 +16,25 @@ $(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(ca
 endef
 
 APP 	 := experiment_97
-CCFLAGS  := -Wall -pedantic 
+CCFLAGS  := -Wall -pedantic
 CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o
 HPP      := %.hpp
-CCACHE   := ccache
+#CCACHE   := ccache
 CC		 := g++
 C		 := gcc
 MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
-LIBDIR	 := lib
 #LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
-LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib -L$(LIBDIR) -limgui -lGL #-lglfw -lGLEW 
+LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib
 INCS	 := -Ilib
-#EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/
+EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
 STD++	 := -std=c++20
 STD		 := -std=c17
 SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=libs/
-INCDIRS	 := -I$(SRC) -I$(LIBDIR)
+DINAMIC  := -Wl,-rpath=libs/FMOD/lib
 
 ifdef RELEASE
 	CCFLAGS += -O3
@@ -45,7 +43,6 @@ else
 	CCFLAGS += -g
 	CFLAGS += -g
 endif
-
 
 ALLCPPS    := $(shell find $(SRC)/ -type f -iname *.cpp)
 ALLCS      := $(shell find $(SRC)/ -type f -iname *.c)
@@ -56,10 +53,10 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 .PHONY: dir clean play lib lib-clean
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CC) $(STD++) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE) $(DINAMIC) 
+	$(CC) $(STD++) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE) $(DINAMIC)
 
-$(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++),$(INCS),$(INCDIRS)))
-$(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD),$(INCS),$(INCDIRS)))
+$(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++),$(INCS)))
+$(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD),$(INCS)))
 
 dir:
 	$(info $(SUBDIRS))
@@ -72,7 +69,7 @@ clean:
 	rm -f -r "./obj"
 
 play:
-	./$(APP)
+	$(EXPTR) ./$(APP)
 
 lib:
 	$(MAKE) -C lib

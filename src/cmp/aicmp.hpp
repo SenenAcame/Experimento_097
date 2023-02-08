@@ -3,7 +3,8 @@
 
 enum class SB{
     Arrive,
-    Seek
+    Seek,
+    Shoot
 };
 
 struct AICmp {

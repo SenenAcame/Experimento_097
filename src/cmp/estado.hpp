@@ -7,5 +7,8 @@ struct EstadoCmp {
     size_t entityCol = 0; //con que he colisio
     //size_t alive = 0; //1 is set to destroy
 
+    //solo para spawn
+    int numEnem = 1;
+
     static constexpr uint8_t id {3}; //0000100
 };
