@@ -58,7 +58,7 @@ struct NodeMapSys {
     };
 
     void update(EntyMan& EM){
-        std::vector<nodo> ruta;
+        /*std::vector<nodo> ruta;
         std::vector<nodo> novalen;
         nodo final;
         nodo player = findNodePlayer(EM);
@@ -74,7 +74,7 @@ struct NodeMapSys {
                     }
                 );
             }
-        );
+        );*/
 
     };
 

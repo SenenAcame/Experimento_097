@@ -29,6 +29,17 @@ void game2() {
     MapSys.createNodes(EM.addComponent<NodoCmp>    (map));
     EM.addTag<TMap>(map);
 
+    Enty& cubo00 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(cubo00, PhysicsCmp2{.x=0.f, .z=0.f});
+    EM.addComponent<RenderCmp2> (cubo00, dev.createModel("assets/cubo00.obj","assets/wall.bmp"));
+
+    Enty& cubo002 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(cubo002, PhysicsCmp2{.x=-9.f, .z=-9.f});
+    EM.addComponent<RenderCmp2> (cubo002, dev.createModel("assets/cubo00.obj","assets/wall.bmp"));
+
+    Enty& cubo10 = EM.createEntity();
+    EM.addComponent<RenderCmp2> (cubo10, dev.createModel("assets/cubo1010.obj","assets/wall.bmp"));
+
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
     EM.addComponent<RenderCmp2> (player, dev.createPlayer("assets/player_arm.obj","assets/fire.bmp", cam));
