@@ -1,3 +1,4 @@
+#include "chrono"
 #include "eng/engine.hpp"
 //#include "sys/rendersystem.hpp"
 #include "sys/soundsystem.hpp"
@@ -9,5 +10,6 @@
 #include "sys/nodemapsys.hpp"
 #include "sys/logicsystem.hpp"
 #include "sys/selfdestsys.hpp"
+#include "sys/spawnsys.hpp"
 #include "util/types.hpp"
 #include "cmp/debug.hpp"

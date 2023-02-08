@@ -2,10 +2,10 @@
 #include "../util/types.hpp"
 
 struct LogicSystem {
-    using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp, RenderCmp2>;
+    using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp>;
     using SYSTAGs = MP::Typelist<>;
 
-    void update(EntyMan& EM, TheEngine& eng ) {
+    void update(EntyMan& EM, TheEngine& eng) {
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& e, EstadoCmp& p, EstadisticaCmp& stats) {
                 if(p.colision != 0){

@@ -1,22 +1,4 @@
 #include "main.hpp"
-#include "chrono"
-#include "cmp/aicmp.hpp"
-#include "cmp/inputcmp2.hpp"
-#include "cmp/physicscmp2.hpp"
-#include "eng/engine.hpp"
-#include "sys/aisys.hpp"
-#include "cmp/soundcmp2.hpp"
-#include "sys/rensys2.hpp"
-#include "sys/physys2.hpp"
-#include "sys/colsys2.hpp"
-#include "sys/inpsys2.hpp"
-#include "sys/nodemapsys.hpp"
-#include "sys/logicsystem.hpp"
-#include "sys/spawnsys.hpp"
-#include "util/types.hpp"
-
-//auto time_now(){ std::chrono::high_resolution_clock::now();}
-#include "sys/selfdestsys.hpp"
 
 void game2() {
     EntyMan       EM;
@@ -63,7 +45,7 @@ void game2() {
     EM.addTag      <TWeapon> (weaponsou);
 
     Enty& enemy1 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .x= -50.0, .z=40.0});
+    EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{.x= -50.0, .z=40.0});
     EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
     EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
     EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
@@ -75,8 +57,8 @@ void game2() {
     EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});
     EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
     EM.addComponent<AICmp>          (enemy2, AICmp{ .enable=true, .arrivalRadius=5.0, .timeArrive=2.0, .behaviour=SB::Arrive, .cooldown=0.1 });
-    EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
     EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
     EM.addComponent<EstadoCmp>      (enemy2); 
     EM.addTag      <TEnemy>         (enemy2);    
 
@@ -94,7 +76,6 @@ void game2() {
     //EM.addComponent<EstadoCmp>      (spawn);
     //EM.addTag      <TSpawn>         (spawn);
 
-
     SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
     constexpr double dt = 1.0/60;
@@ -105,14 +86,11 @@ void game2() {
     int64_t frames =0;
 
     while(dev.run()){
-        EM.      update();
-
         auto frame_start = std::chrono::high_resolution_clock::now();
-
+        EM.      update();
 
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
-        AISys.   update(EM, dt, SouSys, dev);
         AISys.   update(EM, dt, SouSys, dev);
         PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);
@@ -120,14 +98,11 @@ void game2() {
         SouSys.  update();
         LogicSys.update(EM, dev);
         SpawnSys.update(EM,dev, SouSys);
-
-        while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame)
-        {}
-        
-        ++frames;
         DestSys. update(EM, dt);
-    }
 
+        while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+        ++frames;
+    }
     
     auto end = std::chrono::high_resolution_clock::now();
     auto ellapse =  (end - start).count(); //how many nano sec has pass

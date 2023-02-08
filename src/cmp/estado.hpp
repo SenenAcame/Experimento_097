@@ -10,8 +10,5 @@ struct EstadoCmp {
     //solo para spawn
     int numEnem = 1;
 
-    //solo para spawn
-    int numEnem = 1;
-
     static constexpr uint8_t id {3}; //0000001000
 };
