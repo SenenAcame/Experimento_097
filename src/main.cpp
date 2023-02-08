@@ -21,7 +21,7 @@ void game2() {
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
     EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/salas_visibles.obj","assets/textures/wall.bmp"));
     EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
-    EM.addComponent<SoundCmp>   (map, SouSys.createinstance(0));
+    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
     EM.addTag      <TMap>       (map);
 
     Enty& player = EM.createEntity();
@@ -102,6 +102,12 @@ void game2() {
 
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
         ++frames;
+        AISys.   update(EM, dt);
+        PhySys.  update(EM, dt);
+        InpSys.  update(EM, dev, SouSys);
+        ColSys.  update(EM);
+        SouSys.  update(EM);
+        LogicSys.update(EM);
     }
     
     auto end = std::chrono::high_resolution_clock::now();

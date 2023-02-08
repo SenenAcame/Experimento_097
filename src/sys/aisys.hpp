@@ -124,6 +124,17 @@ struct AISys {
                             if(en.hasTAG<TPlayer>()){
                                 SS.changesound(EM.getComponent<SoundCmp>(en),1);
                                 SS.startsound(EM.getComponent<SoundCmp>(en));
+                if(e.hasCMP<EstadoCmp>()){
+                    auto& est = EM.getComponent<EstadoCmp>(e);
+                    if(est.alive){ 
+                        if(a.enable){
+                            EM.getComponent<SoundCmp>(e).parametro=2;
+                            EM.getComponent<SoundCmp>(e).play=true;
+                            for(auto& en : EM.getEntities()){
+                                if(en.hasTAG<TPlayer>()){
+                                    EM.getComponent<SoundCmp>(en).parametro=1;
+                                    EM.getComponent<SoundCmp>(en).play=true;
+                                }
                             }
                         }
                     }

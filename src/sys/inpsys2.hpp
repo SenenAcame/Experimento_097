@@ -33,8 +33,9 @@ struct InpSys2 : public irr::IEventReceiver{
                     EM.getComponent<InventarioCmp>(player).ammo2 = 5;
                     for(auto& a : EM.getEntities()){
                         if(a.hasTAG<TWeapon>()){
-                            SS.changesound(EM.getComponent<SoundCmp>(a),1);
-                            SS.startsound(EM.getComponent<SoundCmp>(a));
+                            EM.getComponent<SoundCmp>(a).parametro=1;
+                            EM.getComponent<SoundCmp>(a).cambia=true;
+                            EM.getComponent<SoundCmp>(a).play=true;
                         }
                     }
                 }
