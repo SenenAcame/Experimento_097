@@ -36,32 +36,6 @@ struct ColSys2 {
                             if((dy = phy.y - phy2.y) < 0)
                                 dy=-dy;
                             dy -= (tamy + tamy2);
-                                if(dx<=0 && dy<=0 && dz<=0){
-                                    if(a.hasTAG<TBullet>()&&e.hasTAG<TEnemy>()){
-                                        EM.getComponent<SoundCmp>(e).parametro=0;
-                                        EM.getComponent<SoundCmp>(e).play=true;
-                                    }
-                                    
-                                //std::cout<<"Impacto\n";
-                                //si tiene he colisionado = false compruebo
-                                 //auto dx = p.x - EM.getComponent<PhysicsCmp2>(a).x;
-                                 //auto dy = p.y - EM.getComponent<PhysicsCmp2>(a).y;
-                                 //auto dz = p.z - EM.getComponent<PhysicsCmp2>(a).z;
-                                 //auto dist = std::sqrt(dx*dx+dy*dy+dz*dz);
-                                 //if(dist <= 0.5 && dist!=0.0){
-                                    std::cout << phy.x << " , " << phy2.x << std::endl;
-                                    std::cout << phy.y << " , " << phy2.y << std::endl;
-                                    std::cout << phy.z << " , " << phy2.z << std::endl<< std::endl;
-                            //         std::cout<<"Impacto\n";
-                            //         //marcar el estado a he colisionado con el id de E
-                                    //00000010 --> colision,
-                                     EM.getComponent<EstadoCmp>(a).colision = 1<<1;
-                                     EM.getComponent<EstadoCmp>(a).entityCol = e.getID();
-                                     if(a.hasTAG<TPlayer>() && EM.getComponent<EstadoCmp>(a).colision ==1){
-                                         std::cout<<"Soy player y he chocado\n";
-                                     }
-                                     //std::cout<<EM.getComponent<EstadoCmp>(a).colision <<"Impacto\n";
-                                     //std::cout<<EM.getComponent<EstadoCmp>(a).entityCol <<"Impacto\n";
 
                             if((dz = phy.z - phy2.z) < 0)
                                 dz=-dz;
@@ -69,8 +43,9 @@ struct ColSys2 {
 
                             if(dx<=0 && dy<=0 && dz<=0){
                                 if(a.hasTAG<TBullet>() && e.hasTAG<TEnemy>()){
-                                    SS.changesound(EM.getComponent<SoundCmp>(e),0);
-                                    SS.startsound(EM.getComponent<SoundCmp>(e));
+                                    EM.getComponent<SoundCmp>(e).parametro=0;
+                                    EM.getComponent<SoundCmp>(e).cambia=true;
+                                    EM.getComponent<SoundCmp>(e).play=true;
                                 }
                                 est.colision = 1<<1;
                                 est.entityCol = e.getID();

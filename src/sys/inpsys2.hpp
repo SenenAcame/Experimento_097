@@ -133,14 +133,10 @@ private:
         );
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
         EM.addComponent<EstadoCmp>  (bullet);
+        EM.addComponent<SoundCmp>  (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
         EM.addComponent<SelfDestCmp>(bullet);
         EM.addTag<TBullet>(bullet);
-        for(auto& a : EM.getEntities()){
-            if(a.hasTAG<TWeapon>()){
-                SS.changesound(EM.getComponent<SoundCmp>(a),2);
-                SS.startsound(EM.getComponent<SoundCmp>(a));
-            }
-        }
+        
     }
 
     void changeWeapon(EntyMan& EM, Enty& player, size_t equip) {

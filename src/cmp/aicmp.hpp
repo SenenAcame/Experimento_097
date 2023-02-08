@@ -9,7 +9,7 @@ enum class SB{
 
 struct AICmp {
     double ox{ 0 }, oz{ 0 };
-    bool   enable        { false };
+    bool   enable        { true };
     double arrivalRadius { 1.0 };
     double timeArrive    { 0.5 };
     SB     behaviour     { SB::Arrive };

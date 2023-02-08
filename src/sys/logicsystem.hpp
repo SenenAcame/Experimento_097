@@ -21,7 +21,9 @@ struct LogicSystem {
                     else if(e.hasTAG<TEnemy>()){
                         if(entity_colisioned.hasTAG<TBullet>()) {
                             stats.hitpoints -= entity_colisioned_stats.damage;
-                            if(stats.hitpoints <= 0) { e.setDestroy(); } //set to destroy
+                            if(stats.hitpoints <= 0) { 
+                                soundMonster(EM, e);
+                                e.setDestroy(); } //set to destroy
                         }
                         else if(entity_colisioned.hasTAG<TPlayer>()) {
                             entity_colisioned_stats.hitpoints -= stats.damage;
@@ -45,7 +47,22 @@ struct LogicSystem {
             }
         );
     }
+
+    void soundMonster(EntyMan& EM, Enty& e) {
+    EM.getComponent<SoundCmp>(e).parametro=2;
+    EM.getComponent<SoundCmp>(e).cambia=true;
+    EM.getComponent<SoundCmp>(e).play=true;
+    for(auto& en : EM.getEntities()){
+        if(en.hasTAG<TPlayer>()){
+            EM.getComponent<SoundCmp>(en).parametro=1;
+            EM.getComponent<SoundCmp>(en).cambia=true;
+            EM.getComponent<SoundCmp>(en).play=true;
+        }
+    }
+}
 };
+
+
 
 // Viejo codigo del update del sistema de logica
 

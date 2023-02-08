@@ -91,23 +91,17 @@ void game2() {
 
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
-        AISys.   update(EM, dt, SouSys, dev);
+        AISys.   update(EM, dt, dev);
         PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);
-        ColSys.  update(EM, SouSys);
-        SouSys.  update();
+        ColSys.  update(EM);
+        SouSys.  update(EM);
         LogicSys.update(EM, dev);
         SpawnSys.update(EM,dev, SouSys);
         DestSys. update(EM, dt);
 
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
         ++frames;
-        AISys.   update(EM, dt);
-        PhySys.  update(EM, dt);
-        InpSys.  update(EM, dev, SouSys);
-        ColSys.  update(EM);
-        SouSys.  update(EM);
-        LogicSys.update(EM);
     }
     
     auto end = std::chrono::high_resolution_clock::now();

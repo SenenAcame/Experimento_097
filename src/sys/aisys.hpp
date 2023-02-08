@@ -111,35 +111,27 @@ struct AISys {
         ai.shoot = board.shoot;
     }
 
-    void update(EntyMan& EM, double dt, SoundSystem_t& SS, TheEngine& dev) {
+    void update(EntyMan& EM, double dt, TheEngine& dev) {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, AICmp& a, PhysicsCmp2& p) {
-                if(e.getDestroy()){  
-                    if(a.enable){
-                        SS.changesound(EM.getComponent<SoundCmp>(e),2);
-                        SS.startsound(EM.getComponent<SoundCmp>(e));
-                        for(auto& en : EM.getEntities()){
-                            if(en.hasTAG<TPlayer>()){
-                                SS.changesound(EM.getComponent<SoundCmp>(en),1);
-                                SS.startsound(EM.getComponent<SoundCmp>(en));
-                if(e.hasCMP<EstadoCmp>()){
-                    auto& est = EM.getComponent<EstadoCmp>(e);
-                    if(est.alive){ 
-                        if(a.enable){
-                            EM.getComponent<SoundCmp>(e).parametro=2;
-                            EM.getComponent<SoundCmp>(e).play=true;
-                            for(auto& en : EM.getEntities()){
-                                if(en.hasTAG<TPlayer>()){
-                                    EM.getComponent<SoundCmp>(en).parametro=1;
-                                    EM.getComponent<SoundCmp>(en).play=true;
-                                }
-                            }
-                        }
-                    }
-                    a.enable=false;
-                }
+                //if(e.getDestroy()){
+                //    std::cout<<"Entro\n";
+                //    if(a.enable){
+                //        EM.getComponent<SoundCmp>(e).parametro=2;
+                //        EM.getComponent<SoundCmp>(e).cambia=true;
+                //        EM.getComponent<SoundCmp>(e).play=true;
+                //        for(auto& en : EM.getEntities()){
+                //            if(en.hasTAG<TPlayer>()){
+                //                EM.getComponent<SoundCmp>(en).parametro=1;
+                //                EM.getComponent<SoundCmp>(en).cambia=true;
+                //                EM.getComponent<SoundCmp>(en).play=true;
+                //            }
+                //        }
+                //    }
+                //    //a.enable=false;
+                //}
 
                 percept(bb, a, dt);
 
