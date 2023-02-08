@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f43ffeda-1a49-401a-b2a4-197c15245514}">
+		<property name="assetPath">
+			<value>Grabados/Aaghh.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.76800453514739231</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{fb9b18e4-0618-457f-ac59-1f8b0319a84e}</destination>
+		</relationship>
+	</object>
+</objects>

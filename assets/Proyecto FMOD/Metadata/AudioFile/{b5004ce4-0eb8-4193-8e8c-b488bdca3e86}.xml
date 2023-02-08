@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{b5004ce4-0eb8-4193-8e8c-b488bdca3e86}">
+		<property name="assetPath">
+			<value>Externos/Sonido enemigo2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>2.7403541666666666</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{fb9b18e4-0618-457f-ac59-1f8b0319a84e}</destination>
+		</relationship>
+	</object>
+</objects>

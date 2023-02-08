@@ -63,6 +63,20 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "csignal": "cpp",
+        "strstream": "cpp",
+        "bitset": "cpp",
+        "cfenv": "cpp",
+        "complex": "cpp",
+<<<<<<< HEAD
+        "forward_list": "cpp",
+        "source_location": "cpp",
+        "iomanip": "cpp",
+=======
+        "iomanip": "cpp",
+        "shared_mutex": "cpp",
+>>>>>>> feat012/WeaponsWithNewECS
+        "typeindex": "cpp"
     }
 }

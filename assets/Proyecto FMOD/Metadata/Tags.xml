@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MasterTagFolder" id="{d1af2392-5cf0-4f05-b864-1109db0035f9}">
+		<property name="name">
+			<value>Master</value>
+		</property>
+		<relationship name="items">
+			<destination>{b264c9c0-7a3b-42e2-9d63-6a605621beef}</destination>
+			<destination>{26a2188b-ce54-4a47-9b63-e415445372e3}</destination>
+			<destination>{e5da4301-8c7a-4878-bdc0-ad1ffa076049}</destination>
+			<destination>{1336b16f-2c89-484a-ab1e-8dd472caec53}</destination>
+			<destination>{f0b31616-e245-454e-ab63-c69afbd57c35}</destination>
+			<destination>{e37ae83a-9850-4078-a2bf-c4ed4b407c1d}</destination>
+			<destination>{8410f136-0ce8-48f8-95f5-7297e965e3a7}</destination>
+			<destination>{195af4f3-8560-401b-a6cc-711fef170130}</destination>
+			<destination>{c707c2f4-8663-4d4d-9049-9204619c4ea2}</destination>
+			<destination>{51895490-df7c-4e30-9a44-33db26052aaa}</destination>
+		</relationship>
+	</object>
+	<object class="Tag" id="{b264c9c0-7a3b-42e2-9d63-6a605621beef}">
+		<property name="name">
+			<value>Musica</value>
+		</property>
+	</object>
+	<object class="Tag" id="{26a2188b-ce54-4a47-9b63-e415445372e3}">
+		<property name="name">
+			<value>Ambiente</value>
+		</property>
+	</object>
+	<object class="Tag" id="{e5da4301-8c7a-4878-bdc0-ad1ffa076049}">
+		<property name="name">
+			<value>Hard</value>
+		</property>
+	</object>
+	<object class="Tag" id="{1336b16f-2c89-484a-ab1e-8dd472caec53}">
+		<property name="name">
+			<value>Foley</value>
+		</property>
+	</object>
+	<object class="Tag" id="{f0b31616-e245-454e-ab63-c69afbd57c35}">
+		<property name="name">
+			<value>Diseño</value>
+		</property>
+	</object>
+	<object class="Tag" id="{e37ae83a-9850-4078-a2bf-c4ed4b407c1d}">
+		<property name="name">
+			<value>Voces</value>
+		</property>
+	</object>
+	<object class="Tag" id="{8410f136-0ce8-48f8-95f5-7297e965e3a7}">
+		<property name="name">
+			<value>Diegetico</value>
+		</property>
+	</object>
+	<object class="Tag" id="{195af4f3-8560-401b-a6cc-711fef170130}">
+		<property name="name">
+			<value>Arma</value>
+		</property>
+	</object>
+	<object class="Tag" id="{c707c2f4-8663-4d4d-9049-9204619c4ea2}">
+		<property name="name">
+			<value>Personaje</value>
+		</property>
+	</object>
+	<object class="Tag" id="{51895490-df7c-4e30-9a44-33db26052aaa}">
+		<property name="name">
+			<value>Enemigo</value>
+		</property>
+	</object>
+</objects>
