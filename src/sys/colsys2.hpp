@@ -2,15 +2,15 @@
 #include "../util/types.hpp"
 
 struct ColSys2 {
-    using SYSCMPs  = MP::Typelist<PhysicsCmp2, EstadoCmp>;
-    using SYSTAGs  = MP::Typelist<>;
+    using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
+    using SYSTAGs = MP::Typelist<>;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, PhysicsCmp2& p, EstadoCmp&) {
                 EM.foreach<SYSCMPs, SYSTAGs>(
                     [&](Enty& a, PhysicsCmp2&, EstadoCmp& est){
-                        if((e.getID()!=a.getID()) &&
+                        if((e.getID() != a.getID()) &&
                            (a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>()) &&
                            (est.colision == 0))
                         {
@@ -18,16 +18,18 @@ struct ColSys2 {
                             auto& phy2 = EM.getComponent<PhysicsCmp2>(a);
                             float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
                             float dx, dy, dz;
+                            
                             if(e.hasTAG<TPlayer>() || e.hasTAG<TEnemy>()){
-                                tamx=0.8;
-                                tamy=2.5;
-                                tamz=2;
+                                tamx = 0.8;
+                                tamy = 2.5;
+                                tamz = 2;
                             }
                             if(a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>()){
-                                tamx2=0.8;
-                                tamy2=2.5;
-                                tamz2=2;
+                                tamx2 = 0.8;
+                                tamy2 = 2.5;
+                                tamz2 = 2;
                             }
+
                             if((dx = phy.x - phy2.x) < 0)
                                 dx=-dx;
                             dx -= (tamx + tamx2);
@@ -42,15 +44,16 @@ struct ColSys2 {
 
                             if(dx<=0 && dy<=0 && dz<=0){
                                 if(a.hasTAG<TBullet>() && e.hasTAG<TEnemy>()){
-                                    EM.getComponent<SoundCmp>(e).parametro=0;
-                                    EM.getComponent<SoundCmp>(e).cambia=true;
-                                    EM.getComponent<SoundCmp>(e).play=true;
+                                    auto& sound = EM.getComponent<SoundCmp>(e);
+                                    sound.parametro = 0;
+                                    sound.cambia    = true;
+                                    sound.play      = true;
                                 }
-                                est.colision = 1<<1;
+                                est.colision  = 1<<1;
                                 est.entityCol = e.getID();
-                                if(a.hasTAG<TPlayer>() && est.colision ==1){
-                                    std::cout<<"Soy player y he chocado\n";
-                                }
+                                //if(a.hasTAG<TPlayer>() && est.colision ==1){
+                                //    std::cout<<"Soy player y he chocado\n";
+                                //}
                             }
                         }
                     }

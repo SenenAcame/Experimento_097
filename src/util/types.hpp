@@ -10,6 +10,7 @@
 #include "../cmp/soundcmp2.hpp"
 #include "../cmp/selfdestcmp.hpp"
 #include "../cmp/spawncmp.hpp"
+#include "../cmp/interactcmp.hpp"
 #include "../man/entityman2.hpp"
 #include "gameengine.hpp"
 #include <iostream>
@@ -23,20 +24,13 @@ struct TEneBullet { static constexpr uint8_t id {5}; };
 struct TSpawn     { static constexpr uint8_t id {6}; };
 
 using ComponentList = MP::Typelist<
-    PhysicsCmp2, 
-    RenderCmp2, 
-    InputCmp2, 
-    EstadoCmp, 
-    EstadisticaCmp, 
-    InventarioCmp, 
-    AICmp, 
-    NodoCmp, 
-    SoundCmp,
-    SelfDestCmp,
-    SpawnCmp>;
-using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn>;
-using EntyMan       = EntityMan2<ComponentList, TagList>;
-using Enty          = EntyMan::Entity;
+    PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
+    InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp,
+    SpawnCmp, InteractCMP>;
+
+using TagList = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn>;
+using EntyMan = EntityMan2<ComponentList, TagList>;
+using Enty    = EntyMan::Entity;
 
 template<typename T>
 void seetype(T) { std::cout<<__PRETTY_FUNCTION__<<"\n"; }

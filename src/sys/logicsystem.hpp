@@ -5,6 +5,9 @@ struct LogicSystem {
     using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp>;
     using SYSTAGs = MP::Typelist<>;
 
+    using SYSCMP_Player = MP::Typelist<SoundCmp>;
+    using SYSTAG_Player = MP::Typelist<TPlayer>;
+
     void update(EntyMan& EM, TheEngine& eng) {
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& e, EstadoCmp& p, EstadisticaCmp& stats) {
@@ -23,8 +26,9 @@ struct LogicSystem {
                             stats.hitpoints -= entity_colisioned_stats.damage;
                             if(stats.hitpoints <= 0) { 
                                 soundMonster(EM, e);
-                                e.setDestroy(); } //set to destroy
-                        }
+                                e.setDestroy(); //set to destroy
+                            }
+                        } 
                         else if(entity_colisioned.hasTAG<TPlayer>()) {
                             entity_colisioned_stats.hitpoints -= stats.damage;
                             if(entity_colisioned_stats.hitpoints <= 0) { entity_colisioned.setDestroy(); } //set to destroy
@@ -42,27 +46,20 @@ struct LogicSystem {
                     p.colision = 0;
                     p.entityCol = 0;
                 }
-
-                
             }
         );
     }
 
     void soundMonster(EntyMan& EM, Enty& e) {
-    EM.getComponent<SoundCmp>(e).parametro=2;
-    EM.getComponent<SoundCmp>(e).cambia=true;
-    EM.getComponent<SoundCmp>(e).play=true;
-    for(auto& en : EM.getEntities()){
-        if(en.hasTAG<TPlayer>()){
-            EM.getComponent<SoundCmp>(en).parametro=1;
-            EM.getComponent<SoundCmp>(en).cambia=true;
-            EM.getComponent<SoundCmp>(en).play=true;
-        }
+        auto& monster = EM.getComponent<SoundCmp>(e);
+        EM.changeSound(monster, 2);
+        EM.foreach<SYSCMP_Player, SYSTAG_Player>(
+            [&](Enty&, SoundCmp& voice){
+                EM.changeSound(voice, 1);
+            }
+        );
     }
-}
 };
-
-
 
 // Viejo codigo del update del sistema de logica
 

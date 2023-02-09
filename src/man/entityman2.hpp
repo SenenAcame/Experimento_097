@@ -150,6 +150,12 @@ struct EntityMan2 {
         }
     }
 
+    void changeSound(SoundCmp& sound, uint8_t value) {
+        sound.parametro = value;
+        sound.cambia = true;
+        sound.play   = true;
+    }
+
     auto& getEntities() { return entities_; }
     auto& getStorage()  { return cmpStorage_; }
     auto& getBoard()    { return blackboard_; }
