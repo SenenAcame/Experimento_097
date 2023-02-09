@@ -77,6 +77,7 @@ public:
         if(direction == RIGHT){
             Position += Right * speed;
         }
+        Position.y = 0.0f;
     }
 
     void ProcessMouseMovement(float offset_x, float offset_y, GLboolean constraintPitch = true){
