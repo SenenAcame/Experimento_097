@@ -88,9 +88,8 @@ void game2() {
     while(dev.run()){
         auto frame_start = std::chrono::high_resolution_clock::now();
         EM.      update();
-
         RenSys.  update(EM, dev);
-        //MapSys.  update(EM);
+        MapSys.  update(EM, cam);
         AISys.   update(EM, dt, dev);
         PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);

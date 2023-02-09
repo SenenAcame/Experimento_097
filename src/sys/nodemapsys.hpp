@@ -12,12 +12,53 @@ struct NodeMapSys {
     using MapTAGs = MP::Typelist<TMap>;
     using EneTAGs = MP::Typelist<TEnemy>;
 
-    sala salaPlayer(){
-        
+    sala enemySala(EntyMan& EM, PhysicsCmp2& p, NodoCmp& mapa){
+        sala sala = {0,0,0,0};
+        for(int i=0;i<mapa.salas.size();i++){
+            if((mapa.salas.at(i).x + mapa.salas.at(i).tamx) >= p.x && (mapa.salas.at(i).x - mapa.salas.at(i).tamx) <= p.x && (mapa.salas.at(i).z + mapa.salas.at(i).tamz) >= p.z && (mapa.salas.at(i).z - mapa.salas.at(i).tamz) <= p.z){
+                return mapa.salas.at(i);
+            }
+        }
+        return sala;
+    };
+
+    /*sala salaPlayer(EntyMan& EM){
+        sala sala = {0,0,0,0};
+        EM.foreach<PhyCMPs, PlayTAGs>(
+            [&](Enty& e, PhysicsCmp2& p) {
+                EM.foreach<NodoCMPs, MapTAGs>(
+                    [&](Enty& en, NodoCmp& n) {
+                        for(int i=0;i<n.salas.size();i++){
+                            if((n.salas.at(i).x + n.salas.at(i).tamx) >= p.x && (n.salas.at(i).x - n.salas.at(i).tamx) <= p.x && (n.salas.at(i).z + n.salas.at(i).tamz) >= p.z && (n.salas.at(i).z - n.salas.at(i).tamz) <= p.z){
+                                sala=n.salas.at(i);
+                                std::cout << "Soy player y estoy: x= " << p.x << ", z= " << p.z << std::endl;
+                            }
+                        }
+                    }
+                );
+            }
+        );
+        return sala;
+    };*/
+
+    sala salaPlayer(EntyMan& EM, float x, float z){
+        sala sala={0,0,0,0};
+        EM.foreach<NodoCMPs, MapTAGs>(
+            [&](Enty& en, NodoCmp& n) {
+                for(int i=0;i<n.salas.size();i++){
+                    if((n.salas.at(i).x + n.salas.at(i).tamx) >= x && (n.salas.at(i).x - n.salas.at(i).tamx) <= x && (n.salas.at(i).z + n.salas.at(i).tamz) >= z && (n.salas.at(i).z - n.salas.at(i).tamz) <= z){
+                        sala=n.salas.at(i);
+                        std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
+                    }
+                }
+            }
+        );
+        return sala;
     }
 
-    void update(){
-
+    void update(EntyMan& EM, auto cam){
+        sala salaplayer = salaPlayer(EM, cam->getPosition().X, cam->getPosition().Z);
+        std::cout << "Estoy en la sala: x= " << salaplayer.x << ", z= " << salaplayer.z << std::endl << std::endl;
     }
 
     std::vector<sala> creaSalas(){
