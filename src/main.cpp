@@ -1,4 +1,7 @@
 #include "main.hpp"
+#include "cmp/physicscmp2.hpp"
+#include "cmp/spawncmp.hpp"
+#include "util/types.hpp"
 
 void game2() {
     EntyMan       EM;
@@ -60,7 +63,16 @@ void game2() {
     EM.addComponent<EstadisticaCmp> (enemy2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<SoundCmp>       (enemy2, SouSys.createinstance(7));
     EM.addComponent<EstadoCmp>      (enemy2); 
-    EM.addTag      <TEnemy>         (enemy2);    
+    EM.addTag      <TEnemy>         (enemy2);
+
+    Enty& ene2 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>   (ene2, PhysicsCmp2{ .x=-10.f, .z=20.f });
+    EM.addComponent<RenderCmp2>    (ene2, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
+    EM.addComponent<AICmp>         (ene2, AICmp{ .arrivalRadius=5.0, .timeArrive=2.0, .behaviour=SB::Arrive, .cooldown=0.1 });
+    EM.addComponent<EstadisticaCmp>(ene2, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<SoundCmp>      (ene2, SouSys.createinstance(7));
+    EM.addComponent<EstadoCmp>     (ene2); 
+    EM.addTag      <TEnemy>        (ene2); 
 
     Enty& enemy3 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy3, PhysicsCmp2{.x=-19.f, .z=30.f});
@@ -71,10 +83,10 @@ void game2() {
     EM.addComponent<EstadoCmp>      (enemy3);
     EM.addTag      <TEnemy>         (enemy3);
 
-    //Enty& spawn = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (spawn, PhysicsCmp2{.x=10.f, .z=20.f});
-    //EM.addComponent<EstadoCmp>      (spawn);
-    //EM.addTag      <TSpawn>         (spawn);
+    Enty& spawn = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{ .x=-10.f, .z=20.f });
+    EM.addComponent<SpawnCmp>   (spawn);
+    EM.addTag      <TSpawn>     (spawn);
 
     SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
@@ -97,7 +109,7 @@ void game2() {
         ColSys.  update(EM);
         SouSys.  update(EM);
         LogicSys.update(EM, dev);
-        SpawnSys.update(EM,dev, SouSys);
+        SpawnSys.update(EM, dev, SouSys);
         DestSys. update(EM, dt);
 
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}

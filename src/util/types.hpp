@@ -9,6 +9,7 @@
 #include "../cmp/nodocmp.hpp"
 #include "../cmp/soundcmp2.hpp"
 #include "../cmp/selfdestcmp.hpp"
+#include "../cmp/spawncmp.hpp"
 #include "../man/entityman2.hpp"
 #include "gameengine.hpp"
 #include <iostream>
@@ -31,7 +32,8 @@ using ComponentList = MP::Typelist<
     AICmp, 
     NodoCmp, 
     SoundCmp,
-    SelfDestCmp>;
+    SelfDestCmp,
+    SpawnCmp>;
 using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn>;
 using EntyMan       = EntityMan2<ComponentList, TagList>;
 using Enty          = EntyMan::Entity;
