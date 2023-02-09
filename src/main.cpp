@@ -20,7 +20,7 @@ void game2() {
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
     EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/salas_visibles.obj","assets/textures/wall.bmp"));
-    EM.addComponent<NodoCmp>    (map, NodoCmp{.nodos=MapSys.createNodes()});
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
     EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
     EM.addTag      <TMap>       (map);
 
@@ -90,7 +90,7 @@ void game2() {
         EM.      update();
 
         RenSys.  update(EM, dev);
-        MapSys.  update(EM);
+        //MapSys.  update(EM);
         AISys.   update(EM, dt, dev);
         PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);
