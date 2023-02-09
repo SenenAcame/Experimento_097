@@ -2,15 +2,14 @@
 #include "../util/types.hpp"
 
 struct ColSys2 {
-    using SYSCMPs  = MP::Typelist<PhysicsCmp2>;
-    using SYSCMPs2 = MP::Typelist<EstadoCmp>;
+    using SYSCMPs  = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs  = MP::Typelist<>;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, PhysicsCmp2& p) {
-                EM.foreach<SYSCMPs2, SYSTAGs>(
-                    [&](Enty& a, EstadoCmp& est){
+            [&](Enty& e, PhysicsCmp2& p, EstadoCmp&) {
+                EM.foreach<SYSCMPs, SYSTAGs>(
+                    [&](Enty& a, PhysicsCmp2&, EstadoCmp& est){
                         if((e.getID()!=a.getID()) &&
                            (a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>()) &&
                            (est.colision == 0))
@@ -19,12 +18,12 @@ struct ColSys2 {
                             auto& phy2 = EM.getComponent<PhysicsCmp2>(a);
                             float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
                             float dx, dy, dz;
-                            if(e.hasTAG<TPlayer>()|| e.hasTAG<TEnemy>()){
+                            if(e.hasTAG<TPlayer>() || e.hasTAG<TEnemy>()){
                                 tamx=0.8;
                                 tamy=2.5;
                                 tamz=2;
                             }
-                            if(a.hasTAG<TPlayer>()|| a.hasTAG<TEnemy>()){
+                            if(a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>()){
                                 tamx2=0.8;
                                 tamy2=2.5;
                                 tamz2=2;

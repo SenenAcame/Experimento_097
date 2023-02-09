@@ -34,7 +34,7 @@ EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
 STD++	 := -std=c++20
 STD		 := -std=c17
 SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=libs/FMOD/lib
+DINAMIC  := -Wl,-rpath=libs/
 
 ifdef RELEASE
 	CCFLAGS += -O3
@@ -69,7 +69,7 @@ clean:
 	rm -f -r "./obj"
 
 play:
-	$(EXPTR) ./$(APP)
+	./$(APP)
 
 lib:
 	$(MAKE) -C lib
