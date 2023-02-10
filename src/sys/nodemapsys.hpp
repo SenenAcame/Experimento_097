@@ -6,8 +6,8 @@
 
 struct NodeMapSys {
 
-    using PhyCMPs = MP::Typelist<PhysicsCmp2>;
-    using PlayTAGs = MP::Typelist<TPlayer>;
+    using EneCMPs = MP::Typelist<PhysicsCmp2, AICmp>;
+    //using PlayTAGs = MP::Typelist<TPlayer>;
     using NodoCMPs = MP::Typelist<NodoCmp>;
     using MapTAGs = MP::Typelist<TMap>;
     using EneTAGs = MP::Typelist<TEnemy>;
@@ -58,7 +58,33 @@ struct NodeMapSys {
 
     void update(EntyMan& EM, auto cam){
         sala salaplayer = salaPlayer(EM, cam->getPosition().X, cam->getPosition().Z);
-        std::cout << "Estoy en la sala: x= " << salaplayer.x << ", z= " << salaplayer.z << std::endl << std::endl;
+        EM.foreach<NodoCMPs, MapTAGs>(
+            [&](Enty& en, NodoCmp& n) {
+                EM.foreach<EneCMPs, EneTAGs>(
+                    [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
+                        sala salaene = enemySala(EM, p, n);
+                        if(salaplayer.x==salaene.x && salaplayer.z==salaene.z){
+                            ai.behaviour=SB::Seek;
+                        }
+                        else{
+                            ai.behaviour=SB::Patrol;
+                            puerta nextcoord ={0, 0};
+                            float dist=MAXFLOAT;
+                            for(unsigned int i=0; i<salaene.puertas.size(); i++){
+                                float distx=salaplayer.x-salaene.puertas.at(i).x;
+                                float distz=salaplayer.z-salaene.puertas.at(i).z;
+                                if(dist>(sqrt((distx*distx)+(distz*distz)))){
+                                    dist=sqrt((distx*distx)+(distz*distz));
+                                    nextcoord=salaene.puertas.at(i);
+                                }
+                            }
+                            ai.ox=nextcoord.x;
+                            ai.oz=nextcoord.z;
+                        }
+                    }
+                );
+            }
+        );
     }
 
     std::vector<sala> creaSalas(){

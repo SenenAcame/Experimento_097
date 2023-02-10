@@ -100,15 +100,32 @@ struct AISys {
         }
     }
 
+    void patrol(AICmp& a, PhysicsCmp2& p) const noexcept{
+        p.v_ang = p.a_lin = 0;
+
+        auto t_dx       { distancePoints(a.ox, p.x) };
+        auto t_dz       { distancePoints(a.oz, p.z) };
+
+        auto t_ang_vel  { angularVelocity(t_dx, t_dz, p.orien, a.timeArrive) };
+
+        auto mod        { std::fabs(t_ang_vel) };
+        auto t_lin_acc  { (p.kMxVLin / (1+mod)) / a.timeArrive };
+
+        p.a_lin = capLimits(t_lin_acc, p.kMxALin);
+        p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
+    }
+
     constexpr void percept(BlackBoardCmp& board, AICmp& ai, double delta) noexcept{
         ai.time += delta;
-        if( ai.time <= ai.cooldown ) return;
+        if( ai.time <= ai.cooldown) return;
 
         ai.time -= ai.cooldown;
 
-        ai.ox = board.tx;
-        ai.oz = board.tz;
-        ai.shoot = board.shoot;
+        if(ai.behaviour!=SB::Patrol){
+            ai.ox = board.tx;
+            ai.oz = board.tz;
+            ai.shoot = board.shoot;
+        }
     }
 
     void update(EntyMan& EM, double dt, TheEngine& dev) {
@@ -141,6 +158,7 @@ struct AISys {
                     case SB::Arrive: arrive(a,p); break;
                     case SB::Seek:   seek  (a,p); break;
                     case SB::Shoot:  shoot (a, p, EM, dev, e); break;
+                    case SB::Patrol: patrol(a, p);break;
                 }
             }
         );
