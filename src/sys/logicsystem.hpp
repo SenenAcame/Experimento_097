@@ -16,38 +16,49 @@ struct LogicSystem {
                     auto& entity_colisioned_stats = EM.getComponent<EstadisticaCmp>(entity_colisioned);
 
                     if(e.hasTAG<TPlayer>()){
-                        if(entity_colisioned.hasTAG<TEnemy>()) {
-                            stats.hitpoints -= entity_colisioned_stats.damage;
-                            if(stats.hitpoints <= 0) { e.setDestroy(); } //set to destroy
-                        }
+                        colisionPlayer(e, entity_colisioned, entity_colisioned_stats);
                     }
                     else if(e.hasTAG<TEnemy>()){
-                        if(entity_colisioned.hasTAG<TBullet>()) {
-                            stats.hitpoints -= entity_colisioned_stats.damage;
-                            if(stats.hitpoints <= 0) { 
-                                soundMonster(EM, e);
-                                e.setDestroy(); //set to destroy
-                            }
-                        } 
-                        else if(entity_colisioned.hasTAG<TPlayer>()) {
-                            entity_colisioned_stats.hitpoints -= stats.damage;
-                            if(entity_colisioned_stats.hitpoints <= 0) { entity_colisioned.setDestroy(); } //set to destroy
-                        }
+                        colisionEnemy(EM, e, entity_colisioned, stats, entity_colisioned_stats);
                     }
                     else if(e.hasTAG<TBullet>()) {
-                        if(entity_colisioned.hasTAG<TEnemy>()) {
-                            entity_colisioned_stats.hitpoints -= stats.damage;
-                            if(entity_colisioned_stats.hitpoints <= 0) { entity_colisioned.setDestroy(); } //set to destroy
-                        }
-                        e.setDestroy(); //set to destroy
+                        colisionBullet(e, entity_colisioned, stats, entity_colisioned_stats);
                     }
-
                     ////valores por defecto
                     p.colision = 0;
                     p.entityCol = 0;
                 }
             }
         );
+    }
+
+    void colisionPlayer(Enty& current, Enty& colisioned, EstadisticaCmp& col_stats) {
+        if(colisioned.hasTAG<TEnemy>()) {
+            col_stats.hitpoints -= col_stats.damage;
+            if(col_stats.hitpoints <= 0) { current.setDestroy(); } //set to destroy
+        }
+    }
+
+    void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned, EstadisticaCmp& curr_stats, EstadisticaCmp& col_stats) {
+        if(colisioned.hasTAG<TBullet>()) {
+            curr_stats.hitpoints -= col_stats.damage;
+            if(curr_stats.hitpoints <= 0) { 
+                soundMonster(EM, current);
+                current.setDestroy(); //set to destroy
+            }
+        } 
+        else if(colisioned.hasTAG<TPlayer>()) {
+            col_stats.hitpoints -= curr_stats.damage;
+            if(col_stats.hitpoints <= 0) { colisioned.setDestroy(); } //set to destroy
+        }
+    }
+
+    void colisionBullet(Enty& current, Enty& colisioned, EstadisticaCmp& curr_stats, EstadisticaCmp& col_stats) {
+        if(colisioned.hasTAG<TEnemy>()) {
+            col_stats.hitpoints -= curr_stats.damage;
+            if(col_stats.hitpoints <= 0) { colisioned.setDestroy(); } //set to destroy
+        }
+        current.setDestroy(); //set to destroy
     }
 
     void soundMonster(EntyMan& EM, Enty& e) {

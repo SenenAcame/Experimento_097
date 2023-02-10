@@ -1,4 +1,5 @@
 #include "engine.hpp"
+#include <irrlicht/IEventReceiver.h>
 
 TheEngine::TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r) :width_{w}, height_{h}, receive{r}{
     if(!device_) throw std::runtime_error("Couldn't initialize device!!");
@@ -19,7 +20,6 @@ TheEngine::TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r)
 		keyMap[6].KeyCode = irr::KEY_RIGHT;
 		keyMap[7].Action  = irr::EKA_STRAFE_RIGHT;
 		keyMap[7].KeyCode = irr::KEY_KEY_D;
-
     smgr_->addCameraSceneNodeFPS(
         /*irr::scene::ISceneNode *parent = */0,
         /*irr::f32 rotateSpeed = */30.f, 
@@ -30,8 +30,10 @@ TheEngine::TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r)
         /*bool noVerticalMovement = */true,
         /*irr::f32 jumpSpeed = */0.f, 
         /*bool invertMouse = */false,
-        /*bool makeActive = */true);
-    //smgr_->addCameraSceneNode();
+        /*bool makeActive = */true
+    );
+    //auto* cam = smgr_->addCameraSceneNode();
+    //cam->bindTargetAndRotation(true);
 }
 
 auto TheEngine::loadNode(AnimatedMesh* model, Path text){
@@ -54,13 +56,14 @@ TheEngine::AnimatedMeshNode* TheEngine::createModel(Path obj, Path asset) {
     return node;
 }
 
-TheEngine::AnimatedMeshNode* TheEngine::createPlayer(Path obj, Path asset, irr::scene::ICameraSceneNode* cam) {
+TheEngine::AnimatedMeshNode* TheEngine::createPlayer(Path obj, Path asset) {
+    auto* cam = getCamera();
     auto node = createModel(obj, asset);
-    node->setRotation({45,-90,0});
     node->setParent(cam);
-    cam->setFOV(1);
+    //node->setRotation({45,-90,0});
+    //cam->setFOV(1);
     //cam->setTarget({200,0,20});
-    cam->setPosition({-20,0,-20});
+    //cam->setPosition({0,0,0});
     return node;
 }
 

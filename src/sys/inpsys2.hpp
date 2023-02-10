@@ -1,8 +1,10 @@
 #pragma once
 #include "../util/keyboard.hpp"
+#include "../util/mouse.hpp"
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
 #include "soundsystem.hpp"
+#include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2>;
@@ -22,16 +24,19 @@ struct InpSys2 : public irr::IEventReceiver{
                     keyboard.keyReleased(i.key_shot);
                 }
 
-                if(keyboard.isKeyPressed(i.key_weapon1))       { changeWeapon(EM, player, 0); }
+                if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0); }
 
                 if(keyboard.isKeyPressed(i.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(EM, player, 1); }
 
                 if(keyboard.isKeyPressed(i.key_reloadALLAmmo)) { reload(EM, equipment); }
 
                 if(keyboard.isKeyPressed(i.key_interaction)){
+                    
                     interact();
                     keyboard.keyReleased(i.key_interaction);
                 }
+
+                //if(mouse.getMove()) { movementMouse(eng); }
 
                 bb = { cam->getPosition().X, cam->getPosition().Z, true , true };
             }
@@ -80,8 +85,10 @@ struct InpSys2 : public irr::IEventReceiver{
                 case irr::EMIE_LMOUSE_PRESSED_DOWN:
                     irr::SEvent ev;
                     ev.KeyInput.PressedDown = true;
-                    checkPressed( ev, XK_P);
+                    checkPressed(ev, XK_P);
                 break;
+                case irr::EMIE_MOUSE_MOVED:
+                    mouse.moved(event.MouseInput.X, event.MouseInput.Y);
                 default: break;
             }
         }
@@ -100,6 +107,12 @@ struct InpSys2 : public irr::IEventReceiver{
 private:
     void interact() {
         std::cout<<"Interact\n";
+    }
+
+    void movementMouse(TheEngine& eng) {
+        auto ray = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({mouse.X, mouse.Y}, eng.getCamera());
+        eng.getCamera()->setTarget({ray.end.X, ray.end.Y, ray.end.Z});
+        mouse.quiet();
     }
 
     void shoot(EntyMan& EM, Enty& player, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
@@ -172,5 +185,6 @@ private:
         keyboard.keyReleased(k);
     }
 
+    inline static Mouse    mouse {};
     inline static Keyboard keyboard {};
 };

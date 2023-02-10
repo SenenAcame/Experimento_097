@@ -18,7 +18,7 @@ struct TheEngine {
 
     auto loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel(Path obj, Path asset);
-    AnimatedMeshNode* createPlayer(Path obj, Path asset, irr::scene::ICameraSceneNode* cam);
+    AnimatedMeshNode* createPlayer(Path obj, Path asset);
 
     auto* createSphere(float r = 5.0f){
         auto* node = smgr_->addSphereSceneNode(
