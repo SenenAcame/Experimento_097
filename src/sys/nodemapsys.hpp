@@ -130,15 +130,11 @@ struct NodeMapSys {
         puertass8.push_back({23.89, -116.36});
         puertass8.push_back({61.10, -110.29});
 
-        sala.push_back({salasx[0],salasz[0],tamx[0],tamz[0],puertass1});
-        sala.push_back({salasx[1],salasz[1],tamx[1],tamz[1],puertass2});
-        sala.push_back({salasx[2],salasz[2],tamx[2],tamz[2],puertass3});
-        sala.push_back({salasx[3],salasz[3],tamx[3],tamz[3],puertass4});
-        sala.push_back({salasx[4],salasz[4],tamx[4],tamz[4],puertass5});
-        sala.push_back({salasx[5],salasz[5],tamx[5],tamz[5],puertass6});
-        sala.push_back({salasx[6],salasz[6],tamx[6],tamz[6],puertass7});
-        sala.push_back({salasx[7],salasz[7],tamx[7],tamz[7],puertass8});
+        std::vector<puerta> todaspuertas[]={puertass1, puertass2, puertass3, puertass4, puertass5, puertass6, puertass7, puertass8};
 
+        for(unsigned int i=0; i<8;i++){
+            sala.push_back({salasx[i],salasz[i],tamx[i],tamz[i],todaspuertas[i]});
+        }
         return sala;
     };
 };
