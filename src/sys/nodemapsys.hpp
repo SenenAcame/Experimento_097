@@ -48,7 +48,7 @@ struct NodeMapSys {
                 for(int i=0;i<n.salas.size();i++){
                     if((n.salas.at(i).x + n.salas.at(i).tamx) >= x && (n.salas.at(i).x - n.salas.at(i).tamx) <= x && (n.salas.at(i).z + n.salas.at(i).tamz) >= z && (n.salas.at(i).z - n.salas.at(i).tamz) <= z){
                         sala=n.salas.at(i);
-                        std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
+                        //std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
                     }
                 }
             }
