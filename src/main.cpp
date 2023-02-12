@@ -19,15 +19,11 @@ void game2() {
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto* cam = dev.getCamera();
-    auto a = dev.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({540, 360});
-    //std::cout<<a.end.X<<" "<<a.end.Y<<" "<<a.end.Z<<" "<<"\n";
-    //cam->setTarget({});
-    //std::cout<<cam->getTarget().X<<" "<<cam->getTarget().Y<<" "<<cam->getTarget().Z<<"\n";
-    //
-    //float i=0;
-    //cam->setRotation({0,i++,0});
-    //cam->setPosition({0,0,0});
-    //std::cout<<cam->getTarget().X<<" "<<cam->getTarget().Y<<" "<<cam->getTarget().Z<<"\n";
+    
+    //cam->setPosition({cam->getPosition().X, cam->getPosition().Y, cam->getPosition().Z});
+    //auto eje = dev.getDevice()->getCursorControl()->getPosition().X;
+    //auto a = dev.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({540, 360});
+    
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
