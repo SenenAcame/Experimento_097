@@ -58,19 +58,19 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-    void seek(AICmp& a, PhysicsCmp2& p) const noexcept{
+    void seek(AICmp& a, PhysicsCmp2& p, Enty& e) const noexcept{
         p.v_ang = p.a_lin = 0;
 
         auto t_dx       { distancePoints(a.ox, p.x) };
         auto t_dz       { distancePoints(a.oz, p.z) };
 
-        auto t_ang_vel  { angularVelocity(t_dx, t_dz, p.orien, a.timeArrive) };
+            auto t_ang_vel  { angularVelocity(t_dx, t_dz, p.orien, a.timeArrive) };
 
-        auto mod        { std::fabs(t_ang_vel) };
-        auto t_lin_acc  { (p.kMxVLin / (1+mod)) / a.timeArrive };
+            auto mod        { std::fabs(t_ang_vel) };
+            auto t_lin_acc  { (p.kMxVLin / (1+mod)) / a.timeArrive };
 
-        p.a_lin = capLimits(t_lin_acc, p.kMxALin);
-        p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
+            p.a_lin = capLimits(t_lin_acc, p.kMxALin);
+            p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
     constexpr void shoot(AICmp& a, PhysicsCmp2& p, EntyMan& EM, TheEngine& eng, Enty& enem) const noexcept{
@@ -100,7 +100,7 @@ struct AISys {
         }
     }
 
-    void patrol(AICmp& a, PhysicsCmp2& p) const noexcept{
+    void patrol(AICmp& a, PhysicsCmp2& p, Enty& e) const noexcept{
         p.v_ang = p.a_lin = 0;
 
         auto t_dx       { distancePoints(a.ox, p.x) };
@@ -156,9 +156,9 @@ struct AISys {
 
                 switch(a.behaviour){
                     case SB::Arrive: arrive(a,p); break;
-                    case SB::Seek:   seek  (a,p); break;
+                    case SB::Seek:   seek  (a,p,e); break;
                     case SB::Shoot:  shoot (a, p, EM, dev, e); break;
-                    case SB::Patrol: patrol(a, p);break;
+                    case SB::Patrol: patrol(a, p,e);break;
                 }
             }
         );

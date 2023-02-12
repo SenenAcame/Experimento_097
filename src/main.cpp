@@ -51,7 +51,7 @@ void game2() {
     EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
     EM.addComponent<EstadoCmp>      (enemy1);
-    EM.addTag      <TEnemy>         (enemy1);
+    EM.addTag      <TDistEnemy>     (enemy1);
 
     Enty& enemy2 = EM.createEntity();
     EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});

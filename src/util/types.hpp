@@ -13,13 +13,14 @@
 #include "gameengine.hpp"
 #include <iostream>
 
-struct TPlayer    { static constexpr uint8_t id {0}; };
-struct TEnemy     { static constexpr uint8_t id {1}; };
-struct TBullet    { static constexpr uint8_t id {2}; };
-struct TMap       { static constexpr uint8_t id {3}; };
-struct TWeapon    { static constexpr uint8_t id {4}; };
-struct TEneBullet { static constexpr uint8_t id {5}; };
-struct TSpawn     { static constexpr uint8_t id {6}; };
+struct TPlayer      { static constexpr uint8_t id {0}; };
+struct TEnemy       { static constexpr uint8_t id {1}; };
+struct TBullet      { static constexpr uint8_t id {2}; };
+struct TMap         { static constexpr uint8_t id {3}; };
+struct TWeapon      { static constexpr uint8_t id {4}; };
+struct TEneBullet   { static constexpr uint8_t id {5}; };
+struct TSpawn       { static constexpr uint8_t id {6}; };
+struct TDistEnemy   { static constexpr uint8_t id {7}; };
 
 using ComponentList = MP::Typelist<
     PhysicsCmp2, 
@@ -32,7 +33,7 @@ using ComponentList = MP::Typelist<
     NodoCmp, 
     SoundCmp,
     SelfDestCmp>;
-using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn>;
+using TagList       = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn, TDistEnemy>;
 using EntyMan       = EntityMan2<ComponentList, TagList>;
 using Enty          = EntyMan::Entity;
 

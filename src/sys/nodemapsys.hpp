@@ -10,7 +10,7 @@ struct NodeMapSys {
     //using PlayTAGs = MP::Typelist<TPlayer>;
     using NodoCMPs = MP::Typelist<NodoCmp>;
     using MapTAGs = MP::Typelist<TMap>;
-    using EneTAGs = MP::Typelist<TEnemy>;
+    using EneTAGs = MP::Typelist<>;
 
     sala enemySala(EntyMan& EM, PhysicsCmp2& p, NodoCmp& mapa){
         sala sala = {0,0,0,0};
@@ -64,7 +64,11 @@ struct NodeMapSys {
                     [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
                         sala salaene = enemySala(EM, p, n);
                         if(salaplayer.x==salaene.x && salaplayer.z==salaene.z){
-                            ai.behaviour=SB::Seek;
+                            if(en.hasTAG<TDistEnemy>() && sqrt((p.x-cam->getPosition().X)*(p.x-cam->getPosition().X)+(p.z-cam->getPosition().Z)*(p.z-cam->getPosition().Z))<40){    
+                                ai.behaviour=SB::Shoot;
+                            }
+                            else
+                                ai.behaviour=SB::Seek;
                         }
                         else{
                             ai.behaviour=SB::Patrol;
@@ -100,27 +104,27 @@ struct NodeMapSys {
         std::vector<puerta> puertass2;
         puertass2.push_back({-57.66, 124.65});
         puertass2.push_back({-12.28, 53.19});
-        puertass2.push_back({11.62, 88.96});
+        puertass2.push_back({13.62, 88.96});
 
         std::vector<puerta> puertass3;
         puertass3.push_back({-45.35, 42.77});
         puertass3.push_back({-12.28, 55.19});
-        puertass3.push_back({11.62, 88.96});
+        puertass3.push_back({13.62, 47.24});
 
         std::vector<puerta> puertass4;
         puertass4.push_back({-45.35, 44.77});
-        puertass4.push_back({11.62, 9.04});
+        puertass4.push_back({13.62, 9.04});
 
         std::vector<puerta> puertass5;
-        puertass5.push_back({13.62, 88.96});
-        puertass5.push_back({13.62, 47.24});
-        puertass5.push_back({13.62, 9.04});
-        puertass5.push_back({21.89, 12.72});
-        puertass5.push_back({21.89, -83.08});
-        puertass5.push_back({21.89, -116.36});
+        puertass5.push_back({11.12, 88.96});
+        puertass5.push_back({11.12, 47.24});
+        puertass5.push_back({11.12, 9.04});
+        puertass5.push_back({24.89, 12.72});
+        puertass5.push_back({24.89, -83.08});
+        puertass5.push_back({24.89, -116.36});
 
         std::vector<puerta> puertass6;
-        puertass6.push_back({23.89, 12.72});
+        puertass6.push_back({21.89, 12.72});
 
         std::vector<puerta> puertass7;
         puertass7.push_back({21.89, -83.08});
