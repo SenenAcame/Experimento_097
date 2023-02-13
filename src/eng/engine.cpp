@@ -60,10 +60,12 @@ TheEngine::AnimatedMeshNode* TheEngine::createPlayer(Path obj, Path asset) {
     auto* cam = getCamera();
     auto node = createModel(obj, asset);
     node->setParent(cam);
-    //node->setRotation({45,-90,0});
+    //cam->setParent(node);
+    //cam->setPosition({0,1,-3});
+
+    node->setRotation({45,-90,0});
     //cam->setFOV(1);
     //cam->setTarget({200,0,20});
-    //cam->setPosition({0,0,0});
     return node;
 }
 

@@ -107,14 +107,14 @@ void game2() {
     int64_t frames = 0;
     
     while(dev.run()){
-        
         auto frame_start = std::chrono::high_resolution_clock::now();
         EM.      update();
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
         AISys.   update(EM, dt, dev);
-        PhySys.  update(EM, dt);
         InpSys.  update(EM, dev, SouSys);
+        PhySys.  update(EM, dt);
+        
         ColSys.  update(EM);
         SouSys.  update(EM);
         LogicSys.update(EM, dev);
