@@ -13,12 +13,12 @@ struct LogicSystem {
                     auto& entity_colisioned_stats = EM.getComponent<EstadisticaCmp>(entity_colisioned);
 
                     if(e.hasTAG<TPlayer>()){
-                        if(entity_colisioned.hasTAG<TEnemy>()) {
+                        if(entity_colisioned.hasTAG<TEnemy>() || entity_colisioned.hasTAG<TDistEnemy>()) {
                             stats.hitpoints -= entity_colisioned_stats.damage;
                             if(stats.hitpoints <= 0) { e.setDestroy(); } //set to destroy
                         }
                     }
-                    else if(e.hasTAG<TEnemy>()){
+                    else if(e.hasTAG<TEnemy>() || e.hasTAG<TDistEnemy>()){
                         if(entity_colisioned.hasTAG<TBullet>()) {
                             stats.hitpoints -= entity_colisioned_stats.damage;
                             if(stats.hitpoints <= 0) { 
@@ -31,7 +31,7 @@ struct LogicSystem {
                         }
                     }
                     else if(e.hasTAG<TBullet>()) {
-                        if(entity_colisioned.hasTAG<TEnemy>()) {
+                        if(entity_colisioned.hasTAG<TEnemy>() || entity_colisioned.hasTAG<TDistEnemy>()) {
                             entity_colisioned_stats.hitpoints -= stats.damage;
                             if(entity_colisioned_stats.hitpoints <= 0) { entity_colisioned.setDestroy(); } //set to destroy
                         }

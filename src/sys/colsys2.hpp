@@ -12,19 +12,19 @@ struct ColSys2 {
                 EM.foreach<SYSCMPs2, SYSTAGs>(
                     [&](Enty& a, EstadoCmp& est){
                         if((e.getID()!=a.getID()) &&
-                           (a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>()) &&
+                           (a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>() || e.hasTAG<TDistEnemy>()) &&
                            (est.colision == 0))
                         {
                             auto& phy = p;
                             auto& phy2 = EM.getComponent<PhysicsCmp2>(a);
                             float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
                             float dx, dy, dz;
-                            if(e.hasTAG<TPlayer>()|| e.hasTAG<TEnemy>()){
+                            if(e.hasTAG<TPlayer>() || e.hasTAG<TEnemy>() || e.hasTAG<TDistEnemy>()){
                                 tamx=0.8;
                                 tamy=2.5;
                                 tamz=2;
                             }
-                            if(a.hasTAG<TPlayer>()|| a.hasTAG<TEnemy>()){
+                            if(a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || e.hasTAG<TDistEnemy>()){
                                 tamx2=0.8;
                                 tamy2=2.5;
                                 tamz2=2;
@@ -42,7 +42,7 @@ struct ColSys2 {
                             dz -= (tamz + tamz2);
 
                             if(dx<=0 && dy<=0 && dz<=0){
-                                if(a.hasTAG<TBullet>() && e.hasTAG<TEnemy>()){
+                                if(a.hasTAG<TBullet>() && (e.hasTAG<TEnemy>() || e.hasTAG<TDistEnemy>())){
                                     EM.getComponent<SoundCmp>(e).parametro=0;
                                     EM.getComponent<SoundCmp>(e).cambia=true;
                                     EM.getComponent<SoundCmp>(e).play=true;
