@@ -161,13 +161,13 @@ struct InpSys2 : public irr::IEventReceiver{
 
 private:
     void createBullet(EntyMan& EM, Enty& player, int ammo, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
-        //EM.getComponent<InventarioCmp>(player).clockCadence += dt;
-        //if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
-        //    std::cout<<"NO PUEDES DISPARAR AUN\n";
-        //    return;
-        //}
-        ////Cadencia alcanzada
-        //EM.getComponent<InventarioCmp>(player).clockCadence -= dt;
+        EM.getComponent<InventarioCmp>(player).clockCadence += dt;
+        if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
+            std::cout<<"NO PUEDES DISPARAR AUN\n";
+            return;
+        }
+        //Cadencia alcanzada
+        EM.getComponent<InventarioCmp>(player).clockCadence =- EM.getComponent<InventarioCmp>(player).clockCadence ;
 
         if(EM.getComponent<InventarioCmp>(player).equipada == 0){ //pistol
             Enty& bullet = EM.createEntity();
