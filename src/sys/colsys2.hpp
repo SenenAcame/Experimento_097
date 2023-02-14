@@ -2,21 +2,21 @@
 #include "../util/types.hpp"
 
 struct ColSys2 {
-    using SYSCMPs  = MP::Typelist<PhysicsCmp2>;
-    using SYSCMPs2 = MP::Typelist<EstadoCmp>;
+    using SYSCMPs  = MP::Typelist<PhysicsCmp2, EstadoCmp>;
+    //using SYSCMPs2 = MP::Typelist<EstadoCmp>;
     using SYSTAGs  = MP::Typelist<>;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, PhysicsCmp2& p) {
-                EM.foreach<SYSCMPs2, SYSTAGs>(
-                    [&](Enty& a, EstadoCmp& est){
+            [&](Enty& e, PhysicsCmp2& phy, EstadoCmp&) {
+                EM.foreach<SYSCMPs, SYSTAGs>(
+                    [&](Enty& a, PhysicsCmp2& phy2,EstadoCmp& est){
                         if((e.getID()!=a.getID()) &&
                            (a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>()) &&
                            (est.colision == 0))
                         {
-                            auto& phy = p;
-                            auto& phy2 = EM.getComponent<PhysicsCmp2>(a);
+                            //auto& phy = p;
+                            //auto& phy2 = EM.getComponent<PhysicsCmp2>(a);
                             float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
                             float dx, dy, dz;
                             if(e.hasTAG<TPlayer>()|| e.hasTAG<TEnemy>()){

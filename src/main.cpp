@@ -81,19 +81,20 @@ void game2() {
     constexpr double dt = 1.0/60;
     //actual moment ini
     auto start = std::chrono::high_resolution_clock::now();
-    int64_t maxFPS = 60;
-    int64_t nanos_per_frame = 1000000000/maxFPS;
+    constexpr int64_t maxFPS {60};
+    constexpr int64_t nanos_per_frame {1000000000/maxFPS};
     int64_t frames =0;
 
     while(dev.run()){
         auto frame_start = std::chrono::high_resolution_clock::now();
+        
         EM.      update();
 
         RenSys.  update(EM, dev);
         MapSys.  update(EM);
         AISys.   update(EM, dt, dev);
         PhySys.  update(EM, dt);
-        InpSys.  update(EM, dev, SouSys);
+        InpSys.  update(EM, dev, SouSys, 1.0/maxFPS);
         ColSys.  update(EM);
         SouSys.  update(EM);
         LogicSys.update(EM, dev);
