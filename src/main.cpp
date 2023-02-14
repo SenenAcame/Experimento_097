@@ -33,7 +33,7 @@ void game2() {
     EM.addTag      <TMap>       (map);
 
     Enty& player = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>    (player, PhysicsCmp2{.x=0.5f, .y=-2.0f, .z=5.0f});
+    EM.addComponent<PhysicsCmp2>    (player, PhysicsCmp2{.y=-2.0f, .z=5.0f});
     EM.addComponent<RenderCmp2>     (player, dev.createPlayer("assets/models/player_arm.obj","assets/textures/fire.bmp"));
     EM.addComponent<InputCmp2>      (player, InputCmp2{ });
     EM.addComponent<EstadoCmp>      (player);
@@ -66,7 +66,7 @@ void game2() {
     EM.addTag      <TWeapon> (weaponsou);
 
     //Enty& enemy1 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{.x= -50.0, .z=40.0});
+    //EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .z=40.0});
     //EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
     //EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
     //EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});

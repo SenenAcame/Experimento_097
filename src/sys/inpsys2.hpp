@@ -4,6 +4,7 @@
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
 #include "soundsystem.hpp"
+#include <cstdint>
 #include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
@@ -13,6 +14,9 @@ struct InpSys2 : public irr::IEventReceiver{
     using SYSCMP_Weapon = MP::Typelist<SoundCmp>;
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
+    float angX = 0;
+    float angY = 0;
+
     void update(EntyMan& EM, TheEngine& eng, SoundSystem_t& SS) {
         auto& bb = EM.getBoard();
         auto cam   = eng.getCamera();
@@ -21,27 +25,31 @@ struct InpSys2 : public irr::IEventReceiver{
                 p.vx=p.vz=0;
                 auto& equipment = EM.getComponent<InventarioCmp>(player);
 
-                if(keyboard.isKeyPressed(i.key_up)){ 
+                if(keyboard.isKeyPressed(i.key_up)){
                     p.vz = 0.1;
-                    std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
+                    //std::cout<<cam->getAbsolutePosition().X<<" "<<cam->getAbsolutePosition().Y<<" "<<cam->getAbsolutePosition().Z<<"\n";
+                    //std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
                     //std::cout<<r.n->getAbsolutePosition().X<<" "<<r.n->getAbsolutePosition().Y<<" "<<r.n->getAbsolutePosition().Z<<"\n";
                     //cam->setPosition({r.n->getAbsolutePosition().X, r.n->getAbsolutePosition().Y, r.n->getAbsolutePosition().Z});
                 }
-                if(keyboard.isKeyPressed(i.key_down)){ 
+                if(keyboard.isKeyPressed(i.key_down)){
                     p.vz = -0.1;
-                    std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
+                    //std::cout<<cam->getAbsolutePosition().X<<" "<<cam->getAbsolutePosition().Y<<" "<<cam->getAbsolutePosition().Z<<"\n";
+                    //std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
                     //std::cout<<r.n->getAbsolutePosition().X<<" "<<r.n->getAbsolutePosition().Y<<" "<<r.n->getAbsolutePosition().Z<<"\n";
                     //cam->setPosition({r.n->getAbsolutePosition().X, r.n->getAbsolutePosition().Y, r.n->getAbsolutePosition().Z});
                 }
-                if(keyboard.isKeyPressed(i.key_right)){ 
+                if(keyboard.isKeyPressed(i.key_right)){
                     p.vx = 0.1;
-                    std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
+                    //std::cout<<cam->getAbsolutePosition().X<<" "<<cam->getAbsolutePosition().Y<<" "<<cam->getAbsolutePosition().Z<<"\n";
+                    //std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
                     //std::cout<<r.n->getAbsolutePosition().X<<" "<<r.n->getAbsolutePosition().Y<<" "<<r.n->getAbsolutePosition().Z<<"\n";
                     //cam->setPosition({r.n->getAbsolutePosition().X, r.n->getAbsolutePosition().Y, r.n->getAbsolutePosition().Z});
                 }
-                if(keyboard.isKeyPressed(i.key_left)){ 
+                if(keyboard.isKeyPressed(i.key_left)){
                     p.vx = -0.1;
-                    std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
+                    //std::cout<<cam->getAbsolutePosition().X<<" "<<cam->getAbsolutePosition().Y<<" "<<cam->getAbsolutePosition().Z<<"\n";
+                    //std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
                     //std::cout<<r.n->getAbsolutePosition().X<<" "<<r.n->getAbsolutePosition().Y<<" "<<r.n->getAbsolutePosition().Z<<"\n";
                     //cam->setPosition({r.n->getAbsolutePosition().X, r.n->getAbsolutePosition().Y, r.n->getAbsolutePosition().Z});
                 }
@@ -64,11 +72,23 @@ struct InpSys2 : public irr::IEventReceiver{
                     keyboard.keyReleased(i.key_interaction);
                 }
 
-                if(mouse.getMove()) { 
+                if(mouse.getMove()) {
                     movementMouse(eng);
+                    //std::cout<<"Posicion relativa del jugador: "<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
+                    //std::cout<<"Posicion absoluta del jugador: "<<r.n->getAbsolutePosition().X<<" "<<r.n->getAbsolutePosition().Y<<" "<<r.n->getAbsolutePosition().Z<<"\n";
+                    //std::cout<<"Posicion relativa de la camara: "<<cam->getPosition().X<<" "<<cam->getPosition().Y<<" "<<cam->getPosition().Z<<"\n";
+                    //std::cout<<"Posicion absoluta de la camara: "<<cam->getAbsolutePosition().X<<" "<<cam->getAbsolutePosition().Y<<" "<<cam->getAbsolutePosition().Z<<"\n";
+                    //r.n->setRotation({0,static_cast<float>(ang++),0});
+                    //std::cout<<r.n->getPosition().X<<" "<<r.n->getPosition().Y<<" "<<r.n->getPosition().Z<<"\n";
                 }
 
                 bb = { cam->getPosition().X, cam->getPosition().Z, true , true };
+
+
+                //if(angX>-85){ angX-=1; }
+                angY+=1;
+                r.n->setRotation({ angX, angY, 0});
+                cam->setRotation({ angX, angY, 0});
             }
         );
     } 
@@ -118,6 +138,7 @@ struct InpSys2 : public irr::IEventReceiver{
                     checkPressed(ev, XK_P);
                 break;
                 case irr::EMIE_MOUSE_MOVED:
+                    //std::cout<<mouse.getMove()<<"\n";
                     mouse.moved();
                 default: break;
             }
@@ -139,19 +160,20 @@ private:
         std::cout<<"Interact\n";
     }
 
-    void movementKeybooard() {
+    void movementKeyboard() {
 
 
     }
 
     void movementMouse(TheEngine& eng) {
-        auto cursor          = eng.getDevice()->getCursorControl();
-        auto cursor_position = cursor->getPosition();
-        auto ray_traced      = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor_position.X, cursor_position.Y });
-
-        eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
-        cursor->setPosition(static_cast<irr::s32>(eng.getWidth()/2), static_cast<irr::s32>(eng.getHeight()/2));
-        mouse.quiet();
+        //std::cout<<mouse.getMove()<<"\n";
+        //auto cursor          = eng.getDevice()->getCursorControl();
+        //auto cursor_position = cursor->getPosition();
+        //auto ray_traced      = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor_position.X, cursor_position.Y });
+//
+        //eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
+        //cursor->setPosition(static_cast<irr::s32>(eng.getWidth()/2), static_cast<irr::s32>(eng.getHeight()/2));
+        //mouse.quiet();
         //std::cout<<eng.getCamera()->getRotation().X<<" "<<eng.getCamera()->getRotation().Y<<" "<<eng.getCamera()->getRotation().Z<<"\n";
     }
 
