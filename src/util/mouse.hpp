@@ -2,7 +2,7 @@
 #include <cstdint>
 
 struct Mouse {
-//    uint16_t X { 0 }, Y { 0 };
+    uint32_t X { 0 }, Y { 0 };
     explicit Mouse() = default;
 //
 //    Mouse(const Mouse&) = delete;

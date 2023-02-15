@@ -86,9 +86,9 @@ struct InpSys2 : public irr::IEventReceiver{
 
 
                 //if(angX>-85){ angX-=1; }
-                angY+=1;
-                r.n->setRotation({ angX, angY, 0});
-                cam->setRotation({ angX, angY, 0});
+                //angY+=1;
+                //r.n->setRotation({ angX, angY, 0});
+                //cam->setRotation({ angX, angY, 0});
             }
         );
     } 
@@ -160,20 +160,24 @@ private:
         std::cout<<"Interact\n";
     }
 
-    void movementKeyboard() {
-
-
-    }
+    //void movementKeyboard() {
+    //
+    //
+    //}
 
     void movementMouse(TheEngine& eng) {
         //std::cout<<mouse.getMove()<<"\n";
-        //auto cursor          = eng.getDevice()->getCursorControl();
-        //auto cursor_position = cursor->getPosition();
+        auto centerWidth  = static_cast<irr::s32>(eng.getWidth()/2);
+        auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
+
+        auto cursor           = eng.getDevice()->getCursorControl();
+        auto cursor_position  = cursor->getPosition();
+        std::cout<<cursor_position.X<<" "<<cursor_position.Y<<"\n";
         //auto ray_traced      = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor_position.X, cursor_position.Y });
-//
+        //
         //eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
-        //cursor->setPosition(static_cast<irr::s32>(eng.getWidth()/2), static_cast<irr::s32>(eng.getHeight()/2));
-        //mouse.quiet();
+        if(cursor_position.X != centerWidth && cursor_position.Y != centerHeight) cursor->setPosition(centerWidth, centerHeight);
+        mouse.quiet();
         //std::cout<<eng.getCamera()->getRotation().X<<" "<<eng.getCamera()->getRotation().Y<<" "<<eng.getCamera()->getRotation().Z<<"\n";
     }
 
