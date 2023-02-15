@@ -13,6 +13,7 @@ struct InputCmp2 {
     KeySym key_reloadCurrentAmmo   {XK_R};
     KeySym key_weapon1             {XK_1};
     KeySym key_weapon2             {XK_2};
+    KeySym key_weapon3             {XK_3};
     KeySym key_sound1              {XK_B};
     KeySym key_sound2              {XK_N};
     KeySym key_sound3              {XK_M};

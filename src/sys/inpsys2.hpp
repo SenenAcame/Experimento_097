@@ -19,15 +19,23 @@ struct InpSys2 : public irr::IEventReceiver{
                     //std::cout<<"Arma equipada: " <<EM.getComponent<InventarioCmp>(player).equipada<<
                     //"\n";
                     int ammo = 0;
+                    double weaponCadence=0;
                     size_t weapon =0;
                     switch (EM.getComponent<InventarioCmp>(player).equipada) {
-                        case 0:  ammo = EM.getComponent<InventarioCmp>(player).magazine1; break;
-                        case 1:  ammo = EM.getComponent<InventarioCmp>(player).magazine2; break;
+                        case 0: ammo = EM.getComponent<InventarioCmp>(player).magazine1;
+                                
+                        break;
+                        case 1: ammo = EM.getComponent<InventarioCmp>(player).magazine2;
+                                
+                        break;
+                        case 2: ammo = EM.getComponent<InventarioCmp>(player).magazine3;
+                                weaponCadence = EM.getComponent<InventarioCmp>(player).cadenceWeapon3;
+                        break;
                         default: break;
                     }
                     
                     if(ammo > 0) { 
-                        createBullet(EM, player, ammo, r, eng, SS, dt); 
+                        createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); 
                         //std::cout<<"Municion arma es " << EM.getComponent<InventarioCmp>(player).ammo2 <<"\n";
                         //std::cout<<"Cargador arma es " << EM.getComponent<InventarioCmp>(player).magazine2 <<"\n";
                     }
@@ -35,9 +43,11 @@ struct InpSys2 : public irr::IEventReceiver{
                 }
                 if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0); }
                 if(keyboard.isKeyPressed(i.key_weapon2) && EM.getComponent<InventarioCmp>(player).inventary[1] != 0) { changeWeapon(EM, player, 1); }
+                if(keyboard.isKeyPressed(i.key_weapon3) && EM.getComponent<InventarioCmp>(player).inventary[2] != 0) { changeWeapon(EM, player, 2); }
                 if(keyboard.isKeyPressed(i.key_reloadALLAmmo)) {
                     EM.getComponent<InventarioCmp>(player).ammo1 = 20;
                     EM.getComponent<InventarioCmp>(player).ammo2 = 10;
+                    EM.getComponent<InventarioCmp>(player).ammo3 = 100;
                     for(auto& a : EM.getEntities()){
                         if(a.hasTAG<TWeapon>()){
                             EM.getComponent<SoundCmp>(a).parametro=1;
@@ -66,7 +76,6 @@ struct InpSys2 : public irr::IEventReceiver{
                             
                         break;
                         case 1:
-                            
                             currentAmmo = 2-ammos.magazine2; //0 is magazine complete
                             
                             if((ammos.ammo2-currentAmmo)>0){
@@ -77,6 +86,20 @@ struct InpSys2 : public irr::IEventReceiver{
                             else{
                                 ammos.ammo2 = 0;
                                 ammos.magazine2=ammos.ammo2;
+                            }
+                        break;
+
+                        case 2:
+                            currentAmmo = 25-ammos.magazine3; //0 is magazine complete
+                            
+                            if((ammos.ammo3-currentAmmo)>0){
+                                
+                                ammos.ammo3 = ammos.ammo3-currentAmmo;
+                                ammos.magazine3=ammos.magazine3 + currentAmmo;
+                            }
+                            else{
+                                ammos.ammo3 = 0;
+                                ammos.magazine3=ammos.ammo3;
                             }
                         break;
                         default: break;
@@ -164,12 +187,12 @@ struct InpSys2 : public irr::IEventReceiver{
     }
 
 private:
-    void createBullet(EntyMan& EM, Enty& player, int ammo, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
+    void createBullet(EntyMan& EM, Enty& player, int ammo, double cadenciaWeapon, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
         
-        std::cout<<"Este es el dt:" <<EM.getComponent<InventarioCmp>(player).clockCadence << " y esta es la cadencia: "
-        <<EM.getComponent<InventarioCmp>(player).cadenceWeapon1 <<"\n";
-        if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
-            std::cout<<"NO PUEDES DISPARAR AUN\n";
+        //std::cout<<"Este es el dt:" <<EM.getComponent<InventarioCmp>(player).clockCadence << " y esta es la cadencia: "
+        //<<EM.getComponent<InventarioCmp>(player).cadenceWeapon1 <<"\n";
+        if(EM.getComponent<InventarioCmp>(player).clockCadence <= cadenciaWeapon){
+            //std::cout<<"NO PUEDES DISPARAR AUN\n";
             return;
         }
         //Cadencia alcanzada
@@ -197,56 +220,69 @@ private:
             EM.getComponent<InventarioCmp>(player).magazine1-=1;
         }
         else if (EM.getComponent<InventarioCmp>(player).equipada == 1){ //escopeta
-            int balas2fila=1;
-            int balas3fila=0;
-            for(int i=0;i<13;i++){
+        
+            for(float i=-0.4;i<0.5;i+=0.2){
                 Enty& bullet = EM.createEntity();
                 statsBullet(EM, bullet, ammo, 50.f, 0.8f, 0.1f);
                 auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
-                if(i<5){
+            
+                EM.addComponent<PhysicsCmp2>(
+                bullet, PhysicsCmp2{
+                        .x =r.n->getParent()->getPosition().X+(i * cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
+                        .y =r.n->getParent()->getPosition().Y ,
+                        .z =r.n->getParent()->getPosition().Z+(i * -sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
+                        .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
+                        .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
+                        .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                    }
+                );
+                
+                EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+                EM.addComponent<EstadoCmp>  (bullet);
+                EM.addComponent<SoundCmp>  (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+                EM.addComponent<SelfDestCmp>(bullet);
+                EM.addTag<TBullet>(bullet);
+
+                if(i>-0.4 && i<0.4){
+                    Enty& bullet2 = EM.createEntity();
+                    statsBullet(EM, bullet2, ammo, 50.f, 0.8f, 0.1f);
                     EM.addComponent<PhysicsCmp2>(
-                    bullet, PhysicsCmp2{
-                            .x =r.n->getParent()->getPosition().X+i*0.2,
-                            .y =r.n->getParent()->getPosition().Y,
-                            .z =r.n->getParent()->getPosition().Z,
+                    bullet2, PhysicsCmp2{
+                            .x =r.n->getParent()->getPosition().X+(i*cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
+                            .y =r.n->getParent()->getPosition().Y+(1*0.2),
+                            .z =r.n->getParent()->getPosition().Z+(i *-sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
                             .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
                             .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
                             .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
                         }
                     );
                     
+                    
+                    EM.addComponent<RenderCmp2> (bullet2, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+                    EM.addComponent<EstadoCmp>  (bullet2);
+                    EM.addComponent<SoundCmp>  (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+                    EM.addComponent<SelfDestCmp>(bullet2);
+                    EM.addTag<TBullet>(bullet2);
                 }
-                else if(i>4 && i<8){
-                    EM.addComponent<PhysicsCmp2>(
-                    bullet, PhysicsCmp2{
-                            .x =r.n->getParent()->getPosition().X+balas2fila*0.2,
-                            .y =r.n->getParent()->getPosition().Y+1*0.2,
-                            .z =r.n->getParent()->getPosition().Z,
-                            .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
-                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                            .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
-                        }
-                    );
-                    balas2fila++;
-                }
-                else if(i>7 && i<13){
-                    EM.addComponent<PhysicsCmp2>(
-                    bullet, PhysicsCmp2{
-                            .x =r.n->getParent()->getPosition().X+balas3fila*0.2,
-                            .y =r.n->getParent()->getPosition().Y+2*0.2,
-                            .z =r.n->getParent()->getPosition().Z,
-                            .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
-                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                            .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
-                        }
-                    );
-                    balas3fila++;
-                }
-                EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
-                EM.addComponent<EstadoCmp>  (bullet);
-                EM.addComponent<SoundCmp>  (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet);
-                EM.addTag<TBullet>(bullet);
+                Enty& bullet3 = EM.createEntity();
+                statsBullet(EM, bullet3, ammo, 50.f, 0.8f, 0.1f);
+                EM.addComponent<PhysicsCmp2>(
+                bullet3, PhysicsCmp2{
+                        .x =r.n->getParent()->getPosition().X+(i*cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
+                        .y =r.n->getParent()->getPosition().Y+(2*0.2),
+                        .z =r.n->getParent()->getPosition().Z+(i * -sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
+                        .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
+                        .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
+                        .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                    }
+                );
+                
+                
+                EM.addComponent<RenderCmp2> (bullet3, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+                EM.addComponent<EstadoCmp>  (bullet3);
+                EM.addComponent<SoundCmp>  (bullet3, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+                EM.addComponent<SelfDestCmp>(bullet3);
+                EM.addTag<TBullet>(bullet3);
                 
 
             }
@@ -255,6 +291,28 @@ private:
 
             
             
+        }
+
+        else if(EM.getComponent<InventarioCmp>(player).equipada == 2){ //ametralladora
+            Enty& bullet = EM.createEntity();
+            statsBullet(EM, bullet, ammo, 20.f, 1.0f, 0.5f);
+            auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
+            EM.addComponent<PhysicsCmp2>(
+            bullet, PhysicsCmp2{
+                    .x =r.n->getParent()->getPosition().X,
+                    .y =r.n->getParent()->getPosition().Y,
+                    .z =r.n->getParent()->getPosition().Z,
+                    .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
+                    .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
+                    .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                }
+            );
+            EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+            EM.addComponent<EstadoCmp>  (bullet);
+            EM.addComponent<SoundCmp>  (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+            EM.addComponent<SelfDestCmp>(bullet);
+            EM.addTag<TBullet>(bullet);
+            EM.getComponent<InventarioCmp>(player).magazine3-=1;
         }
         
         

@@ -17,6 +17,11 @@ struct InventarioCmp {
     int ammo2 = 10;
     int magazine2=2;
     double cadenceWeapon2 {0.2}; //5 veces por segundo
+
+    //weapon3
+    int ammo3 = 200;
+    int magazine3=25;
+    double cadenceWeapon3 {0.4}; //5 veces por segundo
     
 
     double clockCadence{};
