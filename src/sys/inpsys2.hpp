@@ -13,6 +13,7 @@ struct InpSys2 : public irr::IEventReceiver{
         auto cam   = eng.getCamera();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& player, InputCmp2& i, RenderCmp2& r) {
+                EM.getComponent<InventarioCmp>(player).clockCadence += dt;
                 if(keyboard.isKeyPressed(i.key_shot)){
                     //cambiar por funcion de disparo en funcion de inventario array y el modelo arma
                     //std::cout<<"Arma equipada: " <<EM.getComponent<InventarioCmp>(player).equipada<<
@@ -164,13 +165,15 @@ struct InpSys2 : public irr::IEventReceiver{
 
 private:
     void createBullet(EntyMan& EM, Enty& player, int ammo, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
-        //EM.getComponent<InventarioCmp>(player).clockCadence += dt;
-        //if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
-        //    std::cout<<"NO PUEDES DISPARAR AUN\n";
-        //    return;
-        //}
-        ////Cadencia alcanzada
-        //EM.getComponent<InventarioCmp>(player).clockCadence =- EM.getComponent<InventarioCmp>(player).clockCadence ;
+        
+        std::cout<<"Este es el dt:" <<EM.getComponent<InventarioCmp>(player).clockCadence << " y esta es la cadencia: "
+        <<EM.getComponent<InventarioCmp>(player).cadenceWeapon1 <<"\n";
+        if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
+            std::cout<<"NO PUEDES DISPARAR AUN\n";
+            return;
+        }
+        //Cadencia alcanzada
+        EM.getComponent<InventarioCmp>(player).clockCadence =0 ;
 
         if(EM.getComponent<InventarioCmp>(player).equipada == 0){ //pistol
             Enty& bullet = EM.createEntity();
