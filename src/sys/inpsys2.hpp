@@ -27,8 +27,8 @@ struct InpSys2 : public irr::IEventReceiver{
                     
                     if(ammo > 0) { 
                         createBullet(EM, player, ammo, r, eng, SS, dt); 
-                        std::cout<<"Municion arma1 es " << EM.getComponent<InventarioCmp>(player).ammo1 <<"\n";
-                        std::cout<<"Cargador arma1 es " << EM.getComponent<InventarioCmp>(player).magazine1 <<"\n";
+                        //std::cout<<"Municion arma es " << EM.getComponent<InventarioCmp>(player).ammo2 <<"\n";
+                        //std::cout<<"Cargador arma es " << EM.getComponent<InventarioCmp>(player).magazine2 <<"\n";
                     }
                     keyboard.keyReleased(i.key_shot);
                 }
@@ -53,7 +53,7 @@ struct InpSys2 : public irr::IEventReceiver{
                     switch (ammos.equipada) {
                         case 0:
                             currentAmmo = 5-ammos.magazine1; //0 is magazine complete
-                            std::cout<<"Arma equipada: " << ammos.equipada <<" y municion: "<<currentAmmo<<"\n";
+                            
                             if((ammos.ammo1-currentAmmo)>0){
                                 ammos.ammo1 = ammos.ammo1-currentAmmo;
                                 ammos.magazine1=ammos.magazine1 + currentAmmo;
@@ -65,8 +65,11 @@ struct InpSys2 : public irr::IEventReceiver{
                             
                         break;
                         case 1:
-                            currentAmmo = 10-ammos.magazine2; //0 is magazine complete
+                            
+                            currentAmmo = 2-ammos.magazine2; //0 is magazine complete
+                            
                             if((ammos.ammo2-currentAmmo)>0){
+                                
                                 ammos.ammo2 = ammos.ammo2-currentAmmo;
                                 ammos.magazine2=ammos.magazine2 + currentAmmo;
                             }
@@ -161,13 +164,13 @@ struct InpSys2 : public irr::IEventReceiver{
 
 private:
     void createBullet(EntyMan& EM, Enty& player, int ammo, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
-        EM.getComponent<InventarioCmp>(player).clockCadence += dt;
-        if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
-            std::cout<<"NO PUEDES DISPARAR AUN\n";
-            return;
-        }
-        //Cadencia alcanzada
-        EM.getComponent<InventarioCmp>(player).clockCadence =- EM.getComponent<InventarioCmp>(player).clockCadence ;
+        //EM.getComponent<InventarioCmp>(player).clockCadence += dt;
+        //if(EM.getComponent<InventarioCmp>(player).clockCadence <= EM.getComponent<InventarioCmp>(player).cadenceWeapon1){
+        //    std::cout<<"NO PUEDES DISPARAR AUN\n";
+        //    return;
+        //}
+        ////Cadencia alcanzada
+        //EM.getComponent<InventarioCmp>(player).clockCadence =- EM.getComponent<InventarioCmp>(player).clockCadence ;
 
         if(EM.getComponent<InventarioCmp>(player).equipada == 0){ //pistol
             Enty& bullet = EM.createEntity();
@@ -241,9 +244,12 @@ private:
                 EM.addComponent<SoundCmp>  (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                 EM.addComponent<SelfDestCmp>(bullet);
                 EM.addTag<TBullet>(bullet);
-                EM.getComponent<InventarioCmp>(player).magazine2-=1;
+                
 
             }
+
+            EM.getComponent<InventarioCmp>(player).magazine2-=1;
+
             
             
         }
