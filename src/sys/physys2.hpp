@@ -11,13 +11,19 @@ struct PhySys2 {
     void update(EntyMan& EM, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, PhysicsCmp2& p) {
-                if(e.hasTAG<TEnemy>()) {
+                if(e.hasTAG<TEnemy>() || e.hasTAG<TPlayer>()) {
                     p.orien += dt * p.v_ang;
                     if      (p.orien > 2*PI) p.orien -= 2*PI;
                     else if (p.orien < 0)    p.orien += 2*PI;
 
-                    p.vx =  p.v_lin * std::cos(p.orien);
-                    p.vz =  p.v_lin * std::sin(p.orien);
+                    if(e.hasTAG<TEnemy>()){
+                        p.vx =  p.v_lin * std::cos(p.orien);
+                        p.vz =  p.v_lin * std::sin(p.orien);
+                    }
+                    else{
+                        p.vx =  p.v_lin * std::sin(p.orien);
+                        p.vz =  p.v_lin * std::cos(p.orien);
+                    }
 
                     p.x += dt * p.vx;
                     p.z += dt * p.vz;

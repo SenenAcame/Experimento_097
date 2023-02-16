@@ -20,13 +20,15 @@ struct InpSys2 : public irr::IEventReceiver{
         auto cam   = eng.getCamera();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& player, InputCmp2& i, RenderCmp2& r, PhysicsCmp2& p) {
-                p.vx=p.vz=0;
+                //p.vx = p.vz = 0;
                 auto& equipment = EM.getComponent<InventarioCmp>(player);
 
-                if(keyboard.isKeyPressed(i.key_up))    { p.vz =  0.1; }
-                if(keyboard.isKeyPressed(i.key_down))  { p.vz = -0.1; }
-                if(keyboard.isKeyPressed(i.key_right)) { p.vx =  0.1; }
-                if(keyboard.isKeyPressed(i.key_left))  { p.vx = -0.1; }
+                p.v_lin = 0;
+
+                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  10; }
+                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -10; }
+                if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  10; p.v_ang =  90; }
+                if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -10; p.v_ang =  90; }
 
                 if(keyboard.isKeyPressed(i.key_shot)){
                     shoot(EM, player, r, eng, SS, equipment);
@@ -44,7 +46,7 @@ struct InpSys2 : public irr::IEventReceiver{
                     keyboard.keyReleased(i.key_interaction);
                 }
 
-                movementMouse(eng, r);
+                movementMouse(player, eng, r, p);
 
                 bb = { cam->getPosition().X, cam->getPosition().Z, true , true };
             }
@@ -116,21 +118,21 @@ private:
     //
     //}
 
-    void movementMouse(TheEngine& eng, RenderCmp2& r) {
+    void movementMouse(Enty& player, TheEngine& eng, RenderCmp2& r, PhysicsCmp2& p) {
         auto centerWidth  = static_cast<irr::s32>(eng.getWidth()/2);
         auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
         auto cursor           = eng.getDevice()->getCursorControl();
         auto ray_traced       = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
-
         eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
-
         r.n->setRotation({
             eng.getCamera()->getRotation().X, 
             eng.getCamera()->getRotation().Y, 
             0
         });
-
         cursor->setPosition(centerWidth, centerHeight);
+
+        auto ang = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
+        p.orien = ang;
     }
 
     void shoot(EntyMan& EM, Enty& player, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
