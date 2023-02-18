@@ -3,59 +3,63 @@
 
 struct ColSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
-    using SYSTAGs = MP::Typelist<>;
+    using SYSTAGs = MP::Typelist<TInteract>;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, PhysicsCmp2& phy, EstadoCmp&) {
+            [&](Enty& main_entity, PhysicsCmp2& main_phy, EstadoCmp& main_stats) {
+
                 EM.foreach<SYSCMPs, SYSTAGs>(
-                    [&](Enty& a, PhysicsCmp2& phy2, EstadoCmp& est){
-                        if((e.getID() != a.getID()) &&
-                           (a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>() || a.hasTAG<TBullet>()) &&
-                           (est.colision == 0))
+                    [&](Enty& collisioned_entity, PhysicsCmp2& collisioned_phy, EstadoCmp& collisioned_stats){
+
+                        if((main_entity.getID() != collisioned_entity.getID()) && 
+                           (collisioned_stats.colision == 0))
                         {
-                            float tamx=0, tamy=0, tamz=0, tamx2=0, tamy2=0, tamz2=0;
+                            //std::cout<<"Soy entidad "<<main_entity.getID()<<" y estoy comprobando "<<collisioned_entity.getID()<<"\n";
+                            float tamx = 0, tamy = 0, tamz = 0, tamx2 = 0, tamy2 = 0, tamz2 = 0;
                             float dx, dy, dz;
                             
-                            if(e.hasTAG<TPlayer>() || e.hasTAG<TEnemy>()){
+                            //if(main_entity.hasTAG<TPlayer>() || main_entity.hasTAG<TEnemy>()){
                                 tamx = 0.8;
                                 tamy = 2.5;
                                 tamz = 2;
-                            }
-                            if(a.hasTAG<TPlayer>() || a.hasTAG<TEnemy>()){
+                            //}
+                            //if(collisioned_entity.hasTAG<TPlayer>() || collisioned_entity.hasTAG<TEnemy>()){
                                 tamx2 = 0.8;
                                 tamy2 = 2.5;
                                 tamz2 = 2;
-                            }
+                            //}
 
-                            if((dx = phy.x - phy2.x) < 0)
+                            if((dx = main_phy.x - collisioned_phy.x) < 0)
                                 dx = -dx;
                             dx -= (tamx + tamx2);
 
-                            if((dy = phy.y - phy2.y) < 0)
+                            if((dy = main_phy.y - collisioned_phy.y) < 0)
                                 dy = -dy;
                             dy -= (tamy + tamy2);
 
-                            if((dz = phy.z - phy2.z) < 0)
+                            if((dz = main_phy.z - collisioned_phy.z) < 0)
                                 dz = -dz;
                             dz -= (tamz + tamz2);
 
                             if(dx<=0 && dy<=0 && dz<=0){
-                                if(a.hasTAG<TBullet>() && e.hasTAG<TEnemy>()){
-                                    auto& sound = EM.getComponent<SoundCmp>(e);
+                                if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()){
+                                    auto& sound = EM.getComponent<SoundCmp>(main_entity);
                                     EM.changeSound(sound, 0);
                                 }
-                                est.colision  = 1<<1;
-                                est.entityCol = e.getID();
-                                //if(a.hasTAG<TPlayer>() && est.colision ==1){
-                                //    std::cout<<"Soy player y he chocado\n";
-                                //}
+                                collisioned_stats.colision  = 1<<1;
+                                collisioned_stats.entityCol = main_entity.getID();
+                                
+                                main_stats.colision = 1<<1;
+                                main_stats.entityCol = collisioned_entity.getID();
                             }
                         }
                     }
                 );
+                std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_stats.entityCol<<"\n";
             }
         );
+        std::cout<<"\n";
     }
 };
 

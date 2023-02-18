@@ -80,7 +80,7 @@ struct InpSys2 : public irr::IEventReceiver{
                 case irr::KEY_KEY_1:
                     checkPressed(event,XK_1);
                     break;
-                    case irr::KEY_KEY_2:
+                case irr::KEY_KEY_2:
                     checkPressed(event,XK_2);
                     break;
                 case irr::KEY_ESCAPE:

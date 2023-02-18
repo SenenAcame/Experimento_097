@@ -2,63 +2,132 @@
 #include "../util/types.hpp"
 
 struct LogicSystem {
-    using SYSCMPs = MP::Typelist<EstadoCmp, EstadisticaCmp>;
-    using SYSTAGs = MP::Typelist<>;
+    using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
+    using SYSTAGs = MP::Typelist<TInteract>;
 
     using SYSCMP_Player = MP::Typelist<SoundCmp>;
     using SYSTAG_Player = MP::Typelist<TPlayer>;
 
     void update(EntyMan& EM, TheEngine& eng) {
         EM.foreach<SYSCMPs, SYSTAGs >(
-            [&](Enty& e, EstadoCmp& p, EstadisticaCmp& stats) {
-                if(p.colision != 0){
-                    auto& entity_colisioned       = EM.getEntityById(p.entityCol);
-                    auto& entity_colisioned_stats = EM.getComponent<EstadisticaCmp>(entity_colisioned);
+            [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
+                if(state.colision != 0){
+                    auto& entity_colisioned = EM.getEntityById(state.entityCol);
+                    auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
 
-                    if(e.hasTAG<TPlayer>()){
-                        colisionPlayer(e, entity_colisioned, entity_colisioned_stats);
+                    if(entity.hasTAG<TPlayer>()){
+                        //proceso Colision Jugador
+                        colisionPlayer   (EM, entity, entity_colisioned);
                     }
-                    else if(e.hasTAG<TEnemy>()){
-                        colisionEnemy(EM, e, entity_colisioned, stats, entity_colisioned_stats);
+                    else if(entity.hasTAG<TEnemy>()){
+                        //proceso Colision Enemy
+                        colisionEnemy    (EM, entity, entity_colisioned);
                     }
-                    else if(e.hasTAG<TBullet>()) {
-                        colisionBullet(e, entity_colisioned, stats, entity_colisioned_stats);
+                    else if(entity.hasTAG<TBullet>()){
+                        //proceso Colision Bullet
+                        colisionBullet   (EM, entity, entity_colisioned);
                     }
-                    ////valores por defecto
-                    p.colision = 0;
-                    p.entityCol = 0;
+                    else if(entity.hasTAG<TEneBullet>()){
+                        //proceso Colision EnemyBullet
+                        colisionEneBullet(EM, entity, entity_colisioned);
+                    }
+                    else if(entity.hasTAG<TWeapon>()){
+                        //proceso Colision Weapon
+                        colisionWeapon   (EM, entity, entity_colisioned);
+                    }
+                    else if(entity.hasTAG<TDoor>()){
+                        //proceso Colision Door
+                        colisionDoor     (EM, entity, entity_colisioned);
+                    }
+
+                    resetCollision(state, colisiones_state);
                 }
             }
         );
     }
 
-    void colisionPlayer(Enty& current, Enty& colisioned, EstadisticaCmp& col_stats) {
-        if(colisioned.hasTAG<TEnemy>()) {
-            col_stats.hitpoints -= col_stats.damage;
-            if(col_stats.hitpoints <= 0) { current.setDestroy(); } //set to destroy
+    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned) {
+        if(colisioned.hasTAG<TWeapon>()){
+            //texto de recoger
+            takeWeapon();
+        }
+        else if(colisioned.hasTAG<TDoor>()){
+            //texto de abrir
+            openDoor();
+        }
+        else if(colisioned.hasTAG<TEnemy>() || colisioned.hasTAG<TEneBullet>()){
+            //recibe daño del enemigo o de la bala enemiga
+            reciveDamge(EM, current, colisioned);
         }
     }
 
-    void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned, EstadisticaCmp& curr_stats, EstadisticaCmp& col_stats) {
-        if(colisioned.hasTAG<TBullet>()) {
-            curr_stats.hitpoints -= col_stats.damage;
-            if(curr_stats.hitpoints <= 0) { 
-                soundMonster(EM, current);
-                current.setDestroy(); //set to destroy
-            }
-        } 
-        else if(colisioned.hasTAG<TPlayer>()) {
-            col_stats.hitpoints -= curr_stats.damage;
-            if(col_stats.hitpoints <= 0) { colisioned.setDestroy(); } //set to destroy
+    void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned) {
+        if(colisioned.hasTAG<TPlayer>()){
+            // hace daño al jugador
+            reciveDamge(EM, colisioned, current);
+        }
+        else if(colisioned.hasTAG<TBullet>()){
+            // recibe daño de la bala
+            reciveDamge(EM, current, colisioned);
         }
     }
 
-    void colisionBullet(Enty& current, Enty& colisioned, EstadisticaCmp& curr_stats, EstadisticaCmp& col_stats) {
-        if(colisioned.hasTAG<TEnemy>()) {
-            col_stats.hitpoints -= curr_stats.damage;
-            if(col_stats.hitpoints <= 0) { colisioned.setDestroy(); } //set to destroy
+    void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
+        if(colisioned.hasTAG<TEnemy>()){
+            // hace daño al enemigo
+            reciveDamge(EM, colisioned, current);
         }
-        current.setDestroy(); //set to destroy
+    }
+
+    void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
+        if(colisioned.hasTAG<TPlayer>()){
+            //hace daño al jugador
+            reciveDamge(EM, colisioned, current);
+        }
+    }
+
+    void colisionWeapon(EntyMan& EM, Enty& current, Enty& colisioned){
+        if(colisioned.hasTAG<TPlayer>()){
+            //texto de recoger
+            takeWeapon();
+        }
+    }
+
+    void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned) {
+        if(colisioned.hasTAG<TPlayer>()) {
+            //texto de abrir
+            openDoor();
+        }
+    }
+
+    void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
+        auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
+        auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
+        
+        recept_stats.hitpoints -= agress_stats.damage;
+        
+        if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
+        
+        if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
+        std::cout<<"Hay daño\n";
+    }
+
+    void openDoor() {
+        //mostrar texto de abrir la puerta
+        std::cout<<"Abrir puerta con la E\n";
+    }
+
+    void takeWeapon() {
+        //mostrar texto de recoger arma
+        std::cout<<"Recoger arma con la E\n";
+    }
+
+    void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
+        recept_state.colision  = 0;
+        recept_state.entityCol = 0;
+        agress_state.colision  = 0;
+        agress_state.entityCol = 0;
+        std::cout<<"Reseteo de colisiones\n";
     }
 
     void soundMonster(EntyMan& EM, Enty& e) {
