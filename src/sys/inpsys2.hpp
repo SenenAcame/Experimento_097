@@ -39,11 +39,27 @@ struct InpSys2 : public irr::IEventReceiver{
                         //std::cout<<"Municion arma es " << EM.getComponent<InventarioCmp>(player).ammo2 <<"\n";
                         //std::cout<<"Cargador arma es " << EM.getComponent<InventarioCmp>(player).magazine2 <<"\n";
                     }
-                    keyboard.keyReleased(i.key_shot);
+                    if(EM.getComponent<InventarioCmp>(player).equipada == 0 || EM.getComponent<InventarioCmp>(player).equipada ==1){
+                        keyboard.keyReleased(i.key_shot);
+                    }
+                      
                 }
+                
                 if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0); }
                 if(keyboard.isKeyPressed(i.key_weapon2) && EM.getComponent<InventarioCmp>(player).inventary[1] != 0) { changeWeapon(EM, player, 1); }
                 if(keyboard.isKeyPressed(i.key_weapon3) && EM.getComponent<InventarioCmp>(player).inventary[2] != 0) { changeWeapon(EM, player, 2); }
+
+                if(keyboard.isKeyPressed(i.key_unlockAll)){
+                    //std::cout<<"ARRAY INVENTARIO: ";
+                    for(int i=0;i<3;i++){
+                        
+                        if(EM.getComponent<InventarioCmp>(player).inventary[i]!=2){
+                            //std::cout<<EM.getComponent<InventarioCmp>(player).inventary[i]<<"\n";
+                            EM.getComponent<InventarioCmp>(player).inventary[i]=1;
+                        }
+
+                    }
+                }
                 if(keyboard.isKeyPressed(i.key_reloadALLAmmo)) {
                     EM.getComponent<InventarioCmp>(player).ammo1 = 20;
                     EM.getComponent<InventarioCmp>(player).ammo2 = 10;
@@ -157,6 +173,12 @@ struct InpSys2 : public irr::IEventReceiver{
                 case irr::KEY_KEY_2:
                     checkPressed(event,XK_2);
                     break;
+                case irr::KEY_KEY_3:
+                    checkPressed(event,XK_3);
+                    break;
+                case irr::KEY_KEY_L:
+                    checkPressed(event,XK_L);
+                    break;
                 case irr::KEY_ESCAPE:
                     exit(0);
                     break;
@@ -207,9 +229,9 @@ private:
                     .x =r.n->getParent()->getPosition().X,
                     .y =r.n->getParent()->getPosition().Y,
                     .z =r.n->getParent()->getPosition().Z,
-                    .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
+                    .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
                     .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                    .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                    .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed
                 }
             );
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
@@ -231,9 +253,9 @@ private:
                         .x =r.n->getParent()->getPosition().X+(i * cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
                         .y =r.n->getParent()->getPosition().Y ,
                         .z =r.n->getParent()->getPosition().Z+(i * -sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                        .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
+                        .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
                         .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                        .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                        .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed
                     }
                 );
                 
@@ -319,6 +341,7 @@ private:
     }
 
     void changeWeapon(EntyMan& EM, Enty& player, size_t equip) {
+        std::cout<<"ENTRO\n";
         EM.getComponent<InventarioCmp>(player).inventary[EM.getComponent<InventarioCmp>(player).equipada] = 1;
         EM.getComponent<InventarioCmp>(player).equipada = equip;
         EM.getComponent<InventarioCmp>(player).inventary[equip] = 2;

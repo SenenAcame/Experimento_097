@@ -3,7 +3,7 @@
 
 struct EstadisticaCmp {
     float hitpoints{}, damage{}, speed{};
-    float  bulletRad{}; 
+    float bulletRad{}; 
     bool enemyRange = false;
     bool ishoot = false;
     
