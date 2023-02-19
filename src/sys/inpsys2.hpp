@@ -3,10 +3,6 @@
 #include "../util/mouse.hpp"
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
-#include "soundsystem.hpp"
-#include <cstdint>
-#include <iostream>
-#include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2, PhysicsCmp2>;
@@ -17,13 +13,12 @@ struct InpSys2 : public irr::IEventReceiver{
 
     void update(EntyMan& EM, TheEngine& eng, SoundSystem_t& SS) {
         auto& bb = EM.getBoard();
-        auto cam   = eng.getCamera();
+        //auto cam   = eng.getCamera();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& player, InputCmp2& i, RenderCmp2& r, PhysicsCmp2& p) {
-                //p.vx = p.vz = 0;
                 auto& equipment = EM.getComponent<InventarioCmp>(player);
 
-                p.v_lin = 0;
+                p.v_lin = p.v_ang = 0;
 
                 if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  10; }
                 if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -10; }
@@ -42,13 +37,13 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(i.key_reloadALLAmmo)) { reload(EM, equipment); }
 
                 if(keyboard.isKeyPressed(i.key_interaction)){
-                    interact();
+                    interact(EM, player);
                     keyboard.keyReleased(i.key_interaction);
                 }
 
                 movementMouse(player, eng, r, p);
 
-                bb = { cam->getPosition().X, cam->getPosition().Z, true , true };
+                bb = { p.x, p.z, true , true };
             }
         );
     } 
@@ -109,14 +104,15 @@ struct InpSys2 : public irr::IEventReceiver{
     }
 
 private:
-    void interact() {
-        std::cout<<"Interact\n";
-    }
+    void interact(EntyMan& EM, Enty& player) {
+        auto& col = EM.getComponent<EstadoCmp>(player);
+        auto& col_entity = EM.getEntityById(col.entityCol);
 
-    //void movementKeyboard() {
-    //
-    //
-    //}
+        if(col.colision != 0 && (col_entity.hasTAG<TWeapon>() || col_entity.hasTAG<TDoor>())){
+            col_entity.setDestroy();
+            std::cout<<"Interact\n";
+        }
+    }
 
     void movementMouse(Enty& player, TheEngine& eng, RenderCmp2& r, PhysicsCmp2& p) {
         auto centerWidth  = static_cast<irr::s32>(eng.getWidth()/2);

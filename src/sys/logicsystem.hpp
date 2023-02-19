@@ -2,6 +2,7 @@
 #include "../util/types.hpp"
 
 struct LogicSystem {
+    int a = 1;
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<TInteract>;
 
@@ -48,78 +49,79 @@ struct LogicSystem {
 
     void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned) {
         if(colisioned.hasTAG<TWeapon>()){
-            //texto de recoger
+            //mostrar texto de recoger arma
             takeWeapon();
         }
         else if(colisioned.hasTAG<TDoor>()){
-            //texto de abrir
+            //mostrar texto de abrir puerta
             openDoor();
         }
         else if(colisioned.hasTAG<TEnemy>() || colisioned.hasTAG<TEneBullet>()){
-            //recibe daño del enemigo o de la bala enemiga
+            //jugador recibe daño del enemigo o de la bala enemiga
             reciveDamge(EM, current, colisioned);
         }
     }
 
     void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned) {
         if(colisioned.hasTAG<TPlayer>()){
-            // hace daño al jugador
+            //enemigo hace daño al jugador
             reciveDamge(EM, colisioned, current);
         }
         else if(colisioned.hasTAG<TBullet>()){
-            // recibe daño de la bala
+            //enemigo recibe daño de la bala
             reciveDamge(EM, current, colisioned);
         }
     }
 
     void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
         if(colisioned.hasTAG<TEnemy>()){
-            // hace daño al enemigo
+            //bala hace daño al enemigo
             reciveDamge(EM, colisioned, current);
         }
     }
 
     void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
         if(colisioned.hasTAG<TPlayer>()){
-            //hace daño al jugador
+            //bala enemiga hace daño al jugador
             reciveDamge(EM, colisioned, current);
         }
     }
 
     void colisionWeapon(EntyMan& EM, Enty& current, Enty& colisioned){
         if(colisioned.hasTAG<TPlayer>()){
-            //texto de recoger
+            //mostrar texto de recoger arma
             takeWeapon();
         }
     }
 
     void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned) {
         if(colisioned.hasTAG<TPlayer>()) {
-            //texto de abrir
+            //mostrar texto de abrir puerta
             openDoor();
         }
     }
 
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
-        auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
-        auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
-        
-        recept_stats.hitpoints -= agress_stats.damage;
-        
-        if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
-        
-        if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
-        std::cout<<"Hay daño\n";
+        //auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
+        //auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
+        //
+        //recept_stats.hitpoints -= agress_stats.damage;
+        //
+        //if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
+        //
+        //if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
+        //std::cout<<"Hay daño\n";
     }
 
     void openDoor() {
-        //mostrar texto de abrir la puerta
-        std::cout<<"Abrir puerta con la E\n";
+        //mostrar texto de abrir puerta
+        //std::cout<<"Abrir puerta con la E\n";
     }
 
     void takeWeapon() {
         //mostrar texto de recoger arma
-        std::cout<<"Recoger arma con la E\n";
+        //std::cout<<a<<" Recoger arma con la E\n";
+        //++a;
     }
 
     void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
@@ -127,7 +129,7 @@ struct LogicSystem {
         recept_state.entityCol = 0;
         agress_state.colision  = 0;
         agress_state.entityCol = 0;
-        std::cout<<"Reseteo de colisiones\n";
+        //std::cout<<"Reseteo de colisiones\n";
     }
 
     void soundMonster(EntyMan& EM, Enty& e) {

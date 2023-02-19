@@ -31,7 +31,7 @@ TheEngine::AnimatedMeshNode* TheEngine::createPlayer(Path obj, Path asset) {
     auto* cam = getCamera();
 
     cam->setParent(node);
-    cam->setPosition({ -2, 2, -3 });
+    cam->setPosition({ 0, 2, -3 });
 
     return node;
 }

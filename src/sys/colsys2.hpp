@@ -6,29 +6,20 @@ struct ColSys2 {
     using SYSTAGs = MP::Typelist<TInteract>;
 
     void update(EntyMan& EM) {
+        //std::cout<<"\n";
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& main_entity, PhysicsCmp2& main_phy, EstadoCmp& main_stats) {
-
                 EM.foreach<SYSCMPs, SYSTAGs>(
                     [&](Enty& collisioned_entity, PhysicsCmp2& collisioned_phy, EstadoCmp& collisioned_stats){
-
                         if((main_entity.getID() != collisioned_entity.getID()) && 
                            (collisioned_stats.colision == 0))
                         {
-                            //std::cout<<"Soy entidad "<<main_entity.getID()<<" y estoy comprobando "<<collisioned_entity.getID()<<"\n";
                             float tamx = 0, tamy = 0, tamz = 0, tamx2 = 0, tamy2 = 0, tamz2 = 0;
                             float dx, dy, dz;
-                            
-                            //if(main_entity.hasTAG<TPlayer>() || main_entity.hasTAG<TEnemy>()){
-                                tamx = 0.8;
-                                tamy = 2.5;
-                                tamz = 2;
-                            //}
-                            //if(collisioned_entity.hasTAG<TPlayer>() || collisioned_entity.hasTAG<TEnemy>()){
-                                tamx2 = 0.8;
-                                tamy2 = 2.5;
-                                tamz2 = 2;
-                            //}
+
+                            tamx = tamx2 = 0.8;
+                            tamy = tamy2 = 2.5;
+                            tamz = tamz2 = 2;
 
                             if((dx = main_phy.x - collisioned_phy.x) < 0)
                                 dx = -dx;
@@ -56,10 +47,9 @@ struct ColSys2 {
                         }
                     }
                 );
-                std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_stats.entityCol<<"\n";
+                //std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_stats.entityCol<<"\n";
             }
         );
-        std::cout<<"\n";
     }
 };
 
