@@ -44,15 +44,15 @@ struct InpSys2 : public irr::IEventReceiver{
 
                     if(EM.getComponent<InventarioCmp>(player).reloading ==1 && EM.getComponent<InventarioCmp>(player).clockReload <= reloadTimer){
                         EM.getComponent<InventarioCmp>(player).clockReload += dt;
-                        std::cout<<"NO PUEDES DISPARAR AUN. Reloading es: "<<EM.getComponent<InventarioCmp>(player).reloading << 
-                        " , el clock es: "<<EM.getComponent<InventarioCmp>(player).clockReload <<
-                        ", Y el reloadtimer es: "<<reloadTimer<<"\n";
+                        //std::cout<<"NO PUEDES DISPARAR AUN. Reloading es: "<<EM.getComponent<InventarioCmp>(player).reloading << 
+                        //" , el clock es: "<<EM.getComponent<InventarioCmp>(player).clockReload <<
+                        //", Y el reloadtimer es: "<<reloadTimer<<"\n";
                         return;
                     }
 
-                    std::cout<<"DISPARANDO. Reloading es: "<<EM.getComponent<InventarioCmp>(player).reloading << 
-                    " , el clock es: "<<EM.getComponent<InventarioCmp>(player).clockReload <<
-                    ", Y el reloadtimer es: "<<reloadTimer<<"\n";
+                    //std::cout<<"DISPARANDO. Reloading es: "<<EM.getComponent<InventarioCmp>(player).reloading << 
+                    //" , el clock es: "<<EM.getComponent<InventarioCmp>(player).clockReload <<
+                    //", Y el reloadtimer es: "<<reloadTimer<<"\n";
 
                     notReloading(EM, player);
                     
@@ -242,15 +242,13 @@ private:
     void iAmReloading(EntyMan& EM, Enty& player){
         
         EM.getComponent<InventarioCmp>(player).reloading=1;
-        std::cout<<"Reloading es ahora: "<< EM.getComponent<InventarioCmp>(player).reloading<<"\n";
-    
+        //std::cout<<"Reloading es ahora: "<< EM.getComponent<InventarioCmp>(player).reloading<<"\n";  
     }
 
     void notReloading(EntyMan& EM, Enty& player){
         
         EM.getComponent<InventarioCmp>(player).reloading=0;
-        std::cout<<"Reloading es ahora: "<< EM.getComponent<InventarioCmp>(player).reloading<<"\n";
-    
+        //std::cout<<"Reloading es ahora: "<< EM.getComponent<InventarioCmp>(player).reloading<<"\n";
     }
 
     void createBullet(EntyMan& EM, Enty& player, int ammo, double cadenciaWeapon, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
