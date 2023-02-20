@@ -10,19 +10,20 @@ struct PhySys2 {
 
     void update(EntyMan& EM, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, PhysicsCmp2& p) {
-                if(e.hasTAG<TEnemy>() || e.hasTAG<TPlayer>()) {
+            [&](Enty& en, PhysicsCmp2& p) {
+                if(en.hasTAG<TPlayer>() || en.hasTAG<TEnemy>() || en.hasTAG<TDistEnemy>()) {
+                    if(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Shoot){}
                     p.orien += dt * p.v_ang;
                     if      (p.orien > 2*PI) p.orien -= 2*PI;
                     else if (p.orien < 0)    p.orien += 2*PI;
 
-                    if(e.hasTAG<TEnemy>()){
-                        p.vx =  p.v_lin * std::cos(p.orien);
-                        p.vz =  p.v_lin * std::sin(p.orien);
-                    }
-                    else{
+                    if(en.hasTAG<TPlayer>()){
                         p.vx =  p.v_lin * std::sin(p.orien);
                         p.vz =  p.v_lin * std::cos(p.orien);
+                    }
+                    else{
+                        p.vx =  p.v_lin * std::cos(p.orien);
+                        p.vz =  p.v_lin * std::sin(p.orien);
                     }
 
                     p.x += dt * p.vx;
@@ -37,7 +38,7 @@ struct PhySys2 {
                     if(p.v_lin > 0) p.v_lin -= roz;
                     else            p.v_lin += roz;
                 }
-                else {
+                if(!en.hasTAG<TEnemy>() && !en.hasTAG<TDistEnemy>()){
                     p.x += p.vx;
                     p.y += p.vy;
                     p.z += p.vz;

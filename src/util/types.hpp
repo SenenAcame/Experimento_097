@@ -24,13 +24,14 @@ struct TEneBullet { static constexpr uint8_t id {5}; };
 struct TSpawn     { static constexpr uint8_t id {6}; };
 struct TInteract  { static constexpr uint8_t id {7}; };
 struct TDoor      { static constexpr uint8_t id {8}; };
+struct TDistEnemy { static constexpr uint8_t id {9}; };
 
 using ComponentList = MP::Typelist<
     PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
     InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp,
     SpawnCmp, InteractCMP>;
 
-using TagList = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn, TInteract, TDoor>;
+using TagList = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn, TInteract, TDoor, TDistEnemy>;
 using EntyMan = EntityMan2<ComponentList, TagList>;
 using Enty    = EntyMan::Entity;
 

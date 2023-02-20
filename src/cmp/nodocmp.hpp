@@ -2,30 +2,17 @@
 #include <cstdint>
 #include <vector>
 
-struct nodo {
-        float  x{}, z{};
-        float  tamx{}, tamz{};
-        std::vector<nodo> nodos;
-        nodo(){
-            x=0;
-            z=0;
-            tamx=0;
-            tamz=0;
-        };
-        nodo(float posx, float posz, float tamax, float tamaz){
-            x=posx;
-            z=posz;
-            tamx=tamax;
-            tamz=tamaz;
-        };
-        ~nodo(){
-            if(!nodos.empty())
-                nodos.clear();
-        };
+struct puerta{
+    float x{}, z{};
+};
+struct sala {
+    float  x{}, z{};
+    float  tamx{}, tamz{};
+    std::vector<puerta> puertas;
 };
 
 struct NodoCmp {
-    std::vector<nodo> nodos;
+    std::vector<sala> salas;
 
-    static constexpr uint8_t id {8}; //0100000000
+    static constexpr uint8_t id {8};
 };
