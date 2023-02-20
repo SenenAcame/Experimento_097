@@ -110,7 +110,7 @@ private:
 
         if(col.colision != 0 && (col_entity.hasTAG<TWeapon>() || col_entity.hasTAG<TDoor>())){
             col_entity.setDestroy();
-            std::cout<<"Interact\n";
+            //std::cout<<"Interact\n";
         }
     }
 
