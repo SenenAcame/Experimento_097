@@ -14,6 +14,9 @@ struct InpSys2 : public irr::IEventReceiver{
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& player, InputCmp2& i, RenderCmp2& r) {
                 EM.getComponent<InventarioCmp>(player).clockCadence += dt;
+                
+                double reloadTimer = 0;
+                
                 if(keyboard.isKeyPressed(i.key_shot)){
                     //cambiar por funcion de disparo en funcion de inventario array y el modelo arma
                     //std::cout<<"Arma equipada: " <<EM.getComponent<InventarioCmp>(player).equipada<<
@@ -21,18 +24,37 @@ struct InpSys2 : public irr::IEventReceiver{
                     int ammo = 0;
                     double weaponCadence=0;
                     size_t weapon =0;
+                    
+                    
+
                     switch (EM.getComponent<InventarioCmp>(player).equipada) {
                         case 0: ammo = EM.getComponent<InventarioCmp>(player).magazine1;
-                                
+                                reloadTimer = EM.getComponent<InventarioCmp>(player).reloadTime1;
                         break;
                         case 1: ammo = EM.getComponent<InventarioCmp>(player).magazine2;
+                                reloadTimer = EM.getComponent<InventarioCmp>(player).reloadTime2;
                                 
                         break;
                         case 2: ammo = EM.getComponent<InventarioCmp>(player).magazine3;
                                 weaponCadence = EM.getComponent<InventarioCmp>(player).cadenceWeapon3;
+                                reloadTimer = EM.getComponent<InventarioCmp>(player).reloadTime3;
                         break;
                         default: break;
                     }
+
+                    if(EM.getComponent<InventarioCmp>(player).reloading ==1 && EM.getComponent<InventarioCmp>(player).clockReload <= reloadTimer){
+                        EM.getComponent<InventarioCmp>(player).clockReload += dt;
+                        std::cout<<"NO PUEDES DISPARAR AUN. Reloading es: "<<EM.getComponent<InventarioCmp>(player).reloading << 
+                        " , el clock es: "<<EM.getComponent<InventarioCmp>(player).clockReload <<
+                        ", Y el reloadtimer es: "<<reloadTimer<<"\n";
+                        return;
+                    }
+
+                    std::cout<<"DISPARANDO. Reloading es: "<<EM.getComponent<InventarioCmp>(player).reloading << 
+                    " , el clock es: "<<EM.getComponent<InventarioCmp>(player).clockReload <<
+                    ", Y el reloadtimer es: "<<reloadTimer<<"\n";
+
+                    notReloading(EM, player);
                     
                     if(ammo > 0) { 
                         createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); 
@@ -84,10 +106,13 @@ struct InpSys2 : public irr::IEventReceiver{
                             if((ammos.ammo1-currentAmmo)>0){
                                 ammos.ammo1 = ammos.ammo1-currentAmmo;
                                 ammos.magazine1=ammos.magazine1 + currentAmmo;
+                                iAmReloading(EM, player);
+                                
                             }
                             else{
                                 ammos.ammo1 = 0;
                                 ammos.magazine1=ammos.ammo1;
+                                iAmReloading(EM, player);
                             }
                             
                         break;
@@ -98,10 +123,12 @@ struct InpSys2 : public irr::IEventReceiver{
                                 
                                 ammos.ammo2 = ammos.ammo2-currentAmmo;
                                 ammos.magazine2=ammos.magazine2 + currentAmmo;
+                                iAmReloading(EM, player);
                             }
                             else{
                                 ammos.ammo2 = 0;
                                 ammos.magazine2=ammos.ammo2;
+                                iAmReloading(EM, player);
                             }
                         break;
 
@@ -112,10 +139,12 @@ struct InpSys2 : public irr::IEventReceiver{
                                 
                                 ammos.ammo3 = ammos.ammo3-currentAmmo;
                                 ammos.magazine3=ammos.magazine3 + currentAmmo;
+                                iAmReloading(EM, player);
                             }
                             else{
                                 ammos.ammo3 = 0;
                                 ammos.magazine3=ammos.ammo3;
+                                iAmReloading(EM, player);
                             }
                         break;
                         default: break;
@@ -209,6 +238,21 @@ struct InpSys2 : public irr::IEventReceiver{
     }
 
 private:
+
+    void iAmReloading(EntyMan& EM, Enty& player){
+        
+        EM.getComponent<InventarioCmp>(player).reloading=1;
+        std::cout<<"Reloading es ahora: "<< EM.getComponent<InventarioCmp>(player).reloading<<"\n";
+    
+    }
+
+    void notReloading(EntyMan& EM, Enty& player){
+        
+        EM.getComponent<InventarioCmp>(player).reloading=0;
+        std::cout<<"Reloading es ahora: "<< EM.getComponent<InventarioCmp>(player).reloading<<"\n";
+    
+    }
+
     void createBullet(EntyMan& EM, Enty& player, int ammo, double cadenciaWeapon, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
         
         //std::cout<<"Este es el dt:" <<EM.getComponent<InventarioCmp>(player).clockCadence << " y esta es la cadencia: "
@@ -340,8 +384,10 @@ private:
         
     }
 
+    
+
     void changeWeapon(EntyMan& EM, Enty& player, size_t equip) {
-        std::cout<<"ENTRO\n";
+        
         EM.getComponent<InventarioCmp>(player).inventary[EM.getComponent<InventarioCmp>(player).equipada] = 1;
         EM.getComponent<InventarioCmp>(player).equipada = equip;
         EM.getComponent<InventarioCmp>(player).inventary[equip] = 2;

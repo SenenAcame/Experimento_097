@@ -8,23 +8,28 @@ struct InventarioCmp {
     size_t inventary [3] = {2,0,0}; //0 = pistola, 1 = escopeta, 2 = ametralladora
     
     //weapon1
-    int ammo1 = 20;
-    int magazine1=5;
+    int ammo1           = 20;
+    int magazine1       = 5;
+    double reloadTime1  {2};
     //double cadenceWeapon1{1}; // 1 vez por segundo
     
 
     //weapon2
-    int ammo2 = 10;
-    int magazine2=2;
+    int ammo2           = 10;
+    int magazine2       = 2;
+    double reloadTime2  {4};
     //double cadenceWeapon2 {0.2}; //5 veces por segundo
 
     //weapon3
-    int ammo3 = 200;
-    int magazine3=25;
+    int ammo3              = 200;
+    int magazine3          = 25;
     double cadenceWeapon3 {0.05}; 
+    double reloadTime3    {5};
     
 
+    size_t reloading = 0; //0 not reloading 1 reloading
     double clockCadence{};
+    double clockReload {};
 
     static constexpr uint8_t id {5}; //0000100000
 };
