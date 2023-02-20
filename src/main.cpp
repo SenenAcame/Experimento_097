@@ -19,6 +19,7 @@ void game2() {
 
     TheEngine dev {1080, 720, &InpSys};
     dev.getDevice()->getCursorControl()->setVisible(false);
+    auto cam = dev.getCamera();
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
@@ -46,12 +47,12 @@ void game2() {
     //EM.addComponent<PhysicsCmp2>    (w2,10,0,20);
     //EM.addComponent<RenderCmp2>     (w2, dev.createModel("assets/models/player_arm.obj","assets/textures/fire.bmp"));
 
-    Enty& w3 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(w3,10,0,20);
-    EM.addComponent<RenderCmp2> (w3, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    EM.addComponent<EstadoCmp>  (w3);
-    EM.addTag      <TInteract>  (w3);
-    EM.addTag      <TWeapon>    (w3);
+    //Enty& w3 = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>(w3,10,0,20);
+    //EM.addComponent<RenderCmp2> (w3, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+    //EM.addComponent<EstadoCmp>  (w3);
+    //EM.addTag      <TInteract>  (w3);
+    //EM.addTag      <TWeapon>    (w3);
 
     Enty& playerwalksou = EM.createEntity();
     EM.addComponent<SoundCmp>(playerwalksou, SouSys.createinstance(4));
