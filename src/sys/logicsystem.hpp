@@ -40,6 +40,10 @@ struct LogicSystem {
                         //proceso Colision Door
                         colisionDoor     (EM, entity, entity_colisioned);
                     }
+                    else if(entity.hasTAG<TWall>()){
+                        //proceso Colision Wall
+                        colisionWall     (EM, entity, entity_colisioned);
+                    }
 
                     resetCollision(state, colisiones_state);
                 }
@@ -55,6 +59,10 @@ struct LogicSystem {
         else if(colisioned.hasTAG<TDoor>()){
             //mostrar texto de abrir puerta
             openDoor();
+        }
+        else if(colisioned.hasTAG<TWall>()){
+            //moverse hacia atras
+            reverseMove(EM, current);
         }
         else if(colisioned.hasTAG<TEnemy>() || colisioned.hasTAG<TEneBullet>()){
             //jugador recibe daño del enemigo o de la bala enemiga
@@ -101,6 +109,13 @@ struct LogicSystem {
         }
     }
 
+    void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned) {
+        //mover el jugador hacia atras
+        if(colisioned.hasTAG<TPlayer>()){
+            reverseMove(EM, colisioned);
+        }
+    }
+
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
         //auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
         //auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
@@ -111,6 +126,12 @@ struct LogicSystem {
         //
         //if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
         //std::cout<<"Hay daño\n";
+    }
+
+    void reverseMove(EntyMan& EM, Enty& ent_move) {
+        auto& phy_player = EM.getComponent<PhysicsCmp2>(ent_move);
+        phy_player.v_lin = -phy_player.v_lin;
+        std::cout<<"Has chocado contra un muro\n";
     }
 
     void openDoor() {

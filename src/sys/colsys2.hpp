@@ -6,7 +6,7 @@ struct ColSys2 {
     using SYSTAGs = MP::Typelist<TInteract>;
 
     void update(EntyMan& EM) {
-        //std::cout<<"\n";
+        std::cout<<"\n";
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& main_entity, PhysicsCmp2& main_phy, EstadoCmp& main_stats) {
                 EM.foreach<SYSCMPs, SYSTAGs>(
@@ -14,24 +14,19 @@ struct ColSys2 {
                         if((main_entity.getID() != collisioned_entity.getID()) && 
                            (collisioned_stats.colision == 0))
                         {
-                            float tamx = 0, tamy = 0, tamz = 0, tamx2 = 0, tamy2 = 0, tamz2 = 0;
                             float dx, dy, dz;
-
-                            tamx = tamx2 = 0.8;
-                            tamy = tamy2 = 2.5;
-                            tamz = tamz2 = 2;
 
                             if((dx = main_phy.x - collisioned_phy.x) < 0)
                                 dx = -dx;
-                            dx -= (tamx + tamx2);
+                            dx -= (main_stats.width + collisioned_stats.width);
 
                             if((dy = main_phy.y - collisioned_phy.y) < 0)
                                 dy = -dy;
-                            dy -= (tamy + tamy2);
+                            dy -= (main_stats.height + collisioned_stats.height);
 
                             if((dz = main_phy.z - collisioned_phy.z) < 0)
                                 dz = -dz;
-                            dz -= (tamz + tamz2);
+                            dz -= (main_stats.depth + collisioned_stats .depth);
 
                             if(dx<=0 && dy<=0 && dz<=0){
                                 if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()){
@@ -47,7 +42,7 @@ struct ColSys2 {
                         }
                     }
                 );
-                //std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_stats.entityCol<<"\n";
+                std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_stats.entityCol<<"\n";
             }
         );
     }

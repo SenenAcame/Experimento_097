@@ -2,9 +2,12 @@
 #include <cstdint>
 
 struct EstadoCmp {
-    //inicializa a 00000000, colision es bit 00000001
-    size_t colision = 0; //0 no he colisionado 1 
-    size_t entityCol = 0; //con que he colisio
+    float width  { 0 }; //anchura
+    float height { 0 }; //altura
+    float depth  { 0 }; //profundidad
+
+    std::size_t colision  { 0 }; //0 no he colisionado 1 
+    std::size_t entityCol { 0 }; //con que he colisio
 
     static constexpr uint8_t id {3}; //0000001000
 };

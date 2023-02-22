@@ -22,10 +22,10 @@ struct InpSys2 : public irr::IEventReceiver{
 
                 p.v_lin = p.v_ang = 0;
 
-                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  1; }
-                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -1; }
-                if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  1; p.v_ang =  90; }
-                if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -1; p.v_ang =  90; }
+                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  0.5; }
+                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -0.5; }
+                if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  0.5; p.v_ang =  90; }
+                if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -0.5; p.v_ang =  90; }
                 
                 if(keyboard.isKeyPressed(i.key_shot)){;
                     int ammo = 0;
