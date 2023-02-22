@@ -17,8 +17,10 @@ void game2() {
     SoundSystem_t SouSys;
     SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
-
     TheEngine dev {1080, 720, &InpSys};
+
+    ColSys.init_Hitoxes_Map(EM, dev);
+
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
 
@@ -48,12 +50,12 @@ void game2() {
     //EM.addComponent<PhysicsCmp2>    (w2,10,0,20);
     //EM.addComponent<RenderCmp2>     (w2, dev.createModel("assets/models/player_arm.obj","assets/textures/fire.bmp"));
 
-    Enty& w3 = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(w3, 10, 0, 20);
-    EM.addComponent<RenderCmp2> (w3, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    EM.addComponent<EstadoCmp>  (w3, 1, 1, 1);
-    EM.addTag      <TInteract>  (w3);
-    EM.addTag      <TWall>      (w3);
+    //Enty& w3 = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>(w3, 12.5, 0, 9);
+    //EM.addComponent<RenderCmp2> (w3, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+    //EM.addComponent<EstadoCmp>  (w3, 0, 0, 0);
+    //EM.addTag      <TInteract>  (w3);
+    //EM.addTag      <TWall>      (w3);
     //EM.addTag      <TWeapon>    (w3);
 
     //Enty& enemy1 = EM.createEntity();

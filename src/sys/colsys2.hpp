@@ -14,25 +14,20 @@ struct ColSys2 {
                         if((main_entity.getID() != collisioned_entity.getID()) && 
                            (collisioned_stats.colision == 0))
                         {
-                            float dx, dy, dz;
-
-                            if((dx = main_phy.x - collisioned_phy.x) < 0)
-                                dx = -dx;
-                            dx -= (main_stats.width + collisioned_stats.width);
-
-                            if((dy = main_phy.y - collisioned_phy.y) < 0)
-                                dy = -dy;
+                            float dx = abs(main_phy.x - collisioned_phy.x);
+                            float dy = abs(main_phy.y - collisioned_phy.y);
+                            float dz = abs(main_phy.z - collisioned_phy.z);
+                            
+                            dx -= (main_stats.width  + collisioned_stats.width);
                             dy -= (main_stats.height + collisioned_stats.height);
-
-                            if((dz = main_phy.z - collisioned_phy.z) < 0)
-                                dz = -dz;
-                            dz -= (main_stats.depth + collisioned_stats .depth);
+                            dz -= (main_stats.depth  + collisioned_stats.depth);
 
                             if(dx<=0 && dy<=0 && dz<=0){
                                 if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()){
                                     auto& sound = EM.getComponent<SoundCmp>(main_entity);
                                     EM.changeSound(sound, 0);
                                 }
+
                                 collisioned_stats.colision  = 1<<1;
                                 collisioned_stats.entityCol = main_entity.getID();
                                 
@@ -45,6 +40,55 @@ struct ColSys2 {
                 std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_stats.entityCol<<"\n";
             }
         );
+    }
+
+    void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
+        //Sala de inicio:
+        //x: {  -57, -22.25, 12.5}
+        //z: {-25.7,   9.05, 43.8}
+
+        //Paredes enteras
+        Enty& w1 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w1, -22.25, 0, -25.7);
+        EM.addComponent<EstadoCmp>  (w1,  34.75, 1,     1);
+        EM.addTag      <TInteract>  (w1);
+        EM.addTag      <TWall>      (w1);
+
+        Enty& w2 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w2, -57, 0,  9.05);
+        EM.addComponent<EstadoCmp>  (w2,   1, 1, 34.75);
+        EM.addTag      <TInteract>  (w2);
+        EM.addTag      <TWall>      (w2);
+
+        //Paredes con puerta en medio
+
+        //x: {  -57, -52.9, -48.8}
+        //x: {-41.5, -14.5,  12.5}
+        Enty& w3 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w3, -52.9, 0, 43.8);
+        EM.addComponent<EstadoCmp>  (w3,   4.1, 1,    1);
+        EM.addTag      <TInteract>  (w3);
+        EM.addTag      <TWall>      (w3);
+
+        Enty& w4 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w4, -14.5, 0, 43.8);
+        EM.addComponent<EstadoCmp>  (w4,    27, 1,    1);
+        EM.addTag      <TInteract>  (w4);
+        EM.addTag      <TWall>      (w4);
+
+        //z: {-25.7, -11.05,  5.6}
+        //z: { 12.5,  28.15, 43.8}
+        Enty& w5 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w5, 12.5, 0, 28.15);
+        EM.addComponent<EstadoCmp>  (w5,    1, 1, 15.65);
+        EM.addTag      <TInteract>  (w5);
+        EM.addTag      <TWall>      (w5);
+
+        Enty& w6 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w6, 12.5, 0, -11.05);
+        EM.addComponent<EstadoCmp>  (w6,    1, 1,  15.65);
+        EM.addTag      <TInteract>  (w6);
+        EM.addTag      <TWall>      (w6);
     }
 };
 
