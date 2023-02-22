@@ -198,7 +198,7 @@ int main()
     shader.setInt("texture1", 0);
 
     screenShader.use();
-    shader.setInt("screenTexture", 0);
+    screenShader.setInt("screenTexture", 0);
 
     //framebuffer config
     //____________________
