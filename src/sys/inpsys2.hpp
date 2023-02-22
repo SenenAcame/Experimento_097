@@ -21,11 +21,13 @@ struct InpSys2 : public irr::IEventReceiver{
                 EM.getComponent<InventarioCmp>(player).clockCadence += dt;
 
                 p.v_lin = p.v_ang = 0;
+                bool arriba=false;
+                bool abajo=false;
 
-                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  1; }
-                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -1; }
-                if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  1; p.v_ang =  90; }
-                if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -1; p.v_ang =  90; }
+                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  1; arriba=true;}
+                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -1; abajo=true;}
+                if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  1; if(arriba){ p.v_ang =45;} else if(abajo){p.v_ang =-45; p.v_lin =  -1;}else{p.v_ang =  90;} }
+                if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -1; if(arriba){ p.v_ang =-45; p.v_lin =  1;} else if(abajo){p.v_ang =45;}else{p.v_ang =  90;} }
                 
                 if(keyboard.isKeyPressed(i.key_shot)){;
                     int ammo = 0;
