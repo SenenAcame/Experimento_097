@@ -13,17 +13,17 @@ struct PhySys2 {
             [&](Enty& en, PhysicsCmp2& p) {
                 if(en.hasTAG<TPlayer>() || en.hasTAG<TEnemy>() || en.hasTAG<TDistEnemy>()) {
                     if(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Shoot){}
-                    p.orien += dt * p.v_ang;
-                    if      (p.orien > 2*PI) p.orien -= 2*PI;
-                    else if (p.orien < 0)    p.orien += 2*PI;
+                    p.orieny += dt * p.v_ang;
+                    if      (p.orieny > 2*PI) p.orieny -= 2*PI;
+                    else if (p.orieny < 0)    p.orieny += 2*PI;
 
                     if(en.hasTAG<TPlayer>()){
-                        p.vx =  p.v_lin * std::sin(p.orien);
-                        p.vz =  p.v_lin * std::cos(p.orien);
+                        p.vx =  p.v_lin * std::sin(p.orieny);
+                        p.vz =  p.v_lin * std::cos(p.orieny);
                     }
                     else{
-                        p.vx =  p.v_lin * std::cos(p.orien);
-                        p.vz =  p.v_lin * std::sin(p.orien);
+                        p.vx =  p.v_lin * std::cos(p.orieny);
+                        p.vz =  p.v_lin * std::sin(p.orieny);
                     }
 
                     p.x += dt * p.vx;

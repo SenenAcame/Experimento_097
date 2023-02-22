@@ -15,6 +15,8 @@ struct InpSys2 : public irr::IEventReceiver{
         auto& bb = EM.getBoard();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& player, InputCmp2& i, RenderCmp2& r, PhysicsCmp2& p) {
+
+                movementMouse(player, eng, r, p);
                 auto& equipment = EM.getComponent<InventarioCmp>(player);
                 double reloadTimer = 0;
 
@@ -149,7 +151,7 @@ struct InpSys2 : public irr::IEventReceiver{
                     keyboard.keyReleased(i.key_interaction);
                 }
 
-                movementMouse(player, eng, r, p);
+                
 
                 bb = { p.x, p.z, true , true };
             }
@@ -244,7 +246,9 @@ private:
         cursor->setPosition(centerWidth, centerHeight);
 
         auto ang = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
-        p.orien = ang;
+        auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
+        p.orieny = ang;
+        p.orienx = angx;
     }
 
     //void shoot(EntyMan& EM, Enty& player, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
@@ -288,12 +292,12 @@ private:
             auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
             EM.addComponent<PhysicsCmp2>(
             bullet, PhysicsCmp2{
-                    .x =r.n->getParent()->getPosition().X,
-                    .y =r.n->getParent()->getPosition().Y,
-                    .z =r.n->getParent()->getPosition().Z,
-                    .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                    .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                    .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed
+                    .x =EM.getComponent<PhysicsCmp2>(player).x,
+                    .y =EM.getComponent<PhysicsCmp2>(player).y,
+                    .z =EM.getComponent<PhysicsCmp2>(player).z,
+                    .vx=  sin(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                    .vy= -sin(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                    .vz=  cos(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed
                 }
             );
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
@@ -312,12 +316,12 @@ private:
             
                 EM.addComponent<PhysicsCmp2>(
                 bullet, PhysicsCmp2{
-                        .x =r.n->getParent()->getPosition().X+(i * cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                        .y =r.n->getParent()->getPosition().Y ,
-                        .z =r.n->getParent()->getPosition().Z+(i * -sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                        .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                        .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                        .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * cos(r.n->getParent()->getRotation().X * M_PI/180.f) * speed
+                        .x =EM.getComponent<PhysicsCmp2>(player).x+(i * cos(EM.getComponent<PhysicsCmp2>(player).orieny)),
+                        .y =EM.getComponent<PhysicsCmp2>(player).y ,
+                        .z =EM.getComponent<PhysicsCmp2>(player).z+(i * -sin(EM.getComponent<PhysicsCmp2>(player).orieny)),
+                        .vx=  sin(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                        .vy= -sin(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                        .vz=  cos(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed
                     }
                 );
                 
@@ -332,12 +336,12 @@ private:
                     statsBullet(EM, bullet2, ammo, 50.f, 0.8f, 0.1f);
                     EM.addComponent<PhysicsCmp2>(
                     bullet2, PhysicsCmp2{
-                            .x =r.n->getParent()->getPosition().X+(i*cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                            .y =r.n->getParent()->getPosition().Y+(1*0.2),
-                            .z =r.n->getParent()->getPosition().Z+(i *-sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                            .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
-                            .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                            .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                            .x =EM.getComponent<PhysicsCmp2>(player).x+(i*cos(EM.getComponent<PhysicsCmp2>(player).orieny)),
+                            .y =EM.getComponent<PhysicsCmp2>(player).y+(1*0.2),
+                            .z =EM.getComponent<PhysicsCmp2>(player).z+(i *-sin(EM.getComponent<PhysicsCmp2>(player).orieny)),
+                            .vx=  sin(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                            .vy= -sin(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                            .vz=  cos(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed
                         }
                     );
                     EM.addComponent<RenderCmp2> (bullet2, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
@@ -350,12 +354,12 @@ private:
                 statsBullet(EM, bullet3, ammo, 50.f, 0.8f, 0.1f);
                 EM.addComponent<PhysicsCmp2>(
                 bullet3, PhysicsCmp2{
-                        .x =r.n->getParent()->getPosition().X+(i*cos(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                        .y =r.n->getParent()->getPosition().Y+(2*0.2),
-                        .z =r.n->getParent()->getPosition().Z+(i * -sin(r.n->getParent()->getRotation().Y * M_PI/180.f)),
-                        .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
-                        .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                        .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                        .x =EM.getComponent<PhysicsCmp2>(player).x+(i*cos(EM.getComponent<PhysicsCmp2>(player).orieny)),
+                        .y =EM.getComponent<PhysicsCmp2>(player).y+(2*0.2),
+                        .z =EM.getComponent<PhysicsCmp2>(player).z+(i * -sin(EM.getComponent<PhysicsCmp2>(player).orieny)),
+                        .vx=  sin(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                        .vy= -sin(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                        .vz=  cos(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed
                     }
                 );
                 EM.addComponent<RenderCmp2> (bullet3, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
@@ -373,12 +377,12 @@ private:
             auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
             EM.addComponent<PhysicsCmp2>(
             bullet, PhysicsCmp2{
-                    .x =r.n->getParent()->getPosition().X,
-                    .y =r.n->getParent()->getPosition().Y,
-                    .z =r.n->getParent()->getPosition().Z,
-                    .vx=  sin(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed,
-                    .vy= -sin(r.n->getParent()->getRotation().X * M_PI/180.f) * speed,
-                    .vz=  cos(r.n->getParent()->getRotation().Y * M_PI/180.f) * speed
+                    .x =EM.getComponent<PhysicsCmp2>(player).x,
+                    .y =EM.getComponent<PhysicsCmp2>(player).y,
+                    .z =EM.getComponent<PhysicsCmp2>(player).z,
+                    .vx=  sin(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                    .vy= -sin(EM.getComponent<PhysicsCmp2>(player).orienx) * speed,
+                    .vz=  cos(EM.getComponent<PhysicsCmp2>(player).orieny) * cos(EM.getComponent<PhysicsCmp2>(player).orienx) * speed
                 }
             );
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
