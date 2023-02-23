@@ -43,6 +43,11 @@ struct ColSys2 {
     }
 
     void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
+        hitboxes_Sala_Inicio(EM);
+        hitboxes_Inicio_Adyacente(EM);
+    }
+
+    void hitboxes_Sala_Inicio(EntyMan& EM) {
         //Sala de inicio:
         //x: {  -57, -22.25, 12.5}
         //z: {-25.7,   9.05, 43.8}
@@ -89,6 +94,46 @@ struct ColSys2 {
         EM.addComponent<EstadoCmp>  (w6,    1, 1,  15.65);
         EM.addTag      <TInteract>  (w6);
         EM.addTag      <TWall>      (w6);
+    }
+
+    void hitboxes_Inicio_Adyacente(EntyMan& EM) {
+        //Sala adyacente:
+        //x: { 22.9, 36.8, 50.7}
+        //z: {-25.7, 9.05, 43.8}
+        
+        //Paredes enteras
+        Enty& w1 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w1, 50.7, 0,  9.05);
+        EM.addComponent<EstadoCmp>  (w1,    1, 1, 34.75);
+        EM.addTag      <TInteract>  (w1);
+        EM.addTag      <TWall>      (w1);
+
+        Enty& w2 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w2, 36.8, 0, -25.7);
+        EM.addComponent<EstadoCmp>  (w2, 13.9, 1,     1);
+        EM.addTag      <TInteract>  (w2);
+        EM.addTag      <TWall>      (w2);
+        
+        Enty& w3 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w3, 36.8, 0, 43.8);
+        EM.addComponent<EstadoCmp>  (w3, 13.9, 1,    1);
+        EM.addTag      <TInteract>  (w3);
+        EM.addTag      <TWall>      (w3);
+
+        //Paredes con puerta en medio
+        //z: {-25.7, -13.35,   -1} 12.35
+        //z: { 26.4,   35.1, 43.8} 8.7
+        Enty& w4 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w4, 22.9, 0, -13.35);
+        EM.addComponent<EstadoCmp>  (w4,    1, 1,  12.35);
+        EM.addTag      <TInteract>  (w4);
+        EM.addTag      <TWall>      (w4);
+        
+        Enty& w5 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w5, 22.9, 0, 35.1);
+        EM.addComponent<EstadoCmp>  (w5,    1, 1,  8.7);
+        EM.addTag      <TInteract>  (w5);
+        EM.addTag      <TWall>      (w5);
     }
 };
 
