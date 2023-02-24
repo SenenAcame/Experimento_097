@@ -43,8 +43,10 @@ struct ColSys2 {
     }
 
     void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
+        //EM.addComponent<RenderCmp2> (w2, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
         hitboxes_Sala_Inicio(EM);
         hitboxes_Inicio_Adyacente(EM);
+        hitboxes_Patio(EM);
     }
 
     void hitboxes_Sala_Inicio(EntyMan& EM) {
@@ -134,6 +136,65 @@ struct ColSys2 {
         EM.addComponent<EstadoCmp>  (w5,    1, 1,  8.7);
         EM.addTag      <TInteract>  (w5);
         EM.addTag      <TWall>      (w5);
+    }
+
+    void hitboxes_Patio(EntyMan& EM) {
+        //Sala Patio:
+        //x: { -70.7, -29.05,  12.6} 41.65
+        //z: {  54.2,  89.45, 123.7} 35.25
+        
+        //Paredes enteras
+        Enty& w1 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w1, -70.7, 0, 89.45);
+        EM.addComponent<EstadoCmp>  (w1,     1, 1, 35.25);
+        EM.addTag      <TInteract>  (w1);
+        EM.addTag      <TWall>      (w1);
+
+        //Paredes con puerta en medio
+        //x: {-70.7,-43.25,-15.8} 27.45
+        //x: { -8.8,   1.9, 12.6} 10.7
+
+        Enty& w2 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w2, -43.25, 0, 54.2);
+        EM.addComponent<EstadoCmp>  (w2,  27.45, 1,    1);
+        EM.addTag      <TInteract>  (w2);
+        EM.addTag      <TWall>      (w2);
+
+        Enty& w3 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w3,  1.9, 0, 54.2);
+        EM.addComponent<EstadoCmp>  (w3, 10.7, 1,    1);
+        EM.addTag      <TInteract>  (w3);
+        EM.addTag      <TWall>      (w3);
+
+        //x: { -70.7, -65.9, -61.1} 4.8
+        //x: { -54.2, -20.8,  12.6} 33.4
+
+        Enty& w4 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w4, -65.9, 0, 123.7);
+        EM.addComponent<EstadoCmp>  (w4,   4.8, 1,     1);
+        EM.addTag      <TInteract>  (w4);
+        EM.addTag      <TWall>      (w4);
+
+        Enty& w5 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w5, -20.8, 0, 123.7);
+        EM.addComponent<EstadoCmp>  (w5,  33.4, 1,     1);
+        EM.addTag      <TInteract>  (w5);
+        EM.addTag      <TWall>      (w5);
+
+        //z: { 54.2,  69.85,  85.5} 15.65
+        //z: { 92.4, 108.05, 123.7} 15.65
+
+        Enty& w6 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w6, 12.6, 0, 69.85);
+        EM.addComponent<EstadoCmp>  (w6,    1, 1, 15.65);
+        EM.addTag      <TInteract>  (w6);
+        EM.addTag      <TWall>      (w6);
+
+        Enty& w7 = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(w7, 12.6, 0, 108.05);
+        EM.addComponent<EstadoCmp>  (w7,    1, 1,  15.65);
+        EM.addTag      <TInteract>  (w7);
+        EM.addTag      <TWall>      (w7);
     }
 };
 
