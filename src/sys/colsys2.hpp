@@ -1,5 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
+#include <cstdint>
 
 struct ColSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
@@ -43,158 +44,107 @@ struct ColSys2 {
     }
 
     void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
-        //EM.addComponent<RenderCmp2> (w2, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-        hitboxes_Sala_Inicio(EM);
-        hitboxes_Inicio_Adyacente(EM);
-        hitboxes_Patio(EM);
+        hitboxes_Sala_Inicio     (EM, dev);
+        hitboxes_Inicio_Adyacente(EM, dev);
+        hitboxes_Patio           (EM, dev);
+        hitboxes_Patio_Adyacente (EM, dev);
     }
 
-    void hitboxes_Sala_Inicio(EntyMan& EM) {
+    void hitboxes_Sala_Inicio(EntyMan& EM, TheEngine& dev) {
         //Sala de inicio:
-        //x: {  -57, -22.25, 12.5}
-        //z: {-25.7,   9.05, 43.8}
-
-        //Paredes enteras
-        Enty& w1 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w1, -22.25, 0, -25.7);
-        EM.addComponent<EstadoCmp>  (w1,  34.75, 1,     1);
-        EM.addTag      <TInteract>  (w1);
-        EM.addTag      <TWall>      (w1);
-
-        Enty& w2 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w2, -57, 0,  9.05);
-        EM.addComponent<EstadoCmp>  (w2,   1, 1, 34.75);
-        EM.addTag      <TInteract>  (w2);
-        EM.addTag      <TWall>      (w2);
-
+        //
+        //Dimensiones
+        //   extremo  mitad  extremo  dist
+        //x: {  -57, -22.25, 12.5} 34.75
+        //z: {-25.7,   9.05, 43.8} 34.75
+        //
         //Paredes con puerta en medio
+        //x: {  -57, -52.9, -48.8} 4.1
+        //x: {-41.5, -14.5,  12.5} 27
+        //z: {-25.7, -10.05,  5.6} 15.65
+        //z: { 12.5,  28.15, 43.8} 15.65
 
-        //x: {  -57, -52.9, -48.8}
-        //x: {-41.5, -14.5,  12.5}
-        Enty& w3 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w3, -52.9, 0, 43.8);
-        EM.addComponent<EstadoCmp>  (w3,   4.1, 1,    1);
-        EM.addTag      <TInteract>  (w3);
-        EM.addTag      <TWall>      (w3);
+        float pos_x[] = { -22.25, -57,   -52.9, -14.5, 12.5,  12.5};
+        float pos_z[] = { -25.7,  9.05,  43.8,  43.8,  28.15, -10.05};
+        float widht[] = { 34.75,  1,     4.1,   27,    1,     1};
+        float depth[] = { 1,      34.75, 1,     1,     15.65, 15.65};
+        uint8_t num_paredes = 6;
 
-        Enty& w4 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w4, -14.5, 0, 43.8);
-        EM.addComponent<EstadoCmp>  (w4,    27, 1,    1);
-        EM.addTag      <TInteract>  (w4);
-        EM.addTag      <TWall>      (w4);
-
-        //z: {-25.7, -11.05,  5.6}
-        //z: { 12.5,  28.15, 43.8}
-        Enty& w5 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w5, 12.5, 0, 28.15);
-        EM.addComponent<EstadoCmp>  (w5,    1, 1, 15.65);
-        EM.addTag      <TInteract>  (w5);
-        EM.addTag      <TWall>      (w5);
-
-        Enty& w6 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w6, 12.5, 0, -11.05);
-        EM.addComponent<EstadoCmp>  (w6,    1, 1,  15.65);
-        EM.addTag      <TInteract>  (w6);
-        EM.addTag      <TWall>      (w6);
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Inicio_Adyacente(EntyMan& EM) {
+    void hitboxes_Inicio_Adyacente(EntyMan& EM, TheEngine& dev) {
         //Sala adyacente:
-        //x: { 22.9, 36.8, 50.7}
-        //z: {-25.7, 9.05, 43.8}
-        
-        //Paredes enteras
-        Enty& w1 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w1, 50.7, 0,  9.05);
-        EM.addComponent<EstadoCmp>  (w1,    1, 1, 34.75);
-        EM.addTag      <TInteract>  (w1);
-        EM.addTag      <TWall>      (w1);
-
-        Enty& w2 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w2, 36.8, 0, -25.7);
-        EM.addComponent<EstadoCmp>  (w2, 13.9, 1,     1);
-        EM.addTag      <TInteract>  (w2);
-        EM.addTag      <TWall>      (w2);
-        
-        Enty& w3 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w3, 36.8, 0, 43.8);
-        EM.addComponent<EstadoCmp>  (w3, 13.9, 1,    1);
-        EM.addTag      <TInteract>  (w3);
-        EM.addTag      <TWall>      (w3);
-
+        //
+        //Dimensiones
+        //  extremo mitad extremo dist
+        //x: { 22.9, 36.8, 50.7} 13.9
+        //z: {-25.7, 9.05, 43.8} 34.75
+        //
         //Paredes con puerta en medio
         //z: {-25.7, -13.35,   -1} 12.35
         //z: { 26.4,   35.1, 43.8} 8.7
-        Enty& w4 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w4, 22.9, 0, -13.35);
-        EM.addComponent<EstadoCmp>  (w4,    1, 1,  12.35);
-        EM.addTag      <TInteract>  (w4);
-        EM.addTag      <TWall>      (w4);
-        
-        Enty& w5 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w5, 22.9, 0, 35.1);
-        EM.addComponent<EstadoCmp>  (w5,    1, 1,  8.7);
-        EM.addTag      <TInteract>  (w5);
-        EM.addTag      <TWall>      (w5);
+
+        float pos_x[] = { 50.7,  36.8,  36.8, 22.9,   22.9};
+        float pos_z[] = { 9.05,  -25.7, 43.8, -13.35, 35.1};
+        float widht[] = { 1,     13.9,  13.9, 1,      1};
+        float depth[] = { 34.75, 1,     1,    12.35,  8.7};
+        uint8_t num_paredes = 5;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Patio(EntyMan& EM) {
+    void hitboxes_Patio(EntyMan& EM, TheEngine& dev) {
         //Sala Patio:
+        //
+        //Dimensiones
+        //   extremo  mitad  extremo  dist
         //x: { -70.7, -29.05,  12.6} 41.65
         //z: {  54.2,  89.45, 123.7} 35.25
-        
-        //Paredes enteras
-        Enty& w1 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w1, -70.7, 0, 89.45);
-        EM.addComponent<EstadoCmp>  (w1,     1, 1, 35.25);
-        EM.addTag      <TInteract>  (w1);
-        EM.addTag      <TWall>      (w1);
-
+        //
         //Paredes con puerta en medio
-        //x: {-70.7,-43.25,-15.8} 27.45
-        //x: { -8.8,   1.9, 12.6} 10.7
+        //x: { -70.7, -43.25, -15.8} 27.45
+        //x: {  -8.8,    1.9,  12.6} 10.7
+        //x: { -70.7,  -65.9, -61.1} 4.8
+        //x: { -54.2,  -20.8,  12.6} 33.4
+        //z: {  54.2,  69.85,  85.5} 15.65
+        //z: {  92.4, 108.05, 123.7} 15.65
 
-        Enty& w2 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w2, -43.25, 0, 54.2);
-        EM.addComponent<EstadoCmp>  (w2,  27.45, 1,    1);
-        EM.addTag      <TInteract>  (w2);
-        EM.addTag      <TWall>      (w2);
+        float pos_x[] = { -70.7, -43.25, 1.9,  -65.9, -20.8, 12.6,  12.6};
+        float pos_z[] = { 89.45, 54.2,   54.2, 123.7, 123.7, 69.85, 108.05};
+        float widht[] = { 1,     27.45,  10.7, 4.8,   33.4,  1,     1};
+        float depth[] = { 35.25, 1,      1,    1,     1,     15.65, 15.65};
+        uint8_t num_paredes = 7;
 
-        Enty& w3 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w3,  1.9, 0, 54.2);
-        EM.addComponent<EstadoCmp>  (w3, 10.7, 1,    1);
-        EM.addTag      <TInteract>  (w3);
-        EM.addTag      <TWall>      (w3);
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
 
-        //x: { -70.7, -65.9, -61.1} 4.8
-        //x: { -54.2, -20.8,  12.6} 33.4
+    void hitboxes_Patio_Adyacente(EntyMan& EM, TheEngine& dev) {
+        //Sala Patio Adyacente:
+        //
+        //Dimensiones
+        //   extremo  mitad  extremo  dist
+        //x: { -70.8, -39.6,  -8.4} 31.2
+        //z: { 123.7, 144.5, 165.3} 20.8
 
-        Enty& w4 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w4, -65.9, 0, 123.7);
-        EM.addComponent<EstadoCmp>  (w4,   4.8, 1,     1);
-        EM.addTag      <TInteract>  (w4);
-        EM.addTag      <TWall>      (w4);
+        float pos_x[] = { -39.6, -70.8, -8.4,};
+        float pos_z[] = { 165.3, 144.5, 144.5};
+        float widht[] = { 31.2,  1,     1};
+        float depth[] = { 1,     20.8,  20.8};
+        uint8_t num_paredes = 3;
 
-        Enty& w5 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w5, -20.8, 0, 123.7);
-        EM.addComponent<EstadoCmp>  (w5,  33.4, 1,     1);
-        EM.addTag      <TInteract>  (w5);
-        EM.addTag      <TWall>      (w5);
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
 
-        //z: { 54.2,  69.85,  85.5} 15.65
-        //z: { 92.4, 108.05, 123.7} 15.65
-
-        Enty& w6 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w6, 12.6, 0, 69.85);
-        EM.addComponent<EstadoCmp>  (w6,    1, 1, 15.65);
-        EM.addTag      <TInteract>  (w6);
-        EM.addTag      <TWall>      (w6);
-
-        Enty& w7 = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(w7, 12.6, 0, 108.05);
-        EM.addComponent<EstadoCmp>  (w7,    1, 1,  15.65);
-        EM.addTag      <TInteract>  (w7);
-        EM.addTag      <TWall>      (w7);
+    void create_Hitbox(uint8_t num, EntyMan& EM, float pos_x[], float pos_z[], float widht[], float depth[], TheEngine& dev) {
+        for(uint8_t i {0}; i < num; i++) {
+            Enty& wall = EM.createEntity();
+            EM.addComponent<PhysicsCmp2>(wall, pos_x[i], 0, pos_z[i]);
+            EM.addComponent<EstadoCmp>  (wall, widht[i], 1, depth[i]);
+            EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+            EM.addTag      <TInteract>  (wall);
+            EM.addTag      <TWall>      (wall);
+        }
     }
 };
 
