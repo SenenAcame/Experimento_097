@@ -48,6 +48,12 @@ struct ColSys2 {
         hitboxes_Inicio_Adyacente(EM, dev);
         hitboxes_Patio           (EM, dev);
         hitboxes_Patio_Adyacente (EM, dev);
+        hitboxes_Sala_Alejada    (EM, dev);
+        hitboxes_Pasillo1        (EM, dev);
+        hitboxes_Pasillo2        (EM, dev);
+        hitboxes_Pasillo3        (EM, dev);
+        hitboxes_Pasillo4        (EM, dev);
+        hitboxes_Rampa           (EM, dev);
     }
 
     void hitboxes_Sala_Inicio(EntyMan& EM, TheEngine& dev) {
@@ -127,11 +133,127 @@ struct ColSys2 {
         //x: { -70.8, -39.6,  -8.4} 31.2
         //z: { 123.7, 144.5, 165.3} 20.8
 
-        float pos_x[] = { -39.6, -70.8, -8.4,};
+        float pos_x[] = { -39.6, -70.8, -8.4};
         float pos_z[] = { 165.3, 144.5, 144.5};
         float widht[] = { 31.2,  1,     1};
         float depth[] = { 1,     20.8,  20.8};
         uint8_t num_paredes = 3;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
+
+    void hitboxes_Sala_Alejada(EntyMan& EM, TheEngine& dev) {
+        //Sala Alejada:
+        //
+        //Dimensiones
+        //    extremo  mitad  extremo  dist
+        //x: {   22.8, 54.05,  85.3} 31.25
+        //z: { -111.3, -83.5, -55.7} 27.8
+        //
+        //Paredes con puerta en medio
+        //x: {   22.8,   40.2,  57.6} 17.4
+        //x: {   64.6,  74.95,  85.3} 10.35
+        //z: { -111.3,  -98.9, -86.5} 12,4
+        //z: {  -79.6, -67.95, -55.7} 11.95
+
+        float pos_x[] = { 54.05, 85.3,  40.2,   74.95,  22.8,  22.8};
+        float pos_z[] = { -55.7, -83.5, -111.3, -111.3, -98.9, -67.95};
+        float widht[] = { 31.25, 1,     17.4,   10.35,  1,     1};
+        float depth[] = { 1,     27.8,  1,      1,      12.4,  11.95};
+        uint8_t num_paredes = 6;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
+
+    void hitboxes_Pasillo1(EntyMan& EM, TheEngine& dev) {
+        //Pasillo 1:
+        //
+        //Dimensiones
+        //  extremo  mitad  extremo  dist
+        //x: {  12.5, 17.7,  22.9} 5.2
+        //z: { -25.7,   49, 123.7} 74.7
+        //
+        //Trozo de pared
+        //z: {  43.8, 83.75, 123.7} 39.95
+
+        float pos_x[] = {17.7,  22.9};
+        float pos_z[] = {123.7, 83.75};
+        float widht[] = {5.2,   1};
+        float depth[] = {1,     39.95};
+        uint8_t num_paredes = 2;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
+
+    void hitboxes_Pasillo2(EntyMan& EM, TheEngine& dev) {
+        //Pasillo 2:
+        //
+        //Dimensiones
+        //  extremo  mitad  extremo  dist
+        //x: {  -57, -22.2, 12.6} 34.8
+        //z: { 43.8,    49, 54.2} 5.2
+
+        float pos_x[] = {-57};
+        float pos_z[] = {49};
+        float widht[] = {1};
+        float depth[] = {5.2};
+        uint8_t num_paredes = 1;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
+
+    void hitboxes_Pasillo3(EntyMan& EM, TheEngine& dev) {
+        //Pasillo 3:
+        //
+        //Dimensiones
+        //  extremo  mitad  extremo  dist
+        //x: {   12.5, 17.65,  22.8} 5.15
+        //z: { -170.3,  -113, -55.7} 57.3
+        //
+        //Trozo de pared
+        //z: {-170.3,    -146, -121.7} 24.3
+        //z: {-121.7, -120.74, -119.8} 0.95
+        //z: {-112.9,  -112.1, -111.3} 0.8
+
+        float pos_x[] = {17.65,  12.5, 22.8,   22.8,    22.8};
+        float pos_z[] = {-170.3, -113, -112.1, -120.74, -146};
+        float widht[] = {5.15,   1,    1,      1,       1};
+        float depth[] = {1,      57.3, 0.8,    0.95,    24.3};
+        uint8_t num_paredes = 5;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
+
+    void hitboxes_Pasillo4(EntyMan& EM, TheEngine& dev) {
+        //Pasillo 4:
+        //
+        //Dimensiones
+        //  extremo  mitad  extremo  dist
+        //x: {   22.8,  54.05,   85.3} 31.25
+        //z: { -121.7, -116.5, -111.3} 5.2
+
+        float pos_x[] = {85.3,   54.05};
+        float pos_z[] = {-116.5, -121.7};
+        float widht[] = {1,      31.25};
+        float depth[] = {5.2,    1};
+        uint8_t num_paredes = 2;
+
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+    }
+
+    void hitboxes_Rampa(EntyMan& EM, TheEngine& dev) {
+        //Rampa:
+        //
+        //Dimensiones
+        //  extremo  mitad  extremo  dist
+        //x: {  12.5,  17.65,  22.8} 5.15
+        //z: { -55.7, -40.65, -25.6} 15.05
+
+        float pos_x[] = {12.5, 22.8};
+        float pos_z[] = {-40.65, -40.65};
+        float widht[] = {1, 1};
+        float depth[] = {15.05, 15.05};
+        uint8_t num_paredes = 2;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
