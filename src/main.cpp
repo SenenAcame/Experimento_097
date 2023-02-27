@@ -35,7 +35,7 @@ void game2() {
     EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.y=-2.0f});
     EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/player_arm.obj","assets/textures/fire.bmp"));
     EM.addComponent<InputCmp2>     (player, InputCmp2{ });
-    EM.addComponent<EstadoCmp>     (player, 1, 1, 1);
+    EM.addComponent<EstadoCmp>     (player, 1.f, 1.f, 1.f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<InventarioCmp> (player);
     EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
@@ -118,11 +118,11 @@ void game2() {
         RenSys.  update(EM, dev);
         MapSys.  update(EM, cam);
         AISys.   update(EM, dt, dev);
-        PhySys.  update(EM, dt);
-        ColSys.  update(EM);
         InpSys.  update(EM, dev, SouSys, 1.0/maxFPS);
+        ColSys.  update(EM);
+        LogicSys.update(EM, dev, dt);
+        PhySys.  update(EM, dt);
         SouSys.  update(EM);
-        LogicSys.update(EM, dev);
         SpawnSys.update(EM, dev, SouSys);
         DestSys. update(EM, dt);
 

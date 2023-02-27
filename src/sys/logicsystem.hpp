@@ -1,15 +1,16 @@
 #pragma once
 #include "../util/types.hpp"
+#include "colsys2.hpp"
+#include "physys2.hpp"
 
 struct LogicSystem {
-    int a = 1;
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<TInteract>;
-
     using SYSCMP_Player = MP::Typelist<SoundCmp>;
     using SYSTAG_Player = MP::Typelist<TPlayer>;
+    static constexpr double PI { std::numbers::pi };
 
-    void update(EntyMan& EM, TheEngine& eng) {
+    void update(EntyMan& EM, TheEngine& eng, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
                 if(state.colision != 0){
@@ -18,7 +19,7 @@ struct LogicSystem {
 
                     if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
-                        colisionPlayer   (EM, entity, entity_colisioned);
+                        colisionPlayer   (EM, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
@@ -42,7 +43,7 @@ struct LogicSystem {
                     }
                     else if(entity.hasTAG<TWall>()){
                         //proceso Colision Wall
-                        colisionWall     (EM, entity, entity_colisioned);
+                        colisionWall     (EM, entity, entity_colisioned, dt);
                     }
 
                     resetCollision(state, colisiones_state);
@@ -51,7 +52,7 @@ struct LogicSystem {
         );
     }
 
-    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned) {
+    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
         if(colisioned.hasTAG<TWeapon>()){
             //mostrar texto de recoger arma
             takeWeapon();
@@ -62,7 +63,7 @@ struct LogicSystem {
         }
         else if(colisioned.hasTAG<TWall>()){
             //moverse hacia atras
-            reverseMove(EM, current);
+            reverseMove(EM, current, dt);
         }
         else if(colisioned.hasTAG<TEnemy>() || colisioned.hasTAG<TEneBullet>()){
             //jugador recibe daño del enemigo o de la bala enemiga
@@ -109,10 +110,10 @@ struct LogicSystem {
         }
     }
 
-    void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned) {
+    void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
         //mover el jugador hacia atras
         if(colisioned.hasTAG<TPlayer>()){
-            reverseMove(EM, colisioned);
+            reverseMove(EM, colisioned, dt);
         }
     }
 
@@ -128,10 +129,13 @@ struct LogicSystem {
         //std::cout<<"Hay daño\n";
     }
 
-    void reverseMove(EntyMan& EM, Enty& ent_move) {
+    void reverseMove(EntyMan& EM, Enty& ent_move, double dt) {
         auto& phy_player = EM.getComponent<PhysicsCmp2>(ent_move);
-        phy_player.v_lin = -phy_player.v_lin;
-        std::cout<<"Has chocado contra un muro\n";
+        uint8_t collisioned = preCalculation(EM, ent_move, dt);
+        if(collisioned) {
+            phy_player.v_lin = 0;
+            std::cout<<"Has chocado contra un muro\n";
+        }
     }
 
     void openDoor() {
@@ -162,6 +166,33 @@ struct LogicSystem {
             }
         );
     }
+
+    uint8_t preCalculation(EntyMan& EM, Enty& player, double dt) {
+        //COPIA de componente fisico
+        auto copy_physics = EM.getComponent<PhysicsCmp2>(player);
+        auto& state     = EM.getComponent<EstadoCmp>(player);
+        auto& wall      = EM.getEntityById(state.entityCol);
+        auto& wall_state= EM.getComponent<EstadoCmp>(wall);
+        auto& wall_physc= EM.getComponent<PhysicsCmp2>(wall);
+        float dx, dz;
+
+        //precalculo de coordenadas
+        copy_physics.orien += dt * copy_physics.v_ang;
+        if      (copy_physics.orien > 2*PI) copy_physics.orien -= 2*PI;
+        else if (copy_physics.orien < 0)    copy_physics.orien += 2*PI;
+        copy_physics.vx =  copy_physics.v_lin * std::sin(copy_physics.orien);
+        copy_physics.vz =  copy_physics.v_lin * std::cos(copy_physics.orien);
+        copy_physics.x += dt * copy_physics.vx;
+        copy_physics.z += dt * copy_physics.vz;
+
+        //comprobar colision en siquiente posicion
+        dx = abs(copy_physics.x - wall_physc.x) - (state.width + wall_state.width);
+        dz = abs(copy_physics.z - wall_physc.z) - (state.depth + wall_state.depth);
+
+        if(dx<=0 && dz<=0) return 1;
+        return 0;
+    }
+
 };
 
 // Viejo codigo del update del sistema de logica
