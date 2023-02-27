@@ -28,6 +28,9 @@ void  intitOpenGL(){
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
+    while (!glfwWindowShouldClose(window)){
+
+    }
 
 }
 
@@ -497,4 +500,97 @@ void load_cube(unsigned int &VBO, unsigned int &VAO, float &vertices[]){
     //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     //glEnableVertexAttribArray(2);
 }
+
+
+unsigned int loadTexture(char const* path){
+
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+    if(data){
+        GLenum format;
+        if(nrComponents == 1){
+            format = GL_RED;
+        }else if(nrComponents == 3){
+            format = GL_RGB;
+        } else if(nrComponents == 4){
+            format = GL_RGBA;
+        }
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else{
+        std::cout << "Texture failed to load" << path << std::endl;
+        stbi_image_free(data);
+    }
+    return textureID;
+}
+
+void loadSkybox(){
+     vector<std::string> faces {
+        "assets/shaders/skybox/right.jpg",
+        "assets/shaders/skybox/left.jpg",
+        "assets/shaders/skybox/top.jpg",
+        "assets/shaders/skybox/bottom.jpg",
+        "assets/shaders/skybox/front.jpg",
+        "assets/shaders/skybox/back.jpg"
+    };
+    unsigned int cubemapTexture = loadCubeMap(faces);
+
+    skyboxShader.use();
+    skyboxShader.setInt("skybox", 0);
+}
+
+unsigned int loadCubeMap(vector<std::string> faces){
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrChannels;
+    for(unsigned int i = 0; i < faces.size(); i++){
+        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        if(data){
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            stbi_image_free(data);
+        } else {
+            std::cout << "Cubemap texture failed to load to path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    return textureID;
+}
+
+void drawSkybox(){
+    glDepthFunc(GL_LEQUAL);
+    skyboxShader.use();
+    view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+    skyboxShader.setMat4("view", view);
+    skyboxShader.setMat4("projection", projection);
+    //skybox cube
+    glBindVertexArray(skyboxVAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+    glDrawArrays(GL_TRIANGLES, 0, 26);
+    glBindVertexArray(0);
+    glDepthFunc(GL_LESS);
+}
+
+
 */
