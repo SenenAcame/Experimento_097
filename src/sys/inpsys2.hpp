@@ -303,7 +303,7 @@ private:
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-            EM.addComponent<SelfDestCmp>(bullet);
+            EM.addComponent<SelfDestCmp>(bullet,SelfDestCmp{.cooldown=10});
             EM.addTag<TBullet>(bullet);
             EM.getComponent<InventarioCmp>(player).magazine1-=1;
         }
@@ -328,8 +328,9 @@ private:
                 EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                 EM.addComponent<EstadoCmp>  (bullet);
                 EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet);
+                EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=0.4f});
                 EM.addTag<TBullet>(bullet);
+                
 
                 if(i>-0.4 && i<0.4){
                     Enty& bullet2 = EM.createEntity();
@@ -346,9 +347,10 @@ private:
                     );
                     EM.addComponent<RenderCmp2> (bullet2, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                     EM.addComponent<EstadoCmp>  (bullet2);
-                    EM.addComponent<SoundCmp>  (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                    EM.addComponent<SelfDestCmp>(bullet2);
+                    EM.addComponent<SoundCmp>   (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+                    EM.addComponent<SelfDestCmp>(bullet2, SelfDestCmp{.cooldown=0.4f});
                     EM.addTag<TBullet>(bullet2);
+                    
                 }
                 Enty& bullet3 = EM.createEntity();
                 statsBullet(EM, bullet3, ammo, 50.f, 0.8f, 0.1f);
@@ -365,8 +367,9 @@ private:
                 EM.addComponent<RenderCmp2> (bullet3, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                 EM.addComponent<EstadoCmp>  (bullet3);
                 EM.addComponent<SoundCmp>   (bullet3, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet3);
+                EM.addComponent<SelfDestCmp>(bullet3, SelfDestCmp{.cooldown=0.4f});
                 EM.addTag<TBullet>(bullet3);
+                
             }
             EM.getComponent<InventarioCmp>(player).magazine2-=1;
         }
