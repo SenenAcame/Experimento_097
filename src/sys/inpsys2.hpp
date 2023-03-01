@@ -277,6 +277,7 @@ private:
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
             EM.addComponent<SelfDestCmp>(bullet,SelfDestCmp{.cooldown=10});
             EM.addTag<TBullet>          (bullet);
+            EM.addTag<TInteract>        (bullet);
             equipment.magazine1 -= 1;
         }
         else if (EM.getComponent<InventarioCmp>(player).equipada == 1){ //escopeta
@@ -301,6 +302,7 @@ private:
                 EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                 EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=0.4f});
                 EM.addTag      <TBullet>    (bullet);
+                EM.addTag<TInteract>        (bullet);
                 
 
                 if(i>-0.4 && i<0.4){
@@ -321,6 +323,7 @@ private:
                     EM.addComponent<SoundCmp>   (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                     EM.addComponent<SelfDestCmp>(bullet2, SelfDestCmp{.cooldown=0.4f});
                     EM.addTag      <TBullet>    (bullet2);
+                    EM.addTag<TInteract>        (bullet2);
                     
                 }
                 Enty& bullet3 = EM.createEntity();
@@ -340,6 +343,7 @@ private:
                 EM.addComponent<SoundCmp>   (bullet3, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                 EM.addComponent<SelfDestCmp>(bullet3, SelfDestCmp{.cooldown=0.4f});
                 EM.addTag      <TBullet>    (bullet3);
+                EM.addTag<TInteract>        (bullet3);
                 
             }
             equipment.magazine2 -= 1;
@@ -364,6 +368,7 @@ private:
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
             EM.addComponent<SelfDestCmp>(bullet, 3.f);
             EM.addTag      <TBullet>    (bullet);
+            EM.addTag<TInteract>        (bullet);
             equipment.magazine3 -= 1;
         }
     }

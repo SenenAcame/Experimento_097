@@ -7,7 +7,8 @@
 struct NodeMapSys {
 
     using EneCMPs = MP::Typelist<PhysicsCmp2, AICmp>;
-    //using PlayTAGs = MP::Typelist<TPlayer>;
+    using PlayCMPs = MP::Typelist<PhysicsCmp2>;
+    using PlayTAGs = MP::Typelist<TPlayer>;
     using NodoCMPs = MP::Typelist<NodoCmp>;
     using MapTAGs = MP::Typelist<TMap>;
     using MapTAGsSpawns = MP::Typelist<TSpawn>;
@@ -49,7 +50,7 @@ struct NodeMapSys {
                 for(int i=0;i<n.salas.size();i++){
                     if((n.salas.at(i).x + n.salas.at(i).tamx) >= x && (n.salas.at(i).x - n.salas.at(i).tamx) <= x && (n.salas.at(i).z + n.salas.at(i).tamz) >= z && (n.salas.at(i).z - n.salas.at(i).tamz) <= z){
                         sala=n.salas.at(i);
-                        //std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
+                        std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
                     }
                 }
             }
@@ -58,14 +59,22 @@ struct NodeMapSys {
     }
 
     void update(EntyMan& EM, auto cam){
-        sala salaplayer = salaPlayer(EM, cam->getPosition().X, cam->getPosition().Z);
-        EM.foreach<NodoCMPs, MapTAGsSpawns>(
+        float playerposx, playerposz;
+        EM.foreach<PlayCMPs, PlayTAGs>(
+            [&](Enty& p, PhysicsCmp2& phy) {
+                playerposx = phy.x;
+                playerposz = phy.z;
+            }
+        );
+        sala salaplayer = salaPlayer(EM, playerposx, playerposz);
+        
+        EM.foreach<NodoCMPs, MapTAGs>(
             [&](Enty& en, NodoCmp& n) {
                 EM.foreach<EneCMPs, EneTAGs>(
                     [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
                         sala salaene = enemySala(EM, p, n);
                         if(salaplayer.x==salaene.x && salaplayer.z==salaene.z){
-                            if(en.hasTAG<TDistEnemy>() && sqrt((p.x-cam->getPosition().X)*(p.x-cam->getPosition().X)+(p.z-cam->getPosition().Z)*(p.z-cam->getPosition().Z))<40){    
+                            if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40){    
                                 ai.behaviour=SB::Shoot;
                             }
                             else

@@ -118,15 +118,15 @@ struct LogicSystem {
     }
 
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
-        //auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
-        //auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
-        //
-        //recept_stats.hitpoints -= agress_stats.damage;
-        //
-        //if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
-        //
-        //if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
-        //std::cout<<"Hay daño\n";
+        auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
+        auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
+        
+        recept_stats.hitpoints -= agress_stats.damage;
+        
+        if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
+        
+        if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
+        std::cout<<"Hay daño\n";
     }
 
     void reverseMove(EntyMan& EM, Enty& ent_move, double dt) {

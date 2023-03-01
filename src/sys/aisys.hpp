@@ -94,8 +94,9 @@ struct AISys {
             
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
-            EM.addComponent<SelfDestCmp>(bullet);
+            EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=10});
             EM.addTag<TEneBullet>(bullet);
+            EM.addTag<TInteract> (bullet);
             a.shoot = false;
         }
     }
