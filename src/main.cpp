@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "util/types.hpp"
 //#include "util/types.hpp"
 //#include "cmp/inputcmp2.hpp"
 //#include "cmp/interactcmp.hpp"
@@ -16,14 +17,16 @@ void game2() {
     SoundSystem_t SouSys;
     SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
-
     TheEngine dev {1080, 720, &InpSys};
+
+    ColSys.init_Hitoxes_Map(EM, dev);
+
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map, PhysicsCmp2{.y=-3.f});
-    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/salas_visibles.obj","assets/textures/wall.bmp"));
+    EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapa_laboratorio.obj","assets/textures/wall.bmp"));
     EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
     EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
     EM.addTag      <TMap>       (map);
@@ -32,7 +35,7 @@ void game2() {
     EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.y=-2.0f});
     EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/player_arm.obj","assets/textures/fire.bmp"));
     EM.addComponent<InputCmp2>     (player, InputCmp2{ });
-    EM.addComponent<EstadoCmp>     (player);
+    EM.addComponent<EstadoCmp>     (player, 1.f, 1.f, 1.f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
     EM.addComponent<InventarioCmp> (player);
     EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
@@ -48,21 +51,12 @@ void game2() {
     //EM.addComponent<RenderCmp2>     (w2, dev.createModel("assets/models/player_arm.obj","assets/textures/fire.bmp"));
 
     //Enty& w3 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>(w3,10,0,20);
+    //EM.addComponent<PhysicsCmp2>(w3, 12.5, 0, 9);
     //EM.addComponent<RenderCmp2> (w3, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    //EM.addComponent<EstadoCmp>  (w3);
+    //EM.addComponent<EstadoCmp>  (w3, 0, 0, 0);
     //EM.addTag      <TInteract>  (w3);
+    //EM.addTag      <TWall>      (w3);
     //EM.addTag      <TWeapon>    (w3);
-
-    Enty& playerwalksou = EM.createEntity();
-    EM.addComponent<SoundCmp>(playerwalksou, SouSys.createinstance(4));
-
-    Enty& playerdamagesou = EM.createEntity();
-    EM.addComponent<SoundCmp>(playerdamagesou, SouSys.createinstance(3));
-
-    Enty& weaponsou = EM.createEntity();
-    EM.addComponent<SoundCmp>(weaponsou, SouSys.createinstance(1));
-    EM.addTag      <TWeapon> (weaponsou);
 
     //Enty& enemy1 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .z=40.0});
@@ -101,6 +95,16 @@ void game2() {
 
     //SouSys.startsound(EM.getComponent<SoundCmp>(map));
 
+    //Enty& playerwalksou = EM.createEntity();
+    //EM.addComponent<SoundCmp>(playerwalksou, SouSys.createinstance(4));
+
+    //Enty& playerdamagesou = EM.createEntity();
+    //EM.addComponent<SoundCmp>(playerdamagesou, SouSys.createinstance(3));
+
+    //Enty& weaponsou = EM.createEntity();
+    //EM.addComponent<SoundCmp>(weaponsou, SouSys.createinstance(1));
+    //EM.addTag      <TWeapon> (weaponsou);
+
     constexpr double dt = 1.0/60;
     //actual moment ini
     auto start = std::chrono::high_resolution_clock::now();
@@ -110,18 +114,15 @@ void game2() {
 
     while(dev.run()){
         auto frame_start = std::chrono::high_resolution_clock::now();
-        
         EM.      update();
         RenSys.  update(EM, dev);
         MapSys.  update(EM, cam);
         AISys.   update(EM, dt, dev);
-        
-        PhySys.  update(EM, dt);
-        
-        ColSys.  update(EM);
         InpSys.  update(EM, dev, SouSys, 1.0/maxFPS);
+        ColSys.  update(EM);
+        LogicSys.update(EM, dev, dt);
+        PhySys.  update(EM, dt);
         SouSys.  update(EM);
-        LogicSys.update(EM, dev);
         SpawnSys.update(EM, dev, SouSys);
         DestSys. update(EM, dt);
 
