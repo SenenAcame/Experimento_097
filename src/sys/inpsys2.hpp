@@ -22,7 +22,7 @@ struct InpSys2 : public irr::IEventReceiver{
                 auto& equipment = EM.getComponent<InventarioCmp>(player);
                 double reloadTimer = 0;
 
-                EM.getComponent<InventarioCmp>(player).clockCadence += dt;
+                equipment.clockCadence += dt;
 
                 p.v_lin = p.v_ang = 0;
                 bool arriba=false;
@@ -37,22 +37,22 @@ struct InpSys2 : public irr::IEventReceiver{
                     int ammo = 0;
                     double weaponCadence = 0;
                     size_t weapon = 0;
-                    switch (EM.getComponent<InventarioCmp>(player).equipada) {
-                        case 0: ammo = EM.getComponent<InventarioCmp>(player).magazine1;
-                                reloadTimer = EM.getComponent<InventarioCmp>(player).reloadTime1;
+                    switch (equipment.equipada) {
+                        case 0: ammo = equipment.magazine1;
+                                reloadTimer = equipment.reloadTime1;
                         break;
-                        case 1: ammo = EM.getComponent<InventarioCmp>(player).magazine2;
-                                reloadTimer = EM.getComponent<InventarioCmp>(player).reloadTime2;
+                        case 1: ammo = equipment.magazine2;
+                                reloadTimer = equipment.reloadTime2;
                         break;
-                        case 2: ammo = EM.getComponent<InventarioCmp>(player).magazine3;
-                                weaponCadence = EM.getComponent<InventarioCmp>(player).cadenceWeapon3;
-                                reloadTimer = EM.getComponent<InventarioCmp>(player).reloadTime3;
+                        case 2: ammo = equipment.magazine3;
+                                weaponCadence = equipment.cadenceWeapon3;
+                                reloadTimer = equipment.reloadTime3;
                         break;
                         default: break;
                     }
 
-                    if(EM.getComponent<InventarioCmp>(player).reloading ==1 && EM.getComponent<InventarioCmp>(player).clockReload <= reloadTimer){
-                        EM.getComponent<InventarioCmp>(player).clockReload += dt;
+                    if(equipment.reloading ==1 && equipment.clockReload <= reloadTimer){
+                        equipment.clockReload += dt;
                         return;
                     }
 
@@ -67,20 +67,20 @@ struct InpSys2 : public irr::IEventReceiver{
                 }
                 
                 if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0); }
-                if(keyboard.isKeyPressed(i.key_weapon2) && EM.getComponent<InventarioCmp>(player).inventary[1] != 0) { changeWeapon(EM, player, 1); }
-                if(keyboard.isKeyPressed(i.key_weapon3) && EM.getComponent<InventarioCmp>(player).inventary[2] != 0) { changeWeapon(EM, player, 2); }
+                if(keyboard.isKeyPressed(i.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(EM, player, 1); }
+                if(keyboard.isKeyPressed(i.key_weapon3) && equipment.inventary[2] != 0) { changeWeapon(EM, player, 2); }
 
                 if(keyboard.isKeyPressed(i.key_unlockAll)){
                     for(int i=0;i<3;i++){
-                        if(EM.getComponent<InventarioCmp>(player).inventary[i]!=2){
-                            EM.getComponent<InventarioCmp>(player).inventary[i]=1;
+                        if(equipment.inventary[i]!=2){
+                            equipment.inventary[i]=1;
                         }
                     }
                 }
                 if(keyboard.isKeyPressed(i.key_reloadALLAmmo)) {
-                    EM.getComponent<InventarioCmp>(player).ammo1 = 20;
-                    EM.getComponent<InventarioCmp>(player).ammo2 = 10;
-                    EM.getComponent<InventarioCmp>(player).ammo3 = 100;
+                    equipment.ammo1 = 20;
+                    equipment.ammo2 = 10;
+                    equipment.ammo3 = 100;
                     for(auto& a : EM.getEntities()){
                         if(a.hasTAG<TWeapon>()){
                             EM.getComponent<SoundCmp>(a).parametro=1;
@@ -281,13 +281,14 @@ private:
     }
 
     void createBullet(EntyMan& EM, Enty& player, int ammo, double cadenciaWeapon, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
-        if(EM.getComponent<InventarioCmp>(player).clockCadence <= cadenciaWeapon){
+        auto& equipment = EM.getComponent<InventarioCmp>(player);
+        if(equipment.clockCadence <= cadenciaWeapon){
             return;
         }
         //Cadencia alcanzada
-        EM.getComponent<InventarioCmp>(player).clockCadence =0 ;
+        equipment.clockCadence =0 ;
 
-        if(EM.getComponent<InventarioCmp>(player).equipada == 0){ //pistol
+        if(equipment.equipada == 0){ //pistol
             Enty& bullet = EM.createEntity();
             statsBullet(EM, bullet, ammo, 20.f, 0.8f, 0.1f);
             auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
@@ -304,9 +305,9 @@ private:
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-            EM.addComponent<SelfDestCmp>(bullet);
+            EM.addComponent<SelfDestCmp>(bullet,SelfDestCmp{.cooldown=10});
             EM.addTag<TBullet>(bullet);
-            EM.getComponent<InventarioCmp>(player).magazine1-=1;
+            equipment.magazine1-=1;
         }
         else if (EM.getComponent<InventarioCmp>(player).equipada == 1){ //escopeta
         
@@ -329,8 +330,9 @@ private:
                 EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                 EM.addComponent<EstadoCmp>  (bullet);
                 EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet);
+                EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=0.4f});
                 EM.addTag<TBullet>(bullet);
+                
 
                 if(i>-0.4 && i<0.4){
                     Enty& bullet2 = EM.createEntity();
@@ -347,9 +349,10 @@ private:
                     );
                     EM.addComponent<RenderCmp2> (bullet2, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                     EM.addComponent<EstadoCmp>  (bullet2);
-                    EM.addComponent<SoundCmp>  (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                    EM.addComponent<SelfDestCmp>(bullet2);
+                    EM.addComponent<SoundCmp>   (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+                    EM.addComponent<SelfDestCmp>(bullet2, SelfDestCmp{.cooldown=0.4f});
                     EM.addTag<TBullet>(bullet2);
+                    
                 }
                 Enty& bullet3 = EM.createEntity();
                 statsBullet(EM, bullet3, ammo, 50.f, 0.8f, 0.1f);
@@ -366,10 +369,11 @@ private:
                 EM.addComponent<RenderCmp2> (bullet3, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                 EM.addComponent<EstadoCmp>  (bullet3);
                 EM.addComponent<SoundCmp>   (bullet3, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet3);
+                EM.addComponent<SelfDestCmp>(bullet3, SelfDestCmp{.cooldown=0.4f});
                 EM.addTag<TBullet>(bullet3);
+                
             }
-            EM.getComponent<InventarioCmp>(player).magazine2-=1;
+            equipment.magazine2-=1;
         }
 
         else if(EM.getComponent<InventarioCmp>(player).equipada == 2){ //ametralladora
@@ -391,7 +395,7 @@ private:
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
             EM.addComponent<SelfDestCmp>(bullet);
             EM.addTag<TBullet>(bullet);
-            EM.getComponent<InventarioCmp>(player).magazine3-=1;
+            equipment.magazine3-=1;
         }
     }
 

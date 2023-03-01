@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 
@@ -9,6 +10,7 @@ struct sala {
     float  x{}, z{};
     float  tamx{}, tamz{};
     std::vector<puerta> puertas;
+    std::size_t open{0}; //0 = is close sala 1 = open sala
 };
 
 struct NodoCmp {
