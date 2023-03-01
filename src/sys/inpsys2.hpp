@@ -3,6 +3,8 @@
 #include "../util/mouse.hpp"
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
+#include <iostream>
+#include <irrlicht/IEventReceiver.h>
 
 struct InpSys2 : public irr::IEventReceiver{
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2, PhysicsCmp2>;
@@ -30,8 +32,8 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -1; abajo=true;}
                 if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  1; if(arriba){ p.v_ang =45;} else if(abajo){p.v_ang =-45; p.v_lin =  -1;}else{p.v_ang =  90;} }
                 if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -1; if(arriba){ p.v_ang =-45; p.v_lin =  1;} else if(abajo){p.v_ang =45;}else{p.v_ang =  90;} }
-                
-                if(keyboard.isKeyPressed(i.key_shot)){;
+
+                if(mouse.isLeftPressed()){
                     int ammo = 0;
                     double weaponCadence = 0;
                     size_t weapon = 0;
@@ -60,7 +62,7 @@ struct InpSys2 : public irr::IEventReceiver{
                         createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt);
                     }
                     if(EM.getComponent<InventarioCmp>(player).equipada == 0 || EM.getComponent<InventarioCmp>(player).equipada ==1){
-                        keyboard.keyReleased(i.key_shot);
+                        mouse.releaseLeft();
                     }
                 }
                 
@@ -151,8 +153,6 @@ struct InpSys2 : public irr::IEventReceiver{
                     keyboard.keyReleased(i.key_interaction);
                 }
 
-                
-
                 bb = { p.x, p.z, true , true };
             }
         );
@@ -207,10 +207,11 @@ struct InpSys2 : public irr::IEventReceiver{
         else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
             switch(event.MouseInput.Event) {
                 case irr::EMIE_LMOUSE_PRESSED_DOWN:
-                    irr::SEvent ev;
-                    ev.KeyInput.PressedDown = true;
-                    checkPressed(ev, XK_P);
-                break;
+                    mouse.pressLeft();
+                    break;
+                case irr::EMIE_LMOUSE_LEFT_UP:
+                    mouse.releaseLeft();
+                    break;
                 default: break;
             }
         }
@@ -410,4 +411,5 @@ private:
     static void onkeyreleased(KeySym k) { keyboard.keyReleased(k); }
 
     inline static Keyboard keyboard {};
+    inline static Mouse mouse {};
 };
