@@ -46,8 +46,8 @@ struct TheEngine {
     auto  getSceneManager() {return device_->getSceneManager();}
     auto  getCamera()           {return device_->getSceneManager()->getActiveCamera();}
     auto& getCameraTarget(){return device_->getSceneManager()->getActiveCamera()->getTarget();}
-    auto  getWidth() { return width_;  }
-    auto  getHeight(){ return height_; }
+    auto  getWidth() { return driver_->getScreenSize().Width;  }
+    auto  getHeight(){ return driver_->getScreenSize().Height; }
     
 private:
     using DestructorFunc = void (*)(irr::IrrlichtDevice*);
