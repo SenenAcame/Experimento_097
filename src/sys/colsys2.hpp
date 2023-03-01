@@ -10,7 +10,6 @@ struct ColSys2 {
     static constexpr uint8_t thick  = 1;
 
     void update(EntyMan& EM) {
-        std::cout<<"\n";
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& main_entity, PhysicsCmp2& main_phy, EstadoCmp& main_state) {
                 EM.foreach<SYSCMPs, SYSTAGs>(
@@ -38,7 +37,6 @@ struct ColSys2 {
                         }
                     }
                 );
-                std::cout<<"Soy "<<main_entity.getID()<<" y he colisionado contra "<<main_state.entityCol<<"\n";
             }
         );
     }

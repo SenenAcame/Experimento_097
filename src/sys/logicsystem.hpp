@@ -132,10 +132,7 @@ struct LogicSystem {
     void reverseMove(EntyMan& EM, Enty& ent_move, double dt) {
         auto& phy_player = EM.getComponent<PhysicsCmp2>(ent_move);
         uint8_t collisioned = preCalculation(EM, ent_move, dt);
-        if(collisioned) {
-            phy_player.v_lin = 0;
-            std::cout<<"Has chocado contra un muro\n";
-        }
+        if(collisioned) phy_player.v_lin = 0;
     }
 
     void openDoor() {
