@@ -122,7 +122,7 @@ void game2() {
         InpSys.  update(EM, dev, SouSys, 1.0/maxFPS);
         SouSys.  update(EM);
         LogicSys.update(EM, dev);
-        SpawnSys.update(EM, dev, SouSys);
+        SpawnSys.update(EM, dev, SouSys, player, map);
         DestSys. update(EM, dt);
 
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}

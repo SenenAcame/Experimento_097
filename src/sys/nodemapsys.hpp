@@ -10,6 +10,7 @@ struct NodeMapSys {
     //using PlayTAGs = MP::Typelist<TPlayer>;
     using NodoCMPs = MP::Typelist<NodoCmp>;
     using MapTAGs = MP::Typelist<TMap>;
+    using MapTAGsSpawns = MP::Typelist<TSpawn>;
     using EneTAGs = MP::Typelist<>;
 
     sala enemySala(EntyMan& EM, PhysicsCmp2& p, NodoCmp& mapa){
@@ -58,7 +59,7 @@ struct NodeMapSys {
 
     void update(EntyMan& EM, auto cam){
         sala salaplayer = salaPlayer(EM, cam->getPosition().X, cam->getPosition().Z);
-        EM.foreach<NodoCMPs, MapTAGs>(
+        EM.foreach<NodoCMPs, MapTAGsSpawns>(
             [&](Enty& en, NodoCmp& n) {
                 EM.foreach<EneCMPs, EneTAGs>(
                     [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
@@ -88,7 +89,19 @@ struct NodeMapSys {
                     }
                 );
             }
+            
         );
+        //EM.foreach<MapTAGsSpawns>(
+        //    //poner temporizador para que no compruebe todo el rato
+        //    [&](Enty& spawn, PhysicsCmp2& p, SpawnCmp& spawnC) {
+        //        if( spawnC.sala == salaplayer){
+        //            spawnC.active = 1;
+        //        }
+        //    }
+//
+        //    
+//
+        //);
     }
 
     std::vector<sala> creaSalas(){
