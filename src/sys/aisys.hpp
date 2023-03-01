@@ -133,23 +133,6 @@ struct AISys {
 
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& e, AICmp& a, PhysicsCmp2& p) {
-                //if(e.getDestroy()){
-                //    std::cout<<"Entro\n";
-                //    if(a.enable){
-                //        EM.getComponent<SoundCmp>(e).parametro=2;
-                //        EM.getComponent<SoundCmp>(e).cambia=true;
-                //        EM.getComponent<SoundCmp>(e).play=true;
-                //        for(auto& en : EM.getEntities()){
-                //            if(en.hasTAG<TPlayer>()){
-                //                EM.getComponent<SoundCmp>(en).parametro=1;
-                //                EM.getComponent<SoundCmp>(en).cambia=true;
-                //                EM.getComponent<SoundCmp>(en).play=true;
-                //            }
-                //        }
-                //    }
-                //    //a.enable=false;
-                //}
-
                 percept(bb, a, dt);
 
                 if(!a.enable) return;

@@ -7,6 +7,5 @@ struct EstadisticaCmp {
     bool enemyRange = false;
     bool ishoot = false;
     
-
     static constexpr uint8_t id {6}; //0001000
 };

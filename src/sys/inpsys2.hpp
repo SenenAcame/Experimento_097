@@ -17,55 +17,46 @@ struct InpSys2 : public irr::IEventReceiver{
         auto& bb = EM.getBoard();
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& player, InputCmp2& i, RenderCmp2& r, PhysicsCmp2& p) {
-
-                movementMouse(player, eng, r, p);
-                auto& equipment = EM.getComponent<InventarioCmp>(player);
+                auto& equipment = EM.getComponent<InventarioCmp> (player);
+                auto& stats     = EM.getComponent<EstadisticaCmp>(player);
                 double reloadTimer = 0;
+                bool arriba = false;
+                bool abajo = false;
 
                 equipment.clockCadence += dt;
-
                 p.v_lin = p.v_ang = 0;
-                bool arriba=false;
-                bool abajo=false;
-
-                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  1; arriba=true;}
-                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -1; abajo=true;}
-                if(keyboard.isKeyPressed(i.key_right)) { p.v_lin =  1; if(arriba){ p.v_ang =45;} else if(abajo){p.v_ang =-45; p.v_lin =  -1;}else{p.v_ang =  90;} }
-                if(keyboard.isKeyPressed(i.key_left))  { p.v_lin = -1; if(arriba){ p.v_ang =-45; p.v_lin =  1;} else if(abajo){p.v_ang =45;}else{p.v_ang =  90;} }
-
-                if(mouse.isLeftPressed()){
-                    int ammo = 0;
-                    double weaponCadence = 0;
-                    size_t weapon = 0;
-                    switch (equipment.equipada) {
-                        case 0: ammo = equipment.magazine1;
-                                reloadTimer = equipment.reloadTime1;
-                        break;
-                        case 1: ammo = equipment.magazine2;
-                                reloadTimer = equipment.reloadTime2;
-                        break;
-                        case 2: ammo = equipment.magazine3;
-                                weaponCadence = equipment.cadenceWeapon3;
-                                reloadTimer = equipment.reloadTime3;
-                        break;
-                        default: break;
+                
+                movementMouse(player, eng, r, p);
+                if(keyboard.isKeyPressed(i.key_up))    { p.v_lin =  stats.speed; arriba = true;}
+                if(keyboard.isKeyPressed(i.key_down))  { p.v_lin = -stats.speed; abajo  = true;}
+                if(keyboard.isKeyPressed(i.key_right)) { 
+                    p.v_lin = stats.speed; 
+                    if(arriba){ 
+                        p.v_ang = 45;
+                    } 
+                    else if(abajo){
+                        p.v_ang = -45; 
+                        p.v_lin = -stats.speed;
                     }
-
-                    if(equipment.reloading ==1 && equipment.clockReload <= reloadTimer){
-                        equipment.clockReload += dt;
-                        return;
-                    }
-
-                    notReloading(EM, player);
-                    
-                    if(ammo > 0) { 
-                        createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt);
-                    }
-                    if(EM.getComponent<InventarioCmp>(player).equipada == 0 || EM.getComponent<InventarioCmp>(player).equipada ==1){
-                        mouse.releaseLeft();
+                    else{
+                        p.v_ang = 90;
                     }
                 }
-                
+                if(keyboard.isKeyPressed(i.key_left)) { 
+                    p.v_lin = -stats.speed; 
+                    if(arriba){ 
+                        p.v_ang = -45; 
+                        p.v_lin =  stats.speed;
+                    } 
+                    else if(abajo){
+                        p.v_ang = 45;
+                    }
+                    else {
+                        p.v_ang = 90;
+                    }
+                }
+
+                if(mouse.isLeftPressed()) { shoot(EM, player, r, eng, SS, equipment, reloadTimer, dt); }
                 if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0); }
                 if(keyboard.isKeyPressed(i.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(EM, player, 1); }
                 if(keyboard.isKeyPressed(i.key_weapon3) && equipment.inventary[2] != 0) { changeWeapon(EM, player, 2); }
@@ -89,71 +80,14 @@ struct InpSys2 : public irr::IEventReceiver{
                         }
                     }
                 }
-                if(keyboard.isKeyPressed(i.key_reloadCurrentAmmo)) {
-                    InventarioCmp& ammos = EM.getComponent<InventarioCmp>(player);
-                    int currentAmmo=0;
-                    switch (ammos.equipada) {
-                        case 0:
-                            currentAmmo = 5-ammos.magazine1; //0 is magazine complete
-                            
-                            if((ammos.ammo1-currentAmmo)>0){
-                                ammos.ammo1 = ammos.ammo1-currentAmmo;
-                                ammos.magazine1=ammos.magazine1 + currentAmmo;
-                                iAmReloading(EM, player);
-                            }
-                            else{
-                                ammos.ammo1 = 0;
-                                ammos.magazine1=ammos.ammo1;
-                                iAmReloading(EM, player);
-                            }
-                        break;
-                        case 1:
-                            currentAmmo = 2-ammos.magazine2; //0 is magazine complete
-                            
-                            if((ammos.ammo2-currentAmmo)>0){
-                                ammos.ammo2 = ammos.ammo2-currentAmmo;
-                                ammos.magazine2=ammos.magazine2 + currentAmmo;
-                                iAmReloading(EM, player);
-                            }
-                            else{
-                                ammos.ammo2 = 0;
-                                ammos.magazine2=ammos.ammo2;
-                                iAmReloading(EM, player);
-                            }
-                        break;
-
-                        case 2:
-                            currentAmmo = 25-ammos.magazine3; //0 is magazine complete
-                            
-                            if((ammos.ammo3-currentAmmo)>0){
-                                ammos.ammo3 = ammos.ammo3-currentAmmo;
-                                ammos.magazine3=ammos.magazine3 + currentAmmo;
-                                iAmReloading(EM, player);
-                            }
-                            else{
-                                ammos.ammo3 = 0;
-                                ammos.magazine3=ammos.ammo3;
-                                iAmReloading(EM, player);
-                            }
-                        break;
-                        default: break;
-                    }
-                    
-                    for(auto& a : EM.getEntities()){
-                        if(a.hasTAG<TWeapon>()){
-                            EM.getComponent<SoundCmp>(a).parametro=1;
-                            EM.getComponent<SoundCmp>(a).cambia=true;
-                            EM.getComponent<SoundCmp>(a).play=true;
-                        }
-                    }
-                }
+                if(keyboard.isKeyPressed(i.key_reloadCurrentAmmo)) { reload(EM, player, equipment);}
 
                 if(keyboard.isKeyPressed(i.key_interaction)){
                     interact(EM, player);
                     keyboard.keyReleased(i.key_interaction);
                 }
 
-                bb = { p.x, p.z, true , true };
+                bb = { p.x, p.z, true, true };
             }
         );
     } 
@@ -236,8 +170,11 @@ private:
     void movementMouse(Enty& player, TheEngine& eng, RenderCmp2& r, PhysicsCmp2& p) {
         auto centerWidth  = static_cast<irr::s32>(eng.getWidth()/2);
         auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
-        auto cursor           = eng.getDevice()->getCursorControl();
-        auto ray_traced       = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
+        auto cursor       = eng.getDevice()->getCursorControl();
+        auto ray_traced   = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
+        auto angy = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
+        auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
+
         eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
         r.n->setRotation({
             eng.getCamera()->getRotation().X, 
@@ -246,47 +183,80 @@ private:
         });
         cursor->setPosition(centerWidth, centerHeight);
 
-        auto ang = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
-        auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
-        p.orieny = ang;
+        p.orieny = angy;
         p.orienx = angx;
     }
 
-    //void shoot(EntyMan& EM, Enty& player, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
-    //    int ammo = 0;
-    //    switch (equipment.equipada) {
-    //        case 0:  ammo = equipment.ammo1; break;
-    //        case 1:  ammo = equipment.ammo2; break;
-    //        default: break;
-    //    }
-    //    if(ammo > 0) { createBullet(EM, player, ammo, r, eng, SS); }
-    //}
+    void shoot(EntyMan& EM, Enty& player, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment, double reloadTimer, double dt) {
+        int ammo = 0;
+        double weaponCadence = 0;
+        size_t weapon = 0;
+        switch (equipment.equipada) {
+            case 0: ammo = equipment.magazine1;
+                    reloadTimer = equipment.reloadTime1;
+            break;
+            case 1: ammo = equipment.magazine2;
+                    reloadTimer = equipment.reloadTime2;
+            break;
+            case 2: ammo = equipment.magazine3;
+                    weaponCadence = equipment.cadenceWeapon3;
+                    reloadTimer = equipment.reloadTime3;
+            break;
+            default: break;
+        }
+        if(equipment.reloading ==1 && equipment.clockReload <= reloadTimer){
+            equipment.clockReload += dt;
+            return;
+        }
+        notReloading(EM, player);
+        if(ammo > 0) { createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); }
+        if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
+    }
 
-    void reload(EntyMan& EM, InventarioCmp& equipment) {
-        equipment.ammo1 = 10;
-        equipment.ammo2 = 5;
-        EM.foreach<SYSCMP_Weapon, SYSTAG_Weapon>(
-            [&](Enty& gun, SoundCmp& snd){
-                EM.changeSound(snd, 1);
+    void reload(EntyMan& EM, Enty& player, InventarioCmp& equipment) {
+        int currentAmmo = 0;
+        switch (equipment.equipada) {
+            case 0:
+                reloadProcess(EM, player, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
+            break;
+            case 1:
+                reloadProcess(EM, player, currentAmmo, equipment.ammo2, equipment.magazine2, 2);
+            break;
+            case 2:
+                reloadProcess(EM, player, currentAmmo, equipment.ammo3, equipment.magazine3, 25);
+            break;
+            default: break;
+        }
+        for(auto& a : EM.getEntities()){
+            if(a.hasTAG<TWeapon>()){
+                EM.getComponent<SoundCmp>(a).parametro=1;
+                EM.getComponent<SoundCmp>(a).cambia=true;
+                EM.getComponent<SoundCmp>(a).play=true;
             }
-        );
+        }
     }
 
-    void iAmReloading(EntyMan& EM, Enty& player){
-        EM.getComponent<InventarioCmp>(player).reloading=1;  
+    void reloadProcess(EntyMan& EM, Enty& player, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
+        currentAmmo = maxAmmo - magazine; //0 is magazine complete
+        if((ammo-currentAmmo) > 0){
+            ammo = ammo-currentAmmo;
+            magazine = magazine + currentAmmo;
+        }
+        else{
+            ammo = 0;
+            magazine = ammo;
+        }
+        iAmReloading(EM, player);
     }
 
-    void notReloading(EntyMan& EM, Enty& player){
-        EM.getComponent<InventarioCmp>(player).reloading=0;
-    }
+    void iAmReloading(EntyMan& EM, Enty& player){  EM.getComponent<InventarioCmp>(player).reloading = 1; }
+    void notReloading(EntyMan& EM, Enty& player){ EM.getComponent<InventarioCmp>(player).reloading = 0; }
 
     void createBullet(EntyMan& EM, Enty& player, int ammo, double cadenciaWeapon, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
         auto& equipment = EM.getComponent<InventarioCmp>(player);
-        if(equipment.clockCadence <= cadenciaWeapon){
-            return;
-        }
+        if(equipment.clockCadence <= cadenciaWeapon){ return; }
         //Cadencia alcanzada
-        equipment.clockCadence =0 ;
+        equipment.clockCadence = 0 ;
 
         if(equipment.equipada == 0){ //pistol
             Enty& bullet = EM.createEntity();
@@ -306,11 +276,10 @@ private:
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
             EM.addComponent<SelfDestCmp>(bullet,SelfDestCmp{.cooldown=10});
-            EM.addTag<TBullet>(bullet);
-            equipment.magazine1-=1;
+            EM.addTag<TBullet>          (bullet);
+            equipment.magazine1 -= 1;
         }
         else if (EM.getComponent<InventarioCmp>(player).equipada == 1){ //escopeta
-        
             for(float i=-0.4;i<0.5;i+=0.2){
                 Enty& bullet = EM.createEntity();
                 statsBullet(EM, bullet, ammo, 50.f, 0.8f, 0.1f);
@@ -331,7 +300,7 @@ private:
                 EM.addComponent<EstadoCmp>  (bullet);
                 EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                 EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=0.4f});
-                EM.addTag<TBullet>(bullet);
+                EM.addTag      <TBullet>    (bullet);
                 
 
                 if(i>-0.4 && i<0.4){
@@ -351,7 +320,7 @@ private:
                     EM.addComponent<EstadoCmp>  (bullet2);
                     EM.addComponent<SoundCmp>   (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                     EM.addComponent<SelfDestCmp>(bullet2, SelfDestCmp{.cooldown=0.4f});
-                    EM.addTag<TBullet>(bullet2);
+                    EM.addTag      <TBullet>    (bullet2);
                     
                 }
                 Enty& bullet3 = EM.createEntity();
@@ -370,10 +339,10 @@ private:
                 EM.addComponent<EstadoCmp>  (bullet3);
                 EM.addComponent<SoundCmp>   (bullet3, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                 EM.addComponent<SelfDestCmp>(bullet3, SelfDestCmp{.cooldown=0.4f});
-                EM.addTag<TBullet>(bullet3);
+                EM.addTag      <TBullet>    (bullet3);
                 
             }
-            equipment.magazine2-=1;
+            equipment.magazine2 -= 1;
         }
 
         else if(EM.getComponent<InventarioCmp>(player).equipada == 2){ //ametralladora
@@ -393,9 +362,9 @@ private:
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-            EM.addComponent<SelfDestCmp>(bullet);
-            EM.addTag<TBullet>(bullet);
-            equipment.magazine3-=1;
+            EM.addComponent<SelfDestCmp>(bullet, 3.f);
+            EM.addTag      <TBullet>    (bullet);
+            equipment.magazine3 -= 1;
         }
     }
 
