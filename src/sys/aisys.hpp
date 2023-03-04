@@ -80,7 +80,7 @@ struct AISys {
             auto dM  = distanceModule(dPX, dPZ);
 
             Enty& bullet  = EM.createEntity();
-            auto& stats = EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=50.f, .speed=0.2f, .bulletRad=0.5f}); 
+            auto& stats = EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=20.f, .speed=0.8f, .bulletRad=0.5f}); 
             EM.addComponent<PhysicsCmp2>(
                 bullet, PhysicsCmp2{
                     .x  = p.x,

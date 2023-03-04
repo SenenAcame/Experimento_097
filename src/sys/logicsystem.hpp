@@ -126,7 +126,7 @@ struct LogicSystem {
         if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
         
         if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
-        std::cout<<"Hay daño\n";
+        if(receptor.hasTAG<TPlayer>()) std::cout<<"Hay daño\n";
     }
 
     void reverseMove(EntyMan& EM, Enty& ent_move, double dt) {
