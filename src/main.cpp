@@ -54,15 +54,16 @@ void game2() {
     //EM.addTag      <TWall>      (w3);
     //EM.addTag      <TWeapon>    (w3);
 
-    //Enty& enemy1 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .z=40.0});
-    //EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    //EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
-    //EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-    //EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
-    //EM.addComponent<EstadoCmp>      (enemy1, 1.f, 1.f, 1.f);
-    //EM.addTag      <TDistEnemy>         (enemy1);
-    //EM.addTag      <TInteract>      (enemy1);
+    Enty& enemy1 = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>    (enemy1, PhysicsCmp2{ .z=40.0});
+    EM.addComponent<RenderCmp2>     (enemy1, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+    EM.addComponent<AICmp>          (enemy1, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
+    EM.addComponent<EstadisticaCmp> (enemy1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+    EM.addComponent<SoundCmp>       (enemy1, SouSys.createinstance(7));
+    EM.addComponent<EstadoCmp>      (enemy1, 1.f, 1.f, 1.f);
+    EM.addTag      <TDistEnemy>         (enemy1);
+    EM.addTag      <TEnemy>         (enemy1);
+    EM.addTag      <TInteract>      (enemy1);
 //
     //Enty& enemy2 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=0.0f, .z=40.0f});

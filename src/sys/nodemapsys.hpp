@@ -114,47 +114,47 @@ struct NodeMapSys {
     }
 
     std::vector<sala> creaSalas(){
-        float salasx[]={-39.61f, -29.12f, -22.18f, -22.18f, 17.68f,  36.79f, 54.1f,  54.1f};
-        float salasz[]={144.49f, 88.92f,  48.98f,  9.04f,   -23.32f, 9.08f,  -83.5f, -116.46f};
-        float tamx[]=  {62.51/2, 83.34/2, 69.6/2, 69.6/2, 10.27/2, 27.78/2, 62.51/2, 62.51/2};
-        float tamz[]=   {41.67/2, 69.46/2, 10.42/2, 69.46/2, 294/2, 69.46/2, 55.56/2, 10.42/2};
+        float salasx[]={-52.39f, -41.91f, -34.82f, -34.87f, 7.31f,   28.71f, 46.04f,   46.04f};
+        float salasz[]={140.98f, 85.41f,  43.17f,  0.91f,   -25.91f, 0.89f,  -110.79f, -146.09f};
+        float tamx[]=  {62.51/2, 83.34/2, 69.6/2, 69.6/2, 15/2, 27.78/2, 62.51/2, 62.51/2};
+        float tamz[]=  {41.67/2, 69.46/2, 15/2, 69.46/2, 294/2, 69.46/2, 55.56/2, 15/2};
 
         std::vector<sala> sala;
         std::vector<puerta> puertass1;
-        puertass1.push_back({-57.66, 122.65});
+        puertass1.push_back({-63.53, 119.12});
 
         std::vector<puerta> puertass2;
-        puertass2.push_back({-57.66, 124.65});
-        puertass2.push_back({-12.28, 53.19});
-        puertass2.push_back({13.62, 88.96});
+        puertass2.push_back({-63.53, 121.12});
+        puertass2.push_back({-33.56, 49.68});
+        puertass2.push_back({1.12, -77.19});
 
         std::vector<puerta> puertass3;
-        puertass3.push_back({-45.35, 42.77});
-        puertass3.push_back({-12.28, 55.19});
-        puertass3.push_back({13.62, 47.24});
+        puertass3.push_back({-33.56, 51.68});
+        puertass3.push_back({-47.90, 34.68});
+        puertass3.push_back({1.12, 42.64});
 
         std::vector<puerta> puertass4;
-        puertass4.push_back({-45.35, 44.77});
-        puertass4.push_back({13.62, 9.04});
+        puertass4.push_back({-47.35, 36.68});
+        puertass4.push_back({1.12, -0.84});
 
         std::vector<puerta> puertass5;
-        puertass5.push_back({11.12, 88.96});
-        puertass5.push_back({11.12, 47.24});
-        puertass5.push_back({11.12, 9.04});
-        puertass5.push_back({24.89, 12.72});
-        puertass5.push_back({24.89, -83.08});
-        puertass5.push_back({24.89, -116.36});
+        puertass5.push_back({-1.12, -77.19});
+        puertass5.push_back({-1.12, 42.64});
+        puertass5.push_back({-1.12, -0.84});
+        puertass5.push_back({15.82, -0.84});
+        puertass5.push_back({15.82, -107.05});
+        puertass5.push_back({15.82, -146.09});
 
         std::vector<puerta> puertass6;
-        puertass6.push_back({21.89, 12.72});
+        puertass6.push_back({13.82, -0.84});
 
         std::vector<puerta> puertass7;
-        puertass7.push_back({21.89, -83.08});
-        puertass7.push_back({61.10, -112.29});
+        puertass7.push_back({13.82, -107.05});
+        puertass7.push_back({56.78, -137.6});
 
         std::vector<puerta> puertass8;
-        puertass8.push_back({23.89, -116.36});
-        puertass8.push_back({61.10, -110.29});
+        puertass8.push_back({13.82, -146.09});
+        puertass8.push_back({56.78, -139.6});
 
         std::vector<puerta> todaspuertas[]={puertass1, puertass2, puertass3, puertass4, puertass5, puertass6, puertass7, puertass8};
 
