@@ -85,8 +85,8 @@ struct NodeMapSys {
                             puerta nextcoord ={0, 0};
                             float dist=MAXFLOAT;
                             for(unsigned int i=0; i<salaene.puertas.size(); i++){
-                                float distx=salaplayer.x-salaene.puertas.at(i).x;
-                                float distz=salaplayer.z-salaene.puertas.at(i).z;
+                                float distx=playerposx-salaene.puertas.at(i).x;
+                                float distz=playerposz-salaene.puertas.at(i).z;
                                 if(dist>(sqrt((distx*distx)+(distz*distz)))){
                                     dist=sqrt((distx*distx)+(distz*distz));
                                     nextcoord=salaene.puertas.at(i);
@@ -126,7 +126,7 @@ struct NodeMapSys {
         std::vector<puerta> puertass2;
         puertass2.push_back({-63.53, 121.12});
         puertass2.push_back({-33.56, 49.68});
-        puertass2.push_back({1.12, -77.19});
+        puertass2.push_back({1.12, 77.19});
 
         std::vector<puerta> puertass3;
         puertass3.push_back({-33.56, 51.68});
@@ -138,7 +138,7 @@ struct NodeMapSys {
         puertass4.push_back({1.12, -0.84});
 
         std::vector<puerta> puertass5;
-        puertass5.push_back({-1.12, -77.19});
+        puertass5.push_back({-1.12, 77.19});
         puertass5.push_back({-1.12, 42.64});
         puertass5.push_back({-1.12, -0.84});
         puertass5.push_back({15.82, -0.84});
