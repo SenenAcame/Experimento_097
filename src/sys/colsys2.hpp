@@ -5,8 +5,8 @@
 struct ColSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<TInteract>;
-    static constexpr double pos_y  = 0;
-    static constexpr float height  = 1;
+    static constexpr double pos_y  = 9;
+    static constexpr float height  = 10;
     static constexpr uint8_t thick  = 1;
 
     void update(EntyMan& EM) {
@@ -49,16 +49,16 @@ struct ColSys2 {
     }
 
     void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
-        hitboxes_Sala_Inicio     (EM, dev);
-        hitboxes_Inicio_Adyacente(EM, dev);
+        //hitboxes_Sala_Inicio     (EM, dev);
+        //hitboxes_Inicio_Adyacente(EM, dev);
         hitboxes_Patio           (EM, dev);
-        hitboxes_Patio_Adyacente (EM, dev);
-        hitboxes_Sala_Alejada    (EM, dev);
-        hitboxes_Pasillo1        (EM, dev);
-        hitboxes_Pasillo2        (EM, dev);
-        hitboxes_Pasillo3        (EM, dev);
-        hitboxes_Pasillo4        (EM, dev);
-        hitboxes_Rampa           (EM, dev);
+        //hitboxes_Patio_Adyacente (EM, dev);
+        //hitboxes_Sala_Alejada    (EM, dev);
+        //hitboxes_Pasillo1        (EM, dev);
+        //hitboxes_Pasillo2        (EM, dev);
+        //hitboxes_Pasillo3        (EM, dev);
+        //hitboxes_Pasillo4        (EM, dev);
+        //hitboxes_Rampa           (EM, dev);
     }
 
     void hitboxes_Sala_Inicio(EntyMan& EM, TheEngine& dev) {
@@ -69,16 +69,21 @@ struct ColSys2 {
         //x: {  -57, -22.25, 12.5} 34.75
         //z: {-25.7,   9.05, 43.8} 34.75
         //
-        //Paredes con puerta en medio
-        //x: {  -57, -52.9, -48.8} 4.1
-        //x: {-41.5, -14.5,  12.5} 27
-        //z: {-25.7, -10.05,  5.6} 15.65
-        //z: { 12.5,  28.15, 43.8} 15.65
+        // x -= 12.6      z -= 8.1
+        //
+        //   extremo  mitad  extremo  dist
+        //x: { -69.6, -34.85,  -0.1} 34.75
+        //z: { -33.8,   0.95,  35.7} 34.75
+        //
+        //x: { -69.6,  -64.7, -59.8} 4.9
+        //x: { -35.2, -17.65,  -0.1} 17.55
+        //z: { -33.8,  -24.3, -14.8} 9.5
+        //z: {   4.1,   19.9,  35.7} 15.8
 
-        float pos_x[] = { -22.25, -57,   -52.9, -14.5, 12.5,  12.5};
-        float pos_z[] = { -25.7,  9.05,  43.8,  43.8,  28.15, -10.05};
-        float widht[] = { 34.75,  thick, 4.1,   27,    thick, thick};
-        float depth[] = { thick,  34.75, thick, thick, 15.65, 15.65};
+        float pos_x[] = { -34.85, -69.6, -64.7, -17.65, -0.1,  -0.1};
+        float pos_z[] = { -33.8,  0.95,  35.7,  35.7,   19.9,  -24.3};
+        float widht[] = { 34.75,  thick, 4.9,   17.55,  thick, thick};
+        float depth[] = { thick,  34.75, thick, thick,  15.8,  9.5};
         uint8_t num_paredes = 6;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
@@ -89,17 +94,17 @@ struct ColSys2 {
         //
         //Dimensiones
         //  extremo mitad extremo dist
-        //x: { 22.9, 36.8, 50.7} 13.9
-        //z: {-25.7, 9.05, 43.8} 34.75
+        //x: { 14.8, 28.7, 42.6} 13.9
+        //z: {-33.8, 0.95, 35.7} 34.75
         //
         //Paredes con puerta en medio
-        //z: {-25.7, -13.35,   -1} 12.35
-        //z: { 26.4,   35.1, 43.8} 8.7
+        //z: { -33.8, -24.7, -15.6} 9.1
+        //z: {  11.1,  23.4,  35.7} 12.3
 
-        float pos_x[] = { 50.7,  36.8,  36.8,  22.9,   22.9};
-        float pos_z[] = { 9.05,  -25.7, 43.8,  -13.35, 35.1};
-        float widht[] = { thick, 13.9,  13.9,  thick,  thick};
-        float depth[] = { 34.75, thick, thick, 12.35,  8.7};
+        float pos_x[] = { 42.6,  28.7,  28.7,  14.8,  14.8};
+        float pos_z[] = { 0.95,  -33.8, 35.7,  -24.7, 23.4};
+        float widht[] = { thick, 13.9,  13.9,  thick, thick};
+        float depth[] = { 34.75, thick, thick, 9.1,   12.3};
         uint8_t num_paredes = 5;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
@@ -268,7 +273,7 @@ struct ColSys2 {
             Enty& wall = EM.createEntity();
             EM.addComponent<PhysicsCmp2>(wall, static_cast<double>(pos_x[i]), pos_y, static_cast<double>(pos_z[i]));
             EM.addComponent<EstadoCmp>  (wall, widht[i], height, depth[i]);
-            //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+            EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
             EM.addTag      <TInteract>  (wall);
             EM.addTag      <TWall>      (wall);
         }

@@ -15,7 +15,7 @@ void game2() {
     SelfDestSys   DestSys;
     TheEngine dev {1080, 720, &InpSys};
 
-    //ColSys.init_Hitoxes_Map(EM, dev);
+    ColSys.init_Hitoxes_Map(EM, dev);
 
     dev.getDevice()->getCursorControl()->setVisible(false);
     auto cam = dev.getCamera();
@@ -29,7 +29,7 @@ void game2() {
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=5.f, .y=5.0f});
-    EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
+    EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp"));
     EM.addComponent<InputCmp2>     (player, InputCmp2{ });
     EM.addComponent<EstadoCmp>     (player, 1.f, 90.f, 1.f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=40.f});
