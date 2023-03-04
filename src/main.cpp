@@ -22,6 +22,7 @@ void game2() {
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
+    EM.addComponent<PhysicsCmp2>(map);
     EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapa.obj","assets/textures/wall.bmp"));
     EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
     EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
