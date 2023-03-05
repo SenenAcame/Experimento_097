@@ -58,7 +58,7 @@ struct NodeMapSys {
         return sala;
     }
 
-    void update(EntyMan& EM, auto cam){
+    void update(EntyMan& EM){
         float playerposx, playerposz;
         EM.foreach<PlayCMPs, PlayTAGs>(
             [&](Enty& p, PhysicsCmp2& phy) {

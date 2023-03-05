@@ -1,8 +1,6 @@
 #pragma once
 #include "../cmp/blackboardcmp.hpp"
-#include "../util/types.hpp"
 #include "cmpstorage2.hpp"
-//#include <iostream>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
 struct EntityMan2 {
