@@ -13,6 +13,9 @@ struct LogicSystem {
     void update(EntyMan& EM, TheEngine& eng, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
+                if(entity.hasTAG<TEnemy>()){ //aumentar el clock del enemigo aqui 
+                    EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
+                }
                 if(state.colision != 0){
                     auto& entity_colisioned = EM.getEntityById(state.entityCol);
                     auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
@@ -23,7 +26,8 @@ struct LogicSystem {
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
-                        colisionEnemy    (EM, entity, entity_colisioned);
+                        //std::cout<<"CHOCO CON PLAYER Y TENGO UN ATTACKCLOCK DE: " <<EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy <<"\n";
+                        colisionEnemy    (EM, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TBullet>()){
                         //proceso Colision Bullet
@@ -67,13 +71,36 @@ struct LogicSystem {
         }
         else if(colisioned.hasTAG<TEnemy>() || colisioned.hasTAG<TEneBullet>()){
             //jugador recibe daño del enemigo o de la bala enemiga
+            //std::cout<<"ENTRO EN Player\n";
+            if(colisioned.hasTAG<TEnemy>()){
+                auto& enemyStats = EM.getComponent<EstadisticaCmp>(colisioned);
+                if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy)
+                {
+                    
+                    return;
+                }
+                //std::cout<<"ATACO A PLAYER Y TENGO UN ATTACKCLOCK DE: " <<EM.getComponent<EstadisticaCmp>(colisioned).ClockAttackEnemy <<"\n";
+                enemyStats.ClockAttackEnemy = 0;
+            }
+            
             reciveDamge(EM, current, colisioned);
+            //std::cout<<"Player tiene "<<EM.getComponent<EstadisticaCmp>(current).hitpoints<<" vida \n";
         }
     }
 
-    void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned) {
+    void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
         if(colisioned.hasTAG<TPlayer>()){
             //enemigo hace daño al jugador
+            //std::cout<<"ENTRO EN ENEMY\n";
+            auto& enemyStats = EM.getComponent<EstadisticaCmp>(current);
+            if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy)
+            {
+                
+                return;
+            }
+            //std::cout<<"ATACO A PLAYER Y TENGO UN ATTACKCLOCK DE: " <<EM.getComponent<EstadisticaCmp>(current).ClockAttackEnemy <<"\n";
+            enemyStats.ClockAttackEnemy = 0;
+            
             reciveDamge(EM, colisioned, current);
         }
         else if(colisioned.hasTAG<TBullet>()){
