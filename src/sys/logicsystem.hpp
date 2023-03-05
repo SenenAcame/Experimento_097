@@ -87,6 +87,10 @@ struct LogicSystem {
             //bala hace daño al enemigo
             reciveDamge(EM, colisioned, current);
         }
+        else if(colisioned.hasTAG<TWall>()){
+            //bala impacta en muro
+            markDestroy(current);
+        }
     }
 
     void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
@@ -111,9 +115,13 @@ struct LogicSystem {
     }
 
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
-        //mover el jugador hacia atras
         if(colisioned.hasTAG<TPlayer>()){
+            //mover el jugador hacia atras
             reverseMove(EM, colisioned, dt);
+        }
+        else if(colisioned.hasTAG<TBullet>()) {
+            //destruir la bala
+            markDestroy(colisioned);
         }
     }
 
@@ -123,10 +131,14 @@ struct LogicSystem {
         
         recept_stats.hitpoints -= agress_stats.damage;
         
-        if(recept_stats.hitpoints <= 0) { receptor.setDestroy(); }
+        if(recept_stats.hitpoints <= 0) { markDestroy(receptor); }
         
-        if(!agressor.hasTAG<TEnemy>())  { agressor.setDestroy(); }
+        if(!agressor.hasTAG<TEnemy>())  { markDestroy(agressor); }
         if(receptor.hasTAG<TPlayer>()) std::cout<<"Hay daño\n";
+    }
+
+    void markDestroy(Enty& enty_to_dele) {
+        enty_to_dele.setDestroy();
     }
 
     void reverseMove(EntyMan& EM, Enty& ent_move, double dt) {
