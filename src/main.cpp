@@ -66,7 +66,7 @@ void game2() {
     //EM.addTag      <TDistEnemy>     (enemy1);
     //EM.addTag      <TEnemy>         (enemy1);
     //EM.addTag      <TInteract>      (enemy1);
-
+//
     //Enty& enemy2 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy2, PhysicsCmp2{.x=-40.0f});
     //EM.addComponent<RenderCmp2>     (enemy2, dev.createModel("assets/models/enemy.obj","assets/textures/faerie2.bmp"));
@@ -87,7 +87,7 @@ void game2() {
     //EM.addComponent<EstadoCmp>      (enemy3, 1.525f, 5.725f, 2.105f); 
     //EM.addTag      <TEnemy>         (enemy3);
     //EM.addTag      <TInteract>      (enemy3);
-    
+    //
     //Enty& enemy11 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy11, PhysicsCmp2{.x=-43.68f, .y=4.055f, .z=85.41f});
     //EM.addComponent<RenderCmp2>     (enemy11, dev.createModel("assets/models/monstruo2.obj","assets/textures/portal1.bmp"));
@@ -97,7 +97,6 @@ void game2() {
     //EM.addComponent<EstadoCmp>      (enemy11, 0.945f, 4.005f, 1.01f); 
     //EM.addTag      <TEnemy>         (enemy11);
     //EM.addTag      <TInteract>      (enemy11);
-
     //Enty& enemy4 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy4, PhysicsCmp2{.x=-23.68f, .y=2.33f, .z=100.41});
     //EM.addComponent<RenderCmp2>     (enemy4, dev.createModel("assets/models/monstruo1.obj","assets/textures/portal1.bmp"));
@@ -107,7 +106,7 @@ void game2() {
     //EM.addComponent<EstadoCmp>      (enemy4, 0.875f, 2.33f, 0.85f); 
     //EM.addTag      <TEnemy>         (enemy4);
     //EM.addTag      <TInteract>      (enemy4);
-
+//
 //lab3
     //Enty& enemy5 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy5, PhysicsCmp2{.x=23.68f, .z=20.41});
@@ -118,7 +117,6 @@ void game2() {
     //EM.addComponent<EstadoCmp>      (enemy5, 1.f, 1.f, 1.f); 
     //EM.addTag      <TEnemy>         (enemy5);
     //EM.addTag      <TInteract>      (enemy5);
-
     //Enty& enemy6 = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (enemy6, PhysicsCmp2{ .x=35.0f, .z=-20.0f});
     //EM.addComponent<RenderCmp2>     (enemy6, dev.createModel("assets/models/monstruo2.obj","assets/textures/fire.bmp"));

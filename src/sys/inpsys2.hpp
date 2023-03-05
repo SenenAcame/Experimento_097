@@ -208,13 +208,18 @@ private:
             equipment.clockReload += dt;
             return;
         }
+        equipment.clockReload = 0;
         notReloading(EM, player);
         if(ammo > 0) { createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); }
+        else if(ammo == 0){
+            reload(EM, player, equipment);
+        }
         if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
     }
 
     void reload(EntyMan& EM, Enty& player, InventarioCmp& equipment) {
         int currentAmmo = 0;
+        std::cout<<"ENTRO A RECARGAR\n";
         switch (equipment.equipada) {
             case 0:
                 reloadProcess(EM, player, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
@@ -241,12 +246,14 @@ private:
         if((ammo-currentAmmo) > 0){
             ammo = ammo-currentAmmo;
             magazine = magazine + currentAmmo;
+            iAmReloading(EM, player);
         }
         else{
             ammo = 0;
             magazine = ammo;
+            iAmReloading(EM, player);
         }
-        iAmReloading(EM, player);
+        
     }
 
     void iAmReloading(EntyMan& EM, Enty& player){  EM.getComponent<InventarioCmp>(player).reloading = 1; }
@@ -260,7 +267,7 @@ private:
 
         if(equipment.equipada == 0){ //pistol
             Enty& bullet = EM.createEntity();
-            statsBullet(EM, bullet, ammo, 20.f, 0.8f, 0.1f);
+            statsBullet(EM, bullet, ammo, 18.f, 5.f, 0.1f);
             auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
             EM.addComponent<PhysicsCmp2>(
             bullet, PhysicsCmp2{
@@ -283,7 +290,7 @@ private:
         else if (EM.getComponent<InventarioCmp>(player).equipada == 1){ //escopeta
             for(float i=-0.4;i<0.5;i+=0.2){
                 Enty& bullet = EM.createEntity();
-                statsBullet(EM, bullet, ammo, 50.f, 0.8f, 0.1f);
+                statsBullet(EM, bullet, ammo, 8.f, 4.f, 0.15f);
                 auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
             
                 EM.addComponent<PhysicsCmp2>(
@@ -307,7 +314,7 @@ private:
 
                 if(i>-0.4 && i<0.4){
                     Enty& bullet2 = EM.createEntity();
-                    statsBullet(EM, bullet2, ammo, 50.f, 0.8f, 0.1f);
+                    statsBullet(EM, bullet2, ammo, 8.f, 4.f, 0.15f);
                     EM.addComponent<PhysicsCmp2>(
                     bullet2, PhysicsCmp2{
                             .x =EM.getComponent<PhysicsCmp2>(player).x+(i*cos(EM.getComponent<PhysicsCmp2>(player).orieny)),
@@ -327,7 +334,7 @@ private:
                     
                 }
                 Enty& bullet3 = EM.createEntity();
-                statsBullet(EM, bullet3, ammo, 50.f, 0.8f, 0.1f);
+                statsBullet(EM, bullet3, ammo, 8.f, 4.f, 0.15f);
                 EM.addComponent<PhysicsCmp2>(
                 bullet3, PhysicsCmp2{
                         .x =EM.getComponent<PhysicsCmp2>(player).x+(i*cos(EM.getComponent<PhysicsCmp2>(player).orieny)),
@@ -351,7 +358,7 @@ private:
 
         else if(EM.getComponent<InventarioCmp>(player).equipada == 2){ //ametralladora
             Enty& bullet = EM.createEntity();
-            statsBullet(EM, bullet, ammo, 20.f, 1.0f, 0.5f);
+            statsBullet(EM, bullet, ammo, 15.f, 4.0f, 0.1f);
             auto speed = EM.getComponent<EstadisticaCmp>(bullet).speed;
             EM.addComponent<PhysicsCmp2>(
             bullet, PhysicsCmp2{

@@ -4,8 +4,9 @@
 struct EstadisticaCmp {
     float hitpoints{}, damage{}, speed{};
     float bulletRad{}; 
-    bool enemyRange = false;
-    bool ishoot = false;
-    
+
+    double attackSpeedEnemy{1};
+    double ClockAttackEnemy{1};
+   
     static constexpr uint8_t id {6}; //0001000
 };
