@@ -7,7 +7,7 @@ struct ColSys2 {
     using SYSTAGs = MP::Typelist<TInteract>;
     static constexpr double pos_y  = 9;
     static constexpr float height  = 10;
-    static constexpr uint8_t thick  = 1;
+    static constexpr uint8_t thick = 1;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
@@ -51,14 +51,12 @@ struct ColSys2 {
     void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
         hitboxes_Sala_Inicio     (EM, dev);
         hitboxes_Inicio_Adyacente(EM, dev);
-        //hitboxes_Patio           (EM, dev);
-        //hitboxes_Patio_Adyacente (EM, dev);
-        //hitboxes_Sala_Alejada    (EM, dev);
-        //hitboxes_Pasillo1        (EM, dev);
-        //hitboxes_Pasillo2        (EM, dev);
-        //hitboxes_Pasillo3        (EM, dev);
-        //hitboxes_Pasillo4        (EM, dev);
-        //hitboxes_Rampa           (EM, dev);
+        hitboxes_Patio           (EM, dev);
+        hitboxes_Patio_Adyacente (EM, dev);
+        hitboxes_Sala_Alejada    (EM, dev);
+        hitboxes_Pasillo1        (EM, dev);
+        hitboxes_Pasillo2        (EM, dev);
+        hitboxes_Pasillo3        (EM, dev);
     }
 
     void hitboxes_Sala_Inicio(EntyMan& EM, TheEngine& dev) {
@@ -112,43 +110,22 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: { -70.7, -29.05,  12.6} 41.65
-        //z: {  54.2,  89.45, 123.7} 35.25
-        //
-        //Paredes con puerta en medio
-        //x: { -70.7, -43.25, -15.8} 27.45
-        //x: {  -8.8,    1.9,  12.6} 10.7
-        //x: { -70.7,  -65.9, -61.1} 4.8
-        //x: { -54.2,  -20.8,  12.6} 33.4
-        //z: {  54.2,  69.85,  85.5} 15.65
-        //z: {  92.4, 108.05, 123.7} 15.65
-        //
-        // x -= 12.6      z -= 8.1
-        //
-        //Dimensiones
-        //   extremo  mitad  extremo  dist
         //x: { -83.7, -41.95,  -0.2} 41.75
         //z: {  50.7,   85.4, 120.1} 34.7
         //
         //Paredes con puerta en medio
-        //x: { -83.7, , } 
-        //x: {  ,  , -0.2} 
-        //x: { -83.7,  , } 
-        //x: {  ,  , -0.2} 
-        //z: {  50.7, ,  }
-        //z: {  , , 120.1}
+        //x: { -83.7, -64.45, -45.2} 19.25
+        //x: { -21.4,   -9.9,  -0.2} 9.7
+        //x: { -83.7, -78.85,   -74} 4.85
+        //x: { -49.7, -24.95,  -0.2} 24.75
+        //z: {  50.7,  58.25,  65.8} 7.55
+        //z: {  88.9,  104.5, 120.1} 15.6
 
-        //float pos_x[] = { -50.7, -43.25, 1.9,   -65.9, -20.8, -0.2,  -0.2};
-        //float pos_z[] = { 50.7, 50.7,   50.7,  120.1, 120.1, 69.85, 108.05};
-        //float widht[] = { thick, 27.45,  10.7,  4.8,   33.4,  thick, thick};
-        //float depth[] = { 0, thick,  thick, thick, thick, 15.65, 15.65};
-        //uint8_t num_paredes = 1;
-
-        float pos_x[] = { -83.7, -43.25, 1.9,   -65.9, -20.8, 12.6,  12.6};
-        float pos_z[] = { 85.4, 54.2,   54.2,  123.7, 123.7, 69.85, 108.05};
-        float widht[] = { thick, 27.45,  10.7,  4.8,   33.4,  thick, thick};
-        float depth[] = { 34.7, thick,  thick, thick, thick, 15.65, 15.65};
-        uint8_t num_paredes = 1;
+        float pos_x[] = { -83.7, -64.45, -9.9,  -78.85, -24.95, -0.2,  -0.2};
+        float pos_z[] = { 85.4,  50.7,   50.7,  120.1,  120.1,  58.25, 104.5};
+        float widht[] = { thick, 19.25,  9.7,   4.85,   24.75,  thick, thick};
+        float depth[] = { 34.7,  thick,  thick, thick,  thick,  7.55,  15.6};
+        uint8_t num_paredes = 7;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
@@ -158,13 +135,13 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: { -70.8, -39.6,  -8.4} 31.2
-        //z: { 123.7, 144.5, 165.3} 20.8
+        //x: { -83.7,  -52.4, -21.1} 31.3
+        //z: { 120.1, 140.95, 161.8} 20.85
 
-        float pos_x[] = { -39.6, -70.8, -8.4};
-        float pos_z[] = { 165.3, 144.5, 144.5};
-        float widht[] = { 31.2,  thick, thick};
-        float depth[] = { thick, 20.8,  20.8};
+        float pos_x[] = { -52.4, -83.7, -21.1};
+        float pos_z[] = { 161.8, 140.95, 140.95};
+        float widht[] = { 31.3,  thick, thick};
+        float depth[] = { thick, 20.85,  20.85};
         uint8_t num_paredes = 3;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
@@ -175,19 +152,19 @@ struct ColSys2 {
         //
         //Dimensiones
         //    extremo  mitad  extremo  dist
-        //x: {   22.8, 54.05,  85.3} 31.25
-        //z: { -111.3, -83.5, -55.7} 27.8
+        //x: {   14.8,  46.05,  77.3} 31.25
+        //z: { -138.6, -110.8,   -83} 27.8
         //
         //Paredes con puerta en medio
-        //x: {   22.8,   40.2,  57.6} 17.4
-        //x: {   64.6,  74.95,  85.3} 10.35
-        //z: { -111.3,  -98.9, -86.5} 12,4
-        //z: {  -79.6, -67.95, -55.7} 11.95
+        //x: {   14.8,   29.5,   44.2} 14.7
+        //x: {   66.8,  72.05,   77.3} 5.25
+        //z: { -138.6, -131.1, -123.6} 7.5
+        //z: {  -94.5, -88.75,    -83} 5.75
 
-        float pos_x[] = { 54.05, 85.3,  40.2,   74.95,  22.8,  22.8};
-        float pos_z[] = { -55.7, -83.5, -111.3, -111.3, -98.9, -67.95};
-        float widht[] = { 31.25, thick, 17.4,   10.35,  thick, thick};
-        float depth[] = { thick, 27.8,  thick,  thick,  12.4,  11.95};
+        float pos_x[] = { 46.05, 77.3,   29.5,   72.05,  14.8,   14.8};
+        float pos_z[] = { -83,   -110.8, -138.6, -138.6, -131.1, -88.75};
+        float widht[] = { 31.25, thick,  14.7,   5.25,   thick,  thick};
+        float depth[] = { thick, 27.8,   thick,  thick,  7.5,    5.75};
         uint8_t num_paredes = 6;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
@@ -198,17 +175,14 @@ struct ColSys2 {
         //
         //Dimensiones
         //  extremo  mitad  extremo  dist
-        //x: {  12.5, 17.7,  22.9} 5.2
-        //z: { -25.7,   49, 123.7} 74.7
-        //
-        //Trozo de pared
-        //z: {  43.8, 83.75, 123.7} 39.95
+        //x: {  -69.6, -34.9, -0.2} 34.7
+        //z: { 35.7,    43.2, 50.7} 7.5
 
-        float pos_x[] = {17.7,  22.9};
-        float pos_z[] = {123.7, 83.75};
-        float widht[] = {5.2,   thick};
-        float depth[] = {thick, 39.95};
-        uint8_t num_paredes = 2;
+        float pos_x[] = {-69.6};
+        float pos_z[] = {43.2};
+        float widht[] = {thick};
+        float depth[] = {7.5};
+        uint8_t num_paredes = 1;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
@@ -218,14 +192,20 @@ struct ColSys2 {
         //
         //Dimensiones
         //  extremo  mitad  extremo  dist
-        //x: {  -57, -22.2, 12.6} 34.8
-        //z: { 43.8,    49, 54.2} 5.2
+        //x: { -0.2,   7.3,  14.8} 7.5
+        //z: { -172, -25.9, 120.2} 146.1
+        //
+        //Trozo de pared
+        //z: { -172, -102.95,  -33.9} 69.05
+        //z: { -172,  -162.8, -153.6} 9.2
+        //z: {  -83,   -58.4,  -33.8} 24.6
+        //z: { 35.7,   77.95,  120.2} 42.25
 
-        float pos_x[] = {-57};
-        float pos_z[] = {49};
-        float widht[] = {thick};
-        float depth[] = {5.2};
-        uint8_t num_paredes = 1;
+        float pos_x[] = {7.3,   7.3,   -0.2,    14.8,   14.8,  14.8};
+        float pos_z[] = {-172,  120.2, -102.95, -162.8, -58.4, 77.95};
+        float widht[] = {7.5,   7.5,   thick,   thick,  thick, thick};
+        float depth[] = {thick, thick, 69.05,   9.2,    24.6,  42.25};
+        uint8_t num_paredes = 6;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
@@ -235,52 +215,13 @@ struct ColSys2 {
         //
         //Dimensiones
         //  extremo  mitad  extremo  dist
-        //x: {   12.5, 17.65,  22.8} 5.15
-        //z: { -170.3,  -113, -55.7} 57.3
-        //
-        //Trozo de pared
-        //z: {-170.3,    -146, -121.7} 24.3
-        //z: {-121.7, -120.74, -119.8} 0.95
-        //z: {-112.9,  -112.1, -111.3} 0.8
+        //x: {  14.8,  46.05,   77.3} 31.25
+        //z: { -153.6, -146.1, -138.6} 7.5
 
-        float pos_x[] = {17.65,  12.5,  22.8,   22.8,    22.8};
-        float pos_z[] = {-170.3, -113,  -112.1, -120.74, -146};
-        float widht[] = {5.15,   thick, thick,  thick,   thick};
-        float depth[] = {thick,  57.3,  0.8,    0.95,    24.3};
-        uint8_t num_paredes = 5;
-
-        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
-    }
-
-    void hitboxes_Pasillo4(EntyMan& EM, TheEngine& dev) {
-        //Pasillo 4:
-        //
-        //Dimensiones
-        //  extremo  mitad  extremo  dist
-        //x: {   22.8,  54.05,   85.3} 31.25
-        //z: { -121.7, -116.5, -111.3} 5.2
-
-        float pos_x[] = {85.3,   54.05};
-        float pos_z[] = {-116.5, -121.7};
+        float pos_x[] = {77.3,   46.05};
+        float pos_z[] = {-146.1, -153.6};
         float widht[] = {thick,  31.25};
-        float depth[] = {5.2,    thick};
-        uint8_t num_paredes = 2;
-
-        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
-    }
-
-    void hitboxes_Rampa(EntyMan& EM, TheEngine& dev) {
-        //Rampa:
-        //
-        //Dimensiones
-        //  extremo  mitad  extremo  dist
-        //x: {  12.5,  17.65,  22.8} 5.15
-        //z: { -55.7, -40.65, -25.6} 15.05
-
-        float pos_x[] = {12.5,   22.8};
-        float pos_z[] = {-40.65, -40.65};
-        float widht[] = {thick,  thick};
-        float depth[] = {15.05,  15.05};
+        float depth[] = {7.5,    thick};
         uint8_t num_paredes = 2;
 
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
