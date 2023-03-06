@@ -68,6 +68,19 @@ struct LevelMan {
         return enemy;
     }
 
+    Enty& createWeapon(float x_pos, float y_pos, float z_pos, 
+    TheEngine& dev, SoundSystem_t& SouSys, size_t tipo, int ammo, int magazine, double reloadTimer){
+        Enty& weapon = EM.createEntity  ();
+        EM.addComponent<PhysicsCmp2>    (weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
+        EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));        
+        EM.addComponent<WeaponCmp>      (weapon, WeaponCmp{.typeWe = tipo, .ammo= ammo, .magazine= magazine, .reload= reloadTimer});
+        EM.addComponent<SoundCmp>       (weapon, SouSys.createinstance(7));
+        EM.addComponent<EstadoCmp>      (weapon, 1.525f, 5.725f, 2.105f); 
+        EM.addTag      <TWeapon>        (weapon);
+        EM.addTag      <TInteract>      (weapon);
+        return weapon;
+    }
+
     EntyMan& getEM() { return EM; }
 private:
     Enty& createEnemy(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys){
@@ -79,6 +92,8 @@ private:
         EM.addTag      <TInteract>      (enemy);
         return enemy;
     }
+
+    
 
     EntyMan EM;
 };

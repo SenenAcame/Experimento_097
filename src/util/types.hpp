@@ -11,6 +11,7 @@
 #include "../cmp/selfdestcmp.hpp"
 #include "../cmp/spawncmp.hpp"
 #include "../cmp/interactcmp.hpp"
+#include "../cmp/weaponcmp.hpp"
 #include "../cmp/salacmp.hpp"
 #include "../man/entityman2.hpp"
 #include "gameengine.hpp"
@@ -31,7 +32,7 @@ struct TWall      { static constexpr uint8_t id {10}; };
 using ComponentList = MP::Typelist<
     PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
     InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp,
-    SpawnCmp, InteractCMP, SalaCmp>;
+    SpawnCmp, InteractCMP, WeaponCmp, SalaCmp>;
 
 using TagList = MP::Typelist<TPlayer, TEnemy, TBullet, TMap, TWeapon, TEneBullet, TSpawn, TInteract, TDoor, TDistEnemy, TWall>;
 using EntyMan = EntityMan2<ComponentList, TagList>;

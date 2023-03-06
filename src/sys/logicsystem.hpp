@@ -22,11 +22,10 @@ struct LogicSystem {
 
                     if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
-                        colisionPlayer   (EM, entity, entity_colisioned, dt);
+                        colisionPlayer   (EM, entity, entity_colisioned, dt, eng);
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
-                        //std::cout<<"CHOCO CON PLAYER Y TENGO UN ATTACKCLOCK DE: " <<EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy <<"\n";
                         colisionEnemy    (EM, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TBullet>()){
@@ -39,7 +38,8 @@ struct LogicSystem {
                     }
                     else if(entity.hasTAG<TWeapon>()){
                         //proceso Colision Weapon
-                        colisionWeapon   (EM, entity, entity_colisioned);
+                        
+                        colisionWeapon   (EM, entity, entity_colisioned, eng);
                     }
                     else if(entity.hasTAG<TDoor>()){
                         //proceso Colision Door
@@ -56,10 +56,10 @@ struct LogicSystem {
         );
     }
 
-    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
+    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt, TheEngine& eng) {
         if(colisioned.hasTAG<TWeapon>()){
             //mostrar texto de recoger arma
-            takeWeapon();
+            takeWeapon(current, colisioned, EM, eng);
         }
         else if(colisioned.hasTAG<TDoor>()){
             //mostrar texto de abrir puerta
@@ -127,10 +127,12 @@ struct LogicSystem {
         }
     }
 
-    void colisionWeapon(EntyMan& EM, Enty& current, Enty& colisioned){
+    void colisionWeapon(EntyMan& EM, Enty& current, Enty& colisioned, TheEngine& eng){
         if(colisioned.hasTAG<TPlayer>()){
             //mostrar texto de recoger arma
-            takeWeapon();
+            
+            //borrar entidad arma
+            takeWeapon(colisioned, current, EM, eng);
         }
     }
 
@@ -179,10 +181,47 @@ struct LogicSystem {
         //std::cout<<"Abrir puerta con la E\n";
     }
 
-    void takeWeapon() {
-        //mostrar texto de recoger arma
-        //std::cout<<a<<" Recoger arma con la E\n";
-        //++a;
+    void takeWeapon(Enty& player, Enty& weapon, EntyMan& EM, TheEngine& eng) {
+
+         //unificarlo en el level manager para que no este el codigo en input y aqui
+        auto& equipment = EM.getComponent<InventarioCmp>(player);
+        size_t aux =0;
+        for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
+            if(i == 2){
+                equipment.inventary[aux]=1;
+                
+                equipment.inventary[EM.getComponent<WeaponCmp>(weapon).typeWe]=2;
+                equipment.equipada = EM.getComponent<WeaponCmp>(weapon).typeWe;
+                
+                break;
+            }
+            aux++;
+        }
+        auto& playerRender = EM.getComponent<RenderCmp2>(player);
+        playerRender.n->remove();
+        switch (equipment.equipada) {
+            
+            case 0:
+                playerRender.n=eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+            break;
+
+            case 1:
+                playerRender.n=eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+            break;
+
+            case 2:
+                playerRender.n=eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+            break;
+
+            default:
+            break;
+        
+        }
+        
+        weapon.setDestroy();
+       
+           
+        
     }
 
     void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
