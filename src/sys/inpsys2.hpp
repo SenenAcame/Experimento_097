@@ -22,7 +22,8 @@ struct InpSys2 : public irr::IEventReceiver{
                 double reloadTimer = 0;
                 bool arriba = false;
                 bool abajo = false;
-
+                
+                equipment.clockReload += dt;
                 equipment.clockCadence += dt;
                 p.v_lin = p.v_ang = 0;
                 
@@ -205,7 +206,7 @@ private:
             default: break;
         }
         if(equipment.reloading ==1 && equipment.clockReload <= reloadTimer){
-            equipment.clockReload += dt;
+            
             return;
         }
         equipment.clockReload = 0;

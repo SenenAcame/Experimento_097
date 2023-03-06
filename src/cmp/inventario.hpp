@@ -10,7 +10,7 @@ struct InventarioCmp {
     //weapon1
     int ammo1           = 100;
     int magazine1       = 5;
-    double reloadTime1  {0.4};
+    double reloadTime1  {0.5};
     //double cadenceWeapon1{1}; // 1 vez por segundo
     
 

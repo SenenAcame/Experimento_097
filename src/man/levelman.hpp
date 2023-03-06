@@ -72,7 +72,28 @@ struct LevelMan {
     TheEngine& dev, SoundSystem_t& SouSys, size_t tipo, int ammo, int magazine, double reloadTimer){
         Enty& weapon = EM.createEntity  ();
         EM.addComponent<PhysicsCmp2>    (weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
-        EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));        
+        switch (tipo) {
+            
+            case 0:
+                EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));        
+                
+            break;
+
+            case 1:
+                EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));        
+                
+            break;
+
+            case 2:
+                EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));        
+                
+            break;
+
+            default:
+            break;
+        
+        }
+        
         EM.addComponent<WeaponCmp>      (weapon, WeaponCmp{.typeWe = tipo, .ammo= ammo, .magazine= magazine, .reload= reloadTimer});
         EM.addComponent<SoundCmp>       (weapon, SouSys.createinstance(7));
         EM.addComponent<EstadoCmp>      (weapon, 1.525f, 5.725f, 2.105f); 
