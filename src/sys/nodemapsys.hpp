@@ -24,24 +24,16 @@ struct NodeMapSys {
         return sala;
     };
 
-    /*sala salaPlayer(EntyMan& EM){
-        sala sala = {0,0,0,0};
-        EM.foreach<PhyCMPs, PlayTAGs>(
-            [&](Enty& e, PhysicsCmp2& p) {
-                EM.foreach<NodoCMPs, MapTAGs>(
-                    [&](Enty& en, NodoCmp& n) {
-                        for(int i=0;i<n.salas.size();i++){
-                            if((n.salas.at(i).x + n.salas.at(i).tamx) >= p.x && (n.salas.at(i).x - n.salas.at(i).tamx) <= p.x && (n.salas.at(i).z + n.salas.at(i).tamz) >= p.z && (n.salas.at(i).z - n.salas.at(i).tamz) <= p.z){
-                                sala=n.salas.at(i);
-                                std::cout << "Soy player y estoy: x= " << p.x << ", z= " << p.z << std::endl;
-                            }
-                        }
-                    }
-                );
+    int getSala(NodoCmp& map, float x, float z){
+        int devol = -1;
+        for(int i=0;i<map.salas.size();i++){
+            if((map.salas.at(i).x + map.salas.at(i).tamx) >= x && (map.salas.at(i).x - map.salas.at(i).tamx) <= x && (map.salas.at(i).z + map.salas.at(i).tamz) >= z && (map.salas.at(i).z - map.salas.at(i).tamz) <= z){
+                devol=i;
+                //std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
             }
-        );
-        return sala;
-    };*/
+        }
+        return devol;
+    }
 
     sala salaPlayer(EntyMan& EM, float x, float z){
         sala sala={0,0,0,0};
@@ -60,13 +52,21 @@ struct NodeMapSys {
 
     void update(EntyMan& EM){
         float playerposx, playerposz;
+        Enty player;
+        NodoCmp map;
         EM.foreach<PlayCMPs, PlayTAGs>(
             [&](Enty& p, PhysicsCmp2& phy) {
-                playerposx = phy.x;
-                playerposz = phy.z;
+                playerposx=phy.x;
+                playerposz=phy.z;
+                player=p;
             }
         );
-        sala salaplayer = salaPlayer(EM, playerposx, playerposz);
+        EM.foreach<NodoCMPs, MapTAGs>(
+            [&](Enty& en, NodoCmp& n) {
+                map=n;
+            }
+        );
+        /*sala salaplayer = salaPlayer(EM, playerposx, playerposz);
         
         EM.foreach<NodoCMPs, MapTAGs>(
             [&](Enty& en, NodoCmp& n) {
@@ -99,6 +99,41 @@ struct NodeMapSys {
                 );
             }
             
+        );*/
+        int salaplayer = getSala(map, playerposx, playerposz);
+        EM.foreach<EneCMPs, EneTAGs>(
+            [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
+                int salaene = getSala(map, p.x, p.z);
+                std::cout << salaene << "Hola\n";
+                if( salaplayer == salaene || salaene==-1){
+                    EM.getComponent<SalaCmp>(player).sala = salaplayer; 
+                    EM.getComponent<SalaCmp>(en).sala = salaene;
+                    if(en.hasTAG<TDistEnemy>() && (sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 || salaene!=-1)){    
+                        ai.behaviour=SB::Shoot;
+                    }
+                    else
+                        ai.behaviour=SB::Seek;
+                }
+                else if(salaplayer != EM.getComponent<SalaCmp>(player).sala || salaene != EM.getComponent<SalaCmp>(en).sala){
+                    EM.getComponent<SalaCmp>(player).sala = salaplayer;
+                    EM.getComponent<SalaCmp>(en).sala = salaene ;
+                    ai.behaviour=SB::Patrol;
+                    puerta nextcoord ={0, 0};
+                    float dist=MAXFLOAT;
+                    std::cout << salaene << "Hola\n";
+                    for(unsigned int i=0; i<map.salas.at(salaene).puertas.size(); i++){
+                        
+                        float distx=playerposx-map.salas.at(salaene).puertas.at(i).x;
+                        float distz=playerposz-map.salas.at(salaene).puertas.at(i).z;
+                        if(dist>(sqrt((distx*distx)+(distz*distz)))){
+                            dist=sqrt((distx*distx)+(distz*distz));
+                            nextcoord=map.salas.at(salaene).puertas.at(i);
+                        }
+                    }
+                    ai.ox=nextcoord.x;
+                    ai.oz=nextcoord.z;
+                }
+            }
         );
         //EM.foreach<MapTAGsSpawns>(
         //    //poner temporizador para que no compruebe todo el rato

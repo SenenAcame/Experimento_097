@@ -22,6 +22,7 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+        EM.addComponent<SalaCmp>       (player);
         EM.addTag      <TPlayer>       (player);
         EM.addTag      <TInteract>     (player);
         return player;
@@ -32,7 +33,7 @@ struct LevelMan {
         EM.addComponent<RenderCmp2>     (enemy, dev.createModel("assets/models/monstruo1.obj","assets/textures/faerie2.bmp"));
         EM.addComponent<EstadisticaCmp> (enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
         EM.addComponent<AICmp>          (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
-        EM.addComponent<EstadoCmp>      (enemy, 0.875f, 2.33f, 0.85f); 
+        EM.addComponent<EstadoCmp>      (enemy, 0.875f, 2.33f, 0.85f);
         return enemy;
     }
 
@@ -54,7 +55,6 @@ struct LevelMan {
         EM.addComponent<AICmp>         (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
         EM.addComponent<EstadoCmp>     (enemy, 0.945f, 4.005f, 1.01f);
         
-        EM.addTag      <TEnemy>        (enemy);
         EM.addTag      <TDistEnemy>    (enemy);
         return enemy;
     }
@@ -64,7 +64,7 @@ struct LevelMan {
         EM.addComponent<RenderCmp2>     (enemy, dev.createModel("assets/models/monstruo3.obj","assets/textures/faerie2.bmp"));
         EM.addComponent<EstadisticaCmp> (enemy, EstadisticaCmp{.hitpoints=150.f, .damage=20.f, .speed=1.f});
         EM.addComponent<AICmp>          (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
-        EM.addComponent<EstadoCmp>      (enemy, 1.525f, 5.725f, 2.105f); 
+        EM.addComponent<EstadoCmp>      (enemy, 1.525f, 5.725f, 2.105f);
         return enemy;
     }
 
@@ -74,6 +74,7 @@ private:
         Enty& enemy = EM.createEntity();
         EM.addComponent<PhysicsCmp2>    (enemy, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
         EM.addComponent<SoundCmp>       (enemy, SouSys.createinstance(7));
+        EM.addComponent<SalaCmp>        (enemy);
         EM.addTag      <TEnemy>         (enemy);
         EM.addTag      <TInteract>      (enemy);
         return enemy;
