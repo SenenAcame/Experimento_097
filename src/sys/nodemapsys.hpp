@@ -14,16 +14,6 @@ struct NodeMapSys {
     using MapTAGsSpawns = MP::Typelist<TSpawn>;
     using EneTAGs = MP::Typelist<>;
 
-    sala enemySala(EntyMan& EM, PhysicsCmp2& p, NodoCmp& mapa){
-        sala sala = {0,0,0,0};
-        for(int i=0;i<mapa.salas.size();i++){
-            if((mapa.salas.at(i).x + mapa.salas.at(i).tamx) >= p.x && (mapa.salas.at(i).x - mapa.salas.at(i).tamx) <= p.x && (mapa.salas.at(i).z + mapa.salas.at(i).tamz) >= p.z && (mapa.salas.at(i).z - mapa.salas.at(i).tamz) <= p.z){
-                return mapa.salas.at(i);
-            }
-        }
-        return sala;
-    };
-
     int getSala(NodoCmp& map, float x, float z){
         int devol = -1;
         for(int i=0;i<map.salas.size();i++){
@@ -33,21 +23,6 @@ struct NodeMapSys {
             }
         }
         return devol;
-    }
-
-    sala salaPlayer(EntyMan& EM, float x, float z){
-        sala sala={0,0,0,0};
-        EM.foreach<NodoCMPs, MapTAGs>(
-            [&](Enty& en, NodoCmp& n) {
-                for(int i=0;i<n.salas.size();i++){
-                    if((n.salas.at(i).x + n.salas.at(i).tamx) >= x && (n.salas.at(i).x - n.salas.at(i).tamx) <= x && (n.salas.at(i).z + n.salas.at(i).tamz) >= z && (n.salas.at(i).z - n.salas.at(i).tamz) <= z){
-                        sala=n.salas.at(i);
-                        //std::cout << "Soy player y estoy: x= " << x << ", z= " << z << std::endl;
-                    }
-                }
-            }
-        );
-        return sala;
     }
 
     void update(EntyMan& EM){
@@ -66,40 +41,6 @@ struct NodeMapSys {
                 map=n;
             }
         );
-        /*sala salaplayer = salaPlayer(EM, playerposx, playerposz);
-        
-        EM.foreach<NodoCMPs, MapTAGs>(
-            [&](Enty& en, NodoCmp& n) {
-                EM.foreach<EneCMPs, EneTAGs>(
-                    [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
-                        sala salaene = enemySala(EM, p, n);
-                        if(salaplayer.x==salaene.x && salaplayer.z==salaene.z){
-                            if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40){    
-                                ai.behaviour=SB::Shoot;
-                            }
-                            else
-                                ai.behaviour=SB::Seek;
-                        }
-                        else{
-                            ai.behaviour=SB::Patrol;
-                            puerta nextcoord ={0, 0};
-                            float dist=MAXFLOAT;
-                            for(unsigned int i=0; i<salaene.puertas.size(); i++){
-                                float distx=playerposx-salaene.puertas.at(i).x;
-                                float distz=playerposz-salaene.puertas.at(i).z;
-                                if(dist>(sqrt((distx*distx)+(distz*distz)))){
-                                    dist=sqrt((distx*distx)+(distz*distz));
-                                    nextcoord=salaene.puertas.at(i);
-                                }
-                            }
-                            ai.ox=nextcoord.x;
-                            ai.oz=nextcoord.z;
-                        }
-                    }
-                );
-            }
-            
-        );*/
         int salaplayer = getSala(map, playerposx, playerposz);
         EM.foreach<EneCMPs, EneTAGs>(
             [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
@@ -108,7 +49,7 @@ struct NodeMapSys {
                 if( salaplayer == salaene || salaene==-1){
                     EM.getComponent<SalaCmp>(player).sala = salaplayer; 
                     EM.getComponent<SalaCmp>(en).sala = salaene;
-                    if(en.hasTAG<TDistEnemy>() && (sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 || salaene!=-1)){    
+                    if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 && salaene!=-1){    
                         ai.behaviour=SB::Shoot;
                     }
                     else
