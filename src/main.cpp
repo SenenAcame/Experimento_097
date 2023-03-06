@@ -40,16 +40,16 @@ void game2() {
     //EM.addTag      <TWeapon>    (w3);
 
 //Lab1
-    Enty& enemy1 = LM.createBasicEnemy(-20, -20, dev, SouSys);
+    Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
     Enty& enemy2 = LM.createBasicEnemy(-40,   0, dev, SouSys);
 
 //patio1
-    //Enty& enemy3  = LM.createBasicEnemy(-23.68, 100.41, dev, SouSys);
-    //Enty& enemy4 = LM.createDistEnemy (-43.68,  85.41, dev, SouSys);
+    Enty& enemy3  = LM.createBasicEnemy(-23.68, 100.41, dev, SouSys);
+    Enty& enemy4  = LM.createSmallEnemy (-43.68,  85.41, dev, SouSys);
 
 //lab3
-    Enty& enemy5 = LM.createBasicEnemy(23.68, 20.41, dev, SouSys);
-    Enty& enemy6 = LM.createDistEnemy(35, -20, dev, SouSys);
+    Enty& enemy5 = LM.createTankEnemy(23.68, 20.41, dev, SouSys);
+    Enty& enemy6 = LM.createBasicEnemy(35, -20, dev, SouSys);
 
 //finalpasillo2
     Enty& enemy7 = LM.createTankEnemy(10, -100, dev, SouSys);
