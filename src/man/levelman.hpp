@@ -42,8 +42,6 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.f});
         EM.addComponent<AICmp>         (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>     (enemy, 0.945f, 4.005f, 1.01f);
-        
-        EM.addTag      <TEnemy>        (enemy);
         return enemy;
     }
     
@@ -53,8 +51,6 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.f});
         EM.addComponent<AICmp>         (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
         EM.addComponent<EstadoCmp>     (enemy, 0.945f, 4.005f, 1.01f);
-        
-        EM.addTag      <TEnemy>        (enemy);
         EM.addTag      <TDistEnemy>    (enemy);
         return enemy;
     }
@@ -66,6 +62,27 @@ struct LevelMan {
         EM.addComponent<AICmp>          (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>      (enemy, 1.525f, 5.725f, 2.105f); 
         return enemy;
+    }
+
+    Enty& createDoor(float x_pos, float z_pos, TheEngine& dev) {
+        Enty& door = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(door, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
+        EM.addComponent<RenderCmp2> (door, dev.createModel("assets/models/monstruo3.obj","assets/textures/portal1.bmp"));
+        EM.addComponent<EstadoCmp>  (door, 10, 10, 10);
+        EM.addTag<TInteract>(door);
+        EM.addTag<TWall>    (door);
+        EM.addTag<TDoor>    (door);
+        return door;
+    }
+
+    Enty& createKey(float x_pos, float z_pos, TheEngine& dev) {
+        Enty& key = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(key, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
+        EM.addComponent<RenderCmp2> (key, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
+        EM.addComponent<EstadoCmp>  (key, 10, 10, 10);
+        EM.addTag<TInteract>(key);
+        EM.addTag<TKey>     (key);
+        return key;
     }
 
     EntyMan& getEM() { return EM; }

@@ -45,7 +45,12 @@ struct LogicSystem {
                         //proceso Colision Door
                         colisionDoor     (EM, entity, entity_colisioned);
                     }
-                    else if(entity.hasTAG<TWall>()){
+                    else if(entity.hasTAG<TDoor>()){
+                        //proceso Colision Key
+                        colisionKey     (EM, entity, entity_colisioned);
+                    }
+
+                    if(entity.hasTAG<TWall>()){
                         //proceso Colision Wall
                         colisionWall     (EM, entity, entity_colisioned, dt);
                     }
@@ -57,6 +62,11 @@ struct LogicSystem {
     }
 
     void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
+        if(colisioned.hasTAG<TWall>()){
+            //moverse hacia atras
+            reverseMove(EM, current, dt);
+        }
+
         if(colisioned.hasTAG<TWeapon>()){
             //mostrar texto de recoger arma
             takeWeapon();
@@ -65,42 +75,29 @@ struct LogicSystem {
             //mostrar texto de abrir puerta
             openDoor();
         }
-        else if(colisioned.hasTAG<TWall>()){
-            //moverse hacia atras
-            reverseMove(EM, current, dt);
+        else if(colisioned.hasTAG<TKey>()) {
+            //mostrar texto de recoger llave
+            takeKey();
         }
         else if(colisioned.hasTAG<TEnemy>() || colisioned.hasTAG<TEneBullet>()){
             //jugador recibe daño del enemigo o de la bala enemiga
-            //std::cout<<"ENTRO EN Player\n";
             if(colisioned.hasTAG<TEnemy>()){
                 auto& enemyStats = EM.getComponent<EstadisticaCmp>(colisioned);
-                if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy)
-                {
-                    
-                    return;
-                }
-                //std::cout<<"ATACO A PLAYER Y TENGO UN ATTACKCLOCK DE: " <<EM.getComponent<EstadisticaCmp>(colisioned).ClockAttackEnemy <<"\n";
+                if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
                 enemyStats.ClockAttackEnemy = 0;
             }
-            
             reciveDamge(EM, current, colisioned);
-            //std::cout<<"Player tiene "<<EM.getComponent<EstadisticaCmp>(current).hitpoints<<" vida \n";
         }
+        
     }
 
     void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
         if(colisioned.hasTAG<TPlayer>()){
             //enemigo hace daño al jugador
-            //std::cout<<"ENTRO EN ENEMY\n";
             auto& enemyStats = EM.getComponent<EstadisticaCmp>(current);
             if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy)
-            {
-                
-                return;
-            }
-            //std::cout<<"ATACO A PLAYER Y TENGO UN ATTACKCLOCK DE: " <<EM.getComponent<EstadisticaCmp>(current).ClockAttackEnemy <<"\n";
+            { return; }
             enemyStats.ClockAttackEnemy = 0;
-            
             reciveDamge(EM, colisioned, current);
         }
         else if(colisioned.hasTAG<TBullet>()){
@@ -152,6 +149,13 @@ struct LogicSystem {
         }
     }
 
+    void colisionKey(EntyMan& EM, Enty& current, Enty& colisioned) {
+        if(colisioned.hasTAG<TPlayer>()){
+            //mostrar texto de recoger llave
+            takeKey();
+        }
+    }
+
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
         auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
         auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
@@ -185,12 +189,16 @@ struct LogicSystem {
         //++a;
     }
 
+    void takeKey() {
+        //mostrar texto de recoger llave
+        //std::cout<<"Recoge la llave\n";
+    }
+
     void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
         recept_state.colision  = 0;
         recept_state.entityCol = 0;
         agress_state.colision  = 0;
         agress_state.entityCol = 0;
-        //std::cout<<"Reseteo de colisiones\n";
     }
 
     void soundMonster(EntyMan& EM, Enty& e) {

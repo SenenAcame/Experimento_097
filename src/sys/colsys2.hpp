@@ -232,7 +232,7 @@ struct ColSys2 {
             Enty& wall = EM.createEntity();
             EM.addComponent<PhysicsCmp2>(wall, static_cast<double>(pos_x[i]), pos_y, static_cast<double>(pos_z[i]));
             EM.addComponent<EstadoCmp>  (wall, widht[i], height, depth[i]);
-            EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+            //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
             EM.addTag      <TInteract>  (wall);
             EM.addTag      <TWall>      (wall);
         }

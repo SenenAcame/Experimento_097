@@ -21,7 +21,7 @@ struct InpSys2 : public irr::IEventReceiver{
                 auto& stats     = EM.getComponent<EstadisticaCmp>(player);
                 double reloadTimer = 0;
                 bool arriba = false;
-                bool abajo = false;
+                bool abajo  = false;
 
                 equipment.clockCadence += dt;
                 p.v_lin = p.v_ang = 0;
@@ -160,10 +160,20 @@ struct InpSys2 : public irr::IEventReceiver{
 private:
     void interact(EntyMan& EM, Enty& player) {
         auto& col = EM.getComponent<EstadoCmp>(player);
-        auto& col_entity = EM.getEntityById(col.entityCol);
-
-        if(col.colision != 0 && (col_entity.hasTAG<TWeapon>() || col_entity.hasTAG<TDoor>())){
-            col_entity.setDestroy();
+        
+        if(col.colision != 0){
+            auto& col_entity = EM.getEntityById(col.entityCol);
+            if(col_entity.hasTAG<TWeapon>()){
+                std::cout<<"Recoger arma\n";
+            }
+            else if(col_entity.hasTAG<TDoor>()) {
+                std::cout<<"Abrir puerta\n";
+                col_entity.setDestroy();
+            }
+            else if(col_entity.hasTAG<TKey>()) {
+                std::cout<<"Recoger llave\n";
+                col_entity.setDestroy();
+            }
         }
     }
 
@@ -219,7 +229,7 @@ private:
 
     void reload(EntyMan& EM, Enty& player, InventarioCmp& equipment) {
         int currentAmmo = 0;
-        std::cout<<"ENTRO A RECARGAR\n";
+        //std::cout<<"ENTRO A RECARGAR\n";
         switch (equipment.equipada) {
             case 0:
                 reloadProcess(EM, player, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
@@ -256,7 +266,7 @@ private:
         
     }
 
-    void iAmReloading(EntyMan& EM, Enty& player){  EM.getComponent<InventarioCmp>(player).reloading = 1; }
+    void iAmReloading(EntyMan& EM, Enty& player){ EM.getComponent<InventarioCmp>(player).reloading = 1; }
     void notReloading(EntyMan& EM, Enty& player){ EM.getComponent<InventarioCmp>(player).reloading = 0; }
 
     void createBullet(EntyMan& EM, Enty& player, int ammo, double cadenciaWeapon, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, double const dt) {
