@@ -61,7 +61,7 @@ struct LogicSystem {
         );
     }
 
-    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
+    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt, TheEngine& eng) {
         if(colisioned.hasTAG<TWall>()){
             //moverse hacia atras
             reverseMove(EM, current, dt);
@@ -127,7 +127,6 @@ struct LogicSystem {
     void colisionWeapon(EntyMan& EM, Enty& current, Enty& colisioned, TheEngine& eng){
         if(colisioned.hasTAG<TPlayer>()){
             //mostrar texto de recoger arma
-            
             //borrar entidad arma
             takeWeapon(colisioned, current, EM, eng);
         }
@@ -186,8 +185,7 @@ struct LogicSystem {
     }
 
     void takeWeapon(Enty& player, Enty& weapon, EntyMan& EM, TheEngine& eng) {
-
-         //unificarlo en el level manager para que no este el codigo en input y aqui
+        //unificarlo en el level manager para que no este el codigo en input y aqui
         auto& equipment = EM.getComponent<InventarioCmp>(player);
         size_t aux =0;
         for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
@@ -221,11 +219,7 @@ struct LogicSystem {
             break;
         
         }
-        
         weapon.setDestroy();
-       
-           
-        
     }
 
     void takeKey() {

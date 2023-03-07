@@ -214,10 +214,7 @@ private:
             break;
             default: break;
         }
-        if(equipment.reloading ==1 && equipment.clockReload <= reloadTimer){
-            
-            return;
-        }
+        if(equipment.reloading == 1 && equipment.clockReload <= reloadTimer){ return; }
         equipment.clockReload = 0;
         notReloading(EM, player);
         if(ammo > 0) { createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); }
@@ -412,9 +409,6 @@ private:
             break;
         
         }
-        
-        
-
         p_invent.inventary[p_invent.equipada] = 1;
         p_invent.equipada = equip;
         p_invent.inventary[equip] = 2;

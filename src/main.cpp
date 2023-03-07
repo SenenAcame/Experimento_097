@@ -42,11 +42,11 @@ void game2() {
     //EM.addTag      <TWeapon>    (w3);
 
 //Lab1
-    Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
-    Enty& enemy2 = LM.createBasicEnemy(-40,   0, dev, SouSys);
+    //Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
+    //Enty& enemy2 = LM.createBasicEnemy(-40,   0, dev, SouSys);
     //weapon
     Enty& weaponEsco = LM.createWeapon(-50.f, 5.725, -20.f, dev, SouSys, 1 ,20 ,2 ,1.4);
-    Enty& weaponAME = LM.createWeapon(-20.f, 5.725, -20.f, dev, SouSys, 2 ,20 ,2 ,1.4);
+    Enty& weaponAME  = LM.createWeapon(-20.f, 5.725, -20.f, dev, SouSys, 2 ,20 ,2 ,1.4);
 
 //patio1
     //Enty& enemy3  = LM.createBasicEnemy(-23.68, 100.41, dev, SouSys);
