@@ -19,12 +19,16 @@ struct InpSys2 : public irr::IEventReceiver{
             [&](Enty& player, InputCmp2& i, RenderCmp2& r, PhysicsCmp2& p) {
                 auto& equipment = EM.getComponent<InventarioCmp> (player);
                 auto& stats     = EM.getComponent<EstadisticaCmp>(player);
+               
                 double reloadTimer = 0;
                 bool arriba = false;
                 bool abajo  = false;
 
                 if(equipment.reloading == 1){
+                    
                     equipment.clockReload += dt; 
+                    //std::cout<< "RELOJES ARMAS: Pistola: " << equipment.clockReload1 << " .Escopeta: "<<
+                    //equipment.clockReload2 << " .Ametralladora: "<< equipment.clockReload3 << "ACTUAL:" << equipment.clockReload<<"\n";
                 }
                 equipment.clockCadence += dt;
                 p.v_lin = p.v_ang = 0;
@@ -201,28 +205,36 @@ private:
     }
 
     void shoot(EntyMan& EM, Enty& player, RenderCmp2& r, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment, double reloadTimer, double dt) {
+        
         int ammo = 0;
         double weaponCadence = 0;
         size_t weapon = 0;
         switch (equipment.equipada) {
             case 0: ammo = equipment.magazine1;
                     reloadTimer = equipment.reloadTime1;
+                    
             break;
             case 1: ammo = equipment.magazine2;
                     reloadTimer = equipment.reloadTime2;
+                    
             break;
             case 2: ammo = equipment.magazine3;
                     weaponCadence = equipment.cadenceWeapon3;
                     reloadTimer = equipment.reloadTime3;
+                    
             break;
             default: break;
         }
+        //std::cout<<"Intento disparar RELOAD ES: " << reloadTimer << " y mi arma es: "<<equipment.equipada<<" CON RELOJ: " << equipment.clockReload <<
+        //"ESTOY CON LA RECARGA EN: "<<equipment.reloading<< "\n";
         
         if(equipment.reloading == 1 && equipment.clockReload <= reloadTimer){ return; }
         equipment.clockReload = 0;
         notReloading(EM, player);
         
-        if(ammo > 0) { createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); }
+        if(ammo > 0) { 
+            //std::cout<<"Disparo\n";
+            createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); }
         else if(ammo == 0){
             
             reload(EM, player, equipment);
@@ -398,27 +410,87 @@ private:
         auto& p_invent = EM.getComponent<InventarioCmp>(player);
         auto& playerRender = EM.getComponent<RenderCmp2>(player);
         playerRender.n->remove();
+        
         switch (p_invent.equipada) {
             
             case 0:
-                playerRender.n=eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                if(p_invent.reloading == 1){
+                    p_invent.clockReload1 = p_invent.clockReload;
+                }
+                
             break;
 
             case 1:
+                 if(p_invent.reloading == 1){
+                    p_invent.clockReload2 = p_invent.clockReload;
+                }
+                
+            break;
+
+            case 2:
+                 if(p_invent.reloading == 1){
+                    p_invent.clockReload3 = p_invent.clockReload;
+                }
+            break;
+
+            default:
+            break;
+        }
+        
+        p_invent.inventary[p_invent.equipada] = 1;
+        p_invent.equipada = equip;
+        p_invent.inventary[equip] = 2;
+        
+
+        switch (p_invent.equipada) {
+            
+            case 0:
+            
+                playerRender.n=eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                p_invent.clockReload = p_invent.clockReload1;
+                if(p_invent.clockReload >= p_invent.reloadTime1){
+                    
+                    notReloading(EM, player);
+                }
+                else{
+                    
+                    iAmReloading(EM, player);
+                }
+                
+            break;
+
+            case 1:
+                
                 playerRender.n=eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+                p_invent.clockReload = p_invent.clockReload2;
+                if(p_invent.clockReload >= p_invent.reloadTime2){
+                    notReloading(EM, player);
+                }
+                else{
+                    
+                    iAmReloading(EM,player);
+                }
+                
             break;
 
             case 2:
                 playerRender.n=eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+                p_invent.clockReload = p_invent.clockReload3;
+                if(p_invent.clockReload >= p_invent.reloadTime3){
+                    notReloading(EM, player);
+                }
+                else{
+                    iAmReloading(EM, player);
+                }
+                
             break;
 
             default:
             break;
         
         }
-        p_invent.inventary[p_invent.equipada] = 1;
-        p_invent.equipada = equip;
-        p_invent.inventary[equip] = 2;
+        //std::cout<< "CAMBIO ARMA RELOJES ARMAS: Pistola: " << p_invent.clockReload1 << " .Escopeta: "<<
+        //p_invent.clockReload2 << " .Ametralladora: "<< p_invent.clockReload3 << "ACTUAL:" << p_invent.clockReload<<"\n";
     }
 
     void statsBullet(EntyMan& EM, Enty& bullet, int ammo, float dmg, float spd, float rad) {
