@@ -23,6 +23,9 @@ struct InpSys2 : public irr::IEventReceiver{
                 bool arriba = false;
                 bool abajo  = false;
 
+                if(equipment.reloading == 1){
+                    equipment.clockReload += dt; 
+                }
                 equipment.clockCadence += dt;
                 p.v_lin = p.v_ang = 0;
                 
@@ -214,11 +217,14 @@ private:
             break;
             default: break;
         }
+        
         if(equipment.reloading == 1 && equipment.clockReload <= reloadTimer){ return; }
         equipment.clockReload = 0;
         notReloading(EM, player);
+        
         if(ammo > 0) { createBullet(EM, player, ammo, weaponCadence, r, eng, SS, dt); }
         else if(ammo == 0){
+            
             reload(EM, player, equipment);
         }
         if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
@@ -226,10 +232,11 @@ private:
 
     void reload(EntyMan& EM, Enty& player, InventarioCmp& equipment) {
         int currentAmmo = 0;
-        //std::cout<<"ENTRO A RECARGAR\n";
+        
         switch (equipment.equipada) {
             case 0:
                 reloadProcess(EM, player, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
+                
             break;
             case 1:
                 reloadProcess(EM, player, currentAmmo, equipment.ammo2, equipment.magazine2, 2);
