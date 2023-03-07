@@ -2,6 +2,29 @@
 #include "../util/types.hpp"
 
 struct LevelMan {
+    using EneTAGs = MP::Typelist<TEnemy>;
+    using voidCMP = MP::Typelist<PhysicsCmp2>;
+
+    void update(TheEngine& dev, SoundSystem_t& SouSys){
+        EM.foreach<voidCMP, EneTAGs>(
+            [&](Enty& en, PhysicsCmp2&) {
+                if(en.getDestroy()){
+                    if(en.hasTAG<TDistEnemy>()){
+                        createDistEnemy(-20, -20, dev, SouSys);
+                    }
+                    else if(en.hasTAG<TSmallEnemy>()){
+                        createSmallEnemy(-20, -20, dev, SouSys);
+                    }
+                    else if(en.hasTAG<TTankEnemy>()){
+                        createTankEnemy(-20, -20, dev, SouSys);
+                    }
+                    else{
+                        createBasicEnemy(-20, -20, dev, SouSys);
+                    }
+                }
+            }
+        );
+    }
     Enty& createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
@@ -34,6 +57,8 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp> (enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
         EM.addComponent<AICmp>          (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>      (enemy, 0.875f, 2.33f, 0.85f);
+
+        EM.addTag      <TSmallEnemy>   (enemy);
         return enemy;
     }
 
@@ -43,6 +68,7 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.f});
         EM.addComponent<AICmp>         (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>     (enemy, 0.945f, 4.005f, 1.01f);
+
         return enemy;
     }
     
@@ -63,6 +89,8 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp> (enemy, EstadisticaCmp{.hitpoints=150.f, .damage=20.f, .speed=1.f});
         EM.addComponent<AICmp>          (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>      (enemy, 1.525f, 5.725f, 2.105f);
+
+        EM.addTag      <TTankEnemy>     (enemy);
         return enemy;
     }
 
@@ -93,7 +121,7 @@ struct LevelMan {
         }
         
         EM.addComponent<WeaponCmp>      (weapon, WeaponCmp{.typeWe = tipo, .ammo= ammo, .magazine= magazine, .reload= reloadTimer});
-        EM.addComponent<SoundCmp>       (weapon, SouSys.createinstance(7));
+        EM.addComponent<SoundCmp>       (weapon, SouSys.createinstance(1));
         EM.addComponent<EstadoCmp>      (weapon, 1.525f, 5.725f, 2.105f); 
         EM.addTag      <TWeapon>        (weapon);
         EM.addTag      <TInteract>      (weapon);
