@@ -57,9 +57,9 @@ struct InpSys2 : public irr::IEventReceiver{
                 }
 
                 if(mouse.isLeftPressed()) { shoot(EM, player, r, eng, SS, equipment, reloadTimer, dt); }
-                if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0); }
-                if(keyboard.isKeyPressed(i.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(EM, player, 1); }
-                if(keyboard.isKeyPressed(i.key_weapon3) && equipment.inventary[2] != 0) { changeWeapon(EM, player, 2); }
+                if(keyboard.isKeyPressed(i.key_weapon1)) { changeWeapon(EM, player, 0, eng); }
+                if(keyboard.isKeyPressed(i.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(EM, player, 1, eng); }
+                if(keyboard.isKeyPressed(i.key_weapon3) && equipment.inventary[2] != 0) { changeWeapon(EM, player, 2, eng); }
 
                 if(keyboard.isKeyPressed(i.key_unlockAll)){
                     for(int i=0;i<3;i++){
@@ -215,7 +215,7 @@ private:
             default: break;
         }
         if(equipment.reloading ==1 && equipment.clockReload <= reloadTimer){
-            equipment.clockReload += dt;
+            
             return;
         }
         equipment.clockReload = 0;
@@ -292,7 +292,7 @@ private:
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-            EM.addComponent<SelfDestCmp>(bullet,SelfDestCmp{.cooldown=10});
+            EM.addComponent<SelfDestCmp>(bullet,9);
             EM.addTag<TBullet>          (bullet);
             EM.addTag<TInteract>        (bullet);
             equipment.magazine1 -= 1;
@@ -317,7 +317,7 @@ private:
                 EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                 EM.addComponent<EstadoCmp>  (bullet);
                 EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=0.4f});
+                EM.addComponent<SelfDestCmp>(bullet, 0.4f);
                 EM.addTag      <TBullet>    (bullet);
                 EM.addTag<TInteract>        (bullet);
                 
@@ -338,7 +338,7 @@ private:
                     EM.addComponent<RenderCmp2> (bullet2, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                     EM.addComponent<EstadoCmp>  (bullet2);
                     EM.addComponent<SoundCmp>   (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                    EM.addComponent<SelfDestCmp>(bullet2, SelfDestCmp{.cooldown=0.4f});
+                    EM.addComponent<SelfDestCmp>(bullet2, 0.4f);
                     EM.addTag      <TBullet>    (bullet2);
                     EM.addTag<TInteract>        (bullet2);
                     
@@ -358,7 +358,7 @@ private:
                 EM.addComponent<RenderCmp2> (bullet3, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
                 EM.addComponent<EstadoCmp>  (bullet3);
                 EM.addComponent<SoundCmp>   (bullet3, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-                EM.addComponent<SelfDestCmp>(bullet3, SelfDestCmp{.cooldown=0.4f});
+                EM.addComponent<SelfDestCmp>(bullet3, 0.4);
                 EM.addTag      <TBullet>    (bullet3);
                 EM.addTag<TInteract>        (bullet3);
                 
@@ -383,15 +383,38 @@ private:
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-            EM.addComponent<SelfDestCmp>(bullet, 3.f);
+            EM.addComponent<SelfDestCmp>(bullet, 1.5f);
             EM.addTag      <TBullet>    (bullet);
             EM.addTag<TInteract>        (bullet);
             equipment.magazine3 -= 1;
         }
     }
 
-    void changeWeapon(EntyMan& EM, Enty& player, size_t equip) {
+    void changeWeapon(EntyMan& EM, Enty& player, size_t equip, TheEngine& eng) {
         auto& p_invent = EM.getComponent<InventarioCmp>(player);
+        auto& playerRender = EM.getComponent<RenderCmp2>(player);
+        playerRender.n->remove();
+        switch (p_invent.equipada) {
+            
+            case 0:
+                playerRender.n=eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+            break;
+
+            case 1:
+                playerRender.n=eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+            break;
+
+            case 2:
+                playerRender.n=eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+            break;
+
+            default:
+            break;
+        
+        }
+        
+        
+
         p_invent.inventary[p_invent.equipada] = 1;
         p_invent.equipada = equip;
         p_invent.inventary[equip] = 2;
