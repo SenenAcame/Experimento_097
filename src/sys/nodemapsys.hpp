@@ -12,7 +12,7 @@ struct NodeMapSys {
     using NodoCMPs = MP::Typelist<NodoCmp>;
     using MapTAGs = MP::Typelist<TMap>;
     using MapTAGsSpawns = MP::Typelist<TSpawn>;
-    using EneTAGs = MP::Typelist<>;
+    using EneTAGs = MP::Typelist<TEnemy>;
 
     int getSala(NodoCmp& map, float x, float z){
         int devol = -1;
@@ -45,8 +45,9 @@ struct NodeMapSys {
         EM.foreach<EneCMPs, EneTAGs>(
             [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
                 int salaene = getSala(map, p.x, p.z);
-                std::cout << salaene << "Hola\n";
+                
                 if( salaplayer == salaene || salaene==-1){
+                    if(en.hasTAG<TDistEnemy>())
                     EM.getComponent<SalaCmp>(player).sala = salaplayer; 
                     EM.getComponent<SalaCmp>(en).sala = salaene;
                     if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 && salaene!=-1){    
@@ -55,13 +56,12 @@ struct NodeMapSys {
                     else
                         ai.behaviour=SB::Seek;
                 }
-                else if(salaplayer != EM.getComponent<SalaCmp>(player).sala || salaene != EM.getComponent<SalaCmp>(en).sala){
+                else{
                     EM.getComponent<SalaCmp>(player).sala = salaplayer;
                     EM.getComponent<SalaCmp>(en).sala = salaene ;
                     ai.behaviour=SB::Patrol;
                     puerta nextcoord ={0, 0};
                     float dist=MAXFLOAT;
-                    std::cout << salaene << "Hola\n";
                     for(unsigned int i=0; i<map.salas.at(salaene).puertas.size(); i++){
                         
                         float distx=playerposx-map.salas.at(salaene).puertas.at(i).x;

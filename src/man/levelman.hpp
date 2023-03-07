@@ -41,7 +41,7 @@ struct LevelMan {
         EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-60.f, .y=5, .z=155.f});
         EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
-        EM.addComponent<EstadoCmp>     (player, 1.f, 90.f, 1.f);
+        EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
         EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
@@ -54,7 +54,7 @@ struct LevelMan {
     Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(x_pos, 2.33, z_pos, dev, SouSys);
         EM.addComponent<RenderCmp2>     (enemy, dev.createModel("assets/models/monstruo1.obj","assets/textures/faerie2.bmp"));
-        EM.addComponent<EstadisticaCmp> (enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
+        EM.addComponent<EstadisticaCmp> (enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=3.f});
         EM.addComponent<AICmp>          (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>      (enemy, 0.875f, 2.33f, 0.85f);
 
@@ -65,7 +65,7 @@ struct LevelMan {
     Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(x_pos, 4.055, z_pos, dev, SouSys);
         EM.addComponent<RenderCmp2>    (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/portal1.bmp"));
-        EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.f});
+        EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=2.f});
         EM.addComponent<AICmp>         (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Seek, .cooldown=1. });
         EM.addComponent<EstadoCmp>     (enemy, 0.945f, 4.005f, 1.01f);
 
@@ -75,7 +75,7 @@ struct LevelMan {
     Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(x_pos, 4.055, z_pos, dev, SouSys);
         EM.addComponent<RenderCmp2>    (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/fire.bmp"));
-        EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.f});
+        EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
         EM.addComponent<AICmp>         (enemy, AICmp{ .enable=true, .arrivalRadius=1.0, .timeArrive=0.1, .behaviour=SB::Shoot, .cooldown=1. });
         EM.addComponent<EstadoCmp>     (enemy, 0.945f, 4.005f, 1.01f);
         
