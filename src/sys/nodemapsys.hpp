@@ -54,7 +54,7 @@ struct NodeMapSys {
                         ai.behaviour=SB::Shoot;
                     }
                     else
-                        ai.behaviour=SB::Persue;
+                        ai.behaviour=SB::Seek;
                 }
                 else{
                     EM.getComponent<SalaCmp>(player).sala = salaplayer;
