@@ -8,7 +8,7 @@ struct AISys {
     using SYSTAGs = MP::Typelist<>;
     static constexpr auto PI { std::numbers::pi };
 
-    struct Point { double x; double z; };
+    struct Point { double x { 0.0 }, z { 0.0 }; };
 
     [[nodiscard]] constexpr double arcTan(Point const point) const noexcept {
         double arctan = std::atan2(point.z, point.x);
@@ -59,16 +59,27 @@ struct AISys {
         p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
     }
 
-    void seek(AICmp& a, PhysicsCmp2& p, Enty& e) const noexcept {
-        Point t_dist { distancePoints(a.ox, p.x), distancePoints(a.oz, p.z) };
+    void seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept {
+        Point t_dist { distancePoints(target.x, phyEnem.x), distancePoints(target.z, phyEnem.z) };
 
-        auto t_ang_vel { angularVelocity(t_dist, p.orieny, a.timeArrive) };
+        auto t_ang_vel { angularVelocity(t_dist, phyEnem.orieny, timeArrive) };
 
         auto mod       { std::fabs(t_ang_vel) };
-        auto t_lin_acc { (p.kMxVLin / (1+mod)) / a.timeArrive };
+        auto t_lin_acc { (phyEnem.kMxVLin / (1+mod)) / timeArrive };
 
-        p.a_lin = capLimits(t_lin_acc, p.kMxALin);
-        p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
+        phyEnem.a_lin = capLimits(t_lin_acc, phyEnem.kMxALin);
+        phyEnem.v_ang = capLimits(t_ang_vel, phyEnem.kMxVAng);
+    }
+
+    void persue(AICmp& ai, PhysicsCmp2& phyEnem, PhysicsCmp2& phyPlayer) {
+        Point t_dist { distancePoints(ai.ox, phyEnem.x), distancePoints(ai.oz, phyEnem.z) };
+        auto t_lin_dist { distanceModule(t_dist) };
+        auto time { t_lin_dist / phyEnem.kMxVLin };
+        Point predict {
+            phyPlayer.x + phyPlayer.vx * time,
+            phyPlayer.z + phyPlayer.vz * time
+        };
+        seek(predict, phyEnem, ai.timeArrive);
     }
 
     constexpr void shoot(AICmp& a, PhysicsCmp2& p, EntyMan& EM, TheEngine& eng, Enty& enem) const noexcept {
@@ -94,7 +105,7 @@ struct AISys {
             EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=10});
             EM.addTag<TEneBullet>(bullet);
             EM.addTag<TInteract> (bullet);
-            
+
             a.shoot = false;
         }
     }
@@ -108,6 +119,7 @@ struct AISys {
         if(ai.behaviour!=SB::Patrol){
             ai.ox = board.tx;
             ai.oz = board.tz;
+            ai.entyID = board.entyID;
             ai.shoot = board.shoot;
         }
     }
@@ -116,16 +128,22 @@ struct AISys {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, AICmp& a, PhysicsCmp2& p) {
-                percept(bb, a, dt);
+            [&](Enty& e, AICmp& ai, PhysicsCmp2& phy) {
+                percept(bb, ai, dt);
 
-                if(!a.enable) return;
+                if(!ai.enable) return;
 
-                switch(a.behaviour){
-                    case SB::Arrive: arrive(a, p); break;
-                    case SB::Seek:   seek  (a, p, e); break;
-                    case SB::Shoot:  shoot (a, p, EM, dev, e); break;
-                    case SB::Patrol: seek  (a, p, e); break;
+                switch(ai.behaviour){
+                    case SB::Arrive: arrive(ai, phy); break;
+                    case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Shoot:  shoot (ai, phy, EM, dev, e); break;
+                    case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Persue: {
+                        auto& player = EM.getEntityById(bb.entyID);
+                        auto& phyPlayer = EM.getComponent<PhysicsCmp2>(player);
+                        persue(ai, phy, phyPlayer); 
+                        break;
+                    }
                 }
             }
         );

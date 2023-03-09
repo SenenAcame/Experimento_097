@@ -94,7 +94,7 @@ struct InpSys2 : public irr::IEventReceiver{
                     keyboard.keyReleased(i.key_interaction);
                 }
 
-                bb = { p.x, p.z, true, true };
+                bb = { p.x, p.z, true, true , player.getID()};
             }
         );
     } 
