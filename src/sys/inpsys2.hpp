@@ -175,12 +175,30 @@ private:
             }
             else if(col_entity.hasTAG<TDoor>()) {
                 std::cout<<"Abrir puerta\n";
-                col_entity.setDestroy();
+                openDoor(EM, player, col_entity);
             }
             else if(col_entity.hasTAG<TKey>()) {
                 std::cout<<"Recoger llave\n";
+                addKeyToInventary(EM, player);
                 col_entity.setDestroy();
             }
+        }
+    }
+
+    void addKeyToInventary(EntyMan& EM, Enty& player) {
+        auto& inventay = EM.getComponent<InventarioCmp>(player);
+        inventay.keys_inv[0] = 1;
+        std::cout<<"Llave guardada\n";
+    }
+
+    void openDoor(EntyMan& EM, Enty& player, Enty& door) {
+        auto& inventay = EM.getComponent<InventarioCmp>(player);
+        if(inventay.keys_inv[0]) {
+            std::cout<<"Puerta abierta\n";
+            door.setDestroy();
+        }
+        else {
+            std::cout<<"Puerta cerrada\n";
         }
     }
 

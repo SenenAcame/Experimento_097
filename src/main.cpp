@@ -22,8 +22,10 @@ void game2() {
 
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
     Enty& player = LM.createPlayer(dev, SouSys);
-    Enty& door   = LM.createDoor(52.39, -140.98, dev);
-    Enty& key    = LM.createKey(-40, -20, dev);
+    //Enty& door   = LM.createDoor(52.39, -140.98, dev);
+    //Enty& key    = LM.createKey(-40, -20, dev);
+
+    Enty& enemigo = LM.createDistEnemy(-20, -20, dev, SouSys);
 
     //Enty& weapon = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (weapon,10,0,20);
@@ -42,26 +44,26 @@ void game2() {
     //EM.addTag      <TWeapon>    (w3);
 
 //Lab1
-    Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
-    Enty& enemy2 = LM.createBasicEnemy(-40,   0, dev, SouSys);
+    //Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
+    //Enty& enemy2 = LM.createBasicEnemy(-40,   0, dev, SouSys);
     //weapon
-    Enty& weaponEsco = LM.createWeapon(-50.f, 5.725, -20.f, dev, SouSys, 1 ,20 ,2 ,1.4);
-    Enty& weaponAME  = LM.createWeapon(-20.f, 5.725, -20.f, dev, SouSys, 2 ,20 ,2 ,1.4);
+    //Enty& weaponEsco = LM.createWeapon(-50.f, 5.725, -20.f, dev, SouSys, 1 ,20 ,2 ,1.4);
+    //Enty& weaponAME  = LM.createWeapon(-20.f, 5.725, -20.f, dev, SouSys, 2 ,20 ,2 ,1.4);
 
 //patio1
-    Enty& enemy3  = LM.createBasicEnemy(-23.68, 100.41, dev, SouSys);
-    Enty& enemy4  = LM.createSmallEnemy (-43.68,  85.41, dev, SouSys);
+    //Enty& enemy3  = LM.createBasicEnemy(-23.68, 100.41, dev, SouSys);
+    //Enty& enemy4  = LM.createSmallEnemy (-43.68,  85.41, dev, SouSys);
 
 //lab3
-    Enty& enemy5 = LM.createTankEnemy(23.68, 20.41, dev, SouSys);
-    Enty& enemy6 = LM.createBasicEnemy(35, -20, dev, SouSys);
+    //Enty& enemy5 = LM.createTankEnemy(23.68, 20.41, dev, SouSys);
+    //Enty& enemy6 = LM.createBasicEnemy(35, -20, dev, SouSys);
 
 //finalpasillo2
-    Enty& enemy7 = LM.createTankEnemy(10, -100, dev, SouSys);
+    //Enty& enemy7 = LM.createTankEnemy(10, -100, dev, SouSys);
 
 //lab4
-    Enty& enemy9 = LM.createDistEnemy(50, -100, dev, SouSys);
-    Enty& enemy10 = LM.createDistEnemy(60, 90, dev, SouSys);
+    //Enty& enemy9 = LM.createDistEnemy(50, -100, dev, SouSys);
+    //Enty& enemy10 = LM.createDistEnemy(60, 90, dev, SouSys);
 
     //Enty& spawn = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{ .x=-10.f, .z=20.f });
