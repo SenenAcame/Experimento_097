@@ -132,7 +132,7 @@ struct LevelMan {
         Enty& door = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(door, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
         EM.addComponent<RenderCmp2> (door, dev.createModel("assets/models/monstruo3.obj","assets/textures/portal1.bmp"));
-        EM.addComponent<EstadoCmp>  (door, 10, 10, 10);
+        EM.addComponent<EstadoCmp>  (door, 10.f, 10.f, 10.f);
         EM.addTag<TInteract>(door);
         EM.addTag<TWall>    (door);
         EM.addTag<TDoor>    (door);
@@ -143,7 +143,7 @@ struct LevelMan {
         Enty& key = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(key, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
         EM.addComponent<RenderCmp2> (key, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
-        EM.addComponent<EstadoCmp>  (key, 10, 10, 10);
+        EM.addComponent<EstadoCmp>  (key, 10.f, 10.f, 10.f);
         EM.addTag<TInteract>(key);
         EM.addTag<TKey>     (key);
         return key;

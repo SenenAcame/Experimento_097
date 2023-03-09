@@ -326,7 +326,7 @@ private:
             EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-            EM.addComponent<SelfDestCmp>(bullet,9);
+            EM.addComponent<SelfDestCmp>(bullet, 9.);
             EM.addTag<TBullet>          (bullet);
             EM.addTag<TInteract>        (bullet);
             equipment.magazine1 -= 1;
