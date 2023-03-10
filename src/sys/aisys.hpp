@@ -20,12 +20,13 @@ struct AISys {
         return irr::core::clamp(value, -limit, limit);
     }
 
-    [[nodiscard]] constexpr double distancePoints(double const a, double const b) const noexcept {
-        return a - b;
-    }
-
     [[nodiscard]] constexpr double distanceModule(Point const dist) const noexcept {
         return std::sqrt(dist.x*dist.x + dist.z*dist.z);
+    }
+
+    [[nodiscard]] constexpr double distance(Point const target, Point const origin) const noexcept {
+        Point p_dist { target.x - origin.x, target.z - origin.z };
+        return distanceModule(p_dist);
     }
 
     [[nodiscard]] constexpr double distanceAngle(double const a, double const b) const noexcept {
@@ -42,59 +43,35 @@ struct AISys {
         return ang_vel;
     }
 
-    constexpr void arrive(AICmp& a, PhysicsCmp2& p) const noexcept {
-        p.v_ang = p.a_lin = 0;
-        Point t_dist { distancePoints(a.ox, p.x), distancePoints(a.oz, p.z) };
+    constexpr void arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
+        phy.v_ang = phy.a_lin = 0;
 
+        Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
         auto t_lin_dist { distanceModule(t_dist) };
 
-        if  (t_lin_dist < a.arrivalRadius) { a.enable = false; return; }
+        if  (t_lin_dist < ai.arrivalRadius) { ai.enable = false; return; }
 
-        auto t_ang_vel  { angularVelocity(t_dist, p.orieny, a.timeArrive) };
+        auto t_ang_vel  { angularVelocity(t_dist, phy.orieny, ai.timeArrive) };
 
-        auto t_lin_vel  { capLimits(t_lin_dist/a.timeArrive, p.kMxVLin) };
-        auto t_lin_acc  { (t_lin_vel - p.v_lin)/a.timeArrive };
+        auto t_lin_vel  { capLimits(t_lin_dist/ai.timeArrive, phy.kMxVLin) };
+        auto t_lin_acc  { (t_lin_vel - phy.v_lin)/ai.timeArrive };
 
-        p.a_lin = capLimits(t_lin_acc, p.kMxALin);
-        p.v_ang = capLimits(t_ang_vel, p.kMxVAng);
+        phy.a_lin = capLimits(t_lin_acc, phy.kMxALin);
+        phy.v_ang = capLimits(t_ang_vel, phy.kMxVAng);
     }
 
-    void seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept {
-        Point t_dist { distancePoints(target.x, phyEnem.x), distancePoints(target.z, phyEnem.z) };
-
-        auto t_ang_vel { angularVelocity(t_dist, phyEnem.orieny, timeArrive) };
-
-        auto mod       { std::fabs(t_ang_vel) };
-        auto t_lin_acc { (phyEnem.kMxVLin / (1+mod)) / timeArrive };
-
-        phyEnem.a_lin = capLimits(t_lin_acc, phyEnem.kMxALin);
-        phyEnem.v_ang = capLimits(t_ang_vel, phyEnem.kMxVAng);
-    }
-
-    void persue(AICmp& ai, PhysicsCmp2& phyEnem, PhysicsCmp2& phyPlayer) {
-        Point t_dist { distancePoints(ai.ox, phyEnem.x), distancePoints(ai.oz, phyEnem.z) };
-        auto t_lin_dist { distanceModule(t_dist) };
-        auto time { t_lin_dist / phyEnem.kMxVLin };
-        Point predict {
-            phyPlayer.x + phyPlayer.vx * time,
-            phyPlayer.z + phyPlayer.vz * time
-        };
-        seek(predict, phyEnem, ai.timeArrive);
-    }
-
-    constexpr void shoot(AICmp& a, PhysicsCmp2& p, EntyMan& EM, TheEngine& eng, Enty& enem) const noexcept {
-        if(a.shoot){
-            Point t_dist { distancePoints(a.ox, p.x), distancePoints(a.oz, p.z) };
-
+    constexpr void shoot(AICmp& ai, PhysicsCmp2& phy, EntyMan& EM, TheEngine& eng, Enty& enem) const noexcept {
+        if(ai.shoot){
+            Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
             auto dM { distanceModule(t_dist) };
 
             Enty& bullet  = EM.createEntity();
             auto& stats = EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=EM.getComponent<EstadisticaCmp>(enem).damage, .speed=0.8f, .bulletRad=0.5f}); 
             EM.addComponent<PhysicsCmp2>(
                 bullet, PhysicsCmp2{
-                    .x  = p.x,
-                    .y  = p.y,
-                    .z  = p.z,
+                    .x  = phy.x,
+                    .y  = phy.y,
+                    .z  = phy.z,
                     .vx = t_dist.x/dM * stats.speed,
                     .vy = 0,
                     .vz = t_dist.z/dM * stats.speed
@@ -106,11 +83,41 @@ struct AISys {
             EM.addTag<TEneBullet>(bullet);
             EM.addTag<TInteract> (bullet);
 
-            a.shoot = false;
+            ai.shoot = false;
         }
     }
 
-    constexpr void percept(BlackBoardCmp& board, AICmp& ai, double delta) noexcept {
+    void seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept {
+        Point t_dist { target.x - phyEnem.x, target.z - phyEnem.z };
+        auto t_ang_vel { angularVelocity(t_dist, phyEnem.orieny, timeArrive) };
+
+        auto mod       { std::fabs(t_ang_vel) };
+        auto t_lin_acc { (phyEnem.kMxVLin / (1+mod)) / timeArrive };
+
+        phyEnem.a_lin = capLimits(t_lin_acc, phyEnem.kMxALin);
+        phyEnem.v_ang = capLimits(t_ang_vel, phyEnem.kMxVAng);
+    }
+
+    void persue(Point const target, PhysicsCmp2& phyEnem, PhysicsCmp2& phyPlayer, double const timeArrive) const noexcept{
+        auto t_lin_dist { distance(target, {phyEnem.x, phyEnem.z}) };
+        auto time { t_lin_dist / phyEnem.kMxVLin };
+
+        Point predict {
+            phyPlayer.x + phyPlayer.vx * time,
+            phyPlayer.z + phyPlayer.vz * time
+        };
+        seek(predict, phyEnem, timeArrive);
+    }
+
+    void twoSteps(AICmp& ai, PhysicsCmp2& phyEnem) const noexcept{
+        Point target { ai.ox, ai.oz };
+        auto t_lin_dist { distance(target, { phyEnem.x, phyEnem.z }) };
+
+        if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive); 
+        else                     seek({ai.flock_x + ai.ox, ai.flock_z + ai.oz}, phyEnem, ai.timeArrive); 
+    }
+
+    constexpr void percept(BlackBoardCmp& board, AICmp& ai, double delta) const noexcept {
         ai.time += delta;
         if( ai.time <= ai.cooldown) return;
 
@@ -134,14 +141,15 @@ struct AISys {
                 if(!ai.enable) return;
 
                 switch(ai.behaviour){
-                    case SB::Arrive: arrive(ai, phy); break;
-                    case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                    case SB::Shoot:  shoot (ai, phy, EM, dev, e); break;
-                    case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Arrive:    arrive  (ai, phy); break;
+                    case SB::Seek:      seek    ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Shoot:     shoot   (ai, phy, EM, dev, e); break;
+                    case SB::Patrol:    seek    ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Two_Steps: twoSteps(ai, phy); break;
                     case SB::Persue: {
-                        auto& player = EM.getEntityById(bb.entyID);
+                        auto& player    = EM.getEntityById(bb.entyID);
                         auto& phyPlayer = EM.getComponent<PhysicsCmp2>(player);
-                        persue(ai, phy, phyPlayer); 
+                        persue({ ai.ox, ai.oz }, phy, phyPlayer, ai.timeArrive); 
                         break;
                     }
                 }

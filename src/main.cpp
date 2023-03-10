@@ -1,6 +1,9 @@
 #include "main.hpp"
+#include "cmp/aicmp.hpp"
 #include "util/types.hpp"
 #include "man/levelman.hpp"
+#include <cstdlib>
+#include <irrlicht/irrMath.h>
 
 void game2() {
     LevelMan      LM;
@@ -16,16 +19,22 @@ void game2() {
     SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
     TheEngine     dev {1080, 720, &InpSys};
-
+    
+    srand(time(NULL));
     ColSys.init_Hitoxes_Map(EM, dev);
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
     Enty& player = LM.createPlayer(dev, SouSys);
+
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
 
-    Enty& enemigo = LM.createBasicEnemy(-20, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -20, dev, SouSys);
 
     //Enty& weapon = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (weapon,10,0,20);

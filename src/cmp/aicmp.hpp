@@ -7,19 +7,21 @@ enum class SB{
     Seek,
     Shoot,
     Patrol,
-    Persue
+    Persue,
+    Two_Steps
 };
 
 struct AICmp {
-    double ox{ 0 }, oz{ 0 };
-    bool   enable        { true };
+    double rad { 1.0 };
+    double flock_x { 0 }, flock_z{ 0 };
+    double      ox { 0 },     oz { 0 };
     double arrivalRadius { 1.0 };
     double timeArrive    { 0.5 };
-    SB     behaviour     { SB::Arrive };
-    bool   shoot         { false };
-
     double cooldown      { 0.1 };
     double time          { 0.0 };
+    bool   enable        { true };
+    bool   shoot         { false };
+    SB     behaviour     { SB::Arrive };
 
     std::size_t entyID { 0 };
 

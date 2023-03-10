@@ -38,13 +38,13 @@ struct SpawnSystem {
             case 0: 
             //create enemy normal
                 
-                EM.addComponent<PhysicsCmp2>   (enem1, PhysicsCmp2{ .x=EM.getComponent<PhysicsCmp2>(spwEnty).x, .z=EM.getComponent<PhysicsCmp2>(spwEnty).z });
-                EM.addComponent<RenderCmp2>    (enem1, eng.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
-                EM.addComponent<AICmp>         (enem1, AICmp{ .arrivalRadius=5.0, .timeArrive=2.0, .behaviour=SB::Arrive, .cooldown=0.1 });
-                EM.addComponent<EstadisticaCmp>(enem1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
-                EM.addComponent<SoundCmp>      (enem1, ss.createinstance(7));
-                EM.addComponent<EstadoCmp>     (enem1); 
-                EM.addTag      <TEnemy>        (enem1);
+                //EM.addComponent<PhysicsCmp2>   (enem1, PhysicsCmp2{ .x=EM.getComponent<PhysicsCmp2>(spwEnty).x, .z=EM.getComponent<PhysicsCmp2>(spwEnty).z });
+                //EM.addComponent<RenderCmp2>    (enem1, eng.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
+                //EM.addComponent<AICmp>         (enem1, AICmp{ .arrivalRadius=5.0, .timeArrive=2.0, .behaviour=SB::Arrive, .cooldown=0.1 });
+                //EM.addComponent<EstadisticaCmp>(enem1, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=2.f});
+                //EM.addComponent<SoundCmp>      (enem1, ss.createinstance(7));
+                //EM.addComponent<EstadoCmp>     (enem1); 
+                //EM.addTag      <TEnemy>        (enem1);
                 
                 
             break;
