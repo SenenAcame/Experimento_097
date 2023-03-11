@@ -163,10 +163,16 @@ struct LogicSystem {
         
         recept_stats.hitpoints -= agress_stats.damage;
         
-        if(recept_stats.hitpoints <= 0) { markDestroy(receptor); }
+        if(recept_stats.hitpoints <= 0) {
+            if(receptor.hasTAG<TEnemy>()){
+                EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
+            }
+            else{
+                markDestroy(receptor);
+            } 
+        }
         
         if(!agressor.hasTAG<TEnemy>())  { markDestroy(agressor); }
-        if(receptor.hasTAG<TPlayer>()) std::cout<<"Hay daño\n";
     }
 
     void markDestroy(Enty& enty_to_dele) {

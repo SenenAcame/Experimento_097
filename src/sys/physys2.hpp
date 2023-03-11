@@ -16,7 +16,9 @@ struct PhySys2 {
                 }
                 else{
                     bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Shoot);
-                    if(player_or_enemy_not_shooting){
+                    bool enemy_is_diying              = (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Diying);
+                    if(enemy_is_diying){ physic.y-=0.1; }
+                    else if(player_or_enemy_not_shooting){
                         entityPhysics(en, physic, delta);  
                     }
                 }

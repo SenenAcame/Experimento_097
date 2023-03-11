@@ -8,7 +8,8 @@ enum class SB{
     Shoot,
     Patrol,
     Persue,
-    Two_Steps
+    Two_Steps,
+    Diying
 };
 
 struct AICmp {

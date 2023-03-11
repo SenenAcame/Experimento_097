@@ -109,7 +109,7 @@ void game2() {
         LogicSys.update(EM, dev, dt);
         PhySys.  update(EM, dt);
         SouSys.  update(EM);
-        LogicSys.update(EM, dev, dt);
+        //LogicSys.update(EM, dev, dt);
         SpawnSys.update(EM, dev, SouSys, player, map);
         LM.      update(dev, SouSys);
         DestSys. update(EM, dt);

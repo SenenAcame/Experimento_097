@@ -53,7 +53,7 @@ struct LevelMan {
 
     Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=15.f});
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=5.f, .damage=20.f, .speed=15.f});
         
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/portal1.bmp"));

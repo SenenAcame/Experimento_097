@@ -45,34 +45,35 @@ struct NodeMapSys {
         EM.foreach<EneCMPs, EneTAGs>(
             [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
                 int salaene = getSala(map, p.x, p.z);
-                
-                if( salaplayer == salaene || salaene==-1){
-                    if(en.hasTAG<TDistEnemy>())
-                    EM.getComponent<SalaCmp>(player).sala = salaplayer; 
-                    EM.getComponent<SalaCmp>(en).sala = salaene;
-                    if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 && salaene!=-1){    
-                        ai.behaviour=SB::Shoot;
-                    }
-                    else
-                        ai.behaviour=SB::Two_Steps;
-                }
-                else{
-                    EM.getComponent<SalaCmp>(player).sala = salaplayer;
-                    EM.getComponent<SalaCmp>(en).sala = salaene ;
-                    ai.behaviour=SB::Patrol;
-                    puerta nextcoord ={0, 0};
-                    float dist=MAXFLOAT;
-                    for(unsigned int i=0; i<map.salas.at(salaene).puertas.size(); i++){
-                        
-                        float distx=playerposx-map.salas.at(salaene).puertas.at(i).x;
-                        float distz=playerposz-map.salas.at(salaene).puertas.at(i).z;
-                        if(dist>(sqrt((distx*distx)+(distz*distz)))){
-                            dist=sqrt((distx*distx)+(distz*distz));
-                            nextcoord=map.salas.at(salaene).puertas.at(i);
+                if(ai.behaviour!=SB::Diying){
+                    if( salaplayer == salaene || salaene==-1){
+                        if(en.hasTAG<TDistEnemy>())
+                        EM.getComponent<SalaCmp>(player).sala = salaplayer; 
+                        EM.getComponent<SalaCmp>(en).sala = salaene;
+                        if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 && salaene!=-1){    
+                            ai.behaviour=SB::Shoot;
                         }
+                        else
+                            ai.behaviour=SB::Two_Steps;
                     }
-                    ai.ox=nextcoord.x;
-                    ai.oz=nextcoord.z;
+                    else{
+                        EM.getComponent<SalaCmp>(player).sala = salaplayer;
+                        EM.getComponent<SalaCmp>(en).sala = salaene ;
+                        ai.behaviour=SB::Patrol;
+                        puerta nextcoord ={0, 0};
+                        float dist=MAXFLOAT;
+                        for(unsigned int i=0; i<map.salas.at(salaene).puertas.size(); i++){
+                            
+                            float distx=playerposx-map.salas.at(salaene).puertas.at(i).x;
+                            float distz=playerposz-map.salas.at(salaene).puertas.at(i).z;
+                            if(dist>(sqrt((distx*distx)+(distz*distz)))){
+                                dist=sqrt((distx*distx)+(distz*distz));
+                                nextcoord=map.salas.at(salaene).puertas.at(i);
+                            }
+                        }
+                        ai.ox=nextcoord.x;
+                        ai.oz=nextcoord.z;
+                    }
                 }
             }
         );

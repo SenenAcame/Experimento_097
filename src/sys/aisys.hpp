@@ -4,7 +4,7 @@
 #include <numbers>
 
 struct AISys {
-    using SYSCMPs = MP::Typelist<AICmp, PhysicsCmp2>;
+    using SYSCMPs = MP::Typelist<AICmp, PhysicsCmp2, RenderCmp2>;
     using SYSTAGs = MP::Typelist<>;
     static constexpr auto PI { std::numbers::pi };
 
@@ -138,11 +138,21 @@ struct AISys {
         }
     }
 
+    void die(Enty& enemy, RenderCmp2& renderEne, PhysicsCmp2& phy) const noexcept {
+        float rotEneX = renderEne.n->getRotation().X;
+        float rotEneY = renderEne.n->getRotation().Y;
+        float rotEneZ = renderEne.n->getRotation().Z;
+        renderEne.n->setRotation(irr::core::vector3df(rotEneX, rotEneY, rotEneZ+2));
+        if(rotEneZ==90){
+            enemy.setDestroy();
+        }
+    }
+
     void update(EntyMan& EM, double dt, TheEngine& dev) {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, AICmp& ai, PhysicsCmp2& phy) {
+            [&](Enty& e, AICmp& ai, PhysicsCmp2& phy, RenderCmp2& render) {
                 percept(bb, ai, dt);
 
                 if(!ai.enable) return;
@@ -164,6 +174,7 @@ struct AISys {
                         persue({ ai.ox, ai.oz }, phy, { phyPlayer.vx, phyPlayer.vz }, ai.timeArrive); 
                         break;
                     }
+                    case SB::Diying: die(e, render, phy); break;
                 }
             }
         );
