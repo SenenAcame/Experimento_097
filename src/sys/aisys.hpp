@@ -98,23 +98,30 @@ struct AISys {
         phyEnem.v_ang = capLimits(t_ang_vel, phyEnem.kMxVAng);
     }
 
-    void persue(Point const target, PhysicsCmp2& phyEnem, PhysicsCmp2& phyPlayer, double const timeArrive) const noexcept{
+    void persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlayer, double const timeArrive) const noexcept{
         auto t_lin_dist { distance(target, {phyEnem.x, phyEnem.z}) };
         auto time { t_lin_dist / phyEnem.kMxVLin };
 
         Point predict {
-            phyPlayer.x + phyPlayer.vx * time,
-            phyPlayer.z + phyPlayer.vz * time
+            target.x + velPlayer.x * time,
+            target.z + velPlayer.z * time
         };
         seek(predict, phyEnem, timeArrive);
     }
 
-    void twoSteps(AICmp& ai, PhysicsCmp2& phyEnem) const noexcept{
+    void twoSteps(AICmp const& ai, PhysicsCmp2& phyEnem, Point const velPlayer) const noexcept{
         Point target { ai.ox, ai.oz };
         auto t_lin_dist { distance(target, { phyEnem.x, phyEnem.z }) };
 
-        if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive); 
-        else                     seek({ai.flock_x + ai.ox, ai.flock_z + ai.oz}, phyEnem, ai.timeArrive); 
+        if(t_lin_dist <= ai.rad) {
+            seek(target, phyEnem, ai.timeArrive);
+            //persue(target, phyEnem, velPlayer,ai.timeArrive); 
+        }
+        else {
+            Point flock_targ {ai.flock_x + ai.ox, ai.flock_z + ai.oz};
+            seek(flock_targ, phyEnem, ai.timeArrive);
+            //persue(flock_targ, phyEnem, velPlayer,ai.timeArrive);
+        }
     }
 
     constexpr void percept(BlackBoardCmp& board, AICmp& ai, double delta) const noexcept {
@@ -141,15 +148,20 @@ struct AISys {
                 if(!ai.enable) return;
 
                 switch(ai.behaviour){
-                    case SB::Arrive:    arrive  (ai, phy); break;
-                    case SB::Seek:      seek    ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                    case SB::Shoot:     shoot   (ai, phy, EM, dev, e); break;
-                    case SB::Patrol:    seek    ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                    case SB::Two_Steps: twoSteps(ai, phy); break;
+                    case SB::Arrive: arrive(ai, phy); break;
+                    case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                    case SB::Shoot:  shoot (ai, phy, EM, dev, e); break;
+                    case SB::Two_Steps: {
+                        auto& player    = EM.getEntityById(bb.entyID);
+                        auto& phyPlayer = EM.getComponent<PhysicsCmp2>(player);
+                        twoSteps(ai, phy, { phyPlayer.vx, phyPlayer.vz }); 
+                        break;
+                    }
                     case SB::Persue: {
                         auto& player    = EM.getEntityById(bb.entyID);
                         auto& phyPlayer = EM.getComponent<PhysicsCmp2>(player);
-                        persue({ ai.ox, ai.oz }, phy, phyPlayer, ai.timeArrive); 
+                        persue({ ai.ox, ai.oz }, phy, { phyPlayer.vx, phyPlayer.vz }, ai.timeArrive); 
                         break;
                     }
                 }
