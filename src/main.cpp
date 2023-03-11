@@ -1,6 +1,7 @@
 #include "main.hpp"
-#define STB_IMAGE_IMPLEMENTATION
+ //#define STB_IMAGE_IMPLEMENTATION
 #include "../assets/shaders/stb_image.h"
+#include <glad/src/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -15,6 +16,9 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 unsigned int loadTexture(char const* path);
 unsigned int loadCubeMap(vector<std::string> faces);
+void initOpenGL();
+void renderModel(Shader& shader, Model& moder, Camera& camera, glm::vec3 trans);
+void renderSkybox(Shader& skyboxShader, Camera& camera, int skyboxVAO, int cubemapTexture);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -30,60 +34,18 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+GLFWwindow* window{nullptr};
+
 int main()
-{
-    // glfw: initialize and configure
-    // ------------------------------
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+{    
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-    // glfw window creation
-    // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-
-    // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    //stbi_set_flip_vertically_on_load(false);
-   
-    glEnable(GL_DEPTH_TEST);
-    //glDepthFunc(GL_LESS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glEnable(GL_STENCIL_TEST);
-    //glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-    //glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_FRONT);
+    initOpenGL();
     // build and compile shaders
     // -------------------------
     Shader shader("assets/shaders/shader.vs", "assets/shaders/shader.fs");
     Shader skyboxShader("assets/shaders/shader_skybox.vs", "assets/shaders/shader_skybox.fs");
     Shader ourShader("assets/shaders/model_loadin_shader.vs", "assets/shaders/model_loadin_shader.fs");
+    Shader ShaderEnemies("assets/shaders/model_loadin_shader_enemy.vs", "assets/shaders/model_loadin_shader_enemy.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -200,9 +162,17 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
     Model ourModel("assets/laboratorio.obj");
+    Model enemigo1("assets/enemy.obj");
 
+    ShaderEnemies.use();   
+    unsigned int diffuseMap1 = loadTexture("assets/shaders/awesomeface.png");
+    ShaderEnemies.setInt("texture_diffuse1", 0);
+    
+    ourShader.use();
     unsigned int diffuseMap = loadTexture("assets/shaders/container.jpg");
     ourShader.setInt("texture_diffuse1", 0);
+
+
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -218,6 +188,17 @@ int main()
         "assets/shaders/skybox/front.jpg",
         "assets/shaders/skybox/back.jpg"
     };
+
+    /*
+     vector<std::string> faces {
+        "assets/shaders/awesomeface.png",
+        "assets/shaders/awesomeface.png"
+        "assets/shaders/awesomeface.png"
+        "assets/shaders/awesomeface.png"
+        "assets/shaders/awesomeface.png"
+        "assets/shaders/awesomeface.png"
+    };
+    */
     unsigned int cubemapTexture = loadCubeMap(faces);
 
     // shader configuration
@@ -245,6 +226,7 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+       
         shader.use();
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = camera.GetViewMatrix();
@@ -264,31 +246,33 @@ int main()
 
         //set his shader in use
         ourShader.use();
-        //pass the view, projection, and cameraPos to the shader
-        ourShader.setMat4("view", view);
-        ourShader.setMat4("projection", projection);
-        ourShader.setVec3("cameraPos", camera.Position);
-        // translate model(move);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(3.0f, -1.0f, 3.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
+
+        /*
+            DIFFUSE = TEXTURE -> TEXTURE0
+            SPECULAR = -> TEXTURE1
+        */
+
+
+        //      mapa
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuseMap);
+        glm::vec3 trans = glm::vec3(3.0f, -1.0f, 3.0f);
+        renderModel(ourShader, ourModel, camera, trans);
+       
+
+        ShaderEnemies.use();
+
+        //     Enemigo1
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuseMap1);
+        trans = glm::vec3(3.0f, 2.0f, 3.0f);
+        renderModel(ShaderEnemies, enemigo1, camera, trans);
+        
 
         // skybox
         shader.use();
         glDepthFunc(GL_LEQUAL);
-        skyboxShader.use();
-        view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-        skyboxShader.setMat4("view", view);
-        skyboxShader.setMat4("projection", projection);
-        //skybox cube
-        glBindVertexArray(skyboxVAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
-        glDepthFunc(GL_LESS);
+        renderSkybox(skyboxShader, camera, skyboxVAO, cubemapTexture);
 
         
 
@@ -364,7 +348,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
-
+/*
 unsigned int loadTexture(char const* path){
 
     unsigned int textureID;
@@ -408,7 +392,7 @@ unsigned int loadCubeMap(vector<std::string> faces){
     int width, height, nrChannels;
     for(unsigned int i = 0; i < faces.size(); i++){
         unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-        if(data){
+        if(data){                                                           // si es png, GL_RGBA
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             stbi_image_free(data);
         } else {
@@ -423,4 +407,82 @@ unsigned int loadCubeMap(vector<std::string> faces){
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     return textureID;
+}*/
+
+void initOpenGL() {
+    //_________GLFW INIT_____________
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    #ifdef __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #endif
+
+    //______CREATE GLFW WINDOW__________
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Experimento 097", NULL, NULL);
+    if(window == NULL) throw std::runtime_error("GLFW Error creating Window");
+    
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback); // optional
+
+   
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+    }
+
+
+    //configure global opengl state
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    // glEnable(GL_STENCIL_TEST);
+    // glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    // glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+    // glEnable(GL_CULL_FACE);
+    // glEnable(GL_FRAMEBUFFER_SRGB);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void renderModel(Shader& shader, Model& moder, Camera& camera, glm::vec3 trans) {
+    //pass the view, projection, and cameraPos to the shader
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 view = camera.GetViewMatrix();
+    glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    shader.setMat4("view", view);
+    shader.setMat4("projection", projection);
+    shader.setVec3("cameraPos", camera.Position);
+    // translate model(move);
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, trans); // translate it down so it's at the center of the scene
+    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+    shader.setMat4("model", model);
+    moder.Draw(shader);
+}
+
+void renderSkybox(Shader& skyboxShader, Camera& camera, int skyboxVAO, int cubemapTexture){
+    skyboxShader.use();
+    glm::mat4 view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+    glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    skyboxShader.setMat4("view", view);
+    skyboxShader.setMat4("projection", projection);
+    //skybox cube
+    glBindVertexArray(skyboxVAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+    glDepthFunc(GL_LESS);
 }
