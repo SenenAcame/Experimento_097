@@ -38,17 +38,19 @@ struct PhySys2 {
         else if (p.orieny < 0)    p.orieny += 2*PI;
 
         if(entity.hasTAG<TPlayer>()){
-            p.vx =  p.v_lin * std::sin(p.orieny);
-            p.vz =  p.v_lin * std::cos(p.orieny);
+            p.vx =  p.v_lin * std::sin(p.orieny) + p.partial_x;
+            p.vz =  p.v_lin * std::cos(p.orieny) + p.partial_z;
         }
         else{
-            p.vx =  p.v_lin * std::cos(p.orieny);
-            p.vz =  p.v_lin * std::sin(p.orieny);
+            p.vx =  p.v_lin * std::cos(p.orieny) + p.partial_x;
+            p.vz =  p.v_lin * std::sin(p.orieny) + p.partial_z;
         }
 
         p.x += dt * p.vx;
         p.z += dt * p.vz;
 
+        p.partial_x = 0;
+        p.partial_z = 0;
         p.v_lin += dt * p.a_lin;
         p.v_ang += dt * p.a_ang;
         p.v_lin = irr::core::clamp(p.v_lin, -p.kMxVLin, p.kMxVLin);

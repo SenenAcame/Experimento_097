@@ -7,7 +7,7 @@ struct ColSys2 {
     using SYSTAGs = MP::Typelist<TInteract>;
     static constexpr double pos_y  = 9;
     static constexpr float height  = 10;
-    static constexpr uint8_t thick = 1;
+    static constexpr uint8_t thick = 3;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(

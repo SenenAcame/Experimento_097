@@ -26,11 +26,11 @@ void game2() {
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
 
-    LM.createBasicEnemy(-25, -20, dev, SouSys);
-    LM.createBasicEnemy(-20, -25, dev, SouSys);
-    LM.createBasicEnemy(-30, -20, dev, SouSys);
-    LM.createBasicEnemy(-20, -30, dev, SouSys);
-    LM.createBasicEnemy(-25, -25, dev, SouSys);
+    //LM.createBasicEnemy(-25, -20, dev, SouSys);
+    //LM.createBasicEnemy(-20, -25, dev, SouSys);
+    //LM.createBasicEnemy(-30, -20, dev, SouSys);
+    //LM.createBasicEnemy(-20, -30, dev, SouSys);
+    //LM.createBasicEnemy(-25, -25, dev, SouSys);
 
     //Enty& weapon = EM.createEntity();
     //EM.addComponent<PhysicsCmp2>    (weapon,10,0,20);
@@ -105,7 +105,7 @@ void game2() {
         LogicSys.update(EM, dev, dt);
         PhySys.  update(EM, dt);
         SouSys.  update(EM);
-        //LogicSys.update(EM, dev, dt);
+        LogicSys.update(EM, dev, dt);
         SpawnSys.update(EM, dev, SouSys, player, map);
         LM.      update(dev, SouSys);
         DestSys. update(EM, dt);

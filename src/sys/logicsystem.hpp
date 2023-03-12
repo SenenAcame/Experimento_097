@@ -263,8 +263,8 @@ struct LogicSystem {
         copy_physics.orieny += dt * copy_physics.v_ang;
         if      (copy_physics.orieny > 2*PI) copy_physics.orieny -= 2*PI;
         else if (copy_physics.orieny < 0)    copy_physics.orieny += 2*PI;
-        copy_physics.vx =  copy_physics.v_lin * std::sin(copy_physics.orieny);
-        copy_physics.vz =  copy_physics.v_lin * std::cos(copy_physics.orieny);
+        copy_physics.vx = copy_physics.v_lin * std::sin(copy_physics.orieny);
+        copy_physics.vz = copy_physics.v_lin * std::cos(copy_physics.orieny);
         copy_physics.x += dt * copy_physics.vx;
         copy_physics.z += dt * copy_physics.vz;
 
@@ -272,7 +272,17 @@ struct LogicSystem {
         dx = abs(copy_physics.x - wall_physc.x) - (state.width + wall_state.width);
         dz = abs(copy_physics.z - wall_physc.z) - (state.depth + wall_state.depth);
 
-        if(dx<=0 && dz<=0) return 1;
+        if(dx<=0 && dz<=0) {
+            auto& phy = EM.getComponent<PhysicsCmp2>(player);
+            
+            if(dx<dz) { 
+                phy.partial_x = copy_physics.vx; 
+            }
+            else { 
+                phy.partial_z = copy_physics.vz; 
+            }
+            return 1;
+        }
         return 0;
     }
 
