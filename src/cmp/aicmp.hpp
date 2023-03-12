@@ -13,9 +13,9 @@ enum class SB{
 };
 
 struct AICmp {
-    double rad { 1.0 };
-    double flock_x { 0 }, flock_z{ 0 };
-    double      ox { 0 },     oz { 0 };
+    double rad   { 1.0 },     ang { 0 };
+    double flock_x { 0 }, flock_z { 0 };
+    double      ox { 0 },      oz { 0 };
     double arrivalRadius { 1.0 };
     double timeArrive    { 0.5 };
     double cooldown      { 0.1 };

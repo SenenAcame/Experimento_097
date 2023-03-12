@@ -163,14 +163,15 @@ private:
 
     void defineAI(Enty& enemy) {
         int num = rand() % 360;
-        double ang = num * irr::core::PI / 180;
+        double angle = num * irr::core::PI / 180;
         double radius = 20.0;
         EM.addComponent<AICmp>(
             enemy, 
             AICmp {
                 .rad = radius,
-                .flock_x = cos(ang) * radius, 
-                .flock_z = sin(ang) * radius, 
+                .ang = angle,
+                .flock_x = cos(angle) * radius, 
+                .flock_z = sin(angle) * radius, 
                 .arrivalRadius = 1., 
                 .timeArrive = 0.1, 
                 .cooldown = 1., 

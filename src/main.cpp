@@ -1,9 +1,5 @@
 #include "main.hpp"
-#include "cmp/aicmp.hpp"
-#include "util/types.hpp"
 #include "man/levelman.hpp"
-#include <cstdlib>
-#include <irrlicht/irrMath.h>
 
 void game2() {
     LevelMan      LM;

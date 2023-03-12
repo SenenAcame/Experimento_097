@@ -109,7 +109,7 @@ struct AISys {
         seek(predict, phyEnem, timeArrive);
     }
 
-    void twoSteps(AICmp const& ai, PhysicsCmp2& phyEnem, Point const velPlayer) const noexcept{
+    void twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int const sala) const noexcept{
         Point target { ai.ox, ai.oz };
         auto t_lin_dist { distance(target, { phyEnem.x, phyEnem.z }) };
 
@@ -118,6 +118,15 @@ struct AISys {
             //persue(target, phyEnem, velPlayer,ai.timeArrive); 
         }
         else {
+            bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
+            bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
+
+            if(inRoom)     { ai.rad = 20.; }
+            else if(inCorr){ ai.rad = 3.;  }
+
+            ai.flock_x = cos(ai.ang) * ai.rad;
+            ai.flock_z = sin(ai.ang) * ai.rad;
+
             Point flock_targ {ai.flock_x + ai.ox, ai.flock_z + ai.oz};
             seek(flock_targ, phyEnem, ai.timeArrive);
             //persue(flock_targ, phyEnem, velPlayer,ai.timeArrive);
@@ -163,9 +172,10 @@ struct AISys {
                     case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                     case SB::Shoot:  shoot (ai, phy, EM, dev, e); break;
                     case SB::Two_Steps: {
-                        auto& player    = EM.getEntityById(bb.entyID);
-                        auto& phyPlayer = EM.getComponent<PhysicsCmp2>(player);
-                        twoSteps(ai, phy, { phyPlayer.vx, phyPlayer.vz }); 
+                        auto& player     = EM.getEntityById(bb.entyID);
+                        auto& phyPlayer  = EM.getComponent<PhysicsCmp2>(player);
+                        auto& salaPlayer = EM.getComponent<SalaCmp>(player);
+                        twoSteps(ai, phy, { phyPlayer.vx, phyPlayer.vz }, salaPlayer.sala); 
                         break;
                     }
                     case SB::Persue: {
