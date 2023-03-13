@@ -29,11 +29,11 @@ struct EFoco : public Entity {
     };
 
     EFoco();
-    EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float cuadratic, Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, Shader *shader)
+    EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float cuadratic, Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, Shader *shader);
     ~EFoco();
 
     void init();
-    void draw(Mat4, bool) override;
+    void draw(Mat4, bool) /*override*/;
 
     //setters 
     void setIntensity_(float);
@@ -42,7 +42,7 @@ struct EFoco : public Entity {
     void setAnglAttenuation_(float);
     void setConstAttenuation_(float);
     void setLinearAttenuation_(float);
-    void setQuadraticAttenuation(float);
+    void setQuadraticAttenuation_(float);
 
     void setPosition(Vec3 pos);
     void changeAllColor(Vec3 color);

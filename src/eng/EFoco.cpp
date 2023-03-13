@@ -1,6 +1,6 @@
 #include "EFoco.hpp"
 
-EFoco::EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float quadratic, Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, Shader *shader)
+EFoco::EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float quadratic, Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, Shader *shader) {
 
     intensity_ = intensity; // R , G , B , A(lpha)
     tLightType_ = type;
@@ -29,7 +29,7 @@ void EFoco::init(){
 
     intensity_ = 1.0f;
     tLightType_ = directional;
-    aperture = 0.0f;
+    aperture_ = 0.0f;
     angleAttenuation_ = 0.0f;
     constAttenuation_ = 0.0f;
     linearAttenuation_ = 0.0f;
@@ -39,24 +39,24 @@ void EFoco::init(){
 Vec3 EFoco::checkColor(std::string color){
     Vec3 retorno(1.0f);
 
-    if(strcmp(color.c_str()), "white" == 0)
+    if(strcmp(color.c_str(), "white") == 0)
         retorno = White_light;
-    else if (strcmp(color.c_str()), "black" == 0)
+    else if (strcmp(color.c_str(), "black") == 0)
         retorno = Black_light;
-    else if (strcmp(color.c_str()), "red" == 0)
+    else if (strcmp(color.c_str(), "red") == 0)
         retorno = Red_light;
-    else if (strcmp(color.c_str()), "green" == 0)
+    else if (strcmp(color.c_str(), "green") == 0)
         retorno = Green_light;
-    else if (strcmp(color.c_str()), "dark_blue" == 0)
+    else if (strcmp(color.c_str(), "dark_blue") == 0)
         retorno = DarkBlue_light;
-    else if (strcmp(color.c_str()), "orange" == 0)
+    else if (strcmp(color.c_str(), "orange") == 0)
         retorno = Orange_light;
-    else if (strcmp(color.c_str()), "yellow" == 0)
+    else if (strcmp(color.c_str(), "yellow") == 0)
         retorno = Yellow_light;
-    else if (strcmp(color.c_str()), "sky" == 0)
+    else if (strcmp(color.c_str(), "sky") == 0)
         retorno = Sky_light;
-    else if (strcmp(color.c_str()), "light_yellow" == 0)
-        retorno = LightYellow;
+    else if (strcmp(color.c_str(), "light_yellow") == 0)
+        retorno = LightYellow_light;
 
     return retorno;
 }
@@ -209,6 +209,30 @@ void EFoco::changeDistance(int distance) {
 
 // GETTERS
 
-float EFoco::getIntensity_() const noexcept{
+float EFoco::getIntensity_() const noexcept {
     return intensity_;
+}
+
+EFoco::lightType EFoco::getLightType() const noexcept {
+    return tLightType_;
+}
+
+float EFoco::getAperture_() const noexcept {
+    return aperture_;
+}
+
+float EFoco::getAnglAttenuation_() const noexcept {
+    return angleAttenuation_;
+}
+
+float EFoco::getConstAttenuation_() const noexcept {
+    return constAttenuation_;
+}
+
+float EFoco::getLinearAttenuation_() const noexcept {
+    return linearAttenuation_;
+}
+
+float EFoco::getQuadraticAttenuation_() const noexcept {
+    return quadraticAttenuation_;
 }

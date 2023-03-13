@@ -6,9 +6,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "mesh.hpp"
-
 #include <glm/gtc/matrix_transform.hpp>
-
+#include "../src/eng/GLgEngine.hpp"
 #include <string>
 #include <fstream>
 #include <sstream>
