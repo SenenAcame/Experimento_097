@@ -17,7 +17,7 @@ void game2() {
     TheEngine     dev {1080, 720, &InpSys};
     
     srand(time(NULL));
-    //ColSys.init_Hitoxes_Map(EM, dev);
+    ColSys.init_Hitoxes_Map(EM, dev);
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
@@ -29,7 +29,7 @@ void game2() {
     //LM.createBasicEnemy(-25, -20, dev, SouSys);
     //LM.createBasicEnemy(-20, -25, dev, SouSys);
     //LM.createBasicEnemy(-30, -20, dev, SouSys);
-    //LM.createBasicEnemy(-20, -30, dev, SouSys);
+    //LM.createBasicEnemy(-20, -20, dev, SouSys);
     //LM.createBasicEnemy(-25, -25, dev, SouSys);
 
     //Enty& weapon = EM.createEntity();
