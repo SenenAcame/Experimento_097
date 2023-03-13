@@ -121,7 +121,7 @@ struct AISys {
             bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
             bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
 
-            if(inRoom)     { ai.rad = 20.; }
+            if(inRoom)     { ai.rad = 15.; }
             else if(inCorr){ ai.rad = 3.;  }
 
             ai.flock_x = cos(ai.ang) * ai.rad;
