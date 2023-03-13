@@ -17,7 +17,7 @@ void game2() {
     TheEngine     dev {1080, 720, &InpSys};
     
     srand(time(NULL));
-    ColSys.init_Hitoxes_Map(EM, dev);
+    //ColSys.init_Hitoxes_Map(EM, dev);
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     Enty& map    = LM.createMap(dev, MapSys, SouSys);

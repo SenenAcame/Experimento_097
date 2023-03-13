@@ -29,7 +29,7 @@ struct LevelMan {
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
         EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapa.obj","assets/textures/wall.bmp"));
+        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapas/mapa.obj","assets/textures/wall.bmp"));
         EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
         EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
         EM.addTag      <TMap>       (map);
@@ -56,7 +56,7 @@ struct LevelMan {
         auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=5.f, .damage=20.f, .speed=15.f});
         
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/portal1.bmp"));
+        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
         EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
         return enemy;
     }
@@ -77,7 +77,7 @@ struct LevelMan {
         auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
 
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/fire.bmp"));
+        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
         EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
         EM.addTag      <TDistEnemy> (enemy);
         return enemy;
@@ -88,7 +88,7 @@ struct LevelMan {
         auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
 
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo3.obj","assets/textures/faerie2.bmp"));
+        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/faerie2.bmp"));
         EM.addComponent<EstadoCmp>  (enemy, 1.525f, 5.725f, 2.105f);
         EM.addTag      <TTankEnemy> (enemy);
         return enemy;
@@ -131,7 +131,7 @@ struct LevelMan {
     Enty& createDoor(float x_pos, float z_pos, TheEngine& dev) {
         Enty& door = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(door, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
-        EM.addComponent<RenderCmp2> (door, dev.createModel("assets/models/monstruo3.obj","assets/textures/portal1.bmp"));
+        EM.addComponent<RenderCmp2> (door, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/portal1.bmp"));
         EM.addComponent<EstadoCmp>  (door, 10.f, 10.f, 10.f);
         EM.addTag<TInteract>(door);
         EM.addTag<TWall>    (door);
@@ -142,7 +142,7 @@ struct LevelMan {
     Enty& createKey(float x_pos, float z_pos, TheEngine& dev) {
         Enty& key = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(key, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
-        EM.addComponent<RenderCmp2> (key, dev.createModel("assets/models/enemy.obj","assets/textures/portal1.bmp"));
+        EM.addComponent<RenderCmp2> (key, dev.createModel("assets/models/otros/enemy.obj","assets/textures/portal1.bmp"));
         EM.addComponent<EstadoCmp>  (key, 10.f, 10.f, 10.f);
         EM.addTag<TInteract>(key);
         EM.addTag<TKey>     (key);
