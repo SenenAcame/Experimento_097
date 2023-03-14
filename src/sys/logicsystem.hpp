@@ -8,6 +8,7 @@ struct LogicSystem {
     using SYSTAGs = MP::Typelist<TInteract>;
     using SYSCMP_Player = MP::Typelist<SoundCmp>;
     using SYSTAG_Player = MP::Typelist<TPlayer>;
+    using SYSTAG_Walls  = MP::Typelist<TWall>;
     static constexpr double PI { std::numbers::pi };
 
     void update(EntyMan& EM, TheEngine& eng, double dt) {
@@ -38,7 +39,6 @@ struct LogicSystem {
                     }
                     else if(entity.hasTAG<TWeapon>()){
                         //proceso Colision Weapon
-                        
                         colisionWeapon   (EM, entity, entity_colisioned, eng);
                     }
                     else if(entity.hasTAG<TDoor>()){
@@ -268,22 +268,38 @@ struct LogicSystem {
         copy_physics.x += dt * copy_physics.vx;
         copy_physics.z += dt * copy_physics.vz;
 
-        //comprobar colision en siquiente posicion
+        //comprobar colision en siguiente posicion
         dx = abs(copy_physics.x - wall_physc.x) - (state.width + wall_state.width);
         dz = abs(copy_physics.z - wall_physc.z) - (state.depth + wall_state.depth);
 
         if(dx<=0 && dz<=0) {
             auto& phy = EM.getComponent<PhysicsCmp2>(player);
-            
-            if(dx<dz) { 
-                phy.partial_x = copy_physics.vx; 
+            if(dx < dz) {
+                copy_physics.x += dt * copy_physics.vx;
+                if(!checkFutureCollision(EM, wall.getID(), copy_physics.x, copy_physics.z, state.width, state.depth))
+                    phy.partial_x = copy_physics.vx;
             }
-            else { 
-                phy.partial_z = copy_physics.vz; 
+            else {
+                copy_physics.z += dt * copy_physics.vz;
+                if(!checkFutureCollision(EM, wall.getID(), copy_physics.x, copy_physics.z, state.width, state.depth))
+                    phy.partial_z = copy_physics.vz;
             }
             return 1;
         }
         return 0;
     }
 
+    bool checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept {
+        bool check = false;
+        EM.foreach<SYSCMPs, SYSTAG_Walls>(
+            [&](Enty& future_collisioned, PhysicsCmp2& future_phy, EstadoCmp& future_state){
+                if(colld_id != future_collisioned.getID()) {
+                    float future_dx = abs(f_coordx - future_phy.x) - (width + future_state.width);
+                    float future_dz = abs(f_coordz - future_phy.z) - (depth + future_state.depth);
+                    if(future_dx <= 0 && future_dz <= 0) check = true;
+                }
+            }
+        );
+        return check;
+    }
 };

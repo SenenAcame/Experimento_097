@@ -12,7 +12,7 @@ struct RenSys2 {
             [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend){
                 if(ent.hasTAG<TEnemy>()){
                     float giro = (-phy.orieny)*180/irr::core::PI+360;
-                    rend.n->setRotation({0,giro,0});
+                    rend.n->setRotation({rend.n->getRotation().X,giro,rend.n->getRotation().Z});
                 }
                 rend.n->setPosition({static_cast<float>(phy.x), static_cast<float>(phy.y), static_cast<float>(phy.z)});
             }
