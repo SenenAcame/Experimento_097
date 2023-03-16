@@ -16,7 +16,7 @@ struct PhySys2 {
                 }
                 else{
                     bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Shoot);
-                    bool enemy_is_diying              = (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Diying);
+                    bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Diying);
                     if(enemy_is_diying){ physic.y-=0.1; }
                     else if(player_or_enemy_not_shooting){
                         entityPhysics(en, physic, delta);  
@@ -37,11 +37,12 @@ struct PhySys2 {
         if      (p.orieny > 2*PI) p.orieny -= 2*PI;
         else if (p.orieny < 0)    p.orieny += 2*PI;
 
-        if(entity.hasTAG<TPlayer>()){
+        if(entity.hasTAG<TPlayer>()) {
+            //std::cout<<"Jugador: "<<p.orieny<<"\n";
             p.vx =  p.v_lin * std::sin(p.orieny) + p.partial_x;
             p.vz =  p.v_lin * std::cos(p.orieny) + p.partial_z;
         }
-        else{
+        else {
             p.vx =  p.v_lin * std::cos(p.orieny) + p.partial_x;
             p.vz =  p.v_lin * std::sin(p.orieny) + p.partial_z;
         }

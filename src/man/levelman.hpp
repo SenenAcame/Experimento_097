@@ -164,7 +164,7 @@ private:
     void defineAI(Enty& enemy) {
         int num = rand() % 360;
         double angle = num * irr::core::PI / 180;
-        double radius = 20.0;
+        double radius = 30.0;
         EM.addComponent<AICmp>(
             enemy, 
             AICmp {
@@ -174,7 +174,7 @@ private:
                 .flock_z = sin(angle) * radius, 
                 .arrivalRadius = 1., 
                 .timeArrive = 0.1, 
-                .cooldown = 1., 
+                .cooldown = 0.1, 
                 .enable = true, 
                 .behaviour = SB::Two_Steps 
             }
