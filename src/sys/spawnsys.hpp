@@ -11,7 +11,7 @@ struct SpawnSystem {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& spwEnty, SpawnCmp& spwCMP){
                 if(spwCMP.active == 1 && spwCMP.numEnem != 0 /*numEnemysPerRound >0*/) {
-                    size_t type = 0;
+                    //size_t type = 0;
                     //createEnemy(type, EM, eng, ss, spwCMP, spwEnty);
                    
                 }
@@ -20,19 +20,19 @@ struct SpawnSystem {
     }
 
     //void activeRespawn(Enty& player, Enty& spawn, Enty& map, EntyMan& EM){
-//
+    //
     //    //Recoger la sala donde esta el jugador
     //    
-//
+    //
     //    //Calcular los respawn más cercanos
-//
+    //
     //    //Activarlos
-//
+    //
     //}
 
     void createEnemy(size_t type, EntyMan& EM, TheEngine& eng, SoundSystem_t& ss, SpawnCmp& spwCMP, Enty& spwEnty){
         
-        Enty& enem1 = EM.createEntity();
+        //Enty& enem1 = EM.createEntity();
         switch (type) {
             
             case 0: 

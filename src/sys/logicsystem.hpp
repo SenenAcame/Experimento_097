@@ -189,9 +189,9 @@ struct LogicSystem {
         auto& phy_player = EM.getComponent<PhysicsCmp2>(ent_move);
         uint8_t collisioned = preCalculation(EM, ent_move, dt);
         if(collisioned) {
-            if(ent_move.hasTAG<TEnemy>()) phy_player.v_lin = -phy_player.v_lin;
-            else phy_player.v_lin = 0;
-            
+            //if(ent_move.hasTAG<TEnemy>()) phy_player.v_lin = -phy_player.v_lin;
+            //else phy_player.v_lin = 0;
+            phy_player.v_lin = 0;
         };
     }
 
@@ -287,6 +287,7 @@ struct LogicSystem {
 
         //si colisiona con una pared
         if(dx<=0 && dz<=0) {
+            std::cout<<dx<<" "<<dz<<"\n";
             auto& phy = EM.getComponent<PhysicsCmp2>(player);
             if(dx < dz) {
                 //comprobar si la siguiente posicion en el eje X colisiona con otra pared distinta
@@ -300,13 +301,13 @@ struct LogicSystem {
                 if(!checkFutureCollision(EM, wall.getID(), copy_physics.x, copy_physics.z, state.width, state.depth))
                     phy.partial_z = copy_physics.vz;
             }
-            std::cout<<"x: "<<phy.x<<"  z: "<<phy.z<<"\n";
-            std::cout<<"vx: "<<phy.vx<<"  vz: "<<phy.vz<<" "<<"\n";
-            std::cout<<"partial_x: "<<phy.partial_x<<"  partial_z: "<<phy.partial_z<<"\n";
-            std::cout<<"orienx: "<<phy.orienx<<"  orieny: "<<phy.orieny<<"\n";
-            std::cout<<"v_lin: "<<phy.v_lin<<"  v_ang: "<<phy.v_ang<<"\n";
-            std::cout<<"a_lin: "<<phy.a_lin<<"  a_ang: "<<phy.a_ang<<"\n";
-            std::cout<<"\n\n";
+            //std::cout<<"x: "<<phy.x<<"  z: "<<phy.z<<"\n";
+            //std::cout<<"vx: "<<phy.vx<<"  vz: "<<phy.vz<<" "<<"\n";
+            //std::cout<<"partial_x: "<<phy.partial_x<<"  partial_z: "<<phy.partial_z<<"\n";
+            //std::cout<<"orienx: "<<phy.orienx<<"  orieny: "<<phy.orieny<<"\n";
+            //std::cout<<"v_lin: "<<phy.v_lin<<"  v_ang: "<<phy.v_ang<<"\n";
+            //std::cout<<"a_lin: "<<phy.a_lin<<"  a_ang: "<<phy.a_ang<<"\n";
+            //std::cout<<"\n\n";
             return 1;
         }
         return 0;

@@ -60,13 +60,20 @@ struct AISys {
         phy.v_ang = capLimits(t_ang_vel, phy.kMxVAng);
     }
 
-    constexpr void shoot(AICmp& ai, PhysicsCmp2& phy, EntyMan& EM, TheEngine& eng, Enty& enem) const noexcept {
+    constexpr void shoot(AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheEngine& eng, Enty const& enem) const noexcept {
         if(ai.shoot){
             Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
             auto dM { distanceModule(t_dist) };
 
             Enty& bullet  = EM.createEntity();
-            auto& stats = EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{.damage=EM.getComponent<EstadisticaCmp>(enem).damage, .speed=0.8f, .bulletRad=0.5f}); 
+            auto& stats = EM.addComponent<EstadisticaCmp>(
+                bullet, EstadisticaCmp{
+                    .damage    = EM.getComponent<EstadisticaCmp>(enem).damage, 
+                    .speed     = 0.8f, 
+                    .bulletRad = 0.5f
+                }
+            ); 
+
             EM.addComponent<PhysicsCmp2>(
                 bullet, PhysicsCmp2{
                     .x  = phy.x,
@@ -77,7 +84,7 @@ struct AISys {
                     .vz = t_dist.z/dM * stats.speed
                 }
             );
-            EM.addComponent<RenderCmp2> (bullet, eng.createSphere(EM.getComponent<EstadisticaCmp>(bullet).bulletRad));
+            EM.addComponent<RenderCmp2> (bullet, eng.createSphere(stats.bulletRad));
             EM.addComponent<EstadoCmp>  (bullet);
             EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=10});
             EM.addTag<TEneBullet>(bullet);
@@ -133,7 +140,7 @@ struct AISys {
         }
     }
 
-    constexpr void percept(BlackBoardCmp& board, AICmp& ai, double delta) const noexcept {
+    constexpr void percept(BlackBoardCmp const& board, AICmp& ai, double const delta) const noexcept {
         ai.time += delta;
         if( ai.time <= ai.cooldown) return;
 
@@ -147,7 +154,7 @@ struct AISys {
         }
     }
 
-    void die(Enty& enemy, RenderCmp2& renderEne, PhysicsCmp2& phy) const noexcept {
+    void die(Enty& enemy, RenderCmp2& renderEne) const noexcept {
         float rotEneX = renderEne.n->getRotation().X;
         float rotEneY = renderEne.n->getRotation().Y;
         float rotEneZ = renderEne.n->getRotation().Z;
@@ -161,7 +168,7 @@ struct AISys {
         auto& bb = EM.getBoard();
 
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& e, AICmp& ai, PhysicsCmp2& phy, RenderCmp2& render) {
+            [&](Enty& entity, AICmp& ai, PhysicsCmp2& phy, RenderCmp2& render) {
                 percept(bb, ai, dt);
 
                 if(!ai.enable) return;
@@ -170,7 +177,7 @@ struct AISys {
                     case SB::Arrive: arrive(ai, phy); break;
                     case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                     case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                    case SB::Shoot:  shoot (ai, phy, EM, dev, e); break;
+                    case SB::Shoot:  shoot (ai, phy, EM, dev, entity); break;
                     case SB::Two_Steps: {
                         auto& player     = EM.getEntityById(bb.entyID);
                         auto& phyPlayer  = EM.getComponent<PhysicsCmp2>(player);
@@ -184,7 +191,7 @@ struct AISys {
                         persue({ ai.ox, ai.oz }, phy, { phyPlayer.vx, phyPlayer.vz }, ai.timeArrive); 
                         break;
                     }
-                    case SB::Diying: die(e, render, phy); break;
+                    case SB::Diying: die(entity, render); break;
                 }
             }
         );

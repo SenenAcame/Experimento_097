@@ -11,9 +11,9 @@ struct ColSys2 {
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& main_entity, PhysicsCmp2& main_phy, EstadoCmp& main_state) {
+            [&](Enty const& main_entity, PhysicsCmp2 const& main_phy, EstadoCmp& main_state) {
                 EM.foreach<SYSCMPs, SYSTAGs>(
-                    [&](Enty& collisioned_entity, PhysicsCmp2& collisioned_phy, EstadoCmp& collisioned_state){
+                    [&](Enty const& collisioned_entity, PhysicsCmp2 const& collisioned_phy, EstadoCmp& collisioned_state){
                         if((main_entity.getID() != collisioned_entity.getID()) && 
                            (collisioned_state.colision == 0))
                         {
@@ -41,14 +41,14 @@ struct ColSys2 {
         );
     }
 
-    float calculateDist(float main_pos, float coll_pos, float main_dim, float coll_dim) {
+    [[nodiscard]] constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) const noexcept{
         float d;
         d = abs(main_pos - coll_pos);
         d -= main_dim + coll_dim;
         return d;
     }
 
-    void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) {
+    void init_Hitoxes_Map(EntyMan& EM, TheEngine& dev) noexcept {
         hitboxes_Sala_Inicio     (EM, dev);
         hitboxes_Inicio_Adyacente(EM, dev);
         hitboxes_Patio           (EM, dev);
@@ -59,7 +59,7 @@ struct ColSys2 {
         hitboxes_Pasillo3        (EM, dev);
     }
 
-    void hitboxes_Sala_Inicio(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Sala_Inicio(EntyMan& EM, TheEngine& dev) noexcept {
         //Sala de inicio:
         //
         //Dimensiones
@@ -84,7 +84,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Inicio_Adyacente(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Inicio_Adyacente(EntyMan& EM, TheEngine& dev) noexcept {
         //Sala adyacente:
         //
         //Dimensiones
@@ -105,7 +105,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Patio(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Patio(EntyMan& EM, TheEngine& dev) noexcept {
         //Sala Patio:
         //
         //Dimensiones
@@ -130,7 +130,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Patio_Adyacente(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Patio_Adyacente(EntyMan& EM, TheEngine& dev) noexcept {
         //Sala Patio Adyacente:
         //
         //Dimensiones
@@ -147,7 +147,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Sala_Alejada(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Sala_Alejada(EntyMan& EM, TheEngine& dev) noexcept {
         //Sala Alejada:
         //
         //Dimensiones
@@ -170,7 +170,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Pasillo1(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Pasillo1(EntyMan& EM, TheEngine& dev) noexcept {
         //Pasillo 1:
         //
         //Dimensiones
@@ -187,7 +187,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Pasillo2(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Pasillo2(EntyMan& EM, TheEngine& dev) noexcept {
         //Pasillo 2:
         //
         //Dimensiones
@@ -210,7 +210,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxes_Pasillo3(EntyMan& EM, TheEngine& dev) {
+    void hitboxes_Pasillo3(EntyMan& EM, TheEngine& dev) noexcept {
         //Pasillo 3:
         //
         //Dimensiones
@@ -227,7 +227,7 @@ struct ColSys2 {
         create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void create_Hitbox(uint8_t num, EntyMan& EM, float pos_x[], float pos_z[], float widht[], float depth[], TheEngine& dev) {
+    void create_Hitbox(uint8_t const num, EntyMan& EM, float const pos_x[], float const pos_z[], float const widht[], float const depth[], TheEngine& dev) {
         for(uint8_t i {0}; i < num; i++) {
             Enty& wall = EM.createEntity();
             EM.addComponent<PhysicsCmp2>(wall, static_cast<double>(pos_x[i]), pos_y, static_cast<double>(pos_z[i]));

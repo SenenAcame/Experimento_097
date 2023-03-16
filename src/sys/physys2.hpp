@@ -11,33 +11,32 @@ struct PhySys2 {
     void update(EntyMan& EM, double delta) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& en, PhysicsCmp2& physic) {
-                if(en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>()){
-                    bulletPhysics(physic);
-                }
+                if(en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>()) bulletPhysics(physic);
                 else{
                     bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Shoot);
                     bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Diying);
-                    if(enemy_is_diying){ physic.y-=0.1; }
+                    
+                    if(enemy_is_diying) { physic.y -= 0.1; }
                     else if(player_or_enemy_not_shooting){
-                        entityPhysics(en, physic, delta);  
+                        entityPhysics(en.hasTAG<TPlayer>(), physic, delta);  
                     }
                 }
             }
         );
     }
 
-    void bulletPhysics(PhysicsCmp2& p) {
+    void bulletPhysics(PhysicsCmp2& p) const noexcept{
         p.x += p.vx;
         p.y += p.vy;
         p.z += p.vz;
     }
 
-    void entityPhysics(Enty& entity, PhysicsCmp2& p, double dt) {
+    void entityPhysics(bool const is_player, PhysicsCmp2& p, double const dt) const noexcept{
         p.orieny += dt * p.v_ang;
         if      (p.orieny > 2*PI) p.orieny -= 2*PI;
         else if (p.orieny < 0)    p.orieny += 2*PI;
 
-        if(entity.hasTAG<TPlayer>()) {
+        if(is_player) {
             //std::cout<<"Jugador: "<<p.orieny<<"\n";
             p.vx =  p.v_lin * std::sin(p.orieny) + p.partial_x;
             p.vz =  p.v_lin * std::cos(p.orieny) + p.partial_z;

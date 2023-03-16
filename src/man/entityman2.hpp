@@ -143,7 +143,6 @@ struct EntityMan2 {
         for(auto& cont : entities_){
             if(cont.getID()== id){
                 return cont;
-                break;
             }
         }
     }
