@@ -37,10 +37,10 @@ struct InpSys2 : public irr::IEventReceiver{
                 movementMouse(player, eng, rend, phy);
                 if(mouse.isLeftPressed()) { shoot(EM, player, rend, eng, SS, equipment, reloadTimer, dt); }
 
-                if(keyboard.isKeyPressed(input.key_up))                { phy.v_lin =  stats.speed; arriba = true;}
-                if(keyboard.isKeyPressed(input.key_down))              { phy.v_lin = -stats.speed; abajo  = true;}
-                if(keyboard.isKeyPressed(input.key_right))             { diagonalMovement(phy, 45, stats.speed, arriba, abajo); }
-                if(keyboard.isKeyPressed(input.key_left))              { diagonalMovement(phy, 45, -stats.speed, abajo, arriba); }
+                if(keyboard.isKeyPressed(input.key_up))    { phy.v_lin =  stats.speed; arriba = true;}
+                if(keyboard.isKeyPressed(input.key_down))  { phy.v_lin = -stats.speed; abajo  = true;}
+                if(keyboard.isKeyPressed(input.key_right)) { diagonalMovement(phy, stats.speed, arriba, abajo); }
+                if(keyboard.isKeyPressed(input.key_left))  { diagonalMovement(phy, -stats.speed, abajo, arriba); }
                 if(keyboard.isKeyPressed(input.key_reloadCurrentAmmo)) { reload(EM, player, equipment);}
                 if(keyboard.isKeyPressed(input.key_weapon1))           { changeWeapon(EM, player, 0, eng); }
                 if(keyboard.isKeyPressed(input.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(EM, player, 1, eng); }
@@ -171,14 +171,11 @@ private:
         if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
     }
     
-    void diagonalMovement(PhysicsCmp2& p, size_t const ang, float const speed, bool const up, bool const down) {
+    void diagonalMovement(PhysicsCmp2& p, float const speed, bool const up, bool const down) {
         p.v_lin = speed;
         p.v_ang = 90;
-        if(down) {
-            p.v_ang = -ang; 
-            p.v_lin = -speed;
-        }
-        else if(up) p.v_ang = ang;
+        if(up)        p.v_ang = 45;
+        else if(down) p.v_ang = 135;
     }
 
     void reload(EntyMan& EM, Enty& player, InventarioCmp& equipment) {

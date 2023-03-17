@@ -287,7 +287,7 @@ struct LogicSystem {
 
         //si colisiona con una pared
         if(dx<=0 && dz<=0) {
-            std::cout<<dx<<" "<<dz<<"\n";
+            //std::cout<<dx<<" "<<dz<<"\n";
             auto& phy = EM.getComponent<PhysicsCmp2>(player);
             if(dx < dz) {
                 //comprobar si la siguiente posicion en el eje X colisiona con otra pared distinta
