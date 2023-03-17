@@ -21,7 +21,6 @@ struct InpSys2 : public irr::IEventReceiver{
             [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy) {
                 auto& equipment = EM.getComponent<InventarioCmp> (player);
                 auto& stats     = EM.getComponent<EstadisticaCmp>(player);
-               
                 double reloadTimer = 0;
                 bool arriba = false;
                 bool abajo  = false;
@@ -47,8 +46,8 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(input.key_weapon3) && equipment.inventary[2] != 0) { changeWeapon(EM, player, 2, eng); }
                 //if(keyboard.isKeyPressed(input.key_interaction)){ interact(EM, player, input.key_interaction); }
 
-                if(keyboard.isKeyPressed(input.key_unlockAll))         { unlockAll(equipment.inventary); }
-                if(keyboard.isKeyPressed(input.key_reloadALLAmmo))     { reloadAll(EM, equipment); }
+                if(keyboard.isKeyPressed(input.key_unlockAll))     { unlockAll(equipment.inventary); }
+                if(keyboard.isKeyPressed(input.key_reloadALLAmmo)) { reloadAll(EM, equipment); }
                 
                 bb = { phy.x, phy.z, true, true , player.getID()};
             }

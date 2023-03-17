@@ -1,5 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
+#include <cstdint>
+#include <string>
 
 struct LevelMan {
     using EneTAGs = MP::Typelist<TEnemy>;
@@ -25,20 +27,41 @@ struct LevelMan {
             }
         );
     }
+    
     Enty& createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapas/mapa.obj","assets/textures/wall.bmp"));
+        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapas/mapa_simple.obj","assets/textures/wall.bmp"));
         EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
         EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
         EM.addTag      <TMap>       (map);
         return map;
     }
 
+    void createMap2(TheEngine& dev) {
+        irr::io::path models[6] = {
+            "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
+            "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
+            "assets/models/mapas/mapa_simple_partes/Sala_3.obj",
+            "assets/models/mapas/mapa_simple_partes/Pasillo_1.obj",
+            "assets/models/mapas/mapa_simple_partes/Pasillo_2.obj",
+            "assets/models/mapas/mapa_simple_partes/Pasillo_3.obj",
+        };
+        irr::io::path textures[6] = {
+            "assets/textures/mapa/textura_Sala_1.png",
+            "assets/textures/mapa/textura_sala_2.png",
+            "assets/textures/mapa/textura_sala_3.png",
+            "assets/textures/mapa/textura_pasillo_1.png",
+            "assets/textures/mapa/textura_pasillo_2.png",
+            "assets/textures/mapa/textura_pasillo_3.png",
+        };
+        for(uint8_t i {0}; i<6; i++) 
+            createRoom(dev, models[i], textures[i]);
+    }
+
     Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& player = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-60.f, .y=5, .z=155.f});
+        EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=30.f});
         EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
         EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
@@ -159,6 +182,12 @@ private:
         EM.addTag      <TEnemy>   (enemy);
         EM.addTag      <TInteract>(enemy);
         return enemy;
+    }
+
+    void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture) {
+        Enty& room = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(room);
+        EM.addComponent<RenderCmp2> (room, dev.createModel(model, texture));
     }
 
     void defineAI(Enty& enemy) {

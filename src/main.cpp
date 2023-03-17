@@ -17,11 +17,12 @@ void game2() {
     TheEngine     dev {1080, 720, &InpSys};
     
     srand(time(NULL));
-    ColSys.init_Hitoxes_Map(EM, dev);
+    //ColSys.init_Hitoxes_Map(EM, dev);
     dev.getDevice()->getCursorControl()->setVisible(false);
 
-    Enty& map    = LM.createMap(dev, MapSys, SouSys);
-    Enty& player = LM.createPlayer(dev, SouSys);
+    //Enty& map    = LM.createMap(dev, MapSys, SouSys);
+    LM.createMap2(dev);
+    LM.createPlayer(dev, SouSys);
 
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
@@ -105,7 +106,7 @@ void game2() {
         LogicSys.update(EM, dev, dt);
         PhySys.  update(EM, dt);
         SouSys.  update(EM);
-        SpawnSys.update(EM, dev, SouSys, player, map);
+        //SpawnSys.update(EM, dev, SouSys, player, map);
         LM.      update(dev, SouSys);
         DestSys. update(EM, dt);
 
