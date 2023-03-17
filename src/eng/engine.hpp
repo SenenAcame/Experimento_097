@@ -3,6 +3,17 @@
 #include <stdexcept>
 #include <memory>
 #include <iostream>
+//IMGUI
+#include <imgui/src/imgui.h>
+#include <imgui/src/imgui_impl_glfw.h>
+#include <imgui/src/imgui_impl_opengl3.h>
+#include <stdio.h>
+#define GL_SILENCE_DEPRECATION
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
+#endif
+#include <GLFW/glfw3.h> // Will drag system OpenGL headers
+
 
 struct TheEngine {
     using AnimatedMeshNode = irr::scene::IAnimatedMeshSceneNode;
@@ -15,6 +26,8 @@ struct TheEngine {
     void beginScene();
     void drawAll();
     void endScene();
+    void initIMGUI();
+
 
     auto loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel(Path obj, Path asset);
@@ -53,16 +66,25 @@ private:
     using DestructorFunc = void (*)(irr::IrrlichtDevice*);
     using irrDeviceManaged = std::unique_ptr<irr::IrrlichtDevice, DestructorFunc>;
 
-    static void destroy(irr::IrrlichtDevice* p){ p->drop(); };
+    static void destroy(irr::IrrlichtDevice* p){ 
+        
 
+        p->drop(); 
+    };
+
+    GLFWwindow* m_window {nullptr};
     irr::u32 const width_{}, height_{};
     irr::IEventReceiver* receive {};
 
+
+
     irrDeviceManaged device_ {
+        
         irr::createDevice(irr::video::EDT_BURNINGSVIDEO, 
                             irr::core::dimension2d<irr::u32>(width_, height_), 
                             16,false,false,false,receive), 
         destroy
+        
     };
     irr::video::IVideoDriver  * const driver_ {device_ ? device_->getVideoDriver()    : nullptr};
     irr::scene::ISceneManager * const smgr_   {device_ ? device_->getSceneManager()   : nullptr};

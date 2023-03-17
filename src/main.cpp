@@ -1,5 +1,6 @@
 #include "main.hpp"
 #include "man/levelman.hpp"
+#include "sys/rensys2.hpp"
 
 void game2() {
     LevelMan      LM;
@@ -15,10 +16,12 @@ void game2() {
     SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
     TheEngine     dev {1080, 720, &InpSys};
+
+    dev.initIMGUI();
     
     srand(time(NULL));
     ColSys.init_Hitoxes_Map(EM, dev);
-    dev.getDevice()->getCursorControl()->setVisible(false);
+    //dev.getDevice()->getCursorControl()->setVisible(false);
 
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
     Enty& player = LM.createPlayer(dev, SouSys);
