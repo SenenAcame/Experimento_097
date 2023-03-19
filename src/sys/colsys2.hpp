@@ -60,12 +60,12 @@ struct ColSys2 {
     }
 
     void init_Hitoxes_Map2(EntyMan& EM, TheEngine& dev) noexcept {
-        //hitboxesMapaSimpleSala1   (EM, dev);
-        //hitboxesMapaSimpleSala2   (EM, dev);
-        //hitboxesMapaSimpleSala3   (EM, dev);
-        //hitboxesMapaSimplePasillo1(EM, dev);
-        //hitboxesMapaSimplePasillo2(EM, dev);
-        //hitboxesMapaSimplePasillo3(EM, dev);
+        hitboxesMapaSimpleSala1   (EM, dev);
+        hitboxesMapaSimpleSala2   (EM, dev);
+        hitboxesMapaSimpleSala3   (EM, dev);
+        hitboxesMapaSimplePasillo1(EM, dev);
+        hitboxesMapaSimplePasillo2(EM, dev);
+        hitboxesMapaSimplePasillo3(EM, dev);
     }
 
     //salas del mapa original
@@ -243,20 +243,22 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: {}
-        //z: {}
+        //x: {-68, -33.5,  1} 34.5
+        //z: { -1,  33.5, 68} 34.5
         //
         //Paredes con puerta en medio
-        //x: {}
-        //z: {}
+        //x: {  -68, -56.75, -45.5} 11.25
+        //x: {-21.5, -10.25,     1} 11.25
+        //z: {   -1,  10.25,  21.5} 11.25
+        //z: { 45.5,  56.75,    68} 11.25
 
-        //float pos_x[] = {};
-        //float pos_z[] = {};
-        //float widht[] = {};
-        //float depth[] = {};
-        //uint8_t num_paredes {0};
-        //
-        //create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+        float pos_x[] = {-33.5, -68,   1,     1,     -56.75, -10.25};
+        float pos_z[] = {68,    33.5,  10.25, 56.75, -1,     -1};
+        float widht[] = {34.5,  thick, thick, thick, 11.25,  11.25};
+        float depth[] = {thick, 34.5,  11.25, 11.25, thick,  thick};
+        uint8_t num_paredes { 6 };
+        
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
     void hitboxesMapaSimpleSala2(EntyMan& EM, TheEngine& dev) noexcept {
@@ -264,20 +266,22 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: {}
-        //z: {}
+        //x: {73, 107.5, 142} 34.5
+        //z: {23,  57.5,  92} 34.5
         //
         //Paredes con puerta en medio
-        //x: {}
-        //z: {}
+        //x: {   73,  84.25, 95.5} 11.25
+        //x: {119.5, 130.75,  142} 11.25
+        //z: {   23,  34.25, 45.5} 11.25
+        //z: { 69.5,  80.75,   92} 11.25
 
-        //float pos_x[] = {};
-        //float pos_z[] = {};
-        //float widht[] = {};
-        //float depth[] = {};
-        //uint8_t num_paredes {0};
-        //
-        //create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+        float pos_x[] = {107.5,142  ,84.25,130.75,73,   73};
+        float pos_z[] = {92,   57.5 ,23,   23,    34.25,80.75};
+        float widht[] = {34.5, thick,11.25,11.25, thick,thick};
+        float depth[] = {thick,34.5 ,thick,thick, 11.25,11.25};
+        uint8_t num_paredes { 6 };
+        
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
     void hitboxesMapaSimpleSala3(EntyMan& EM, TheEngine& dev) noexcept {
@@ -285,20 +289,20 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: {}
-        //z: {}
+        //x: {  2.5,  37,  71.5} 34.5
+        //z: {-95.5, -61, -26.5} 34.5
         //
         //Paredes con puerta en medio
-        //x: {}
-        //z: {}
+        //z: {-95.5, -84.25,   -73} 11.25
+        //z: {  -49, -37.75, -26.5} 11.25
 
-        //float pos_x[] = {};
-        //float pos_z[] = {};
-        //float widht[] = {};
-        //float depth[] = {};
-        //uint8_t num_paredes {0};
-        //
-        //create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+        float pos_x[] = {37,   37,   2.5,   71.5,  2.5,   71.5  };
+        float pos_z[] = {-26.5,-95.5,-84.25,-84.25,-37.75,-37.75};
+        float widht[] = {34.5, 34.5, thick, thick, thick, thick };
+        float depth[] = {thick,thick,11.25, 11.25, 11.25, 11.25 };
+        uint8_t num_paredes { 6 };
+        
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
     void hitboxesMapaSimplePasillo1(EntyMan& EM, TheEngine& dev) noexcept {
@@ -306,20 +310,24 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: {}
-        //z: {}
+        //x: {   1,   37,   73} 36
+        //z: {21.5, 45.5, 69.5} 24
         //
         //Paredes con puerta en medio
-        //x: {}
-        //z: {}
+        //x: {   1,   13,   25} 12
+        //x: {  25,   49,   73} 24
+        //x: {   1,   25,   49} 24
+        //x: {  49,   61,   73} 12
+        //z: {21.5, 33.5, 45.5} 12
+        //z: {45.5, 57.5, 69.5} 12
 
-        //float pos_x[] = {};
-        //float pos_z[] = {};
-        //float widht[] = {};
-        //float depth[] = {};
-        //uint8_t num_paredes {0};
-        //
-        //create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+        float pos_x[] = {25,   49,   25,   61,   13,   49   };
+        float pos_z[] = {57.5, 33.5, 21.5, 45.5, 45.5, 69.5 };
+        float widht[] = {thick,thick,24,   12,   12,   24   };
+        float depth[] = {12,   12,   thick,thick,thick,thick};
+        uint8_t num_paredes { 6 };
+        
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
     void hitboxesMapaSimplePasillo2(EntyMan& EM, TheEngine& dev) noexcept {
@@ -327,20 +335,20 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: {}
-        //z: {}
+        //x: {71.5, 95.5, 119.5} 24
+        //z: { -73,  -25,    23} 48
         //
         //Paredes con puerta en medio
-        //x: {}
-        //z: {}
+        //x: {71.5, 83.5, 95.5} 12
+        //z: { -49,  -13,   23} 36
 
-        //float pos_x[] = {};
-        //float pos_z[] = {};
-        //float widht[] = {};
-        //float depth[] = {};
-        //uint8_t num_paredes {0};
-        //
-        //create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+        float pos_x[] = {119.5,95.5, 95.5, 83.5 };
+        float pos_z[] = {-25,  -13,  -73,  -49  };
+        float widht[] = {thick,thick,24,   12   };
+        float depth[] = {48,   36,   thick,thick};
+        uint8_t num_paredes { 4 };
+        
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
     void hitboxesMapaSimplePasillo3(EntyMan& EM, TheEngine& dev) noexcept {
@@ -348,20 +356,20 @@ struct ColSys2 {
         //
         //Dimensiones
         //   extremo  mitad  extremo  dist
-        //x: {}
-        //z: {}
+        //x: {-45.5, -21.5, 2.5} 24
+        //z: {   -1,   -37, -73} 36
         //
         //Paredes con puerta en medio
-        //x: {}
-        //z: {}
+        //x: {-21.5, -9.5, 2.5} 12
+        //z: {   -1,  -25, -49} 24
 
-        //float pos_x[] = {};
-        //float pos_z[] = {};
-        //float widht[] = {};
-        //float depth[] = {};
-        //uint8_t num_paredes {0};
-        //
-        //create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
+        float pos_x[] = {-45.5,-21.5,-21.5,-9.5 };
+        float pos_z[] = {-37,  -25,  -73,  -49  };
+        float widht[] = {thick,thick,24,   12   };
+        float depth[] = {36,   24,   thick,thick};
+        uint8_t num_paredes { 4 };
+        
+        create_Hitbox(num_paredes, EM, pos_x, pos_z, widht, depth, dev);
     }
 
     void create_Hitbox(uint8_t const num, EntyMan& EM, float const pos_x[], float const pos_z[], float const widht[], float const depth[], TheEngine& dev) {
@@ -369,7 +377,7 @@ struct ColSys2 {
             Enty& wall = EM.createEntity();
             EM.addComponent<PhysicsCmp2>(wall, static_cast<double>(pos_x[i]), pos_y, static_cast<double>(pos_z[i]));
             EM.addComponent<EstadoCmp>  (wall, widht[i], height, depth[i]);
-            //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
+            //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/otros/enemy.obj","assets/textures/fire.bmp"));
             EM.addTag      <TInteract>  (wall);
             EM.addTag      <TWall>      (wall);
         }
