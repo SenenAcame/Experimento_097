@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
 #include <glm/glm.hpp>
-#include "typeUsing.hpp"
+#include "utils/typeUsing.hpp"
 
 struct Entity;
+struct TNodo;
 struct Mesh;
 struct Texture;
 struct Shader;
@@ -14,14 +15,19 @@ struct Shader;
 
     using vecNodo = std::vector<TNodo *>;
 
-        TNodo() noexcept;
-        TNodo(Vec3, Vec3, Vec3) noexcept;
+        TNodo();
+        TNodo(Vec3, Vec3, Vec3);
 
         // inicializa el nodo por defecto
         void initTNode();
 
         // Borra el nodo
         void remove();
+
+        template<typename T>
+        T *getEntity() const noexcept {
+            return ((T *)entity_);
+        }
         
         // Añade un nodo hijo a este nodo
         int addSon(TNodo *hijo) noexcept;
@@ -31,7 +37,7 @@ struct Shader;
 
         //Manejador de entidad asociada
 
-        TNodo *getFather() noexcept;
+        TNodo *getFather() const noexcept;
         vecNodo *getSons() noexcept;
 
         //setters
@@ -50,7 +56,7 @@ struct Shader;
         // Suma la escala pasada por parametro a la existente
         void scale(Vec3 sca);
         //getters
-        Entity *getEntity() noexcept;
+        
         Vec3 getTranslation() const noexcept;
         Vec3 getRotation() const noexcept;
         Vec3 getScale() const noexcept;

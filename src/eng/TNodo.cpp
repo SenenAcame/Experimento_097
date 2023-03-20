@@ -1,20 +1,20 @@
 
 #include "TNodo.hpp"
-#include "shader.hpp"
-#include "../assets/shaders/mesh.hpp"
-#include "../assets/shaders/model.hpp"
+#include "resources/RShader.hpp"
+#include "resources/RMesh.hpp"
+//#include "../assets/shaders/model.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 
 // init by default a Node
-TNodo::TNodo() noexcept {
+TNodo::TNodo() {
     setTranslation({0.0f, 0.0f, 0.0f});
     setRotation({0.0f, 0.0f, 0.0f});
     setScale({1.0f, 1.0f, 1.0f});
 }
 
 // init a Node with the params
-TNodo::TNodo(Vec3 trans, Vec3 rot, Vec3 scale) noexcept {
+TNodo::TNodo(Vec3 trans, Vec3 rot, Vec3 scale) {
     translation_ = trans;
     rotation_ = rot;
     scale_ = scale;
@@ -182,11 +182,7 @@ Mat4 TNodo::getMatrizTransf() noexcept {
     return matTransf_; 
 }
 
-Entity *TNodo::getEntity() noexcept {
-    return entity_; 
-}
-
-TNodo *TNodo::getFather() noexcept { 
+TNodo *TNodo::getFather() const noexcept { 
     return fatherNode_; 
 };
 

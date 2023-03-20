@@ -1,17 +1,15 @@
 #pragma once
 
-#define STB_IMAGE_IMPLEMENTATION
-
-#include "../assets/shaders/stb_image.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "shader.hpp"
-#include "camara.hpp"
-#include "../assets/shaders/model.hpp"
+#include "resources/RShader.hpp"
+#include "entities/ECamera.hpp"
+#include "entities/model.hpp"
 #include "TNodo.hpp"
-#include "camara.hpp"
-#include "typeUsing.hpp"
+#include "utils/typeUsing.hpp"
+#include "resources/RTexture.hpp"
+#include <GLFW/glfw3.h>
 
 
 struct Entity;
@@ -41,16 +39,16 @@ struct GlEngine {
     
 
     //callBacks
-    static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-    static void mouse_callback(GLFWwindow *window, double xpos, double ypos);
-    static void scroll_callback(GLFWwindow* window, double offset_x, double offset_y);
+    //static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+    //static void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+    //static void scroll_callback(GLFWwindow* window, double offset_x, double offset_y);
     void processInput(GLFWwindow *window);
     
     //|___________________|
     //|      GETTERS      |
     //|___________________|
 
-    Camera *getCamera();
+    ECamera *getCamera();
     TNodo *getCameraNode();
     GLFWwindow *getWindow() { return window; };
 
@@ -65,7 +63,7 @@ private:
     inline static float lastFrame = 0.0f;
 
     GLFWwindow *window{nullptr};
-    inline static Camera *camera{nullptr}; // glm::vec3(0.0f, 0.0f, 3.0f)
+    inline static ECamera *camera{nullptr}; // glm::vec3(0.0f, 0.0f, 3.0f)
     inline static float lastX_ = 1080.0f / 2.0f;
     inline static float lastY_ = 720.0f / 2.0f;
     inline static bool firstMouse_ = true;

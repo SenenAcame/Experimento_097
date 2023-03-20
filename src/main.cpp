@@ -1,7 +1,7 @@
 #include "main.hpp"
  //#define STB_IMAGE_IMPLEMENTATION
 //#include "../assets/shaders/stb_image.h"
-#include <glad/src/glad.h>
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -10,13 +10,17 @@
 #include "../assets/shaders/model.hpp"
 #include <iostream>
 
+int main(){
+    
+}
+/*
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow *window);
+void procesaInput(GLFWwindow *window);
 unsigned int loadTexture(char const* path);
 unsigned int loadCubeMap(vector<std::string> faces);
-void initOpenGL();
+void iniOpenGL();
 void renderModel(Shader& shader, Model& moder, Camera& camera, glm::vec3 trans);
 void renderSkybox(Shader& skyboxShader, Camera& camera, int skyboxVAO, int cubemapTexture);
 
@@ -39,7 +43,7 @@ GLFWwindow* window{nullptr};
 int main()
 {    
 
-    initOpenGL();
+    iniOpenGL();
     // build and compile shaders
     // -------------------------
     Shader shader("assets/shaders/shader.vs", "assets/shaders/shader.fs");
@@ -198,7 +202,7 @@ int main()
         "assets/shaders/awesomeface.png"
         "assets/shaders/awesomeface.png"
     };
-    */
+    //*
     unsigned int cubemapTexture = loadCubeMap(faces);
 
     // shader configuration
@@ -221,7 +225,7 @@ int main()
 
         // input
         // -----
-        processInput(window);
+        procesaInput(window);
         // make sure we clear the framebuffer's content
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -247,10 +251,10 @@ int main()
         //set his shader in use
         ourShader.use();
 
-        /*
-            DIFFUSE = TEXTURE -> TEXTURE0
-            SPECULAR = -> TEXTURE1
-        */
+        
+            //DIFFUSE = TEXTURE -> TEXTURE0
+            //SPECULAR = -> TEXTURE1
+        
 
 
         //      mapa
@@ -295,7 +299,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+void procesaInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -348,7 +352,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
-/*
+
 unsigned int loadTexture(char const* path){
 
     unsigned int textureID;
@@ -407,9 +411,9 @@ unsigned int loadCubeMap(vector<std::string> faces){
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     return textureID;
-}*/
+}
 
-void initOpenGL() {
+void iniOpenGL() {
     //_________GLFW INIT_____________
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -486,3 +490,4 @@ void renderSkybox(Shader& skyboxShader, Camera& camera, int skyboxVAO, int cubem
     glBindVertexArray(0);
     glDepthFunc(GL_LESS);
 }
+*/
