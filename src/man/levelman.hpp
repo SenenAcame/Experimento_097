@@ -29,12 +29,7 @@ struct LevelMan {
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
         EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Sala_1.obj","assets/textures/textura_Sala_1.png"));
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Sala_2.obj","assets/textures/textura_Sala_1.png"));
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Sala_3.obj","assets/textures/textura_Sala_1.png"));
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Pasillo_1.obj","assets/textures/textura_Sala_1.png"));
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Pasillo_2.obj","assets/textures/textura_Sala_1.png"));
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Pasillo_3.obj","assets/textures/textura_Sala_1.png"));
+        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/Pasillo_2.obj","assets/textures/mapa/prueba_textura_pasillo_2.png"));
         EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
         EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
         EM.addTag      <TMap>       (map);
