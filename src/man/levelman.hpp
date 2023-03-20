@@ -28,14 +28,13 @@ struct LevelMan {
         );
     }
     
-    Enty& createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
+    void createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapas/mapa_simple.obj","assets/textures/wall.bmp"));
+        //EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapas/mapa_simple.obj","assets/textures/wall.bmp"));
         EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
         EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
         EM.addTag      <TMap>       (map);
-        return map;
     }
 
     void createMap2(TheEngine& dev) {

@@ -20,14 +20,14 @@ void game2() {
     ColSys.init_Hitoxes_Map2(EM, dev);
     dev.getDevice()->getCursorControl()->setVisible(false);
 
-    //Enty& map    = LM.createMap(dev, MapSys, SouSys);
+    LM.createMap(dev, MapSys, SouSys);
     LM.createMap2(dev);
     LM.createPlayer(dev, SouSys);
 
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
 
-    //LM.createBasicEnemy(-25, -20, dev, SouSys);
+    LM.createBasicEnemy(-30, 30, dev, SouSys);
     //LM.createBasicEnemy(-20, -25, dev, SouSys);
     //LM.createBasicEnemy(-30, -20, dev, SouSys);
     //LM.createBasicEnemy(-20, -20, dev, SouSys);
