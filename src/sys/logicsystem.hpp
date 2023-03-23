@@ -131,12 +131,8 @@ struct LogicSystem {
     }
 
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
-        if(colisioned.hasTAG<TPlayer>()){
+        if(colisioned.hasTAG<TPlayer>() || colisioned.hasTAG<TEnemy>()){
             //mover el jugador hacia atras
-            cancelMove(EM, colisioned, dt);
-        }
-        else if(colisioned.hasTAG<TEnemy>()){
-            //mover el enemigo hacia atras
             cancelMove(EM, colisioned, dt);
         }
         else if(colisioned.hasTAG<TBullet>()) {
@@ -269,6 +265,13 @@ struct LogicSystem {
         auto& wall_physc= EM.getComponent<PhysicsCmp2>(wall);
         float dx, dz;
 
+        //Procedimientos:
+        //Calcular siguiente posicion
+        //Comprobar colision en la siguiente posicion
+        //Si la siguiente posicion colisiona, comprueba en que direccion te puedes mover
+        //Si no, se mueve
+
+
         //precalculo de coordenadas
         copy_physics.orieny += dt * copy_physics.v_ang;
         if      (copy_physics.orieny > 2*PI) copy_physics.orieny -= 2*PI;
@@ -284,10 +287,9 @@ struct LogicSystem {
         //comprobar colision en siguiente posicion
         dx = abs(copy_physics.x - wall_physc.x) - (state.width + wall_state.width);
         dz = abs(copy_physics.z - wall_physc.z) - (state.depth + wall_state.depth);
-
+        //std::cout<<dx<<" "<<dz<<"\n";
         //si colisiona con una pared
         if(dx<=0 && dz<=0) {
-            //std::cout<<dx<<" "<<dz<<"\n";
             auto& phy = EM.getComponent<PhysicsCmp2>(player);
             if(dx < dz) {
                 //comprobar si la siguiente posicion en el eje X colisiona con otra pared distinta

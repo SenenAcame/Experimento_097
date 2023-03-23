@@ -17,37 +17,18 @@ void game2() {
     TheEngine     dev {1080, 720, &InpSys};
     
     srand(time(NULL));
-    ColSys.init_Hitoxes_Map2(EM, dev);
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     LM.createMap(dev, MapSys, SouSys);
-    LM.createMap2(dev);
+    ColSys.init_Hitoxes_Map2(EM, dev);
     LM.createPlayer(dev, SouSys);
 
-    //Enty& door   = LM.createDoor(52.39, -140.98, dev);
-    //Enty& key    = LM.createKey(-40, -20, dev);
-
-    LM.createBasicEnemy(-30, 30, dev, SouSys);
-    //LM.createBasicEnemy(-20, -25, dev, SouSys);
-    //LM.createBasicEnemy(-30, -20, dev, SouSys);
-    //LM.createBasicEnemy(-20, -20, dev, SouSys);
-    //LM.createBasicEnemy(-25, -25, dev, SouSys);
-
-    //Enty& weapon = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (weapon,10,0,20);
-    //EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/pistola.obj","assets/textures/fire.bmp"));
-    //
-    //Enty& w2 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>    (w2,10,0,20);
-    //EM.addComponent<RenderCmp2>     (w2, dev.createModel("assets/models/player_arm.obj","assets/textures/fire.bmp"));
-
-    //Enty& w3 = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>(w3, 12.5, 0, 9);
-    //EM.addComponent<RenderCmp2> (w3, dev.createModel("assets/models/enemy.obj","assets/textures/fire.bmp"));
-    //EM.addComponent<EstadoCmp>  (w3, 0, 0, 0);
-    //EM.addTag      <TInteract>  (w3);
-    //EM.addTag      <TWall>      (w3);
-    //EM.addTag      <TWeapon>    (w3);
+    //LM.createBasicEnemy(110, 50, dev, SouSys);
+    //LM.createBasicEnemy(110, 60, dev, SouSys);
+    //LM.createBasicEnemy(120, 50, dev, SouSys);
+    //LM.createBasicEnemy(35, -60, dev, SouSys);
+    //LM.createBasicEnemy(35, -50, dev, SouSys);
+    //LM.createBasicEnemy(45, -60, dev, SouSys);
 
 //Lab1
     //Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
@@ -88,8 +69,8 @@ void game2() {
 //    EM.addComponent<SoundCmp>(weaponsou, SouSys.createinstance(1));
 //    EM.addTag      <TWeapon> (weaponsou);
 
-    constexpr double dt = 1.0/60;
     //actual moment ini
+    constexpr double dt = 1.0/60;
     auto start = std::chrono::high_resolution_clock::now();
     constexpr int64_t maxFPS {60};
     constexpr int64_t nanos_per_frame {1000000000/maxFPS};
@@ -99,17 +80,16 @@ void game2() {
         auto frame_start = std::chrono::high_resolution_clock::now();
         EM.      update();
         RenSys.  update(EM, dev);
-        MapSys.  update(EM);
-        ColSys.  update(EM);
-        InpSys.  update(EM, dev, SouSys, 1.0/maxFPS);
+        //MapSys.  update(EM);
+        InpSys.  update(EM, dev, SouSys, dt);
         AISys.   update(EM, dt, dev);
+        ColSys.  update(EM);
         LogicSys.update(EM, dev, dt);
         PhySys.  update(EM, dt);
         SouSys.  update(EM);
         //SpawnSys.update(EM, dev, SouSys, player, map);
         LM.      update(dev, SouSys);
         DestSys. update(EM, dt);
-
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
         ++frames;
     }
@@ -127,6 +107,5 @@ void game2() {
 }
 
 int main(){
-    //game();
     game2();
 }

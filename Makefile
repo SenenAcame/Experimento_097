@@ -16,7 +16,7 @@ $(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(ca
 endef
 
 APP 	 := experiment_97
-CCFLAGS  := -Wall -pedantic -g
+CCFLAGS  := -Wall -pedantic
 CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o

@@ -1,7 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
-#include <cstdint>
-#include <string>
+#include "../sys/nodemapsys.hpp"
 
 struct LevelMan {
     using EneTAGs = MP::Typelist<TEnemy>;
@@ -10,34 +9,12 @@ struct LevelMan {
     void update(TheEngine& dev, SoundSystem_t& SouSys){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
-                if(en.getDestroy()){
-                    if(en.hasTAG<TDistEnemy>()){
-                        createDistEnemy(-20, -20, dev, SouSys);
-                    }
-                    else if(en.hasTAG<TSmallEnemy>()){
-                        createSmallEnemy(-20, -20, dev, SouSys);
-                    }
-                    else if(en.hasTAG<TTankEnemy>()){
-                        createTankEnemy(-20, -20, dev, SouSys);
-                    }
-                    else{
-                        createBasicEnemy(-20, -20, dev, SouSys);
-                    }
-                }
+                if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
             }
         );
     }
-    
-    void createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
-        Enty& map = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(map);
-        //EM.addComponent<RenderCmp2> (map, dev.createModel("assets/models/mapas/mapa_simple.obj","assets/textures/wall.bmp"));
-        EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
-        EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
-        EM.addTag      <TMap>       (map);
-    }
 
-    void createMap2(TheEngine& dev) {
+    void createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
         irr::io::path models[6] = {
             "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
             "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
@@ -54,6 +31,13 @@ struct LevelMan {
             "assets/textures/mapa/textura_pasillo_2.png",
             "assets/textures/mapa/textura_pasillo_3.png",
         };
+
+        Enty& map = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(map);
+        EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
+        EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
+        EM.addTag      <TMap>       (map);
+        
         for(uint8_t i {0}; i<6; i++) 
             createRoom(dev, models[i], textures[i]);
     }
@@ -63,8 +47,9 @@ struct LevelMan {
         EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=30.f});
         EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
-        EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
-        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=40.f});
+        //EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
+        EM.addComponent<EstadoCmp>     (player, 1.f, 4.f, 1.f);
+        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=5.f, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
         EM.addComponent<SalaCmp>       (player);
@@ -169,6 +154,15 @@ struct LevelMan {
         EM.addTag<TInteract>(key);
         EM.addTag<TKey>     (key);
         return key;
+    }
+
+    void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev) {
+        Enty& wall = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(wall, pos_x, pos_y,  pos_z);
+        EM.addComponent<EstadoCmp>  (wall, width, height, depth);
+        //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/otros/enemy.obj","assets/textures/fire.bmp"));
+        EM.addTag      <TInteract>  (wall);
+        EM.addTag      <TWall>      (wall);
     }
 
     EntyMan& getEM() { return EM; }
