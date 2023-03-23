@@ -165,6 +165,29 @@ struct LevelMan {
         EM.addTag      <TWall>      (wall);
     }
 
+    void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+    float const dmg, float const spd, float const rad, double const slfD,
+    double const pbx = 0, double const pby = 0, double const pbz = 0) {
+        Enty& bullet = EM.createEntity();
+        EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
+        EM.addComponent<PhysicsCmp2>(
+        bullet, PhysicsCmp2{
+                .x = phy_player.x + pbx,
+                .y = phy_player.y + pby,
+                .z = phy_player.z + pbz,
+                .vx=  sin(phy_player.orieny) * cos(phy_player.orienx) * spd,
+                .vy= -sin(phy_player.orienx) * spd,
+                .vz=  cos(phy_player.orieny) * cos(phy_player.orienx) * spd
+            }
+        );
+        EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
+        EM.addComponent<EstadoCmp>  (bullet);
+        EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+        EM.addComponent<SelfDestCmp>(bullet, slfD);
+        EM.addTag<TBullet>          (bullet);
+        EM.addTag<TInteract>        (bullet);
+    }
+
     EntyMan& getEM() { return EM; }
 private:
     Enty& createEnemy(SoundSystem_t& SouSys){

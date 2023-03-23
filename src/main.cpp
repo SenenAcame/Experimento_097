@@ -12,7 +12,7 @@ void game2() {
     NodeMapSys    MapSys;
     LogicSystem   LogicSys;
     SoundSystem_t SouSys;
-    SpawnSystem   SpawnSys;
+    //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
     TheEngine     dev {1080, 720, &InpSys};
     
@@ -20,7 +20,7 @@ void game2() {
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     LM.createMap(dev, MapSys, SouSys);
-    ColSys.init_Hitoxes_Map2(EM, dev);
+    ColSys.init_Hitoxes_Map2(LM, dev);
     LM.createPlayer(dev, SouSys);
 
     //LM.createBasicEnemy(110, 50, dev, SouSys);
@@ -81,7 +81,7 @@ void game2() {
         EM.      update();
         RenSys.  update(EM, dev);
         //MapSys.  update(EM);
-        InpSys.  update(EM, dev, SouSys, dt);
+        InpSys.  update(LM, dev, SouSys, dt);
         AISys.   update(EM, dt, dev);
         ColSys.  update(EM);
         LogicSys.update(EM, dev, dt);
