@@ -1,7 +1,9 @@
 #include "engine.hpp"
 #include <cstddef>
 #include <irrlicht/IEventReceiver.h>
-//IMGUI
+#include <irrlicht/SMaterialLayer.h>
+#include <irrlicht/position2d.h>
+
 
 
 
@@ -47,70 +49,29 @@ void TheEngine::addStaticText(){
                         irr::core::rect<irr::s32>(10,10,260,22), true);
 }
 
+TheEngine::IGUIImage* TheEngine::addImageToPositionInScreen(Path image, int x, int y){
+    
+    irr::video::ITexture* images = driver_->getTexture(image);
+    return guienv_->addImage(images, irr::core::position2d<int>(x,y));
+   
+}
+
+void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
+
+    irr::video::ITexture* images = driver_->getTexture(image);
+    pointer->setImage(images);
+
+}
+
 void TheEngine::beginScene(){
     
     driver_->beginScene(true, true, irr::video::SColor(255, 200, 100, 140));
     
 }
 
-void TheEngine::initIMGUI(){
-     glfwSetErrorCallback([](auto error, auto description){
-        std::fprintf(stderr, "Glfw Error %d: %s\n", error, description);
-        throw std::runtime_error("GLFW ERROR");
-    });
-    if (!glfwInit())
-        throw std::runtime_error("ERROR GLFW INITIALIZATION");
-
-     // GL 3.0 + GLSL 130
-    constexpr const char* glsl_version = "#version 130";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-
-    m_window = glfwCreateWindow(960, 720, "GAME", NULL, NULL);
-    if (m_window == nullptr)
-     throw std::runtime_error("ERROR GLFW creating WINDOW");
-    glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(1); // Enable vsync
-    //Esto de glew creo que no hace falta
-    //if(glewInit() != GLEW_OK){
-    //    throw std::runtime_error("ERROR GLFW init GLEW");
-    //}
-
-    // Setup Dear ImGui context
-    
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
-}
-
-
-
 void TheEngine::drawAll(){
     smgr_->drawAll();
     guienv_->drawAll();
 }
 
-void TheEngine::endScene(){ 
-    
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-    if(m_window){
-        glfwDestroyWindow(m_window);
-    }
-    glfwTerminate();
-    driver_->endScene(); }
+void TheEngine::endScene(){ driver_->endScene(); }

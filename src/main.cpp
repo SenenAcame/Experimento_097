@@ -17,15 +17,17 @@ void game2() {
     SelfDestSys   DestSys;
     TheEngine     dev {1080, 720, &InpSys};
 
-    dev.initIMGUI();
+    
     
     srand(time(NULL));
     ColSys.init_Hitoxes_Map(EM, dev);
-    //dev.getDevice()->getCursorControl()->setVisible(false);
+    dev.getDevice()->getCursorControl()->setVisible(false);
 
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
     Enty& player = LM.createPlayer(dev, SouSys);
 
+    LM.createInterface(dev);
+    LM.updateInterfaceAmmo(dev);
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
 
@@ -117,6 +119,7 @@ void game2() {
         ++frames;
     }
     
+    //RenSys.EndImgui();
     auto end = std::chrono::high_resolution_clock::now();
     auto ellapse =  (end - start).count(); //how many nano sec has pass
     auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass

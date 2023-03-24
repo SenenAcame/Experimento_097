@@ -1,24 +1,17 @@
 #pragma once
+#include <irrlicht/IGUIImage.h>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <memory>
 #include <iostream>
-//IMGUI
-#include <imgui/src/imgui.h>
-#include <imgui/src/imgui_impl_glfw.h>
-#include <imgui/src/imgui_impl_opengl3.h>
-#include <stdio.h>
-#define GL_SILENCE_DEPRECATION
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-#include <GLES2/gl2.h>
-#endif
-#include <GLFW/glfw3.h> // Will drag system OpenGL headers
+
 
 
 struct TheEngine {
     using AnimatedMeshNode = irr::scene::IAnimatedMeshSceneNode;
     using AnimatedMesh     = irr::scene::IAnimatedMesh;
     using Path             = const irr::io::path;
+    using IGUIImage        = irr::gui::IGUIImage;
 
     explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
     bool run() const;
@@ -26,7 +19,11 @@ struct TheEngine {
     void beginScene();
     void drawAll();
     void endScene();
-    void initIMGUI();
+
+    IGUIImage* addImageToPositionInScreen(Path image, int x, int y);
+    void       changeImageFromPointer    (IGUIImage* pointer, Path image);
+    
+    
 
 
     auto loadNode(AnimatedMesh* model, Path text);
@@ -71,8 +68,6 @@ private:
 
         p->drop(); 
     };
-
-    GLFWwindow* m_window {nullptr};
     irr::u32 const width_{}, height_{};
     irr::IEventReceiver* receive {};
 
