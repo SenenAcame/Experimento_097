@@ -44,11 +44,11 @@ struct LevelMan {
 
     Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& player = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=30.f});
+        EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=20.f});
         EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
         //EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
-        EM.addComponent<EstadoCmp>     (player, 1.f, 4.f, 1.f);
+        EM.addComponent<EstadoCmp>     (player, 4.f, 4.f, 4.f);
         EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=5.f, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));

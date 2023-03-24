@@ -33,18 +33,18 @@ struct PhySys2 {
 
     void entityPhysics(bool const is_player, PhysicsCmp2& p, double const dt) const noexcept{
         p.orieny += dt * p.v_ang;
-        if      (p.orieny > 2*PI) p.orieny -= 2*PI;
-        else if (p.orieny < 0)    p.orieny += 2*PI;
+        while (p.orieny > 2*PI) p.orieny -= 2*PI;
+        while (p.orieny < 0)    p.orieny += 2*PI;
 
-        if(is_player) {
+        //if(is_player) {
             //std::cout<<"Jugador: "<<p.orieny<<"\n";
             p.vx =  p.v_lin * std::sin(p.orieny) + p.partial_x;
             p.vz =  p.v_lin * std::cos(p.orieny) + p.partial_z;
-        }
-        else {
-            p.vx =  p.v_lin * std::cos(p.orieny) + p.partial_x;
-            p.vz =  p.v_lin * std::sin(p.orieny) + p.partial_z;
-        }
+        //}
+        //else {
+        //    p.vx =  p.v_lin * std::cos(p.orieny) + p.partial_x;
+        //    p.vz =  p.v_lin * std::sin(p.orieny) + p.partial_z;
+        //}
 
         p.x += dt * p.vx;
         p.z += dt * p.vz;

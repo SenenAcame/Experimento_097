@@ -19,30 +19,28 @@ struct InpSys2 : public irr::IEventReceiver{
         auto& EM = LM.getEM();
         auto& bb = EM.getBoard();
         EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equipment, EstadisticaCmp& stats) {
-                double reloadTimer = 0;
-                bool arriba = false;
-                bool abajo  = false;
+            [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
+                bool up = false, down = false;
 
-                if(equipment.reloading == 1) { equipment.clockReload += dt; }
-                equipment.clockCadence += dt;
+                if(equip.reloading == 1) { equip.clockReload += dt; }
+                equip.clockCadence += dt;
                 phy.v_lin = phy.v_ang = 0;
                 
-                movementMouse(player, eng, rend, phy);
-                if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equipment, reloadTimer); }
+                movementMouse(eng, rend, phy);
+                if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
 
-                if(keyboard.isKeyPressed(input.key_up))    { phy.v_lin =  stats.speed; arriba = true;}
-                if(keyboard.isKeyPressed(input.key_down))  { phy.v_lin = -stats.speed; abajo  = true;}
-                if(keyboard.isKeyPressed(input.key_right)) { diagonalMovement(phy, stats.speed, arriba, abajo); }
-                if(keyboard.isKeyPressed(input.key_left))  { diagonalMovement(phy, -stats.speed, abajo, arriba); }
-                if(keyboard.isKeyPressed(input.key_reloadCurrentAmmo)) { reload(EM, equipment);}
-                if(keyboard.isKeyPressed(input.key_weapon1))           { changeWeapon(equipment, rend, 0, eng); }
-                if(keyboard.isKeyPressed(input.key_weapon2) && equipment.inventary[1] != 0) { changeWeapon(equipment, rend, 1, eng); }
-                if(keyboard.isKeyPressed(input.key_weapon3) && equipment.inventary[2] != 0) { changeWeapon(equipment, rend, 2, eng); }
-                //if(keyboard.isKeyPressed(input.key_interaction)){ interact(EM, player, input.key_interaction); }
+                if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
+                if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
+                if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, up, down); }
+                if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, down, up); }
+                if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload(EM, equip);}
+                if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon(equip, rend, 0, eng); }
+                if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon(equip, rend, 1, eng); }
+                if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(equip, rend, 2, eng); }
+                //if(keyboard.isKeyPressed(input.key_interaction)) { interact(EM, player, input.key_interaction); }
 
-                if(keyboard.isKeyPressed(input.key_unlockAll))     { unlockAll(equipment.inventary); }
-                if(keyboard.isKeyPressed(input.key_reloadALLAmmo)) { reloadAll(EM, equipment); }
+                if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
+                if(keyboard.isKeyPressed(input.key_rldALLAmmo)) { reloadAll(EM, equip); }
                 
                 bb = { phy.x, phy.z, true, true , player.getID()};
             }
@@ -116,14 +114,14 @@ struct InpSys2 : public irr::IEventReceiver{
 
 private:
     //metodos del input
-    void movementMouse(Enty& player, TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {
-        auto centerWidth  = static_cast<irr::s32>(eng.getWidth()/2);
+    void movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {
+        auto centerWidth  = static_cast<irr::s32>(eng.getWidth() /2);
         auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
         auto cursor       = eng.getDevice()->getCursorControl();
         auto ray_traced   = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
-        auto angy = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
         auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
-
+        auto angy = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
+        
         eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
         rend.n->setRotation({
             eng.getCamera()->getRotation().X, 
@@ -136,10 +134,11 @@ private:
         phy.orienx = angx;
     }
     
-    void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment, double reloadTimer) {
+    void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
         auto& EM = LM.getEM();
         int ammo = 0;
         double weaponCadence = 0;
+        double reloadTimer = 0;
         switch (equipment.equipada) {
             case 0: ammo = equipment.magazine1;
                     reloadTimer = equipment.reloadTime1;
@@ -164,11 +163,11 @@ private:
         if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
     }
     
-    void diagonalMovement(PhysicsCmp2& p, float const speed, bool const up, bool const down) {
-        p.v_lin = speed;
-        p.v_ang = 90;
-        if(up)        p.v_ang = 45;
-        else if(down) p.v_ang = 135;
+    void digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down) {
+        phy.v_lin = speed;
+        phy.v_ang = 90;
+        if(up)        phy.v_ang = 45;
+        else if(down) phy.v_ang = 135;
     }
 
     void reload(EntyMan& EM, InventarioCmp& equipment) {

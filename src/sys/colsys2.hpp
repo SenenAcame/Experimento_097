@@ -23,7 +23,13 @@ struct ColSys2 {
                             dy = calculateDist(main_phy.y, collisioned_phy.y, main_state.height, collisioned_state.height);
                             dz = calculateDist(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
 
+                            //bool coll_x, coll_y, coll_z;
+                            //coll_x = MinMaxColl(main_phy.x, collisioned_phy.x, main_state.width,  collisioned_state.width);
+                            //coll_y = MinMaxColl(main_phy.y, collisioned_phy.y, main_state.height, collisioned_state.height);
+                            //coll_z = MinMaxColl(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
+
                             if(dx<=0 && dy<=0 && dz<=0){
+                            //if(coll_x && coll_y && coll_z){
                                 if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()){
                                     auto& sound = EM.getComponent<SoundCmp>(main_entity);
                                     EM.changeSound(sound, 0);
@@ -42,11 +48,19 @@ struct ColSys2 {
         );
     }
 
-    [[nodiscard]] constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) const noexcept{
+    [[nodiscard]] static constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept{
         float d;
         d = abs(main_pos - coll_pos);
         d -= main_dim + coll_dim;
         return d;
+    }
+
+    static bool MinMaxColl(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) {
+        float main_max = main_pos + main_dim;
+        float main_min = main_pos - main_dim;
+        float coll_max = coll_pos + coll_dim;
+        float coll_min = coll_pos - coll_dim;
+        return !(main_min > coll_max || coll_min > main_max);
     }
 
     void init_Hitoxes_Map(LevelMan& LM, TheEngine& dev) noexcept {
@@ -324,7 +338,7 @@ struct ColSys2 {
 
         float pos_x[] = {25,   49,   25,   61,   13,   49   };
         float pos_z[] = {57.5, 33.5, 21.5, 45.5, 45.5, 69.5 };
-        float widht[] = {thick,thick,24,   12,   12,   24   };
+        float widht[] = {thick,thick,24,   12,   12,   24};
         float depth[] = {12,   12,   thick,thick,thick,thick};
         uint8_t num_paredes { 6 };
         

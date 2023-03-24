@@ -20,7 +20,7 @@ struct LogicSystem {
                 if(state.colision != 0){
                     auto& entity_colisioned = EM.getEntityById(state.entityCol);
                     auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
-
+//
                     if(entity.hasTAG<TWall>()){
                         //proceso Colision Wall
                         colisionWall     (EM, entity, entity_colisioned, dt);
@@ -170,16 +170,14 @@ struct LogicSystem {
         recept_stats.hitpoints -= agress_stats.damage;
         
         if(recept_stats.hitpoints <= 0) {
-            if(receptor.hasTAG<TEnemy>()){ EM.getComponent<AICmp>(receptor).behaviour = SB::Diying; }
-            else{ markDestroy(receptor); } 
+            if(receptor.hasTAG<TEnemy>()) { EM.getComponent<AICmp>(receptor).behaviour = SB::Diying; }
+            else { markDestroy(receptor); } 
         }
         
         if(!agressor.hasTAG<TEnemy>())  { markDestroy(agressor); }
     }
 
-    void markDestroy(Enty& enty_to_dele) {
-        enty_to_dele.setDestroy();
-    }
+    void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
 
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
         auto& phy_player = EM.getComponent<PhysicsCmp2>(ent_move);
@@ -194,14 +192,13 @@ struct LogicSystem {
     void takeWeapon(Enty& player, Enty& weapon, EntyMan& EM, TheEngine& eng) {
         //unificarlo en el level manager para que no este el codigo en input y aqui
         auto& equipment = EM.getComponent<InventarioCmp>(player);
-        size_t aux =0;
+        size_t aux = 0;
         for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
             if(i == 2){
-                equipment.inventary[aux]=1;
-                
-                equipment.inventary[EM.getComponent<WeaponCmp>(weapon).typeWe]=2;
-                equipment.equipada = EM.getComponent<WeaponCmp>(weapon).typeWe;
-                
+                auto& wpn = EM.getComponent<WeaponCmp>(weapon);
+                equipment.inventary[aux] = 1;
+                equipment.inventary[wpn.typeWe] = 2;
+                equipment.equipada = wpn.typeWe;
                 break;
             }
             aux++;
@@ -209,22 +206,13 @@ struct LogicSystem {
         auto& playerRender = EM.getComponent<RenderCmp2>(player);
         playerRender.n->remove();
         switch (equipment.equipada) {
-            
-            case 0:
-                playerRender.n=eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
-            break;
-
-            case 1:
-                playerRender.n=eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
-            break;
-
-            case 2:
-                playerRender.n=eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
-            break;
-
-            default:
-            break;
-        
+            case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                break;
+            case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+                break;
+            case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+                break;
+            default: break;
         }
         weapon.setDestroy();
     }
@@ -264,13 +252,13 @@ struct LogicSystem {
         auto& wall_state= EM.getComponent<EstadoCmp>(wall);
         auto& wall_physc= EM.getComponent<PhysicsCmp2>(wall);
         float dx, dz;
+        //bool coll_x, coll_z;
 
         //Procedimientos:
         //Calcular siguiente posicion
         //Comprobar colision en la siguiente posicion
         //Si la siguiente posicion colisiona, comprueba en que direccion te puedes mover
         //Si no, se mueve
-
 
         //precalculo de coordenadas
         copy_physics.orieny += dt * copy_physics.v_ang;
@@ -287,9 +275,11 @@ struct LogicSystem {
         //comprobar colision en siguiente posicion
         dx = abs(copy_physics.x - wall_physc.x) - (state.width + wall_state.width);
         dz = abs(copy_physics.z - wall_physc.z) - (state.depth + wall_state.depth);
-        //std::cout<<dx<<" "<<dz<<"\n";
+        //coll_x = ColSys2::MinMaxColl(copy_physics.x, wall_physc.x, state.width, wall_state.width);
+        //coll_z = ColSys2::MinMaxColl(copy_physics.z, wall_physc.z, state.depth, wall_state.depth);
         //si colisiona con una pared
         if(dx<=0 && dz<=0) {
+        //if(coll_x && coll_z) {
             auto& phy = EM.getComponent<PhysicsCmp2>(player);
             if(dx < dz) {
                 //comprobar si la siguiente posicion en el eje X colisiona con otra pared distinta
@@ -303,13 +293,6 @@ struct LogicSystem {
                 if(!checkFutureCollision(EM, wall.getID(), copy_physics.x, copy_physics.z, state.width, state.depth))
                     phy.partial_z = copy_physics.vz;
             }
-            //std::cout<<"x: "<<phy.x<<"  z: "<<phy.z<<"\n";
-            //std::cout<<"vx: "<<phy.vx<<"  vz: "<<phy.vz<<" "<<"\n";
-            //std::cout<<"partial_x: "<<phy.partial_x<<"  partial_z: "<<phy.partial_z<<"\n";
-            //std::cout<<"orienx: "<<phy.orienx<<"  orieny: "<<phy.orieny<<"\n";
-            //std::cout<<"v_lin: "<<phy.v_lin<<"  v_ang: "<<phy.v_ang<<"\n";
-            //std::cout<<"a_lin: "<<phy.a_lin<<"  a_ang: "<<phy.a_ang<<"\n";
-            //std::cout<<"\n\n";
             return 1;
         }
         return 0;
