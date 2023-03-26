@@ -133,7 +133,10 @@ struct LogicSystem {
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
         if(colisioned.hasTAG<TPlayer>() || colisioned.hasTAG<TEnemy>()){
             //mover el jugador hacia atras
+            if(colisioned.hasCMP<EstadoCmp>()){
+                EM.getComponent<EstadoCmp>(colisioned).wall_collision=true;
             cancelMove(EM, colisioned, dt);
+            }
         }
         else if(colisioned.hasTAG<TBullet>()) {
             //destruir la bala
@@ -182,11 +185,7 @@ struct LogicSystem {
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
         auto& phy_player = EM.getComponent<PhysicsCmp2>(ent_move);
         uint8_t collisioned = preCalculation(EM, ent_move, dt);
-        if(collisioned) {
-            //if(ent_move.hasTAG<TEnemy>()) phy_player.v_lin = -phy_player.v_lin;
-            //else phy_player.v_lin = 0;
-            phy_player.v_lin = 0;
-        };
+        
     }
 
     void takeWeapon(Enty& player, Enty& weapon, EntyMan& EM, TheEngine& eng) {
@@ -248,6 +247,7 @@ struct LogicSystem {
         //COPIA de componente fisico
         auto copy_physics = EM.getComponent<PhysicsCmp2>(player);
         auto& state     = EM.getComponent<EstadoCmp>(player);
+        if(state.entityCol!=0){
         auto& wall      = EM.getEntityById(state.entityCol);
         auto& wall_state= EM.getComponent<EstadoCmp>(wall);
         auto& wall_physc= EM.getComponent<PhysicsCmp2>(wall);
@@ -295,7 +295,9 @@ struct LogicSystem {
             }
             return 1;
         }
+        }
         return 0;
+        
     }
 
     bool checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept {

@@ -8,15 +8,16 @@ struct ColSys2 {
     using SYSTAGs = MP::Typelist<TInteract>;
     static constexpr double pos_y  = 9;
     static constexpr float height  = 10;
-    static constexpr uint8_t thick = 3;
+    static constexpr float thick = 0.5f;
 
     void update(EntyMan& EM) {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty const& main_entity, PhysicsCmp2 const& main_phy, EstadoCmp& main_state) {
                 EM.foreach<SYSCMPs, SYSTAGs>(
                     [&](Enty const& collisioned_entity, PhysicsCmp2 const& collisioned_phy, EstadoCmp& collisioned_state){
+                        bool no_wall_with_wall = !(main_entity.hasTAG<TWall>() && collisioned_entity.hasTAG<TWall>());
                         if((main_entity.getID() != collisioned_entity.getID()) && 
-                           (collisioned_state.colision == 0))
+                           (collisioned_state.colision == 0) && no_wall_with_wall)
                         {
                             float dx, dy, dz;
                             dx = calculateDist(main_phy.x, collisioned_phy.x, main_state.width,  collisioned_state.width);

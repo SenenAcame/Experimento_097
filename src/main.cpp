@@ -23,12 +23,12 @@ void game2() {
     ColSys.init_Hitoxes_Map2(LM, dev);
     LM.createPlayer(dev, SouSys);
 
-    //LM.createBasicEnemy(110, 50, dev, SouSys);
-    //LM.createBasicEnemy(110, 60, dev, SouSys);
-    //LM.createBasicEnemy(120, 50, dev, SouSys);
-    //LM.createBasicEnemy(35, -60, dev, SouSys);
-    //LM.createBasicEnemy(35, -50, dev, SouSys);
-    //LM.createBasicEnemy(45, -60, dev, SouSys);
+    LM.createBasicEnemy(-30, 10, dev, SouSys);
+    LM.createBasicEnemy(-30, 10, dev, SouSys);
+    LM.createBasicEnemy(-30, 10, dev, SouSys);
+    LM.createBasicEnemy(-30, 10, dev, SouSys);
+    LM.createBasicEnemy(-30, 10, dev, SouSys);
+    LM.createBasicEnemy(-30, 10, dev, SouSys);
 
 //Lab1
     //Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
@@ -71,35 +71,37 @@ void game2() {
 
     //actual moment ini
     constexpr double dt = 1.0/60;
-    //auto start = std::chrono::high_resolution_clock::now();
-    //constexpr int64_t maxFPS {60};
-    //constexpr int64_t nanos_per_frame {1000000000/maxFPS};
-    //int64_t frames = 0;
+    auto start = std::chrono::high_resolution_clock::now();
+    constexpr int64_t maxFPS {60};
+    constexpr int64_t nanos_per_frame {1000000000/maxFPS};
+    int64_t frames = 0;
 
     while(dev.run()){
-        //auto frame_start = std::chrono::high_resolution_clock::now();
+        auto frame_start = std::chrono::high_resolution_clock::now();
         EM.      update();
         RenSys.  update(EM, dev);
-        //MapSys.  update(EM);
+        MapSys.  update(EM);
         InpSys.  update(LM, dev, SouSys, dt);
-        //AISys.   update(EM, dt, dev);
+        AISys.   update(EM, dt, dev);
+        PhySys.  update(EM, dt);
         ColSys.  update(EM);
         LogicSys.update(EM, dev, dt);
-        PhySys.  update(EM, dt);
-        //SouSys.  update(EM);
+        PhySys.  update_after_colision(EM, dt);
+        SouSys.  update(EM);
         //SpawnSys.update(EM, dev, SouSys, player, map);
-        //LM.      update(dev, SouSys);
-        //DestSys. update(EM, dt);
-        //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
-        //++frames;
+        LM.      update(dev, SouSys);
+        DestSys. update(EM, dt);
+        
+        while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+        ++frames;
     }
     
-    //auto end = std::chrono::high_resolution_clock::now();
-    //auto ellapse =  (end - start).count(); //how many nano sec has pass
-    //auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
-    //std::cout <<" TIMEPO (s): " << ellapseS << "\n";
-    //std::cout <<" Frames " << frames<< "\n";
-    //std::cout <<" FPS " << double(frames)/ellapseS << "\n";
+    auto end = std::chrono::high_resolution_clock::now();
+    auto ellapse =  (end - start).count(); //how many nano sec has pass
+    auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+    std::cout <<" TIMEPO (s): " << ellapseS << "\n";
+    std::cout <<" Frames " << frames<< "\n";
+    std::cout <<" FPS " << double(frames)/ellapseS << "\n";
 
     //actual moment end
     //ellapse = end-start
