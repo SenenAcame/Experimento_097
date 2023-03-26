@@ -5,7 +5,7 @@
 
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
-    using PlayTAGs = MP::Typelist<TPlayer>;
+    using POSTCOLLCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
     static constexpr double PI { std::numbers::pi };
 
@@ -13,13 +13,13 @@ struct PhySys2 {
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& en, PhysicsCmp2& physic) {
                 if(en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>()) bulletPhysics(physic);
-                else{
+                else {
                     bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Shoot);
                     bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour==SB::Diying);
                     
                     if(enemy_is_diying) { physic.y -= 0.1; }
                     else if(player_or_enemy_not_shooting){
-                        entityPhysics(en.hasTAG<TPlayer>(), physic, delta);  
+                        entityPhysics(en.hasTAG<TEnemy>(), physic, delta);  
                     }
                 }
             }
@@ -32,48 +32,53 @@ struct PhySys2 {
         p.z += p.vz;
     }
 
-    void entityPhysics(bool const is_player, PhysicsCmp2& p, double const dt) const noexcept{
+    void entityPhysics(bool const is_enemy, PhysicsCmp2& phy, double const dt) const noexcept{
+        calculatePosition(is_enemy, phy, dt);
+
+        phy.v_lin += dt * phy.a_lin;
+        phy.v_ang += dt * phy.a_ang;
+
+        phy.v_lin = irr::core::clamp(phy.v_lin, -phy.kMxVLin, phy.kMxVLin);
+        phy.v_ang = irr::core::clamp(phy.v_ang, -phy.kMxVAng, phy.z);
+
+        auto roz = dt * std::fabs(phy.v_lin) * (phy.kRoz);
+        if(phy.v_lin > 0) phy.v_lin -= roz;
+        else            phy.v_lin += roz;  
+    }
+
+    static void calculatePosition(bool const is_enemy, PhysicsCmp2& p, double const dt) {
         p.orieny += dt * p.v_ang;
+
         while (p.orieny > 2*PI) p.orieny -= 2*PI;
         while (p.orieny < 0)    p.orieny += 2*PI;
 
-        if(is_player) {
-            //std::cout<<"Jugador: "<<p.orieny<<"\n";
-            p.vx =  p.v_lin * std::sin(p.orieny) + p.partial_x;
-            p.vz =  p.v_lin * std::cos(p.orieny) + p.partial_z;
+        if(is_enemy) {
+            p.vx =  p.v_lin * std::cos(p.orieny);
+            p.vz =  p.v_lin * std::sin(p.orieny);
         }
         else {
-            p.vx =  p.v_lin * std::cos(p.orieny) + p.partial_x;
-            p.vz =  p.v_lin * std::sin(p.orieny) + p.partial_z;
+            p.vx =  p.v_lin * std::sin(p.orieny);
+            p.vz =  p.v_lin * std::cos(p.orieny);
         }
 
         p.x += dt * p.vx;
         p.z += dt * p.vz;
-
-        p.partial_x = 0;
-        p.partial_z = 0;
-        p.v_lin += dt * p.a_lin;
-        p.v_ang += dt * p.a_ang;
-        p.v_lin = irr::core::clamp(p.v_lin, -p.kMxVLin, p.kMxVLin);
-        p.v_ang = irr::core::clamp(p.v_ang, -p.kMxVAng, p.z);
-
-        auto roz = dt * std::fabs(p.v_lin) * (p.kRoz);
-        if(p.v_lin > 0) p.v_lin -= roz;
-        else            p.v_lin += roz;  
     }
 
     void update_after_colision(EntyMan& EM, double dt) {
-        EM.foreach<SYSCMPs, SYSTAGs>(
-            [&](Enty& en, PhysicsCmp2& p) {
-                if((en.hasTAG<TPlayer>() || en.hasTAG<TEnemy>()) && en.hasCMP<EstadoCmp>()){
-                    if(EM.getComponent<EstadoCmp>(en).wall_collision){
-                        p.x -= dt * p.vx;
-                        p.z -= dt * p.vz;
+        EM.foreach<POSTCOLLCMPs, SYSTAGs>(
+            [&](Enty& en, PhysicsCmp2& phy, EstadoCmp& state) {
+                if((en.hasTAG<TPlayer>() || en.hasTAG<TEnemy>()) && state.wall_collision){
+                    phy.x -= dt * phy.vx;
+                    phy.z -= dt * phy.vz;
 
-                        p.x += dt * p.partial_x;
-                        p.z += dt * p.partial_z;
-                        EM.getComponent<EstadoCmp>(en).wall_collision=false;
-                    }
+                    phy.x += dt * phy.partial_x;
+                    phy.z += dt * phy.partial_z;
+
+                    phy.partial_x = 0;
+                    phy.partial_z = 0;
+
+                    state.wall_collision = false;
                 }
             }
         );

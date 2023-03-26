@@ -15,22 +15,17 @@ struct ColSys2 {
             [&](Enty const& main_entity, PhysicsCmp2 const& main_phy, EstadoCmp& main_state) {
                 EM.foreach<SYSCMPs, SYSTAGs>(
                     [&](Enty const& collisioned_entity, PhysicsCmp2 const& collisioned_phy, EstadoCmp& collisioned_state){
+                        bool distint_entities  = main_entity.getID() != collisioned_entity.getID();
+                        bool without_prev_coll = collisioned_state.colision == 0;
                         bool no_wall_with_wall = !(main_entity.hasTAG<TWall>() && collisioned_entity.hasTAG<TWall>());
-                        if((main_entity.getID() != collisioned_entity.getID()) && 
-                           (collisioned_state.colision == 0) && no_wall_with_wall)
-                        {
+
+                        if(distint_entities && without_prev_coll && no_wall_with_wall) {
                             float dx, dy, dz;
                             dx = calculateDist(main_phy.x, collisioned_phy.x, main_state.width,  collisioned_state.width);
                             dy = calculateDist(main_phy.y, collisioned_phy.y, main_state.height, collisioned_state.height);
                             dz = calculateDist(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
 
-                            //bool coll_x, coll_y, coll_z;
-                            //coll_x = MinMaxColl(main_phy.x, collisioned_phy.x, main_state.width,  collisioned_state.width);
-                            //coll_y = MinMaxColl(main_phy.y, collisioned_phy.y, main_state.height, collisioned_state.height);
-                            //coll_z = MinMaxColl(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
-
                             if(dx<=0 && dy<=0 && dz<=0){
-                            //if(coll_x && coll_y && coll_z){
                                 if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()){
                                     auto& sound = EM.getComponent<SoundCmp>(main_entity);
                                     EM.changeSound(sound, 0);
@@ -54,14 +49,6 @@ struct ColSys2 {
         d = abs(main_pos - coll_pos);
         d -= main_dim + coll_dim;
         return d;
-    }
-
-    static bool MinMaxColl(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) {
-        float main_max = main_pos + main_dim;
-        float main_min = main_pos - main_dim;
-        float coll_max = coll_pos + coll_dim;
-        float coll_min = coll_pos - coll_dim;
-        return !(main_min > coll_max || coll_min > main_max);
     }
 
     void init_Hitoxes_Map(LevelMan& LM, TheEngine& dev) noexcept {

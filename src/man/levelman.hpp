@@ -48,7 +48,7 @@ struct LevelMan {
         EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
         //EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
-        EM.addComponent<EstadoCmp>     (player, 4.f, 4.f, 4.f);
+        EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
         EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=5.f, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));

@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "cmp/physicscmp2.hpp"
 #include "man/levelman.hpp"
 
 void game2() {
@@ -23,12 +24,12 @@ void game2() {
     ColSys.init_Hitoxes_Map2(LM, dev);
     LM.createPlayer(dev, SouSys);
 
-    LM.createBasicEnemy(-30, 10, dev, SouSys);
-    LM.createBasicEnemy(-30, 10, dev, SouSys);
-    LM.createBasicEnemy(-30, 10, dev, SouSys);
-    LM.createBasicEnemy(-30, 10, dev, SouSys);
-    LM.createBasicEnemy(-30, 10, dev, SouSys);
-    LM.createBasicEnemy(-30, 10, dev, SouSys);
+    LM.createBasicEnemy(110, 60, dev, SouSys);
+    LM.createBasicEnemy(120, 60, dev, SouSys);
+    LM.createBasicEnemy(110, 70, dev, SouSys);
+    LM.createBasicEnemy(35, -60, dev, SouSys);
+    LM.createBasicEnemy(45, -60, dev, SouSys);
+    LM.createBasicEnemy(35, -70, dev, SouSys);
 
 //Lab1
     //Enty& enemy1 = LM.createSmallEnemy(-20, -20, dev, SouSys);
@@ -91,7 +92,6 @@ void game2() {
         //SpawnSys.update(EM, dev, SouSys, player, map);
         LM.      update(dev, SouSys);
         DestSys. update(EM, dt);
-        
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
         ++frames;
     }

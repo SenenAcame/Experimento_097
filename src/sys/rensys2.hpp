@@ -16,27 +16,16 @@ struct RenSys2 {
                     float giro = (-phy.orieny)*180/irr::core::PI+360;
                     rend.n->setRotation({rend.n->getRotation().X,giro,rend.n->getRotation().Z});
                 }
-                //if(ent.hasCMP<EstadoCmp>()){
-                //    auto& state = EM.getComponent<EstadoCmp>(ent);
-                //    auto vd = GFX.getDevice()->getVideoDriver();
-                //    irr::core::aabbox3df box = {
-                //        {phy.x-state.width, phy.y-state.height, phy.z-state.depth}, 
-                //        {phy.x+state.width, phy.y+state.height, phy.z+state.depth}
-                //    };
-                //    vd->draw3DBox(box);
-                //}
                 rend.n->setPosition({static_cast<float>(phy.x), static_cast<float>(phy.y), static_cast<float>(phy.z)});
             }
         );
-        GFX.beginScene();
-        GFX.drawAll();
-        drawBBox(EM, GFX);
-        GFX.endScene();
+        drawAll(EM, GFX);
     };
 
-    void drawAll(TheEngine& GFX) {
+    void drawAll(EntyMan& EM, TheEngine& GFX) {
         GFX.beginScene();
         GFX.drawAll();
+        //drawBBox(EM, GFX);
         GFX.endScene();
     }
 
