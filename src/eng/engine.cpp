@@ -1,6 +1,7 @@
 #include "engine.hpp"
 #include <cstddef>
 #include <irrlicht/IEventReceiver.h>
+#include <irrlicht/IGUIFont.h>
 #include <irrlicht/SMaterialLayer.h>
 #include <irrlicht/position2d.h>
 
@@ -47,6 +48,18 @@ bool TheEngine::run() const { return device_->run(); }
 void TheEngine::addStaticText(){
     guienv_->addStaticText(L"Hello World! This is the Irrlicht Software renderer!",
                         irr::core::rect<irr::s32>(10,10,260,22), true);
+    
+    
+}
+
+void TheEngine::addFont(Path p, irr::gui::IGUIFont *font){
+
+    guienv_->addFont(p, font);
+}
+
+TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(wchar_t * text, int x, int y, int x2, int y2){
+
+    return guienv_->addStaticText(text, irr::core::rect<irr::s32>(x,y,x2,y2), false);
 }
 
 TheEngine::IGUIImage* TheEngine::addImageToPositionInScreen(Path image, int x, int y){
@@ -60,6 +73,12 @@ void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 
     irr::video::ITexture* images = driver_->getTexture(image);
     pointer->setImage(images);
+
+}
+
+void TheEngine::changeTextFromPointer(IGUIText* pointer, wchar_t * text ){
+
+    pointer->setText(text);
 
 }
 

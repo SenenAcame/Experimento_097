@@ -30,16 +30,18 @@ struct LevelMan {
     void createInterface (TheEngine& dev){
         
         //Magazine
-        mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
+        wchar_t* prueba = L"PRUEBA 1";
+        mag = dev.addTextToPositionInScreen(prueba, 10,10,260,22);
+        //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
         //std::cout<< "MAG ES " << mag <<"\n";
         //total ammo
-        amm1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/uno.png" , 400,450);
-        amm2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", 460,410);
-        amm3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", 540,410);
+        //amm1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/uno.png" , 400,450);
+        //amm2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", 460,410);
+        //amm3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", 540,410);
         //HP
-        h1 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/uno.png" , -360,450);
-        h2 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", -260,410);
-        h3 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", -170,410);
+        //h1 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/uno.png" , -360,450);
+        //h2 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", -260,410);
+        //h3 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", -170,410);
 
         //mira
         mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", 26, 150);
@@ -49,7 +51,10 @@ struct LevelMan {
     void updateInterfaceAmmo(TheEngine& dev){
 
        //std::cout<< "VOY A MAG ES " << mag <<"\n";
-       dev.changeImageFromPointer(mag,"assets/Interface/1280x720/cero.png");
+       //dev.changeImageFromPointer(mag,"assets/Interface/1280x720/cero.png");
+       wchar_t* prueba = L"CAMBIADO";
+       dev.changeTextFromPointer(mag, prueba);
+       
 
 
     }
@@ -212,13 +217,13 @@ private:
 
     EntyMan EM;
 
-    TheEngine::IGUIImage*  mag  {};
-    TheEngine::IGUIImage*  h1   {};
-    TheEngine::IGUIImage*  h2   {};
-    TheEngine::IGUIImage*  h3   {};
-    TheEngine::IGUIImage*  amm1 {};
-    TheEngine::IGUIImage*  amm2 {};
-    TheEngine::IGUIImage*  amm3 {};
+    TheEngine::IGUIText*  mag  {};
+    TheEngine::IGUIText*  h1   {};
+    TheEngine::IGUIText*  h2   {};
+    TheEngine::IGUIText*  h3   {};
+    TheEngine::IGUIText*  amm1 {};
+    TheEngine::IGUIText*  amm2 {};
+    TheEngine::IGUIText*  amm3 {};
     TheEngine::IGUIImage*  mir  {};
 
 };

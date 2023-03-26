@@ -1,5 +1,7 @@
 #pragma once
+#include <irrlicht/IGUIFont.h>
 #include <irrlicht/IGUIImage.h>
+#include <irrlicht/IGUIStaticText.h>
 #include <irrlicht/irrlicht.h>
 #include <stdexcept>
 #include <memory>
@@ -12,6 +14,7 @@ struct TheEngine {
     using AnimatedMesh     = irr::scene::IAnimatedMesh;
     using Path             = const irr::io::path;
     using IGUIImage        = irr::gui::IGUIImage;
+    using IGUIText         = irr::gui::IGUIStaticText;
 
     explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
     bool run() const;
@@ -22,9 +25,9 @@ struct TheEngine {
 
     IGUIImage* addImageToPositionInScreen(Path image, int x, int y);
     void       changeImageFromPointer    (IGUIImage* pointer, Path image);
-    
-    
-
+    void       addFont                   (Path p, irr::gui::IGUIFont *font);
+    IGUIText*  addTextToPositionInScreen (wchar_t * text, int x, int y, int x2, int y2);
+    void       changeTextFromPointer     (IGUIText* pointer, wchar_t * text );
 
     auto loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel(Path obj, Path asset);
