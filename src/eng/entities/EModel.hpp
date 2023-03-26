@@ -4,7 +4,7 @@
 #include <assimp/scene.h>
 #include <cstddef>
 #include <glm/glm.hpp>
-#include "../../cmp/entity.hpp"
+#include "Entity.hpp"
 #include "../resources/RMesh.hpp"
 //#include "../resources/RAnimation.hpp"
 #include <string>

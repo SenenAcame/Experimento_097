@@ -1,6 +1,7 @@
 #include "EFoco.hpp"
 
-EFoco::EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float quadratic, Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, Shader *shader) {
+EFoco::EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float quadratic, 
+    Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, RShader *shader) {
 
     intensity_ = intensity; // R , G , B , A(lpha)
     tLightType_ = type;

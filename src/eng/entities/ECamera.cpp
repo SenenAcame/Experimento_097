@@ -1,7 +1,6 @@
 #include "ECamera.hpp"
 
-ECamera::ECamera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), 
-MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
+ECamera::ECamera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
     
     Position = position;
     WorldUp = up;
@@ -10,8 +9,7 @@ MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
     updateCameraVectors();
 }
 
-ECamera::ECamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front
-(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
+ECamera::ECamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
 
     Position = Vec3(posX, posY, posZ);
     WorldUp = Vec3(upX, upY, upZ);
@@ -46,11 +44,11 @@ void ECamera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean const
     updateCameraVectors();
 }
 
-/*  //No hace nada
+ //No hace nada
 void ECamera::draw(Mat4 mat, bool){
 
 }
-*/
+
 // actualiza la posicion y la suma a la que tenia
 void ECamera::translate(Vec3 pos) {
 

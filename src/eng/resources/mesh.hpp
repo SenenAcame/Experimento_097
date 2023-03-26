@@ -2,6 +2,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <glm/glm.hpp>
 #include <vector>
 #include <string>
 #include "RShader.hpp"

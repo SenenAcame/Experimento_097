@@ -1,5 +1,6 @@
 #include "RTexture.hpp"
-
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 RTexture::RTexture(std::string path){
     texImage_ = path;

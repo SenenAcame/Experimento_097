@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 #include "../utils/typeUsing.hpp"
-#include "../../cmp/entity.hpp"
+#include "Entity.hpp"
+#include <cstring>
 
 #define White_light    Vec3(1.0f, 1.0f, 1.0f)
 #define Black_light    Vec3(0.0f, 0.0f, 0.0f)
@@ -29,7 +30,8 @@ struct EFoco : public Entity {
     };
 
     EFoco();
-    EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float cuadratic, Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, Shader *shader);
+    EFoco(float intensity, lightType type, float aperture, float angle, float cons, float linear, float cuadratic, 
+        Vec3 direccion, Vec3 ambiente, Vec3 difusa, Vec3 pos, RShader *shader);
     ~EFoco();
 
     void init();
@@ -69,5 +71,5 @@ private:
     float constAttenuation_, linearAttenuation_, quadraticAttenuation_; // for punctual and focal lights
     Vec3 direction, ambient, diffuse, position;
 
-    Shader *shader_{nullptr};
+    RShader *shader_{nullptr};
 };

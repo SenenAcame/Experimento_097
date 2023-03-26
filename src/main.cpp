@@ -5,9 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "eng/shader.hpp"
-#include "eng/camara.hpp"
-#include "../assets/shaders/model.hpp"
 #include <iostream>
 
 int main(){

@@ -40,7 +40,7 @@ void EModel::draw(Mat4 mat, bool border) {
 void EModel::loadModel(std::string path, ResourceGestor &rg) {
 
     //variable de entity
-    //unused_ = false;
+    unused_ = false;
 
     mesh_ = rg.getResource<RMesh>(path);
     if(mesh_->isLoaded())

@@ -2,7 +2,9 @@
 #include "TNodo.hpp"
 #include "resources/RShader.hpp"
 #include "resources/RMesh.hpp"
+#include "entities/Entity.hpp"
 //#include "../assets/shaders/model.hpp"
+#include <GL/gl.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -76,9 +78,23 @@ void TNodo::scale(Vec3 scale) {
     updateMat_ = true;
 }
 
-void TNodo::run(Mat4 acumMat, bool fatherChange) {
+void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
 
     glDepthFunc(GL_LESS);
+
+    if(UI_)
+        glDepthFunc(GL_ALWAYS);
+
+    if(!border) {
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilMask(0xFF);
+    }
+    
+    if(floor_) {
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+    }
+
     bool actualChange = false;
 
     // Comprueba que no hemos cambiado la matriz acumulativa o un vector
@@ -96,11 +112,29 @@ void TNodo::run(Mat4 acumMat, bool fatherChange) {
         actualChange = true;
     }
 
-    for(TNodo *son : nodeSons_) {
-        son->run(matTransf_, actualChange);
+    if(border && floor_) {
+        Mat4 matTmp = glm::translate(Mat4(1.0f), translation_);
+
+        matTmp = glm::rotate(matTmp, glm::radians(rotation_.y), {0, 1, 0});
+        matTmp = glm::rotate(matTmp, glm::radians(rotation_.z), {0, 0, 1});
+        matTmp = glm::rotate(matTmp, glm::radians(rotation_.x), {1, 0, 0});
+
+        matTmp = glm::scale(matTmp, scale_ + (scale_ * 0.025f));
+
+        matTmp = matTmp * acumMat;
+
+        for(TNodo *son : nodeSons_) 
+            son->run(matTmp, actualChange, border);
+        
+        if(entity_)
+            entity_->draw(matTmp, border);
+    } else if (!border) {
+        for(TNodo *son : nodeSons_) {
+            son->run(matTransf_, actualChange, border);
+        }
+        if(entity_)
+            entity_->draw(matTransf_, border);
     }
-    if(entity_)
-        // entity_.draw(matTransf_);
 
     updateMat_ = false;
 }
@@ -120,7 +154,9 @@ void TNodo::remove() {
         }
     }
     if(entity_){
-        //delete entity
+        entity_->unused_ = true;
+    
+    initTNode();
     }
 
     //set to default
@@ -142,7 +178,7 @@ void TNodo::setScale(Vec3 scale) {
     updateMat_ = true; 
 }
 
-void TNodo::setMesh(Mesh *sMesh) {
+void TNodo::setMesh(RMesh *sMesh) {
     mesh_ = sMesh;
 }
 
@@ -158,7 +194,7 @@ void TNodo::setMatrizTransf(Mat4 transf) {
     matTransf_ = transf;  
 }
 
-void TNodo::setTexture(Texture *tex) {
+void TNodo::setTexture(RTexture *tex) {
     texture_ = tex;
 }
 

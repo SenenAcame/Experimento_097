@@ -4,7 +4,7 @@
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
-//#include <assimp/postprocess>
+#include <assimp/postprocess.h>
 
 #include "Resource.hpp"
 #include "mesh.hpp"

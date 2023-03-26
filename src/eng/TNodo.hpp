@@ -5,9 +5,9 @@
 
 struct Entity;
 struct TNodo;
-struct Mesh;
-struct Texture;
-struct Shader;
+struct RMesh;
+struct RTexture;
+struct RShader;
 
 
 
@@ -44,8 +44,8 @@ struct Shader;
         void setTranslation(Vec3 trans);
         void setRotation(Vec3 rot);
         void setScale(Vec3 sca);
-        void setTexture(Texture *tex);
-        void setMesh(Mesh *sMesh);
+        void setTexture(RTexture *tex);
+        void setMesh(RMesh *sMesh);
         void setEntity(Entity *nEnt);
         void setFatherNode(TNodo *nFather);
         //transformadores
@@ -56,14 +56,14 @@ struct Shader;
         // Suma la escala pasada por parametro a la existente
         void scale(Vec3 sca);
         //getters
-        
+
         Vec3 getTranslation() const noexcept;
         Vec3 getRotation() const noexcept;
         Vec3 getScale() const noexcept;
 
         // 1- Se ejecuta la funcion draw de la entidad del nodo y se actualiza los vectores propios.
         // 2- Se hace run de los hijos
-        void run(Mat4, bool);
+        void run(Mat4, bool fatherChange, bool border = false);
 
         //matriz
         void setMatrizTransf(Mat4 transf);
@@ -73,10 +73,12 @@ struct Shader;
     //___________________________
 
         Entity *entity_{nullptr}; 
-        Mesh *mesh_{nullptr}; // dentro de Entity si puede ser
-        Texture *texture_{nullptr}; // dentro de Entity si puede ser
+        RMesh *mesh_{nullptr}; // dentro de Entity si puede ser
+        RTexture *texture_{nullptr}; // dentro de Entity si puede ser
 
         bool updateMat_{true};
+        bool floor_{false};
+        bool UI_{false};
         
 
         vecNodo nodeSons_;

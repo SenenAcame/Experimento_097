@@ -1,13 +1,7 @@
 #pragma once
 
-#ifndef CAMERA_H
-#define CAMERA_H
-
-#include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include "../utils/typeUsing.hpp"
-#include "../../cmp/entity.hpp"
+#include "Entity.hpp"
 
 #include <vector>
 
@@ -24,7 +18,7 @@ const float SPEED       =  5.0f;
 const float SENSITIVITY =  0.1f;
 const float ZOOM        =  45.0f;
 
-struct ECamera {
+struct ECamera : public Entity {
 
     ECamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
     ECamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
@@ -33,7 +27,7 @@ struct ECamera {
 
     void ProcessMouseMovement(float offset_x, float offset_y, GLboolean constraintPitch = true);
     
-    //void draw(Mat4, bool);
+    void draw(Mat4, bool) override;
 
     void translate(Vec3 pos);
     void setPosition(Vec3 pos);
@@ -71,10 +65,9 @@ struct ECamera {
         }
         Position.y = 0.0f;
     }
-    */
     
 
-   /* void ProcessMouseScroll(float offset_y){
+    void ProcessMouseScroll(float offset_y){
         
         Zoom -= (float)offset_y;
         if(Zoom <1.0f){
@@ -86,4 +79,3 @@ struct ECamera {
     }
     */
 };
-#endif
