@@ -26,8 +26,8 @@ struct TheEngine {
     IGUIImage* addImageToPositionInScreen(Path image, int x, int y);
     void       changeImageFromPointer    (IGUIImage* pointer, Path image);
     void       addFont                   (Path p, irr::gui::IGUIFont *font);
-    IGUIText*  addTextToPositionInScreen (wchar_t * text, int x, int y, int x2, int y2);
-    void       changeTextFromPointer     (IGUIText* pointer,wchar_t * text );
+    IGUIText*  addTextToPositionInScreen (const wchar_t * text, int x, int y, int x2, int y2);
+    void       changeTextFromPointer     (IGUIText* pointer,const wchar_t * text );
 
     auto loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel(Path obj, Path asset);

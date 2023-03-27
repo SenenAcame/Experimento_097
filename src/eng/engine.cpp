@@ -57,7 +57,7 @@ void TheEngine::addFont(Path p, irr::gui::IGUIFont *font){
     guienv_->addFont(p, font);
 }
 
-TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(wchar_t * text, int x, int y, int x2, int y2){
+TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(const wchar_t * text, int x, int y, int x2, int y2){
 
     return guienv_->addStaticText(text, irr::core::rect<irr::s32>(x,y,x2,y2), false);
 }
@@ -76,7 +76,7 @@ void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 
 }
 
-void TheEngine::changeTextFromPointer(IGUIText* pointer, wchar_t * text ){
+void TheEngine::changeTextFromPointer(IGUIText* pointer, const wchar_t * text ){
     
     pointer->setText(text);
 

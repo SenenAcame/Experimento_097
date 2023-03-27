@@ -1,6 +1,8 @@
 #pragma once
 #include "../util/types.hpp"
 #include <irrlicht/IGUIImage.h>
+#include <string>
+
 
 struct LevelMan {
     using EneTAGs = MP::Typelist<TEnemy>;
@@ -25,7 +27,7 @@ struct LevelMan {
                 }
             }
         );
-        LM.updateInterface(dev, player);
+        updateInterface(dev, player);
     }
 
     void createInterface (TheEngine& dev, Enty& player){
@@ -50,15 +52,21 @@ struct LevelMan {
             break;
             default: break;
         }
-        magText = (wchar_t*)magazine;
+        std::string aux = std::to_string(magazine);
+        std::wstring convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* magText = convert.c_str();
         mag = dev.addTextToPositionInScreen(magText, 1000,690,1080,710);
         //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
         //std::cout<< "MAG ES " << mag <<"\n";
         //total ammo
-        ammText = (wchar_t*)ammo;
+        aux = std::to_string(ammo);
+        convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* ammText = convert.c_str();
         amm1 = dev.addTextToPositionInScreen(ammText,900,690,1000,710);
         //HP
-        HPText = (wchar_t*)stats.hitpoints;
+        aux = std::to_string(stats.hitpoints);
+        convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* HPText = convert.c_str();
         h1 =  dev.addTextToPositionInScreen(HPText,100,690,200,710);
 
         //mira
@@ -66,7 +74,7 @@ struct LevelMan {
 
     }
 
-    void updateInterface(TheEngine& dev){
+    void updateInterface(TheEngine& dev, Enty& player){
 
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
@@ -87,13 +95,21 @@ struct LevelMan {
             break;
             default: break;
         }
+        
+        std::string aux = std::to_string(ammo);
+        std::wstring convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* ammText = convert.c_str();
+        dev.changeTextFromPointer(amm1, ammText);
 
-       ammText= (wchar_t*)ammo;
-       dev.changeTextFromPointer(amm1, ammText);
-       magText= (wchar_t*)magazine;
-       dev.changeTextFromPointer(mag, magText);
-       HPText= (wchar_t*)stats.hitpoints;
-       dev.changeTextFromPointer(mag, HPText);
+        aux = std::to_string(magazine);
+        convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* magText= convert.c_str();
+        dev.changeTextFromPointer(mag, magText);
+
+        aux = std::to_string(stats.hitpoints);
+        convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* HPText= convert.c_str();
+        dev.changeTextFromPointer(h1, HPText);
        
     }
 
@@ -258,11 +274,11 @@ private:
     EntyMan EM;
 
     TheEngine::IGUIText*  mag  {};
-    wchar_t*        magText{};
+    //wchar_t*        magText{};
     TheEngine::IGUIText*  h1   {};
-    wchar_t*        HPText{};
+    //wchar_t*        HPText{};
     TheEngine::IGUIText*  amm1 {};
-    wchar_t*        ammText{};
+    //wchar_t*        ammText{};
     TheEngine::IGUIImage* mir  {};
 
 };
