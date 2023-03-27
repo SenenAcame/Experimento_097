@@ -26,8 +26,8 @@ void game2() {
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
     Enty& player = LM.createPlayer(dev, SouSys);
 
-    LM.createInterface(dev);
-    LM.updateInterfaceAmmo(dev);
+    LM.createInterface(dev,player);
+    //LM.updateInterfaceAmmo(dev);
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
 
@@ -112,7 +112,7 @@ void game2() {
         SouSys.  update(EM);
         LogicSys.update(EM, dev, dt);
         SpawnSys.update(EM, dev, SouSys, player, map);
-        LM.      update(dev, SouSys);
+        LM.      update(dev, SouSys, player);
         DestSys. update(EM, dt);
 
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}

@@ -6,7 +6,7 @@ struct LevelMan {
     using EneTAGs = MP::Typelist<TEnemy>;
     using voidCMP = MP::Typelist<PhysicsCmp2>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys){
+    void update(TheEngine& dev, SoundSystem_t& SouSys, Enty& player){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 if(en.getDestroy()){
@@ -25,39 +25,79 @@ struct LevelMan {
                 }
             }
         );
+        LM.updateInterface(dev, player);
     }
 
-    void createInterface (TheEngine& dev){
+    void createInterface (TheEngine& dev, Enty& player){
         
         //Magazine
-        wchar_t* prueba = L"PRUEBA 1";
-        mag = dev.addTextToPositionInScreen(prueba, 10,10,260,22);
+        auto equipment = EM.getComponent<InventarioCmp> (player);
+        auto stats = EM.getComponent<EstadisticaCmp> (player);
+        int magazine = 0;
+        int ammo     = 0;
+        switch (equipment.equipada) {
+            case 0: magazine = equipment.magazine1; 
+                    ammo = equipment.ammo1;        
+                    
+            break;
+            case 1: magazine = equipment.magazine2;
+                    ammo = equipment.ammo2;
+                    
+            break;
+            case 2: magazine = equipment.magazine3;
+                    ammo = equipment.ammo3;
+                    
+            break;
+            default: break;
+        }
+        magText = (wchar_t*)magazine;
+        mag = dev.addTextToPositionInScreen(magText, 1000,690,1080,710);
         //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
         //std::cout<< "MAG ES " << mag <<"\n";
         //total ammo
-        //amm1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/uno.png" , 400,450);
-        //amm2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", 460,410);
-        //amm3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", 540,410);
+        ammText = (wchar_t*)ammo;
+        amm1 = dev.addTextToPositionInScreen(ammText,900,690,1000,710);
         //HP
-        //h1 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/uno.png" , -360,450);
-        //h2 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", -260,410);
-        //h3 =  dev.addImageToPositionInScreen("assets/Interface/1280x720/cero.png", -170,410);
+        HPText = (wchar_t*)stats.hitpoints;
+        h1 =  dev.addTextToPositionInScreen(HPText,100,690,200,710);
 
         //mira
         mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", 26, 150);
 
     }
 
-    void updateInterfaceAmmo(TheEngine& dev){
+    void updateInterface(TheEngine& dev){
 
-       //std::cout<< "VOY A MAG ES " << mag <<"\n";
-       //dev.changeImageFromPointer(mag,"assets/Interface/1280x720/cero.png");
-       wchar_t* prueba = L"CAMBIADO";
-       dev.changeTextFromPointer(mag, prueba);
+        auto equipment = EM.getComponent<InventarioCmp> (player);
+        auto stats = EM.getComponent<EstadisticaCmp> (player);
+        int magazine = 0;
+        int ammo     = 0;
+        switch (equipment.equipada) {
+            case 0: magazine = equipment.magazine1; 
+                    ammo = equipment.ammo1;        
+                    
+            break;
+            case 1: magazine = equipment.magazine2;
+                    ammo = equipment.ammo2;
+                    
+            break;
+            case 2: magazine = equipment.magazine3;
+                    ammo = equipment.ammo3;
+                    
+            break;
+            default: break;
+        }
+
+       ammText= (wchar_t*)ammo;
+       dev.changeTextFromPointer(amm1, ammText);
+       magText= (wchar_t*)magazine;
+       dev.changeTextFromPointer(mag, magText);
+       HPText= (wchar_t*)stats.hitpoints;
+       dev.changeTextFromPointer(mag, HPText);
        
-
-
     }
+
+
 
     Enty& createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
         Enty& map = EM.createEntity();
@@ -76,7 +116,7 @@ struct LevelMan {
         EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
         EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
-        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100.f, .damage=10.f, .speed=40.f});
+        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=10, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
         EM.addComponent<SalaCmp>       (player);
@@ -87,7 +127,7 @@ struct LevelMan {
 
     Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=5.f, .damage=20.f, .speed=15.f});
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=5, .damage=20, .speed=15.f});
         
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/portal1.bmp"));
@@ -97,7 +137,7 @@ struct LevelMan {
 
     Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=3.f});
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
         
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=2.33, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo1.obj","assets/textures/faerie2.bmp"));
@@ -108,7 +148,7 @@ struct LevelMan {
 
     Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
 
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo2.obj","assets/textures/fire.bmp"));
@@ -119,7 +159,7 @@ struct LevelMan {
     
     Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100.f, .damage=20.f, .speed=1.5f});
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
 
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo3.obj","assets/textures/faerie2.bmp"));
@@ -218,12 +258,11 @@ private:
     EntyMan EM;
 
     TheEngine::IGUIText*  mag  {};
+    wchar_t*        magText{};
     TheEngine::IGUIText*  h1   {};
-    TheEngine::IGUIText*  h2   {};
-    TheEngine::IGUIText*  h3   {};
+    wchar_t*        HPText{};
     TheEngine::IGUIText*  amm1 {};
-    TheEngine::IGUIText*  amm2 {};
-    TheEngine::IGUIText*  amm3 {};
-    TheEngine::IGUIImage*  mir  {};
+    wchar_t*        ammText{};
+    TheEngine::IGUIImage* mir  {};
 
 };

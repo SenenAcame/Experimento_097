@@ -77,7 +77,7 @@ void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 }
 
 void TheEngine::changeTextFromPointer(IGUIText* pointer, wchar_t * text ){
-
+    
     pointer->setText(text);
 
 }
