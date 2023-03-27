@@ -39,11 +39,11 @@ struct PhySys2 {
         phy.v_ang += dt * phy.a_ang;
 
         phy.v_lin = irr::core::clamp(phy.v_lin, -phy.kMxVLin, phy.kMxVLin);
-        phy.v_ang = irr::core::clamp(phy.v_ang, -phy.kMxVAng, phy.z);
+        phy.v_ang = irr::core::clamp(phy.v_ang, -phy.kMxVAng, phy.kMxVAng);
 
         auto roz = dt * std::fabs(phy.v_lin) * (phy.kRoz);
         if(phy.v_lin > 0) phy.v_lin -= roz;
-        else            phy.v_lin += roz;  
+        else              phy.v_lin += roz;  
     }
 
     static void calculatePosition(bool const is_enemy, PhysicsCmp2& p, double const dt) {

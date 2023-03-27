@@ -250,9 +250,9 @@ struct LogicSystem {
         //precalculo de coordenadas
         preCalculation(copy_physics, player.hasTAG<TEnemy>(), dt);
 
-        //comprobar colision en siguiente posicion
-        dx = abs(copy_physics.x - wall_physc.x) - (state.width + wall_state.width);
-        dz = abs(copy_physics.z - wall_physc.z) - (state.depth + wall_state.depth);
+        //comprobar colision en la siguiente posicion
+        dx = ColSys2::calculateDist(copy_physics.x, wall_physc.x, state.width, wall_state.width);
+        dz = ColSys2::calculateDist(copy_physics.z, wall_physc.z, state.depth, wall_state.depth);
 
         //si en la siguiente posicion colisiona con una pared
         if(dx<=0 && dz<=0) {
