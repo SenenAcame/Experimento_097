@@ -1,6 +1,7 @@
 #include "main.hpp"
 #include "cmp/physicscmp2.hpp"
 #include "man/levelman.hpp"
+#include "sys/rensys2.hpp"
 
 void game2() {
     LevelMan      LM;
@@ -16,14 +17,18 @@ void game2() {
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
     TheEngine     dev {1080, 720, &InpSys};
+
+    
     
     srand(time(NULL));
     dev.getDevice()->getCursorControl()->setVisible(false);
 
     LM.createMap(dev, MapSys, SouSys);
     ColSys.init_Hitoxes_Map2(LM, dev);
-    LM.createPlayer(dev, SouSys);
+    auto& player = LM.createPlayer(dev, SouSys);
 
+    LM.createInterface(dev,player);
+    //LM.updateInterfaceAmmo(dev);
     LM.createBasicEnemy(110, 60, dev, SouSys);
     LM.createBasicEnemy(120, 60, dev, SouSys);
     LM.createBasicEnemy(110, 70, dev, SouSys);
@@ -90,12 +95,13 @@ void game2() {
         PhySys.  update_after_colision(EM, dt);
         SouSys.  update(EM);
         //SpawnSys.update(EM, dev, SouSys, player, map);
-        LM.      update(dev, SouSys);
+        LM.      update(dev, SouSys, player);
         DestSys. update(EM, dt);
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
         ++frames;
     }
     
+    //RenSys.EndImgui();
     auto end = std::chrono::high_resolution_clock::now();
     auto ellapse =  (end - start).count(); //how many nano sec has pass
     auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass

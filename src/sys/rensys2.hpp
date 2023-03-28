@@ -3,13 +3,33 @@
 #include "../eng/engine.hpp"
 #include <irrlicht/aabbox3d.h>
 #include <irrlicht/irrMath.h>
+//IMGUI
+#include <GL/gl.h>
+#include <imgui/src/imgui.h>
+#include <imgui/src/imgui_impl_glfw.h>
+#include <imgui/src/imgui_impl_opengl3.h>
+#include <stdio.h>
+#define GL_SILENCE_DEPRECATION
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
+#endif
+#include <GLFW/glfw3.h> // Will drag system OpenGL headers
+
+
+
+
 
 struct RenSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, RenderCmp2>;
     using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
 
+    
+
     void update(EntyMan& EM, TheEngine& GFX) {
+
+        //ImGUI_Prerender();
+    
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend){
                 if(ent.hasTAG<TEnemy>()){
@@ -20,7 +40,35 @@ struct RenSys2 {
             }
         );
         drawAll(EM, GFX);
+        //RENDER in Opengl context
+        //ImGUI_renderOpenGlContext();
+
+       // ImGUI_Postrender();
     };
+
+    //void ImGUI_renderOpenGlContext() const noexcept{
+//
+    //    auto* frameB{m_framebuffer.get()};
+    //    glDrawPixels(m_w, m_h, GL_RGBA, GL_UNSIGNED_BYTE, frameB);
+//
+    //    //int display_w, display_h;
+    //    //glfwGetFramebufferSize(m_window, &display_w, &display_h);
+    //    //glViewport(0, 0, display_w, display_h);
+    //    //glClearColor(0.0, 0.0, 0.0, 0.0);
+    //    //glClear(GL_COLOR_BUFFER_BIT);
+    //}
+
+    //void ImGUI_renderOpenGlContext() const noexcept{
+//
+    //    auto* frameB{m_framebuffer.get()};
+    //    glDrawPixels(m_w, m_h, GL_RGBA, GL_UNSIGNED_BYTE, frameB);
+//
+    //    //int display_w, display_h;
+    //    //glfwGetFramebufferSize(m_window, &display_w, &display_h);
+    //    //glViewport(0, 0, display_w, display_h);
+    //    //glClearColor(0.0, 0.0, 0.0, 0.0);
+    //    //glClear(GL_COLOR_BUFFER_BIT);
+    //}
 
     void drawAll(EntyMan& EM, TheEngine& GFX) {
         GFX.beginScene();
@@ -41,4 +89,90 @@ struct RenSys2 {
             }
         );
     }
+
+    //void ImGUI_Prerender() const noexcept {
+//
+    //    // Poll and handle events (inputs, window resize, etc.)
+    //    // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+    //    // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
+    //    // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
+    //    // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+    //    glfwPollEvents();
+//
+    //    // Start the Dear ImGui frame
+    //    ImGui_ImplOpenGL3_NewFrame();
+    //    ImGui_ImplGlfw_NewFrame();
+    //    ImGui::NewFrame();
+    //}
+//
+    //void ImGUI_Postrender() const noexcept{
+//
+    //    // Rendering
+    //    ImGui::Render();
+    //    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+//
+    //    glfwSwapBuffers(m_window);
+//
+    //}
+
+    //IMGUI
+    //void initIMGUI(){
+    //    glfwSetErrorCallback([](auto error, auto description){
+    //        std::fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    //        throw std::runtime_error("GLFW ERROR");
+    //    });
+    //    if (!glfwInit())
+    //        throw std::runtime_error("ERROR GLFW INITIALIZATION");
+//
+    //    // GL 3.0 + GLSL 130
+    //    constexpr const char* glsl_version = "#version 130";
+    //    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    //    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    //    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    //    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+//
+    //    m_window = glfwCreateWindow(960, 720, "GAME", NULL, NULL);
+    //    if (m_window == nullptr)
+    //    throw std::runtime_error("ERROR GLFW creating WINDOW");
+    //    glfwMakeContextCurrent(m_window);
+    //    glfwSwapInterval(1); // Enable vsync
+    //    //Esto de glew creo que no hace falta
+    //    //if(glewInit() != GLEW_OK){
+    //    //    throw std::runtime_error("ERROR GLFW init GLEW");
+    //    //}
+    //    
+    //    // Setup Dear ImGui context
+    //    IMGUI_CHECKVERSION();
+    //    ImGui::CreateContext();
+    //    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+//
+    //    // Setup Dear ImGui style
+    //    ImGui::StyleColorsDark();
+    //    //ImGui::StyleColorsLight();
+//
+    //    // Setup Platform/Renderer backends
+    //    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    //    ImGui_ImplOpenGL3_Init(glsl_version);
+//
+    //}
+
+    //void EndImgui(){
+    //    // Cleanup
+    //    ImGui_ImplOpenGL3_Shutdown();
+    //    ImGui_ImplGlfw_Shutdown();
+    //    ImGui::DestroyContext();
+    //    if(m_window){
+    //        glfwDestroyWindow(m_window);
+    //    }
+    //    glfwTerminate();
+    //}
+
+
+
+    //private:
+    //GLFWwindow* m_window {nullptr};
+    //unsigned int m_h{1080}, m_w{720};
+    //std::unique_ptr<uint32_t[]> m_framebuffer;
 };
