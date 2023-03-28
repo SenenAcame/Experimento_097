@@ -314,14 +314,7 @@ private:
             equipment.magazine1 -= 1;
         }
         else if (equipment.equipada == 1){ //escopeta
-            for(float i = -0.4; i < 0.5; i += 0.2){
-                float posx = i*cos(phy_player.orieny);
-                float posz = i*-sin(phy_player.orieny);
-
-                LM.createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 0,     posz);
-                LM.createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 2*0.2, posz);
-                if(i>-0.4 && i<0.4) LM.createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 1*0.2, posz);
-            }
+            LM.createShotgunBullets(phy_player, eng, SS, 8., 3., 0.15, 0.4, 10);
             equipment.magazine2 -= 1;
         }
         else if(equipment.equipada == 2){ //ametralladora

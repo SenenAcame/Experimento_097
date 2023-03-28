@@ -1,6 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../sys/nodemapsys.hpp"
+#include <cstdint>
 #include <irrlicht/IGUIImage.h>
 #include <string>
 
@@ -155,93 +156,93 @@ struct LevelMan {
         return enemy;
     }
 
-    Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-        Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
-        
-        EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=2.33, .z=z_pos, .kMxVLin = stats.speed});
-        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo1.obj","assets/textures/faerie2.bmp"));
-        EM.addComponent<EstadoCmp>  (enemy, 0.875f, 2.33f, 0.85f);
-        EM.addTag      <TSmallEnemy>(enemy);
-        return enemy;
-    }
-
-    Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-        Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
-
-        EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
-        EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
-        EM.addTag      <TDistEnemy> (enemy);
-        return enemy;
-    }
-    
-    Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-        Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
-
-        EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/faerie2.bmp"));
-        EM.addComponent<EstadoCmp>  (enemy, 1.525f, 5.725f, 2.105f);
-        EM.addTag      <TTankEnemy> (enemy);
-        return enemy;
-    }
-
-    Enty& createWeapon(float x_pos, float y_pos, float z_pos, 
-    TheEngine& dev, SoundSystem_t& SouSys, size_t tipo, int ammo, int magazine, double reloadTimer){
-        Enty& weapon = EM.createEntity  ();
-        EM.addComponent<PhysicsCmp2>    (weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
-        switch (tipo) {
-            
-            case 0:
-                EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));        
-                
-            break;
-
-            case 1:
-                EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));        
-                
-            break;
-
-            case 2:
-                EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));        
-                
-            break;
-
-            default:
-            break;
-        
-        }
-        
-        EM.addComponent<WeaponCmp>      (weapon, WeaponCmp{.typeWe = tipo, .ammo= ammo, .magazine= magazine, .reload= reloadTimer});
-        EM.addComponent<SoundCmp>       (weapon, SouSys.createinstance(1));
-        EM.addComponent<EstadoCmp>      (weapon, 1.525f, 5.725f, 2.105f); 
-        EM.addTag      <TWeapon>        (weapon);
-        EM.addTag      <TInteract>      (weapon);
-        return weapon;
-    }
-
-    Enty& createDoor(float x_pos, float z_pos, TheEngine& dev) {
-        Enty& door = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(door, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
-        EM.addComponent<RenderCmp2> (door, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/portal1.bmp"));
-        EM.addComponent<EstadoCmp>  (door, 10.f, 10.f, 10.f);
-        EM.addTag<TInteract>(door);
-        EM.addTag<TWall>    (door);
-        EM.addTag<TDoor>    (door);
-        return door;
-    }
-
-    Enty& createKey(float x_pos, float z_pos, TheEngine& dev) {
-        Enty& key = EM.createEntity();
-        EM.addComponent<PhysicsCmp2>(key, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
-        EM.addComponent<RenderCmp2> (key, dev.createModel("assets/models/otros/enemy.obj","assets/textures/portal1.bmp"));
-        EM.addComponent<EstadoCmp>  (key, 10.f, 10.f, 10.f);
-        EM.addTag<TInteract>(key);
-        EM.addTag<TKey>     (key);
-        return key;
-    }
+    //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+    //    Enty& enemy = createEnemy(SouSys);
+    //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
+    //    
+    //    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=2.33, .z=z_pos, .kMxVLin = stats.speed});
+    //    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo1.obj","assets/textures/faerie2.bmp"));
+    //    EM.addComponent<EstadoCmp>  (enemy, 0.875f, 2.33f, 0.85f);
+    //    EM.addTag      <TSmallEnemy>(enemy);
+    //    return enemy;
+    //}
+    //
+    //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+    //    Enty& enemy = createEnemy(SouSys);
+    //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
+    //
+    //    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
+    //    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
+    //    EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
+    //    EM.addTag      <TDistEnemy> (enemy);
+    //    return enemy;
+    //}
+    //
+    //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+    //    Enty& enemy = createEnemy(SouSys);
+    //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
+    //
+    //    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
+    //    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/faerie2.bmp"));
+    //    EM.addComponent<EstadoCmp>  (enemy, 1.525f, 5.725f, 2.105f);
+    //    EM.addTag      <TTankEnemy> (enemy);
+    //    return enemy;
+    //}
+    //
+    //Enty& createWeapon(float x_pos, float y_pos, float z_pos, 
+    //TheEngine& dev, SoundSystem_t& SouSys, size_t tipo, int ammo, int magazine, double reloadTimer){
+    //    Enty& weapon = EM.createEntity  ();
+    //    EM.addComponent<PhysicsCmp2>    (weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
+    //    switch (tipo) {
+    //        
+    //        case 0:
+    //            EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));        
+    //            
+    //        break;
+    //
+    //        case 1:
+    //            EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));        
+    //            
+    //        break;
+    //
+    //        case 2:
+    //            EM.addComponent<RenderCmp2>     (weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));        
+    //            
+    //        break;
+    //
+    //        default:
+    //        break;
+    //    
+    //    }
+    //    
+    //    EM.addComponent<WeaponCmp>      (weapon, WeaponCmp{.typeWe = tipo, .ammo= ammo, .magazine= magazine, .reload= reloadTimer});
+    //    EM.addComponent<SoundCmp>       (weapon, SouSys.createinstance(1));
+    //    EM.addComponent<EstadoCmp>      (weapon, 1.525f, 5.725f, 2.105f); 
+    //    EM.addTag      <TWeapon>        (weapon);
+    //    EM.addTag      <TInteract>      (weapon);
+    //    return weapon;
+    //}
+    //
+    //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev) {
+    //    Enty& door = EM.createEntity();
+    //    EM.addComponent<PhysicsCmp2>(door, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
+    //    EM.addComponent<RenderCmp2> (door, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/portal1.bmp"));
+    //    EM.addComponent<EstadoCmp>  (door, 10.f, 10.f, 10.f);
+    //    EM.addTag<TInteract>(door);
+    //    EM.addTag<TWall>    (door);
+    //    EM.addTag<TDoor>    (door);
+    //    return door;
+    //}
+    //
+    //Enty& createKey(float x_pos, float z_pos, TheEngine& dev) {
+    //    Enty& key = EM.createEntity();
+    //    EM.addComponent<PhysicsCmp2>(key, PhysicsCmp2{.x=x_pos, .y=5, .z=z_pos});
+    //    EM.addComponent<RenderCmp2> (key, dev.createModel("assets/models/otros/enemy.obj","assets/textures/portal1.bmp"));
+    //    EM.addComponent<EstadoCmp>  (key, 10.f, 10.f, 10.f);
+    //    EM.addTag<TInteract>(key);
+    //    EM.addTag<TKey>     (key);
+    //    return key;
+    //}
 
     void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev) {
         Enty& wall = EM.createEntity();
@@ -252,6 +253,22 @@ struct LevelMan {
         EM.addTag      <TWall>      (wall);
     }
 
+    void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+    float const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
+        //for(float i = -0.4; i < 0.5; i += 0.2){
+        //    float posx = i*cos(phy_player.orieny);
+        //    float posz = i*-sin(phy_player.orieny);
+        //    createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 0,     posz);
+        //    createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 2*0.2, posz);
+        //    if(i>-0.4 && i<0.4) createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 1*0.2, posz);
+        //}
+        for(uint8_t i = 0; i < 10; i++) {
+            double ang_alp = randAng(dispersion);
+            double ang_bet = randAng(dispersion);
+            createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);
+        }
+    }
+
     void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
     float const dmg, float const spd, float const rad, double const slfD,
     double const pbx = 0, double const pby = 0, double const pbz = 0) {
@@ -259,12 +276,12 @@ struct LevelMan {
         EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
         EM.addComponent<PhysicsCmp2>(
         bullet, PhysicsCmp2{
-                .x = phy_player.x + pbx,
-                .y = phy_player.y + pby,
-                .z = phy_player.z + pbz,
-                .vx=  sin(phy_player.orieny) * cos(phy_player.orienx) * spd,
-                .vy= -sin(phy_player.orienx) * spd,
-                .vz=  cos(phy_player.orieny) * cos(phy_player.orienx) * spd
+                .x = phy_player.x,
+                .y = phy_player.y,
+                .z = phy_player.z,
+                .vx=  sin(phy_player.orieny + pbx) * cos(phy_player.orienx + pby) * spd,
+                .vy= -sin(phy_player.orienx + pby) * spd,
+                .vz=  cos(phy_player.orieny + pbx) * cos(phy_player.orienx + pby) * spd
             }
         );
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
@@ -311,6 +328,11 @@ private:
                 .behaviour = SB::Two_Steps 
             }
         );
+    }
+
+    double randAng(uint8_t ang) {
+        float alpha = rand() % ang - (ang/2);
+        return alpha * irr::core::PI / 180;
     }
 
     EntyMan EM;
