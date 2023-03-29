@@ -15,19 +15,12 @@
 #endif
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-
-
-
-
 struct RenSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, RenderCmp2>;
     using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
 
-    
-
     void update(EntyMan& EM, TheEngine& GFX) {
-
         //ImGUI_Prerender();
     
         EM.foreach<SYSCMPs, SYSTAGs>(

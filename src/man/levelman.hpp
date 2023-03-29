@@ -7,8 +7,8 @@
 
 
 struct LevelMan {
-    using EneTAGs = MP::Typelist<TEnemy>;
     using voidCMP = MP::Typelist<PhysicsCmp2>;
+    using EneTAGs = MP::Typelist<TEnemy>;
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, Enty& player){
         EM.foreach<voidCMP, EneTAGs>(
@@ -254,7 +254,7 @@ struct LevelMan {
     }
 
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-    float const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
+    int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
         //for(float i = -0.4; i < 0.5; i += 0.2){
         //    float posx = i*cos(phy_player.orieny);
         //    float posz = i*-sin(phy_player.orieny);
@@ -270,8 +270,8 @@ struct LevelMan {
     }
 
     void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-    float const dmg, float const spd, float const rad, double const slfD,
-    double const pbx = 0, double const pby = 0, double const pbz = 0) {
+    int const dmg, float const spd, float const rad, double const slfD,
+    double const pbx = 0, double const pby = 0) {
         Enty& bullet = EM.createEntity();
         EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
         EM.addComponent<PhysicsCmp2>(
@@ -279,9 +279,9 @@ struct LevelMan {
                 .x = phy_player.x,
                 .y = phy_player.y,
                 .z = phy_player.z,
-                .vx=  sin(phy_player.orieny + pbx) * cos(phy_player.orienx + pby) * spd,
-                .vy= -sin(phy_player.orienx + pby) * spd,
-                .vz=  cos(phy_player.orieny + pbx) * cos(phy_player.orienx + pby) * spd
+                .vx=  sin(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd,
+                .vy= -sin(phy_player.orienx + pbx) * spd,
+                .vz=  cos(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd
             }
         );
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));

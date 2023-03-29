@@ -38,7 +38,7 @@ DINAMIC  := -Wl,-rpath=libs/
 
 ifdef RELEASE
 	CCFLAGS += -O3
-	FLAGS += -O3
+	CFLAGS += -O3
 else
 	CCFLAGS += -g
 	CFLAGS += -g
