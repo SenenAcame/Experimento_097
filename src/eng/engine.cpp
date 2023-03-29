@@ -52,17 +52,35 @@ void TheEngine::addStaticText(){
     
 }
 
-void TheEngine::addFont(Path p, irr::gui::IGUIFont *font){
+auto TheEngine::addFont(Path p){
 
-    guienv_->addFont(p, font);
+    IGUIFont *font = guienv_->getFont(p);
+    return guienv_->addFont(p, font);
+}
+
+void TheEngine::SetFont(Path p){
+
+    
+    irr::gui::IGUISkin* skin = guienv_->getSkin();
+    
+    IGUIFont* font = guienv_->getFont(p);
+    
+    if (font)
+        skin->setFont(font);
+
+    skin->setFont(guienv_->getBuiltInFont(), irr::gui::EGDF_TOOLTIP);
+
 }
 
 TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(const wchar_t * text, int x, int y, int x2, int y2){
 
+    //guienv_->getFont("assets/Interface/Font1.xml");
+   // guienv_->addStaticText(L"PRUEBA DE FUENTE JODER 12345", irr::core::rect<irr::s32>(0,100,300,200),true);
     return guienv_->addStaticText(text, irr::core::rect<irr::s32>(x,y,x2,y2), false);
 }
 
 TheEngine::IGUIImage* TheEngine::addImageToPositionInScreen(Path image, int x, int y){
+    
     
     irr::video::ITexture* images = driver_->getTexture(image);
     return guienv_->addImage(images, irr::core::position2d<int>(x,y));
@@ -76,7 +94,7 @@ void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 
 }
 
-void TheEngine::changeTextFromPointer(IGUIText* pointer, const wchar_t * text ){
+void TheEngine::changeTextFromPointer(IGUIText* pointer, const wchar_t * text){
     
     pointer->setText(text);
 

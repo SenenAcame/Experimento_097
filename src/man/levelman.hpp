@@ -32,6 +32,8 @@ struct LevelMan {
 
     void createInterface (TheEngine& dev, Enty& player){
         
+        //FONT
+       
         //Magazine
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
@@ -55,19 +57,21 @@ struct LevelMan {
         std::string aux = std::to_string(magazine);
         std::wstring convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* magText = convert.c_str();
-        mag = dev.addTextToPositionInScreen(magText, 1000,690,1080,710);
+        mag = dev.addTextToPositionInScreen(magText, 820,600,870,710);
         //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
         //std::cout<< "MAG ES " << mag <<"\n";
         //total ammo
         aux = std::to_string(ammo);
         convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* ammText = convert.c_str();
-        amm1 = dev.addTextToPositionInScreen(ammText,900,690,1000,710);
+        amm1 = dev.addTextToPositionInScreen(ammText,900,600,1000,710);
+        separacion = dev.addTextToPositionInScreen(L"/",870,600,1000,710);
         //HP
         aux = std::to_string(stats.hitpoints);
         convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* HPText = convert.c_str();
-        h1 =  dev.addTextToPositionInScreen(HPText,100,690,200,710);
+        hp =  dev.addTextToPositionInScreen(L"VIDA:",0,600,100,710);
+        h1 =  dev.addTextToPositionInScreen(HPText,150,600,250,710);
 
         //mira
         mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", 26, 150);
@@ -75,6 +79,7 @@ struct LevelMan {
     }
 
     void updateInterface(TheEngine& dev, Enty& player){
+
 
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
@@ -276,8 +281,10 @@ private:
     TheEngine::IGUIText*  mag  {};
     //wchar_t*        magText{};
     TheEngine::IGUIText*  h1   {};
+    TheEngine::IGUIText*  hp   {};
     //wchar_t*        HPText{};
     TheEngine::IGUIText*  amm1 {};
+    TheEngine::IGUIText*  separacion {};
     //wchar_t*        ammText{};
     TheEngine::IGUIImage* mir  {};
 

@@ -26,6 +26,7 @@ void game2() {
     Enty& map    = LM.createMap(dev, MapSys, SouSys);
     Enty& player = LM.createPlayer(dev, SouSys);
 
+    dev.SetFont("assets/Interface/Font/FontBien.xml");
     LM.createInterface(dev,player);
     //LM.updateInterfaceAmmo(dev);
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
