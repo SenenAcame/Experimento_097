@@ -166,7 +166,8 @@ struct LogicSystem {
         auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
         auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
         
-        recept_stats.hitpoints -= agress_stats.damage;
+        //recept_stats.hitpoints -= agress_stats.damage;
+        recept_stats.hitpoints -= 200;
         
         if(recept_stats.hitpoints <= 0) {
             if(receptor.hasTAG<TEnemy>()) { EM.getComponent<AICmp>(receptor).behaviour = SB::Diying; }

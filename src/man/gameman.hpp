@@ -33,22 +33,13 @@ struct GameMan {
         SelfDestSys   DestSys;
         TheEngine     dev {1080, 720, &InpSys};
 
-        srand(time(NULL));
-        dev.getDevice()->getCursorControl()->setVisible(false);
+        init_config(dev);
+        init_map(LM, dev, SouSys);
 
-        LM.createMap(dev, MapSys, SouSys);
-        ColSys.init_Hitoxes_Map2(LM, dev);
-        auto& player = LM.createPlayer(dev, SouSys);
-        
-        LM.createInterface(dev, player);
+        int i = 0;
 
-        LM.createBasicEnemy(30, 30, dev, SouSys);
-        //LM.createBasicEnemy(110, 60, dev, SouSys);
-        //LM.createBasicEnemy(120, 60, dev, SouSys);
-        //LM.createBasicEnemy(110, 70, dev, SouSys);
-        //LM.createBasicEnemy(35, -60, dev, SouSys);
-        //LM.createBasicEnemy(45, -60, dev, SouSys);
-        //LM.createBasicEnemy(35, -70, dev, SouSys);
+        while(i < 10) {
+        auto& player = LM.init_level(dev, SouSys);
 
         //actual moment ini
         constexpr double dt = 1.0/60;
@@ -56,11 +47,9 @@ struct GameMan {
         //constexpr int64_t maxFPS {60};
         //constexpr int64_t nanos_per_frame {1000000000/maxFPS};
         //int64_t frames = 0;
-
         std::size_t player_ID = player.getID();
         bool dead { false };
-
-        while(dev.run() && !dead){
+        while(!dead && dev.run()){
             //auto frame_start = std::chrono::high_resolution_clock::now();
             EM.      update();
             RenSys.  update(EM, dev);
@@ -75,12 +64,14 @@ struct GameMan {
             //SpawnSys.update(EM, dev, SouSys, player, map);
             LM.      update(dev, SouSys, player);
             DestSys. update(EM, dt);
-            
             dead = EM.getEntityById(player_ID).getDestroy();
             //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
             //++frames;
         }
-    
+        LM.resetLevel();
+
+        i++;
+        }
         //RenSys.EndImgui();
         //auto end = std::chrono::high_resolution_clock::now();
         //auto ellapse =  (end - start).count(); //how many nano sec has pass
@@ -91,5 +82,15 @@ struct GameMan {
 
         //actual moment end
         //ellapse = end-start
+    }
+
+    void init_config(TheEngine& dev) {
+        srand(time(NULL));
+        dev.getDevice()->getCursorControl()->setVisible(false);
+    }
+
+    void init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
+        LM.createMap(dev, SouSys);
+        ColSys2::init_Hitoxes_Map2(LM, dev);
     }
 };

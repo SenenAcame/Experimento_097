@@ -5,7 +5,6 @@
 #include <irrlicht/IGUIImage.h>
 #include <string>
 
-
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
@@ -19,8 +18,20 @@ struct LevelMan {
         updateInterface(dev, player);
     }
 
+    auto& init_level(TheEngine& dev, SoundSystem_t& SouSys) {
+        auto& player = createPlayer(dev, SouSys);
+        createInterface(dev, player);
+        createBasicEnemy(30, 30, dev, SouSys);
+        //LM.createBasicEnemy(110, 60, dev, SouSys);
+        //LM.createBasicEnemy(120, 60, dev, SouSys);
+        //LM.createBasicEnemy(110, 70, dev, SouSys);
+        //LM.createBasicEnemy(35, -60, dev, SouSys);
+        //LM.createBasicEnemy(45, -60, dev, SouSys);
+        //LM.createBasicEnemy(35, -70, dev, SouSys);
+        return player;
+    }
+
     void createInterface (TheEngine& dev, Enty& player){
-        
         //Magazine
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
@@ -63,24 +74,20 @@ struct LevelMan {
 
     }
 
-    void updateInterface(TheEngine& dev, Enty& player){
-
+    void updateInterface(TheEngine& dev, Enty& player) {
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
         int magazine = 0;
         int ammo     = 0;
         switch (equipment.equipada) {
             case 0: magazine = equipment.magazine1; 
-                    ammo = equipment.ammo1;        
-                    
+                    ammo = equipment.ammo1;
             break;
             case 1: magazine = equipment.magazine2;
                     ammo = equipment.ammo2;
-                    
             break;
             case 2: magazine = equipment.magazine3;
                     ammo = equipment.ammo3;
-                    
             break;
             default: break;
         }
@@ -102,7 +109,7 @@ struct LevelMan {
        
     }
 
-    void createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
+    void createMap(TheEngine& dev, SoundSystem_t& SouSys) {
         irr::io::path models[6] = {
             "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
             "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
@@ -122,8 +129,8 @@ struct LevelMan {
 
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
-        EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
+        EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
+        EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
         EM.addTag      <TMap>       (map);
         
         for(uint8_t i {0}; i<6; i++) 
@@ -290,6 +297,23 @@ struct LevelMan {
         EM.addComponent<SelfDestCmp>(bullet, slfD);
         EM.addTag<TBullet>          (bullet);
         EM.addTag<TInteract>        (bullet);
+    }
+
+    void resetLevel() {
+        EM.forall(
+            [](Enty& ent) {
+                bool is_enemy_bullet_or_player = 
+                    ent.hasTAG<TEnemy>()  ||
+                    ent.hasTAG<TBullet>() ||
+                    ent.hasTAG<TPlayer>();
+                if(is_enemy_bullet_or_player) ent.setDestroy();
+            }
+        );
+        EM.callDestroy();
+        //EM.destroy_entities();
+        //EM.destroyAllEntities();
+        // marcar para destruir
+        // destruir
     }
 
     EntyMan& getEM() { return EM; }

@@ -155,6 +155,10 @@ struct EntityMan2 {
         sound.play   = true;
     }
 
+    void callDestroy() {
+        destroy_entities();
+    }
+
     auto& getEntities() { return entities_; }
     auto& getStorage()  { return cmpStorage_; }
     auto& getBoard()    { return blackboard_; }
