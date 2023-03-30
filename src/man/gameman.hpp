@@ -36,41 +36,37 @@ struct GameMan {
         init_config(dev);
         init_map(LM, dev, SouSys);
 
-        int i = 0;
-
-        while(i < 10) {
-        auto& player = LM.init_level(dev, SouSys);
-
-        //actual moment ini
-        constexpr double dt = 1.0/60;
-        //auto start = std::chrono::high_resolution_clock::now();
-        //constexpr int64_t maxFPS {60};
-        //constexpr int64_t nanos_per_frame {1000000000/maxFPS};
-        //int64_t frames = 0;
-        std::size_t player_ID = player.getID();
-        bool dead { false };
-        while(!dead && dev.run()){
-            //auto frame_start = std::chrono::high_resolution_clock::now();
-            EM.      update();
-            RenSys.  update(EM, dev);
-            MapSys.  update(EM);
-            InpSys.  update(LM, dev, SouSys, dt);
-            AISys.   update(EM, dt, dev);
-            PhySys.  update(EM, dt);
-            ColSys.  update(EM);
-            LogicSys.update(EM, dev, dt);
-            PhySys.  update_after_colision(EM, dt);
-            SouSys.  update(EM);
-            //SpawnSys.update(EM, dev, SouSys, player, map);
-            LM.      update(dev, SouSys, player);
-            DestSys. update(EM, dt);
-            dead = EM.getEntityById(player_ID).getDestroy();
-            //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
-            //++frames;
-        }
-        LM.resetLevel();
-
-        i++;
+        while(dev.run()) {
+            auto& player = LM.init_level(dev, SouSys);
+            std::size_t player_ID = player.getID();
+            bool dead { false };
+            //actual moment ini
+            constexpr double dt = 1.0/60;
+            //auto start = std::chrono::high_resolution_clock::now();
+            //constexpr int64_t maxFPS {60};
+            //constexpr int64_t nanos_per_frame {1000000000/maxFPS};
+            //int64_t frames = 0;
+            
+            while(!dead && dev.run()){
+                //auto frame_start = std::chrono::high_resolution_clock::now();
+                EM.      update();
+                RenSys.  update(EM, dev);
+                MapSys.  update(EM);
+                InpSys.  update(LM, dev, SouSys, dt);
+                AISys.   update(EM, dt, dev);
+                PhySys.  update(EM, dt);
+                ColSys.  update(EM);
+                LogicSys.update(EM, dev, dt);
+                PhySys.  update_after_colision(EM, dt);
+                SouSys.  update(EM);
+                //SpawnSys.update(EM, dev, SouSys, player, map);
+                LM.      update(dev, SouSys, player_ID);
+                DestSys. update(EM, dt);
+                dead = EM.getEntityById(player_ID).getDestroy();
+                //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+                //++frames;
+            }
+            LM.resetLevel(dev);
         }
         //RenSys.EndImgui();
         //auto end = std::chrono::high_resolution_clock::now();

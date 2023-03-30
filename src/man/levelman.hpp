@@ -9,25 +9,25 @@ struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, Enty& player){
+    void update(TheEngine& dev, SoundSystem_t& SouSys, std::size_t player_ID){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
             }
         );
+        auto& player = EM.getEntityById(player_ID);
         updateInterface(dev, player);
     }
 
     auto& init_level(TheEngine& dev, SoundSystem_t& SouSys) {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
-        createBasicEnemy(30, 30, dev, SouSys);
-        //LM.createBasicEnemy(110, 60, dev, SouSys);
-        //LM.createBasicEnemy(120, 60, dev, SouSys);
-        //LM.createBasicEnemy(110, 70, dev, SouSys);
-        //LM.createBasicEnemy(35, -60, dev, SouSys);
-        //LM.createBasicEnemy(45, -60, dev, SouSys);
-        //LM.createBasicEnemy(35, -70, dev, SouSys);
+        createBasicEnemy(110, 60, dev, SouSys);
+        createBasicEnemy(120, 60, dev, SouSys);
+        createBasicEnemy(110, 70, dev, SouSys);
+        createBasicEnemy(35, -60, dev, SouSys);
+        createBasicEnemy(45, -60, dev, SouSys);
+        createBasicEnemy(35, -70, dev, SouSys);
         return player;
     }
 
@@ -262,13 +262,6 @@ struct LevelMan {
 
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
     int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
-        //for(float i = -0.4; i < 0.5; i += 0.2){
-        //    float posx = i*cos(phy_player.orieny);
-        //    float posz = i*-sin(phy_player.orieny);
-        //    createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 0,     posz);
-        //    createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 2*0.2, posz);
-        //    if(i>-0.4 && i<0.4) createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 1*0.2, posz);
-        //}
         for(uint8_t i = 0; i < 10; i++) {
             double ang_alp = randAng(dispersion);
             double ang_bet = randAng(dispersion);
@@ -299,7 +292,12 @@ struct LevelMan {
         EM.addTag<TInteract>        (bullet);
     }
 
-    void resetLevel() {
+    void resetLevel(TheEngine& dev) {
+        const wchar_t* empty = L"";
+        dev.changeTextFromPointer(amm1, empty);
+        dev.changeTextFromPointer(mag, empty);
+        dev.changeTextFromPointer(h1, empty);
+
         EM.forall(
             [](Enty& ent) {
                 bool is_enemy_bullet_or_player = 
@@ -309,11 +307,8 @@ struct LevelMan {
                 if(is_enemy_bullet_or_player) ent.setDestroy();
             }
         );
+
         EM.callDestroy();
-        //EM.destroy_entities();
-        //EM.destroyAllEntities();
-        // marcar para destruir
-        // destruir
     }
 
     EntyMan& getEM() { return EM; }
