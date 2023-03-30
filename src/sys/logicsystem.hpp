@@ -176,7 +176,10 @@ struct LogicSystem {
         recept_stats.hitpoints -= agress_stats.damage;
         
         if(recept_stats.hitpoints <= 0) {
-            if(receptor.hasTAG<TEnemy>()) { EM.getComponent<AICmp>(receptor).behaviour = SB::Diying; }
+            if(receptor.hasTAG<TEnemy>()) { 
+                EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
+                EM.removeComponent<EstadoCmp>(receptor);
+            }
             else { markDestroy(receptor); } 
         }
         

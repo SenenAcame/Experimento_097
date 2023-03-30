@@ -213,7 +213,7 @@ private:
 
         switch (p_invent.equipada) {
             case 0:
-                playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                playerRender.n = eng.createModel("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
                 p_invent.clockReload = p_invent.clockReload1;
                 if(p_invent.clockReload >= p_invent.reloadTime1) { notReloading(p_invent); }
                 else { iAmReloading(p_invent); }
