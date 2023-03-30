@@ -135,7 +135,6 @@ private:
     }
     
     void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
-        auto& EM = LM.getEM();
         int ammo = 0;
         double weaponCadence = 0;
         double reloadTimer = 0;

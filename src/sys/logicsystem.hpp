@@ -42,10 +42,10 @@ struct LogicSystem {
                         //    //proceso Colision EnemyBullet
                         //    colisionEneBullet(EM, entity, entity_colisioned);
                         //}
-                        //else if(entity.hasTAG<TWeapon>()){
-                        //    //proceso Colision Weapon
-                        //    colisionWeapon   (EM, entity, entity_colisioned, eng);
-                        //}
+                        else if(entity.hasTAG<TWeapon>()){
+                            //proceso Colision Weapon
+                            colisionWeapon   (LM, entity, entity_colisioned, eng);
+                        }
                         //else if(entity.hasTAG<TDoor>()){
                         //    //proceso Colision Door
                         //    colisionDoor     (EM, entity, entity_colisioned);
@@ -88,10 +88,10 @@ struct LogicSystem {
         //    //jugador recibe daño de la bala enemiga
         //    reciveDamge(EM, current, colisioned);
         //}
-        //else if(colisioned.hasTAG<TWeapon>()){
-        //    //mostrar texto de recoger arma
-        //    takeWeapon(current, colisioned, EM, eng);
-        //}
+        else if(colisioned.hasTAG<TWeapon>()){
+            //mostrar texto de recoger arma
+            takeWeapon(current, colisioned, LM, eng);
+        }
         //else if(colisioned.hasTAG<TDoor>()){
         //    //mostrar texto de abrir puerta
         //    openDoor();
@@ -141,13 +141,13 @@ struct LogicSystem {
     //    }
     //}
     //
-    //void colisionWeapon(EntyMan& EM, Enty& current, Enty& colisioned, TheEngine& eng){
-    //    if(colisioned.hasTAG<TPlayer>()){
-    //        //mostrar texto de recoger arma
-    //        //borrar entidad arma
-    //        takeWeapon(colisioned, current, EM, eng);
-    //    }
-    //}
+    void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng){
+        if(colisioned.hasTAG<TPlayer>()){
+            //mostrar texto de recoger arma
+            //borrar entidad arma
+            takeWeapon(colisioned, current, LM, eng);
+        }
+    }
     //
     //void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned) {
     //    if(colisioned.hasTAG<TPlayer>()) {
@@ -197,33 +197,45 @@ struct LogicSystem {
         if(state.entityCol != 0) partialVelocities(EM, ent_move, dt);
     }
 
-    //void takeWeapon(Enty& player, Enty& weapon, EntyMan& EM, TheEngine& eng) {
-    //    //unificarlo en el level manager para que no este el codigo en input y aqui
-    //    auto& equipment = EM.getComponent<InventarioCmp>(player);
-    //    size_t aux = 0;
-    //    for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
-    //        if(i == 2){
-    //            auto& wpn = EM.getComponent<WeaponCmp>(weapon);
-    //            equipment.inventary[aux] = 1;
-    //            equipment.inventary[wpn.typeWe] = 2;
-    //            equipment.equipada = wpn.typeWe;
-    //            break;
-    //        }
-    //        aux++;
-    //    }
-    //    auto& playerRender = EM.getComponent<RenderCmp2>(player);
-    //    playerRender.n->remove();
-    //    switch (equipment.equipada) {
-    //        case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
-    //            break;
-    //        case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
-    //            break;
-    //        case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
-    //            break;
-    //        default: break;
-    //    }
-    //    weapon.setDestroy();
-    //}
+    void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng) {
+        //unificarlo en el level manager para que no este el codigo en input y aqui
+        auto& EM = LM.getEM();
+        auto& equipment = EM.getComponent<InventarioCmp>(player);
+        auto& playerRender = EM.getComponent<RenderCmp2>(player);
+        int ammo {}, magazine {};
+        size_t aux = 0;
+
+        for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
+            if(i == 2){
+                auto& wpn = EM.getComponent<WeaponCmp>(weapon);
+                equipment.inventary[aux] = 1;
+                equipment.inventary[wpn.typeWe] = 2;
+                equipment.equipada = wpn.typeWe;
+                break;
+            }
+            aux++;
+        }
+        
+        playerRender.n->remove();
+
+        switch (equipment.equipada) {
+            case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                ammo = equipment.ammo1;
+                magazine = equipment.magazine1;
+                break;
+            case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+                ammo = equipment.ammo2;
+                magazine = equipment.magazine2;
+                break;
+            case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+                ammo = equipment.ammo3;
+                magazine = equipment.magazine3;
+                break;
+            default: break;
+        }
+        LM.updateInterfaceWhenReload(eng, magazine, ammo);
+        weapon.setDestroy();
+    }
     //
     //void openDoor() {
     //    //mostrar texto de abrir puerta

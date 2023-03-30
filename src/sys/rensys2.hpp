@@ -22,7 +22,6 @@ struct RenSys2 {
 
     void update(EntyMan& EM, TheEngine& GFX) {
         //ImGUI_Prerender();
-    
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend){
                 if(ent.hasTAG<TEnemy>()){
@@ -66,7 +65,7 @@ struct RenSys2 {
     void drawAll(EntyMan& EM, TheEngine& GFX) {
         GFX.beginScene();
         GFX.drawAll();
-        //drawBBox(EM, GFX);
+        drawBBox(EM, GFX);
         GFX.endScene();
     }
 
