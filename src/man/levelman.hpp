@@ -23,13 +23,13 @@ struct LevelMan {
     auto& init_level(TheEngine& dev, SoundSystem_t& SouSys) {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
-        createWeapon(-65, 5, 30, dev, SouSys, 2);
-        //createBasicEnemy(110, 60, dev, SouSys);
-        //createBasicEnemy(120, 60, dev, SouSys);
-        //createBasicEnemy(110, 70, dev, SouSys);
-        //createBasicEnemy(35, -60, dev, SouSys);
-        //createBasicEnemy(45, -60, dev, SouSys);
-        //createBasicEnemy(35, -70, dev, SouSys);
+        createWeapon(-30, 5, 60, dev, SouSys, 2);
+        createBasicEnemy(110, 60, dev, SouSys);
+        createBasicEnemy(120, 60, dev, SouSys);
+        createBasicEnemy(110, 70, dev, SouSys);
+        createBasicEnemy(35, -60, dev, SouSys);
+        createBasicEnemy(45, -60, dev, SouSys);
+        createBasicEnemy(35, -70, dev, SouSys);
         return player;
     }
 
@@ -384,6 +384,13 @@ struct LevelMan {
 
     EntyMan& getEM() { return EM; }
 private:
+    void createSoundEffect(SoundSystem_t& SouSys) {
+        Enty& weapon = EM.createEntity();
+        EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
+        EM.addTag<TWeapon>(weapon);
+        return;
+    }
+
     Enty& createEnemy(SoundSystem_t& SouSys){
         Enty& enemy = EM.createEntity();
         defineAI(enemy);

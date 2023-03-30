@@ -343,7 +343,7 @@ private:
 
     void soundWeapon(EntyMan& EM) {
         for(auto& a : EM.getEntities()){
-            if(a.hasTAG<TWeapon>()){
+            if(a.hasTAG<TWeapon>() && a.hasCMP<SoundCmp>()) {
                 auto& sound = EM.getComponent<SoundCmp>(a);
                 EM.changeSound(sound, 1);
             }

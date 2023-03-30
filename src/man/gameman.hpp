@@ -18,7 +18,7 @@
 #include "../sys/rensys2.hpp"
 
 struct GameMan {
-    void game() {
+    void static game() {
         LevelMan      LM;
         EntyMan&      EM = LM.getEM();
         PhySys2       PhySys;
@@ -40,15 +40,16 @@ struct GameMan {
             auto& player = LM.init_level(dev, SouSys);
             std::size_t player_ID = player.getID();
             bool dead { false };
+
             //actual moment ini
             constexpr double dt = 1.0/60;
-            //auto start = std::chrono::high_resolution_clock::now();
-            //constexpr int64_t maxFPS {60};
-            //constexpr int64_t nanos_per_frame {1000000000/maxFPS};
-            //int64_t frames = 0;
+            auto start = std::chrono::high_resolution_clock::now();
+            constexpr int64_t maxFPS {60};
+            constexpr int64_t nanos_per_frame {1000000000/maxFPS};
+            int64_t frames = 0;
             
             while(!dead && dev.run()){
-                //auto frame_start = std::chrono::high_resolution_clock::now();
+                auto frame_start = std::chrono::high_resolution_clock::now();
                 EM.      update();
                 RenSys.  update(EM, dev);
                 MapSys.  update(EM);
@@ -58,35 +59,35 @@ struct GameMan {
                 ColSys.  update(EM);
                 LogicSys.update(LM, dev, dt);
                 PhySys.  update_after_colision(EM, dt);
-                //SouSys.  update(EM);
+                SouSys.  update(EM);
                 //SpawnSys.update(EM, dev, SouSys, player, map);
                 LM.      update(dev, SouSys, dt);
                 DestSys. update(EM, dt);
+
                 dead = EM.getEntityById(player_ID).getDestroy();
-                //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
-                //++frames;
+
+                while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+                ++frames;
             }
             LM.resetLevel(dev);
+
+            auto end = std::chrono::high_resolution_clock::now();
+            auto ellapse =  (end - start).count(); //how many nano sec has pass
+            auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+            std::cout <<" TIMEPO (s): " << ellapseS << "\n";
+            std::cout <<" Frames " << frames<< "\n";
+            std::cout <<" FPS " << double(frames)/ellapseS << "\n";
         }
         //RenSys.EndImgui();
-        //auto end = std::chrono::high_resolution_clock::now();
-        //auto ellapse =  (end - start).count(); //how many nano sec has pass
-        //auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
-        //std::cout <<" TIMEPO (s): " << ellapseS << "\n";
-        //std::cout <<" Frames " << frames<< "\n";
-        //std::cout <<" FPS " << double(frames)/ellapseS << "\n";
-
-        //actual moment end
-        //ellapse = end-start
     }
 
-    void init_config(TheEngine& dev) {
+    void static init_config(TheEngine& dev) {
         srand(time(NULL));
         dev.getDevice()->getCursorControl()->setVisible(false);
         dev.SetFont("assets/Interface/Font/FontBien.xml");
     }
 
-    void init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
+    void static init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
         LM.createMap(dev, SouSys);
         ColSys2::init_Hitoxes_Map2(LM, dev);
     }
