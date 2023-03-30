@@ -1,5 +1,8 @@
 #pragma once
 #include "../util/types.hpp"
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
 #include <irrlicht/IGUIImage.h>
 #include <string>
 
@@ -8,7 +11,7 @@ struct LevelMan {
     using EneTAGs = MP::Typelist<TEnemy>;
     using voidCMP = MP::Typelist<PhysicsCmp2>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, Enty& player){
+    void update(TheEngine& dev, SoundSystem_t& SouSys, Enty& player, double dt){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 if(en.getDestroy()){
@@ -27,13 +30,24 @@ struct LevelMan {
                 }
             }
         );
-        updateInterface(dev, player);
+        updateInterface   (dev, player);
+        cleanHitsInterface(dev, dt);
     }
 
     void createInterface (TheEngine& dev, Enty& player){
         
-        //FONT
-       
+        auto heightScreen   = dev.getHeight();
+        auto widthScreen    = dev.getWidth();
+        auto widthNumbers   = heightScreen-100;
+        auto widthNumbers2  = heightScreen-20;
+        //hits
+        hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
+        dev.setInvisibleImage(hit1);
+        hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
+        dev.setInvisibleImage(hit2);
+        hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
+        dev.setInvisibleImage(hit3);
+
         //Magazine
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
@@ -57,24 +71,24 @@ struct LevelMan {
         std::string aux = std::to_string(magazine);
         std::wstring convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* magText = convert.c_str();
-        mag = dev.addTextToPositionInScreen(magText, 820,600,870,710);
+        mag = dev.addTextToPositionInScreen(magText, widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
         //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
         //std::cout<< "MAG ES " << mag <<"\n";
         //total ammo
         aux = std::to_string(ammo);
         convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* ammText = convert.c_str();
-        amm1 = dev.addTextToPositionInScreen(ammText,900,600,1000,710);
-        separacion = dev.addTextToPositionInScreen(L"/",870,600,1000,710);
+        amm1 = dev.addTextToPositionInScreen(ammText,widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
+        separacion = dev.addTextToPositionInScreen(L"/",widthScreen/10*8.5,widthNumbers,widthScreen,widthNumbers2);
         //HP
         aux = std::to_string(stats.hitpoints);
         convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* HPText = convert.c_str();
-        hp =  dev.addTextToPositionInScreen(L"VIDA:",0,600,100,710);
-        h1 =  dev.addTextToPositionInScreen(HPText,150,600,250,710);
+        hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
+        h1 =  dev.addTextToPositionInScreen(HPText,widthScreen/10,widthNumbers,widthScreen/10*2,widthNumbers2);
 
         //mira
-        mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", 26, 150);
+        mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", widthScreen/2, heightScreen/2);
 
     }
 
@@ -101,21 +115,89 @@ struct LevelMan {
             default: break;
         }
         
-        std::string aux = std::to_string(ammo);
-        std::wstring convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* ammText = convert.c_str();
-        dev.changeTextFromPointer(amm1, ammText);
+    }
 
-        aux = std::to_string(magazine);
-        convert = std::wstring(aux.begin(), aux.end());
+    void updateInterfaceMag(TheEngine& dev, int maga){
+        
+        std::string aux = std::to_string(maga);
+        std::wstring convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* magText= convert.c_str();
+        dev.changeTextFromPointer(mag, magText);
+    }
+
+
+    void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm){
+
+        std::string aux = std::to_string(maga);
+        std::wstring convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* magText= convert.c_str();
         dev.changeTextFromPointer(mag, magText);
 
-        aux = std::to_string(stats.hitpoints);
+        aux = std::to_string(amm);
         convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* HPText= convert.c_str();
+        const wchar_t* ammText = convert.c_str();
+        dev.changeTextFromPointer(amm1, ammText);
+    }
+
+    void updateInterfaceHit(TheEngine& dev, Enty& player){
+
+        auto stats        = EM.getComponent<EstadisticaCmp> (player);
+        std::string  aux        = std::to_string(stats.hitpoints);
+        std::wstring convert    = std::wstring(aux.begin(), aux.end());
+        const wchar_t* HPText   = convert.c_str();
         dev.changeTextFromPointer(h1, HPText);
-       
+
+        int random = activateHit;
+        while(activateHit==random){
+            random = rand()%3+1;
+        }
+    
+        activateHit = random;
+        
+        
+        switch (activateHit) {
+
+            case 1:
+                cd1 = 1;
+                dev.setVisibleImage(hit1);
+            break;
+
+            case 2:
+                cd2 = 1;
+                dev.setVisibleImage(hit2);
+            break;
+
+            case 3:
+                cd3 = 1;
+                dev.setVisibleImage(hit3);
+            break;
+
+        
+        }
+
+    }
+
+    void cleanHitsInterface(TheEngine& dev ,double dt){
+
+        if(cd1 == 1){
+            clockHit1+=dt;
+            if(clockHit1>=cd1){
+                dev.setInvisibleImage(hit1);
+            }
+        }
+        if(cd2 ==1){
+            clockHit2+=dt;
+            if(clockHit2>=cd2){
+                dev.setInvisibleImage(hit2);
+            }
+        }
+        if(cd3 ==1){
+            clockHit3+=dt;
+            if(clockHit3>=cd3){
+                dev.setInvisibleImage(hit3);
+            }
+        }
+
     }
 
 
@@ -278,6 +360,7 @@ private:
 
     EntyMan EM;
 
+    //INTERFACE
     TheEngine::IGUIText*  mag  {};
     //wchar_t*        magText{};
     TheEngine::IGUIText*  h1   {};
@@ -287,5 +370,18 @@ private:
     TheEngine::IGUIText*  separacion {};
     //wchar_t*        ammText{};
     TheEngine::IGUIImage* mir  {};
+
+    //Hits
+    
+    int                   activateHit {0};
+    TheEngine::IGUIImage* hit1        {};
+    double                cd1         {0};
+    double                clockHit1   {};
+    TheEngine::IGUIImage* hit2        {};
+    double                cd2         {0};
+    double                clockHit2   {};
+    TheEngine::IGUIImage* hit3        {};
+    double                cd3         {0};
+    double                clockHit3   {};
 
 };

@@ -283,6 +283,7 @@ private:
                 EM.getComponent<SoundCmp>(a).play=true;
             }
         }
+        
     }
 
     void reloadProcess(EntyMan& EM, Enty& player, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
@@ -297,6 +298,7 @@ private:
             magazine = ammo;
             iAmReloading(EM, player);
         }
+        
         
     }
 
@@ -374,7 +376,7 @@ private:
                     EM.addComponent<SoundCmp>   (bullet2, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
                     EM.addComponent<SelfDestCmp>(bullet2, 0.4f);
                     EM.addTag      <TBullet>    (bullet2);
-                    EM.addTag<TInteract>        (bullet2);
+                    EM.addTag      <TInteract>        (bullet2);
                     
                 }
                 Enty& bullet3 = EM.createEntity();

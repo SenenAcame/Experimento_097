@@ -15,7 +15,7 @@ void game2() {
     SoundSystem_t SouSys;
     SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
-    TheEngine     dev {1080, 720, &InpSys};
+    TheEngine     dev {1280, 720, &InpSys};
 
     
     
@@ -32,10 +32,10 @@ void game2() {
     //Enty& door   = LM.createDoor(52.39, -140.98, dev);
     //Enty& key    = LM.createKey(-40, -20, dev);
 
-    //LM.createBasicEnemy(-25, -20, dev, SouSys);
-    //LM.createBasicEnemy(-20, -25, dev, SouSys);
-    //LM.createBasicEnemy(-30, -20, dev, SouSys);
-    //LM.createBasicEnemy(-20, -30, dev, SouSys);
+    LM.createBasicEnemy(-25, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -25, dev, SouSys);
+    LM.createBasicEnemy(-30, -20, dev, SouSys);
+    LM.createBasicEnemy(-20, -30, dev, SouSys);
     //LM.createBasicEnemy(-25, -25, dev, SouSys);
 
     //Enty& weapon = EM.createEntity();
@@ -94,6 +94,7 @@ void game2() {
 //    EM.addTag      <TWeapon> (weaponsou);
 
     constexpr double dt = 1.0/60;
+    //constexpr double dtHits = 1.0/60;
     //actual moment ini
     auto start = std::chrono::high_resolution_clock::now();
     constexpr int64_t maxFPS {60};
@@ -108,12 +109,12 @@ void game2() {
         ColSys.  update(EM);
         InpSys.  update(EM, dev, SouSys, 1.0/maxFPS);
         AISys.   update(EM, dt, dev);
-        LogicSys.update(EM, dev, dt);
+        //LogicSys.update(LM, EM, dev, dt);
         PhySys.  update(EM, dt);
         SouSys.  update(EM);
-        LogicSys.update(EM, dev, dt);
+        LogicSys.update(LM, EM, dev, dt);
         SpawnSys.update(EM, dev, SouSys, player, map);
-        LM.      update(dev, SouSys, player);
+        LM.      update(dev, SouSys, player, dt);
         DestSys. update(EM, dt);
 
         while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}

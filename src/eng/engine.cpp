@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <irrlicht/IEventReceiver.h>
 #include <irrlicht/IGUIFont.h>
+#include <irrlicht/IGUIImage.h>
 #include <irrlicht/SMaterialLayer.h>
 #include <irrlicht/position2d.h>
 
@@ -74,8 +75,6 @@ void TheEngine::SetFont(Path p){
 
 TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(const wchar_t * text, int x, int y, int x2, int y2){
 
-    //guienv_->getFont("assets/Interface/Font1.xml");
-   // guienv_->addStaticText(L"PRUEBA DE FUENTE JODER 12345", irr::core::rect<irr::s32>(0,100,300,200),true);
     return guienv_->addStaticText(text, irr::core::rect<irr::s32>(x,y,x2,y2), false);
 }
 
@@ -83,7 +82,9 @@ TheEngine::IGUIImage* TheEngine::addImageToPositionInScreen(Path image, int x, i
     
     
     irr::video::ITexture* images = driver_->getTexture(image);
-    return guienv_->addImage(images, irr::core::position2d<int>(x,y));
+    auto height = images->getSize().Height;
+    auto width = images->getSize().Width;
+    return guienv_->addImage(images, irr::core::position2d<int>(x-width/2,y-height/2));
    
 }
 
@@ -91,6 +92,20 @@ void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 
     irr::video::ITexture* images = driver_->getTexture(image);
     pointer->setImage(images);
+
+}
+
+
+void TheEngine::setInvisibleImage(IGUIImage* pointer){
+
+    pointer->setVisible(false);
+
+}
+
+void TheEngine::setVisibleImage(IGUIImage* pointer){
+
+    std::cout<<"ENTRO\n";
+    pointer->setVisible(true);
 
 }
 

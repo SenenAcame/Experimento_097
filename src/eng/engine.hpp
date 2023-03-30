@@ -26,10 +26,13 @@ struct TheEngine {
 
     IGUIImage* addImageToPositionInScreen(Path image, int x, int y);
     void       changeImageFromPointer    (IGUIImage* pointer, Path image);
+    void       setInvisibleImage         (IGUIImage* pointer);
+    void       setVisibleImage           (IGUIImage* pointer);
     auto       addFont                   (Path p);
     void       SetFont                   (Path p);
     IGUIText*  addTextToPositionInScreen (const wchar_t * text, int x, int y, int x2, int y2);
     void       changeTextFromPointer     (IGUIText* pointer,const wchar_t * text);
+    
 
     auto loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel(Path obj, Path asset);
