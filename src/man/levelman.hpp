@@ -11,14 +11,12 @@ struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, std::size_t player, double dt_ID){
+    void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
             }
         );
-        auto& player = EM.getEntityById(player_ID);
-        updateInterface   (dev, player);
         cleanHitsInterface(dev, dt);
     }
 
@@ -26,16 +24,15 @@ struct LevelMan {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
         createBasicEnemy(110, 60, dev, SouSys);
-        createBasicEnemy(120, 60, dev, SouSys);
-        createBasicEnemy(110, 70, dev, SouSys);
-        createBasicEnemy(35, -60, dev, SouSys);
-        createBasicEnemy(45, -60, dev, SouSys);
-        createBasicEnemy(35, -70, dev, SouSys);
+        //createBasicEnemy(120, 60, dev, SouSys);
+        //createBasicEnemy(110, 70, dev, SouSys);
+        //createBasicEnemy(35, -60, dev, SouSys);
+        //createBasicEnemy(45, -60, dev, SouSys);
+        //createBasicEnemy(35, -70, dev, SouSys);
         return player;
     }
 
     void createInterface (TheEngine& dev, Enty& player){
-        
         auto heightScreen   = dev.getHeight();
         auto widthScreen    = dev.getWidth();
         auto widthNumbers   = heightScreen-100;
@@ -92,37 +89,33 @@ struct LevelMan {
 
     }
 
-    void updateInterface(TheEngine& dev, Enty& player) {
-        auto equipment = EM.getComponent<InventarioCmp> (player);
-        auto stats = EM.getComponent<EstadisticaCmp> (player);
-        int magazine = 0;
-        int ammo     = 0;
-        switch (equipment.equipada) {
-            case 0: magazine = equipment.magazine1; 
-                    ammo = equipment.ammo1;
-            break;
-            case 1: magazine = equipment.magazine2;
-                    ammo = equipment.ammo2;
-            break;
-            case 2: magazine = equipment.magazine3;
-                    ammo = equipment.ammo3;
-            break;
-            default: break;
-        }
-        
-    }
+    //void updateInterface(TheEngine& dev, Enty& player) {
+    //    auto equipment = EM.getComponent<InventarioCmp> (player);
+    //    auto stats = EM.getComponent<EstadisticaCmp> (player);
+    //    int magazine = 0;
+    //    int ammo     = 0;
+    //    switch (equipment.equipada) {
+    //        case 0: magazine = equipment.magazine1; 
+    //                ammo = equipment.ammo1;
+    //        break;
+    //        case 1: magazine = equipment.magazine2;
+    //                ammo = equipment.ammo2;
+    //        break;
+    //        case 2: magazine = equipment.magazine3;
+    //                ammo = equipment.ammo3;
+    //        break;
+    //        default: break;
+    //    }
+    //}
 
     void updateInterfaceMag(TheEngine& dev, int maga){
-        
         std::string aux = std::to_string(maga);
         std::wstring convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* magText= convert.c_str();
         dev.changeTextFromPointer(mag, magText);
     }
 
-
     void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm){
-
         std::string aux = std::to_string(maga);
         std::wstring convert = std::wstring(aux.begin(), aux.end());
         const wchar_t* magText= convert.c_str();
@@ -135,7 +128,6 @@ struct LevelMan {
     }
 
     void updateInterfaceHit(TheEngine& dev, Enty& player){
-
         auto stats        = EM.getComponent<EstadisticaCmp> (player);
         std::string  aux        = std::to_string(stats.hitpoints);
         std::wstring convert    = std::wstring(aux.begin(), aux.end());
@@ -149,9 +141,7 @@ struct LevelMan {
     
         activateHit = random;
         
-        
         switch (activateHit) {
-
             case 1:
                 cd1 = 1;
                 dev.setVisibleImage(hit1);
@@ -166,33 +156,34 @@ struct LevelMan {
                 cd3 = 1;
                 dev.setVisibleImage(hit3);
             break;
-
-        
         }
-
     }
 
     void cleanHitsInterface(TheEngine& dev ,double dt){
-
         if(cd1 == 1){
             clockHit1+=dt;
             if(clockHit1>=cd1){
                 dev.setInvisibleImage(hit1);
+                clockHit1 = 0;
+                cd1 = 0;
             }
         }
         if(cd2 ==1){
             clockHit2+=dt;
             if(clockHit2>=cd2){
                 dev.setInvisibleImage(hit2);
+                clockHit2 = 0;
+                cd2 = 0;
             }
         }
         if(cd3 ==1){
             clockHit3+=dt;
             if(clockHit3>=cd3){
                 dev.setInvisibleImage(hit3);
+                clockHit3 = 0;
+                cd3 = 0;
             }
         }
-
     }
 
     void createMap(TheEngine& dev, SoundSystem_t& SouSys) {
@@ -394,6 +385,10 @@ struct LevelMan {
             }
         );
 
+        dev.setInvisibleImage(hit1);
+        dev.setInvisibleImage(hit2);
+        dev.setInvisibleImage(hit3);
+
         EM.callDestroy();
     }
 
@@ -455,15 +450,12 @@ private:
 
     //Hits
     
-    int                   activateHit {0};
-    TheEngine::IGUIImage* hit1        {};
-    double                cd1         {0};
-    double                clockHit1   {};
-    TheEngine::IGUIImage* hit2        {};
-    double                cd2         {0};
-    double                clockHit2   {};
-    TheEngine::IGUIImage* hit3        {};
-    double                cd3         {0};
-    double                clockHit3   {};
+    int activateHit {0};
+    
+    double cd1 {0}, cd2 {0}, cd3 {0};
+    double clockHit1 {}, clockHit2 {}, clockHit3 {};
+    TheEngine::IGUIImage* hit1 {};
+    TheEngine::IGUIImage* hit2 {};
+    TheEngine::IGUIImage* hit3 {};
 
 };

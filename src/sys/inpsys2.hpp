@@ -33,10 +33,10 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
                 if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, up, down); }
                 if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, down, up); }
-                if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload(EM, equip);}
-                if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon(equip, rend, 0, eng); }
-                if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon(equip, rend, 1, eng); }
-                if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(equip, rend, 2, eng); }
+                if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload(LM, eng, equip); }
+                if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon(LM, equip, rend, 0, eng); }
+                if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon(LM, equip, rend, 1, eng); }
+                if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(LM, equip, rend, 2, eng); }
                 //if(keyboard.isKeyPressed(input.key_interaction)) { interact(EM, player, input.key_interaction); }
 
                 if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
@@ -157,8 +157,11 @@ private:
         equipment.clockReload = 0;
         notReloading(equipment);
         
-        if(ammo > 0) { createBullet(LM, player, weaponCadence, eng, SS); }
-        else if(ammo == 0) { reload(EM, equipment); }
+        if(ammo > 0) { 
+            createBullet(LM, player, weaponCadence, eng, SS);
+            LM.updateInterfaceMag(eng, ammo-1);
+        }
+        else if(ammo == 0) { reload(LM, eng, equipment); }
 
         if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
     }
@@ -170,24 +173,26 @@ private:
         else if(down) phy.v_ang = 135;
     }
 
-    void reload(EntyMan& EM, InventarioCmp& equipment) {
+    void reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
+        auto& EM = LM.getEM();
         int currentAmmo = 0;
         switch (equipment.equipada) {
             case 0:
-                reloadProcess(equipment, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
+                reloadProcess(LM, dev, equipment, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
             break;
             case 1:
-                reloadProcess(equipment, currentAmmo, equipment.ammo2, equipment.magazine2, 2);
+                reloadProcess(LM, dev, equipment, currentAmmo, equipment.ammo2, equipment.magazine2, 2);
             break;
             case 2:
-                reloadProcess(equipment, currentAmmo, equipment.ammo3, equipment.magazine3, 25);
+                reloadProcess(LM, dev, equipment, currentAmmo, equipment.ammo3, equipment.magazine3, 25);
             break;
             default: break;
         }
         soundWeapon(EM);
     }
 
-    void changeWeapon(InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng) {
+    void changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng) {
+        int magazine {}, ammo{};
         playerRender.n->remove();
         
         if(p_invent.reloading == 1) {
@@ -208,28 +213,35 @@ private:
 
         switch (p_invent.equipada) {
             case 0:
-                playerRender.n=eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
                 p_invent.clockReload = p_invent.clockReload1;
                 if(p_invent.clockReload >= p_invent.reloadTime1) { notReloading(p_invent); }
                 else { iAmReloading(p_invent); }
+                magazine = p_invent.magazine1;
+                ammo = p_invent.ammo1;
                 break;
 
             case 1:
-                playerRender.n=eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+                playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
                 p_invent.clockReload = p_invent.clockReload2;
                 if(p_invent.clockReload >= p_invent.reloadTime2) { notReloading(p_invent); }
                 else { iAmReloading(p_invent); }
+                magazine = p_invent.magazine2;
+                ammo = p_invent.ammo2;
                 break;
 
             case 2:
-                playerRender.n=eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+                playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
                 p_invent.clockReload = p_invent.clockReload3;
                 if(p_invent.clockReload >= p_invent.reloadTime3) { notReloading(p_invent); }
                 else { iAmReloading(p_invent); }
+                magazine = p_invent.magazine3;
+                ammo = p_invent.ammo3;
                 break;
 
             default: break;
         }
+        LM.updateInterfaceWhenReload(eng, magazine, ammo);
     }
 
     //void interact(EntyMan& EM, Enty& player, KeySym key) {
@@ -283,7 +295,7 @@ private:
     //    }
     //}
 
-    void reloadProcess(InventarioCmp& p_invent, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
+    void reloadProcess(LevelMan& LM, TheEngine& dev, InventarioCmp& p_invent, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
         currentAmmo = maxAmmo - magazine; //0 is magazine complete
         if((ammo-currentAmmo) > 0){
             ammo = ammo-currentAmmo;
@@ -294,6 +306,7 @@ private:
             magazine = ammo;
         }
         iAmReloading(p_invent);
+        LM.updateInterfaceWhenReload(dev, magazine, ammo);
     }
 
     void iAmReloading(InventarioCmp& equipment){ equipment.reloading = 1; }
@@ -304,6 +317,7 @@ private:
         auto& EM = LM.getEM();
         auto& equipment  = EM.getComponent<InventarioCmp>(player);
         auto& phy_player = EM.getComponent<PhysicsCmp2>(player);
+        //int ammo {};
 
         if(equipment.clockCadence <= cadenciaWeapon) { return; }
         //Cadencia alcanzada
@@ -312,15 +326,20 @@ private:
         if(equipment.equipada == 0){ //pistola
             LM.createBullet(phy_player, eng, SS, 18., 5., 0.1, 9.);
             equipment.magazine1 -= 1;
+            //ammo = equipment.magazine1;
         }
         else if (equipment.equipada == 1){ //escopeta
             LM.createShotgunBullets(phy_player, eng, SS, 8., 3., 0.15, 0.4, 10);
             equipment.magazine2 -= 1;
+            //ammo = equipment.magazine1;
         }
         else if(equipment.equipada == 2){ //ametralladora
             LM.createBullet(phy_player, eng, SS, 15., 4., 0.1, 1.5);
             equipment.magazine3 -= 1;
+            //ammo = equipment.magazine1;
         }
+        //return ammo;
+        return;
     }
 
     void soundWeapon(EntyMan& EM) {

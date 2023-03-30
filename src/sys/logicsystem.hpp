@@ -12,7 +12,8 @@ struct LogicSystem {
     using SYSTAG_Walls  = MP::Typelist<TWall>;
     static constexpr double PI { std::numbers::pi };
 
-    void update(LevelMan& LM ,EntyMan& EM, TheEngine& eng, double dt) {
+    void update(LevelMan& LM, TheEngine& eng, double dt) {
+        auto& EM = LM.getEM();
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
                 if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
@@ -26,11 +27,11 @@ struct LogicSystem {
                     }
                     else if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
-                        colisionPlayer   (EM, entity, entity_colisioned, dt, eng, LM);
+                        colisionPlayer   (LM, eng, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
-                        colisionEnemy    (EM, entity, entity_colisioned, dt);
+                        colisionEnemy    (LM, eng, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TBullet>()){
                         //proceso Colision Bullet
@@ -70,14 +71,15 @@ struct LogicSystem {
         }
     }
 
-    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt, TheEngine& eng, LevelMan& LM) {
+    void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt) {
         if(colisioned.hasTAG<TWall>()){
             //moverse hacia atras
+            auto& EM = LM.getEM();
             cancelMove(EM, current, dt);
         }
         else if(colisioned.hasTAG<TEnemy>()){
             //jugador recibe daño del enemigo
-            receiveEntityDamage(EM, current, colisioned);
+            receiveEntityDamage(LM, eng, current, colisioned);
         }
         //else if(colisioned.hasTAG<TEneBullet>()) {
         //    //jugador recibe daño de la bala enemiga
@@ -97,17 +99,19 @@ struct LogicSystem {
         //}
     }
 
-    void colisionEnemy(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
+    void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt) {
         if(colisioned.hasTAG<TWall>()){
             //moverse hacia atras
+            auto& EM = LM.getEM();
             cancelMove(EM, current, dt);
         }
         else if(colisioned.hasTAG<TPlayer>()){
             //enemigo hace daño al jugador
-            receiveEntityDamage(EM, colisioned, current);
+            receiveEntityDamage(LM, eng, colisioned, current);
         }
         else if(colisioned.hasTAG<TBullet>()){
             //enemigo recibe daño de la bala
+            auto& EM = LM.getEM();
             reciveDamge(EM, current, colisioned);
         }
     }
@@ -156,12 +160,13 @@ struct LogicSystem {
     //    }
     //}
 
-    void receiveEntityDamage(EntyMan& EM, Enty& receptor, Enty& agressor) {
-        LM.updateInterfaceHit(eng, receptor);
+    void receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor) {
+        auto& EM = LM.getEM();
         auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
         if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
         enemyStats.ClockAttackEnemy = 0;
         reciveDamge(EM, receptor, agressor);
+        LM.updateInterfaceHit(eng, receptor);
     }
 
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {

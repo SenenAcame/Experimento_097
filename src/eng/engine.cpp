@@ -6,9 +6,6 @@
 #include <irrlicht/SMaterialLayer.h>
 #include <irrlicht/position2d.h>
 
-
-
-
 TheEngine::TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r) :width_{w}, height_{h}, receive{r}{
     if(!device_) throw std::runtime_error("Couldn't initialize device!!");
     auto* cam = smgr_->addCameraSceneNode();
@@ -104,7 +101,6 @@ void TheEngine::setInvisibleImage(IGUIImage* pointer){
 
 void TheEngine::setVisibleImage(IGUIImage* pointer){
 
-    std::cout<<"ENTRO\n";
     pointer->setVisible(true);
 
 }

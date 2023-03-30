@@ -31,7 +31,7 @@ struct GameMan {
         SoundSystem_t SouSys;
         //SpawnSystem   SpawnSys;
         SelfDestSys   DestSys;
-        TheEngine     dev {1080, 720, &InpSys};
+        TheEngine     dev {1280, 720, &InpSys};
 
         init_config(dev);
         init_map(LM, dev, SouSys);
@@ -56,11 +56,11 @@ struct GameMan {
                 AISys.   update(EM, dt, dev);
                 PhySys.  update(EM, dt);
                 ColSys.  update(EM);
-                LogicSys.update(EM, dev, dt);
+                LogicSys.update(LM, dev, dt);
                 PhySys.  update_after_colision(EM, dt);
                 SouSys.  update(EM);
                 //SpawnSys.update(EM, dev, SouSys, player, map);
-                LM.      update(dev, SouSys, player_ID);
+                LM.      update(dev, SouSys, dt);
                 DestSys. update(EM, dt);
                 dead = EM.getEntityById(player_ID).getDestroy();
                 //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
@@ -83,6 +83,7 @@ struct GameMan {
     void init_config(TheEngine& dev) {
         srand(time(NULL));
         dev.getDevice()->getCursorControl()->setVisible(false);
+        dev.SetFont("assets/Interface/Font/FontBien.xml");
     }
 
     void init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
