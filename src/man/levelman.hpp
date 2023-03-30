@@ -92,30 +92,6 @@ struct LevelMan {
 
     }
 
-    void updateInterface(TheEngine& dev, Enty& player){
-
-
-        auto equipment = EM.getComponent<InventarioCmp> (player);
-        auto stats = EM.getComponent<EstadisticaCmp> (player);
-        int magazine = 0;
-        int ammo     = 0;
-        switch (equipment.equipada) {
-            case 0: magazine = equipment.magazine1; 
-                    ammo = equipment.ammo1;        
-                    
-            break;
-            case 1: magazine = equipment.magazine2;
-                    ammo = equipment.ammo2;
-                    
-            break;
-            case 2: magazine = equipment.magazine3;
-                    ammo = equipment.ammo3;
-                    
-            break;
-            default: break;
-        }
-        
-    }
 
     void updateInterfaceMag(TheEngine& dev, int maga){
         
