@@ -7,19 +7,31 @@
 #include <irrlicht/IGUIImage.h>
 #include <string>
 
-
 struct LevelMan {
-    using EneTAGs = MP::Typelist<TEnemy>;
     using voidCMP = MP::Typelist<PhysicsCmp2>;
+    using EneTAGs = MP::Typelist<TEnemy>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, Enty& player, double dt){
+    void update(TheEngine& dev, SoundSystem_t& SouSys, std::size_t player, double dt_ID){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
             }
         );
+        auto& player = EM.getEntityById(player_ID);
         updateInterface   (dev, player);
         cleanHitsInterface(dev, dt);
+    }
+
+    auto& init_level(TheEngine& dev, SoundSystem_t& SouSys) {
+        auto& player = createPlayer(dev, SouSys);
+        createInterface(dev, player);
+        createBasicEnemy(110, 60, dev, SouSys);
+        createBasicEnemy(120, 60, dev, SouSys);
+        createBasicEnemy(110, 70, dev, SouSys);
+        createBasicEnemy(35, -60, dev, SouSys);
+        createBasicEnemy(45, -60, dev, SouSys);
+        createBasicEnemy(35, -70, dev, SouSys);
+        return player;
     }
 
     void createInterface (TheEngine& dev, Enty& player){
@@ -80,25 +92,20 @@ struct LevelMan {
 
     }
 
-    void updateInterface(TheEngine& dev, Enty& player){
-
-
+    void updateInterface(TheEngine& dev, Enty& player) {
         auto equipment = EM.getComponent<InventarioCmp> (player);
         auto stats = EM.getComponent<EstadisticaCmp> (player);
         int magazine = 0;
         int ammo     = 0;
         switch (equipment.equipada) {
             case 0: magazine = equipment.magazine1; 
-                    ammo = equipment.ammo1;        
-                    
+                    ammo = equipment.ammo1;
             break;
             case 1: magazine = equipment.magazine2;
                     ammo = equipment.ammo2;
-                    
             break;
             case 2: magazine = equipment.magazine3;
                     ammo = equipment.ammo3;
-                    
             break;
             default: break;
         }
@@ -188,7 +195,7 @@ struct LevelMan {
 
     }
 
-    void createMap(TheEngine& dev, NodeMapSys& MapSys, SoundSystem_t& SouSys) {
+    void createMap(TheEngine& dev, SoundSystem_t& SouSys) {
         irr::io::path models[6] = {
             "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
             "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
@@ -208,8 +215,8 @@ struct LevelMan {
 
         Enty& map = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(map);
-        EM.addComponent<NodoCmp>    (map, NodoCmp{.salas=MapSys.creaSalas()});
-        EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext=SouSys.createinstance(0), .parametro=0, .play=true});
+        EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
+        EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
         EM.addTag      <TMap>       (map);
         
         for(uint8_t i {0}; i<6; i++) 
@@ -340,14 +347,7 @@ struct LevelMan {
     }
 
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-    float const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
-        //for(float i = -0.4; i < 0.5; i += 0.2){
-        //    float posx = i*cos(phy_player.orieny);
-        //    float posz = i*-sin(phy_player.orieny);
-        //    createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 0,     posz);
-        //    createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 2*0.2, posz);
-        //    if(i>-0.4 && i<0.4) createBullet(phy_player, eng, SS, 8., 4., 0.15, 0.4, posx, 1*0.2, posz);
-        //}
+    int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
         for(uint8_t i = 0; i < 10; i++) {
             double ang_alp = randAng(dispersion);
             double ang_bet = randAng(dispersion);
@@ -356,8 +356,8 @@ struct LevelMan {
     }
 
     void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-    float const dmg, float const spd, float const rad, double const slfD,
-    double const pbx = 0, double const pby = 0, double const pbz = 0) {
+    int const dmg, float const spd, float const rad, double const slfD,
+    double const pbx = 0, double const pby = 0) {
         Enty& bullet = EM.createEntity();
         EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
         EM.addComponent<PhysicsCmp2>(
@@ -365,9 +365,9 @@ struct LevelMan {
                 .x = phy_player.x,
                 .y = phy_player.y,
                 .z = phy_player.z,
-                .vx=  sin(phy_player.orieny + pbx) * cos(phy_player.orienx + pby) * spd,
-                .vy= -sin(phy_player.orienx + pby) * spd,
-                .vz=  cos(phy_player.orieny + pbx) * cos(phy_player.orienx + pby) * spd
+                .vx=  sin(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd,
+                .vy= -sin(phy_player.orienx + pbx) * spd,
+                .vz=  cos(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd
             }
         );
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
@@ -376,6 +376,25 @@ struct LevelMan {
         EM.addComponent<SelfDestCmp>(bullet, slfD);
         EM.addTag<TBullet>          (bullet);
         EM.addTag<TInteract>        (bullet);
+    }
+
+    void resetLevel(TheEngine& dev) {
+        const wchar_t* empty = L"";
+        dev.changeTextFromPointer(amm1, empty);
+        dev.changeTextFromPointer(mag, empty);
+        dev.changeTextFromPointer(h1, empty);
+
+        EM.forall(
+            [](Enty& ent) {
+                bool is_enemy_bullet_or_player = 
+                    ent.hasTAG<TEnemy>()  ||
+                    ent.hasTAG<TBullet>() ||
+                    ent.hasTAG<TPlayer>();
+                if(is_enemy_bullet_or_player) ent.setDestroy();
+            }
+        );
+
+        EM.callDestroy();
     }
 
     EntyMan& getEM() { return EM; }

@@ -1,6 +1,8 @@
 #pragma once
 #include "../cmp/blackboardcmp.hpp"
 #include "cmpstorage2.hpp"
+#include "../util/types.hpp"
+#include <cstdint>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
 struct EntityMan2 {
@@ -153,6 +155,10 @@ struct EntityMan2 {
         sound.play   = true;
     }
 
+    void callDestroy() {
+        destroy_entities();
+    }
+
     auto& getEntities() { return entities_; }
     auto& getStorage()  { return cmpStorage_; }
     auto& getBoard()    { return blackboard_; }
@@ -161,7 +167,9 @@ private:
     void destroy_entities(){
         for(auto i {entities_.size()}; i != 0; i--){
             auto& e = entities_[i-1];
-            if(e.getDestroy()) { removeEntity(e, i-1); }
+            if(e.getDestroy()) { 
+                removeEntity(e, i-1); 
+            }
         }
     }
 
@@ -199,13 +207,11 @@ private:
     }
 
     void removeEntity(Entity& e, auto i) {
-        if(e.template hasCMP<RenderCmp2>()){
-            removeRender(e);
-        }
+        if(e.template hasCMP<RenderCmp2>()){ removeRender(e); }
         removeComponents<
             PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
-            InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp, SpawnCmp, 
-            InteractCMP>(e);
+            InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp,
+            SpawnCmp, InteractCMP, WeaponCmp, SalaCmp>(e);
         entities_.erase(entities_.begin() + i);
     }
 

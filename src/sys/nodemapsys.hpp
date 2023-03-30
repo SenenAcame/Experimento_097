@@ -90,7 +90,7 @@ struct NodeMapSys {
         //);
     }
 
-    std::vector<sala> creaSalas(){
+    std::vector<sala> static creaSalas(){
         /*float salasx[]={-52.39f, -41.91f, -34.82f, -34.87f, 7.31f,   28.71f, 46.04f,   46.04f};
         float salasz[]={140.98f, 85.41f,  43.17f,  0.91f,   -25.91f, 0.89f,  -110.79f, -146.09f};
         float tamx[]=  {62.51/2, 83.34/2, 69.6/2, 69.6/2, 15/2, 27.78/2, 62.51/2, 62.51/2};

@@ -62,7 +62,7 @@ struct ColSys2 {
         hitboxesMapaOriginalPasillo3        (LM, dev);
     }
 
-    void init_Hitoxes_Map2(LevelMan& LM, TheEngine& dev) noexcept {
+    void static init_Hitoxes_Map2(LevelMan& LM, TheEngine& dev) noexcept {
         hitboxesMapaSimpleSala1   (LM, dev);
         hitboxesMapaSimpleSala2   (LM, dev);
         hitboxesMapaSimpleSala3   (LM, dev);
@@ -72,7 +72,7 @@ struct ColSys2 {
     }
 
     //salas del mapa original
-    void hitboxesMapaOriginalSala_Inicio(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalSala_Inicio(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala de inicio:
         //
         //Dimensiones
@@ -97,7 +97,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalInicio_Adyacente(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalInicio_Adyacente(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala adyacente:
         //
         //Dimensiones
@@ -118,7 +118,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalPatio(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalPatio(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala Patio:
         //
         //Dimensiones
@@ -143,7 +143,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalPatio_Adyacente(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalPatio_Adyacente(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala Patio Adyacente:
         //
         //Dimensiones
@@ -160,7 +160,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalSala_Alejada(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalSala_Alejada(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala Alejada:
         //
         //Dimensiones
@@ -183,7 +183,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalPasillo1(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalPasillo1(LevelMan& LM, TheEngine& dev) noexcept {
         //Pasillo 1:
         //
         //Dimensiones
@@ -200,7 +200,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalPasillo2(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalPasillo2(LevelMan& LM, TheEngine& dev) noexcept {
         //Pasillo 2:
         //
         //Dimensiones
@@ -223,7 +223,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaOriginalPasillo3(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaOriginalPasillo3(LevelMan& LM, TheEngine& dev) noexcept {
         //Pasillo 3:
         //
         //Dimensiones
@@ -241,7 +241,7 @@ struct ColSys2 {
     }
 
     //salas del mapa simple
-    void hitboxesMapaSimpleSala1(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaSimpleSala1(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala 1:
         //
         //Dimensiones
@@ -264,7 +264,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaSimpleSala2(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaSimpleSala2(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala 2:
         //
         //Dimensiones
@@ -287,7 +287,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaSimpleSala3(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaSimpleSala3(LevelMan& LM, TheEngine& dev) noexcept {
         //Sala 3:
         //
         //Dimensiones
@@ -308,7 +308,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaSimplePasillo1(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaSimplePasillo1(LevelMan& LM, TheEngine& dev) noexcept {
         //Pasillo 1:
         //
         //Dimensiones
@@ -333,7 +333,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaSimplePasillo2(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaSimplePasillo2(LevelMan& LM, TheEngine& dev) noexcept {
         //Pasillo 2:
         //
         //Dimensiones
@@ -354,7 +354,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void hitboxesMapaSimplePasillo3(LevelMan& LM, TheEngine& dev) noexcept {
+    void static hitboxesMapaSimplePasillo3(LevelMan& LM, TheEngine& dev) noexcept {
         //Pasillo 3:
         //
         //Dimensiones
@@ -375,7 +375,7 @@ struct ColSys2 {
         create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth, dev);
     }
 
-    void create_HitBoxes(uint8_t const num, LevelMan& LM, float const pos_x[], float const pos_z[], float const widht[], float const depth[], TheEngine& dev) {
+    void static create_HitBoxes(uint8_t const num, LevelMan& LM, float const pos_x[], float const pos_z[], float const widht[], float const depth[], TheEngine& dev) {
         for(uint8_t i {0}; i < num; i++)
             LM.createHitBox(static_cast<double>(pos_x[i]), pos_y, static_cast<double>(pos_z[i]),widht[i], height, depth[i], dev);
     }
