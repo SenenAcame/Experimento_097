@@ -213,7 +213,7 @@ private:
 
         switch (p_invent.equipada) {
             case 0:
-                playerRender.n = eng.createModel("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
                 p_invent.clockReload = p_invent.clockReload1;
                 if(p_invent.clockReload >= p_invent.reloadTime1) { notReloading(p_invent); }
                 else { iAmReloading(p_invent); }
@@ -298,12 +298,12 @@ private:
     void reloadProcess(LevelMan& LM, TheEngine& dev, InventarioCmp& p_invent, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
         currentAmmo = maxAmmo - magazine; //0 is magazine complete
         if((ammo-currentAmmo) > 0){
-            ammo = ammo-currentAmmo;
+            ammo = ammo - currentAmmo;
             magazine = magazine + currentAmmo;
         }
-        else{
-            ammo = 0;
+        else {
             magazine = ammo;
+            ammo = 0;
         }
         iAmReloading(p_invent);
         LM.updateInterfaceWhenReload(dev, magazine, ammo);

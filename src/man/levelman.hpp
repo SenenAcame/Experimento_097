@@ -24,11 +24,11 @@ struct LevelMan {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
         createBasicEnemy(110, 60, dev, SouSys);
-        //createBasicEnemy(120, 60, dev, SouSys);
-        //createBasicEnemy(110, 70, dev, SouSys);
-        //createBasicEnemy(35, -60, dev, SouSys);
-        //createBasicEnemy(45, -60, dev, SouSys);
-        //createBasicEnemy(35, -70, dev, SouSys);
+        createBasicEnemy(120, 60, dev, SouSys);
+        createBasicEnemy(110, 70, dev, SouSys);
+        createBasicEnemy(35, -60, dev, SouSys);
+        createBasicEnemy(45, -60, dev, SouSys);
+        createBasicEnemy(35, -70, dev, SouSys);
         return player;
     }
 

@@ -18,43 +18,46 @@ struct LogicSystem {
             [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
                 if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
 
-                if(state.colision != 0){
+                if(state.colision != 0) {
                     auto& entity_colisioned = EM.getEntityById(state.entityCol);
-                    auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
-                    if(entity.hasTAG<TWall>()){
-                        //proceso Colision Wall
-                        colisionWall     (EM, entity, entity_colisioned, dt);
+                    if(entity_colisioned.hasCMP<EstadoCmp>()) {
+                        auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
+                        if(entity.hasTAG<TWall>()){
+                            //proceso Colision Wall
+                            colisionWall     (EM, entity, entity_colisioned, dt);
+                        }
+                        else if(entity.hasTAG<TPlayer>()){
+                            //proceso Colision Jugador
+                            colisionPlayer   (LM, eng, entity, entity_colisioned, dt);
+                        }
+                        else if(entity.hasTAG<TEnemy>()){
+                            //proceso Colision Enemy
+                            colisionEnemy    (LM, eng, entity, entity_colisioned, dt);
+                        }
+                        else if(entity.hasTAG<TBullet>()){
+                            //proceso Colision Bullet
+                            colisionBullet   (EM, entity, entity_colisioned);
+                        }
+                        //else if(entity.hasTAG<TEneBullet>()){
+                        //    //proceso Colision EnemyBullet
+                        //    colisionEneBullet(EM, entity, entity_colisioned);
+                        //}
+                        //else if(entity.hasTAG<TWeapon>()){
+                        //    //proceso Colision Weapon
+                        //    colisionWeapon   (EM, entity, entity_colisioned, eng);
+                        //}
+                        //else if(entity.hasTAG<TDoor>()){
+                        //    //proceso Colision Door
+                        //    colisionDoor     (EM, entity, entity_colisioned);
+                        //}
+                        //else if(entity.hasTAG<TKey>()){
+                        //    //proceso Colision Key
+                        //    colisionKey     (EM, entity, entity_colisioned);
+                        //
+                        //resetCollision(state, colisiones_state);
+                        resetCollision(colisiones_state);
                     }
-                    else if(entity.hasTAG<TPlayer>()){
-                        //proceso Colision Jugador
-                        colisionPlayer   (LM, eng, entity, entity_colisioned, dt);
-                    }
-                    else if(entity.hasTAG<TEnemy>()){
-                        //proceso Colision Enemy
-                        colisionEnemy    (LM, eng, entity, entity_colisioned, dt);
-                    }
-                    else if(entity.hasTAG<TBullet>()){
-                        //proceso Colision Bullet
-                        colisionBullet   (EM, entity, entity_colisioned);
-                    }
-                    //else if(entity.hasTAG<TEneBullet>()){
-                    //    //proceso Colision EnemyBullet
-                    //    colisionEneBullet(EM, entity, entity_colisioned);
-                    //}
-                    //else if(entity.hasTAG<TWeapon>()){
-                    //    //proceso Colision Weapon
-                    //    colisionWeapon   (EM, entity, entity_colisioned, eng);
-                    //}
-                    //else if(entity.hasTAG<TDoor>()){
-                    //    //proceso Colision Door
-                    //    colisionDoor     (EM, entity, entity_colisioned);
-                    //}
-                    //else if(entity.hasTAG<TKey>()){
-                    //    //proceso Colision Key
-                    //    colisionKey     (EM, entity, entity_colisioned);
-                    //}
-
-                    resetCollision(state, colisiones_state);
+                    resetCollision(state);
                 }
             }
         );
@@ -232,11 +235,15 @@ struct LogicSystem {
     //    //std::cout<<"Recoge la llave\n";
     //}
 
-    void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
-        recept_state.colision  = 0;
-        recept_state.entityCol = 0;
-        agress_state.colision  = 0;
-        agress_state.entityCol = 0;
+    //void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
+    //    recept_state.colision  = 0;
+    //    recept_state.entityCol = 0;
+    //    agress_state.colision  = 0;
+    //    agress_state.entityCol = 0;
+    //}
+    void resetCollision(EstadoCmp& state) {
+        state.colision  = 0;
+        state.entityCol = 0;
     }
 
     void soundMonster(EntyMan& EM, Enty& e) {
