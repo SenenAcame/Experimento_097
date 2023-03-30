@@ -30,7 +30,7 @@ struct LevelMan {
                 }
             }
         );
-        updateInterface   (dev, player);
+        //updateInterface   (dev, player);
         cleanHitsInterface(dev, dt);
     }
 
