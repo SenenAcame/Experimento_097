@@ -15,6 +15,7 @@ struct TheEngine {
     using Path             = const irr::io::path;
     using IGUIImage        = irr::gui::IGUIImage;
     using IGUIText         = irr::gui::IGUIStaticText;
+    using IGUIFont         = irr::gui::IGUIFont;
 
     explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
     bool run() const;
@@ -25,9 +26,13 @@ struct TheEngine {
 
     IGUIImage* addImageToPositionInScreen(Path image, int x, int y);
     void       changeImageFromPointer    (IGUIImage* pointer, Path image);
-    void       addFont                   (Path p, irr::gui::IGUIFont *font);
+    void       setInvisibleImage         (IGUIImage* pointer);
+    void       setVisibleImage           (IGUIImage* pointer);
+    auto       addFont                   (Path p);
+    void       SetFont                   (Path p);
     IGUIText*  addTextToPositionInScreen (const wchar_t * text, int x, int y, int x2, int y2);
-    void       changeTextFromPointer     (IGUIText* pointer,const wchar_t * text );
+    void       changeTextFromPointer     (IGUIText* pointer,const wchar_t * text);
+    
 
     auto loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel(Path obj, Path asset);
@@ -55,6 +60,7 @@ struct TheEngine {
         return node;
     };
 
+    
     auto& getDevice()           {return device_;}
     auto  getSceneManager() {return device_->getSceneManager();}
     auto  getCamera()           {return device_->getSceneManager()->getActiveCamera();}

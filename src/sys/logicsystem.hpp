@@ -2,6 +2,7 @@
 #include "../util/types.hpp"
 #include "colsys2.hpp"
 #include "physys2.hpp"
+#include "../man/levelman.hpp"
 
 struct LogicSystem {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
@@ -11,7 +12,7 @@ struct LogicSystem {
     using SYSTAG_Walls  = MP::Typelist<TWall>;
     static constexpr double PI { std::numbers::pi };
 
-    void update(EntyMan& EM, TheEngine& eng, double dt) {
+    void update(LevelMan& LM ,EntyMan& EM, TheEngine& eng, double dt) {
         EM.foreach<SYSCMPs, SYSTAGs >(
             [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
                 if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
@@ -25,7 +26,7 @@ struct LogicSystem {
                     }
                     else if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
-                        colisionPlayer   (EM, entity, entity_colisioned, dt, eng);
+                        colisionPlayer   (EM, entity, entity_colisioned, dt, eng, LM);
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
@@ -69,7 +70,7 @@ struct LogicSystem {
         }
     }
 
-    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt, TheEngine& eng) {
+    void colisionPlayer(EntyMan& EM, Enty& current, Enty& colisioned, double dt, TheEngine& eng, LevelMan& LM) {
         if(colisioned.hasTAG<TWall>()){
             //moverse hacia atras
             cancelMove(EM, current, dt);
@@ -156,6 +157,7 @@ struct LogicSystem {
     //}
 
     void receiveEntityDamage(EntyMan& EM, Enty& receptor, Enty& agressor) {
+        LM.updateInterfaceHit(eng, receptor);
         auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
         if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
         enemyStats.ClockAttackEnemy = 0;

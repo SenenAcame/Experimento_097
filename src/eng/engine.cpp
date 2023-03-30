@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <irrlicht/IEventReceiver.h>
 #include <irrlicht/IGUIFont.h>
+#include <irrlicht/IGUIImage.h>
 #include <irrlicht/SMaterialLayer.h>
 #include <irrlicht/position2d.h>
 
@@ -52,9 +53,24 @@ void TheEngine::addStaticText(){
     
 }
 
-void TheEngine::addFont(Path p, irr::gui::IGUIFont *font){
+auto TheEngine::addFont(Path p){
 
-    guienv_->addFont(p, font);
+    IGUIFont *font = guienv_->getFont(p);
+    return guienv_->addFont(p, font);
+}
+
+void TheEngine::SetFont(Path p){
+
+    
+    irr::gui::IGUISkin* skin = guienv_->getSkin();
+    
+    IGUIFont* font = guienv_->getFont(p);
+    
+    if (font)
+        skin->setFont(font);
+
+    skin->setFont(guienv_->getBuiltInFont(), irr::gui::EGDF_TOOLTIP);
+
 }
 
 TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(const wchar_t * text, int x, int y, int x2, int y2){
@@ -64,8 +80,11 @@ TheEngine::IGUIText* TheEngine::addTextToPositionInScreen(const wchar_t * text, 
 
 TheEngine::IGUIImage* TheEngine::addImageToPositionInScreen(Path image, int x, int y){
     
+    
     irr::video::ITexture* images = driver_->getTexture(image);
-    return guienv_->addImage(images, irr::core::position2d<int>(x,y));
+    auto height = images->getSize().Height;
+    auto width = images->getSize().Width;
+    return guienv_->addImage(images, irr::core::position2d<int>(x-width/2,y-height/2));
    
 }
 
@@ -76,7 +95,21 @@ void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 
 }
 
-void TheEngine::changeTextFromPointer(IGUIText* pointer, const wchar_t * text ){
+
+void TheEngine::setInvisibleImage(IGUIImage* pointer){
+
+    pointer->setVisible(false);
+
+}
+
+void TheEngine::setVisibleImage(IGUIImage* pointer){
+
+    std::cout<<"ENTRO\n";
+    pointer->setVisible(true);
+
+}
+
+void TheEngine::changeTextFromPointer(IGUIText* pointer, const wchar_t * text){
     
     pointer->setText(text);
 

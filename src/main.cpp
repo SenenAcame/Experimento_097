@@ -16,7 +16,7 @@ void game2() {
     SoundSystem_t SouSys;
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
-    TheEngine     dev {1080, 720, &InpSys};
+    TheEngine     dev {1280, 720, &InpSys};
 
     
     
@@ -27,6 +27,7 @@ void game2() {
     ColSys.init_Hitoxes_Map2(LM, dev);
     auto& player = LM.createPlayer(dev, SouSys);
 
+    dev.SetFont("assets/Interface/Font/FontBien.xml");
     LM.createInterface(dev,player);
     //LM.updateInterfaceAmmo(dev);
     LM.createBasicEnemy(110, 60, dev, SouSys);
