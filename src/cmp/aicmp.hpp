@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 #include <cstdint>
 
 enum class SB{
@@ -26,5 +25,5 @@ struct AICmp {
 
     std::size_t entyID { 0 };
 
-    static constexpr uint8_t id {4}; //0000010000
+    static constexpr uint8_t id { 4 }; //0000010000
 };

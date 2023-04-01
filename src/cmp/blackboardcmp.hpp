@@ -1,6 +1,4 @@
 #pragma once
-#include <cstddef>
-#include <cstdint>
 #include "aicmp.hpp"
 
 struct BlackBoardCmp {

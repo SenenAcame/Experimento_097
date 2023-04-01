@@ -1,9 +1,7 @@
 #include "fachada.hpp"
 
-
 void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
-	if(result != FMOD_OK)
-	{
+	if(result != FMOD_OK) {
         std::cerr << FMOD_ErrorString(result) << std::endl;
 		exit(-1);
 	}
@@ -13,21 +11,17 @@ void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
 
 FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void* parameters);
 
-#define CHECK_RESULT(op) \
-{ \
+#define CHECK_RESULT(op) { \
     FMOD_RESULT res = (op); \
-    if (res != FMOD_OK) \
-    { \
-        return res; \
-    } \
+    if (res != FMOD_OK) return res; \
 }
 
 FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void *parameters) {
-    FMOD::Studio::EventInstance* eventInstance = (FMOD::Studio::EventInstance*)event;
+    FMOD::Studio::EventInstance* eventInstance = (FMOD::Studio::EventInstance*) event;
 
     if (type == FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND) {
         //FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES* props = (FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES*)parameters;
-
+        //
         // Get our context from the event instance user data
         ProgrammerSoundContext* context = nullptr;
         CHECK_RESULT( eventInstance->getUserData((void**)&context) );
@@ -35,10 +29,10 @@ FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE t
         // Find the audio file in the audio table with the key
         //FMOD_STUDIO_SOUND_INFO info;
         //CHECK_RESULT( context->system->getSoundInfo(context->dialogueString, &info) );
-//
+        //
         //FMOD::Sound* sound = nullptr;
         //CHECK_RESULT( context->coreSystem->createSound(info.name_or_data, FMOD_LOOP_NORMAL | FMOD_CREATECOMPRESSEDSAMPLE | FMOD_NONBLOCKING | info.mode, &info.exinfo, &sound) );
-//
+        //
         //// Pass the sound to FMOD
         //props->sound = (FMOD_SOUND*)sound;
         //props->subsoundIndex = info.subsoundindex;
@@ -56,14 +50,9 @@ FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE t
     return FMOD_OK;
 }
 
+TheFachada::TheFachada() {}
 
-
-TheFachada::TheFachada(){
-
-}
-
-void TheFachada::init(){
-
+void TheFachada::init() {
     ERRCHECK(FMOD::Studio::System::create(&soundSystem));
     ERRCHECK(soundSystem->getCoreSystem(&coreSystem));
     ERRCHECK(coreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0));
@@ -73,11 +62,9 @@ void TheFachada::init(){
     chargebanks();
 }
 
-void TheFachada::update(){
-    ERRCHECK(soundSystem->update() );
-}
+void TheFachada::update() { ERRCHECK(soundSystem->update() ); }
 
-void TheFachada::chargebanks(){
+void TheFachada::chargebanks() {
     masterBank = nullptr;
     stringsBank = nullptr;
     
@@ -88,7 +75,7 @@ void TheFachada::chargebanks(){
     chargeparameters();
 }
 
-void TheFachada::createdescriptions(){
+void TheFachada::createdescriptions() {
     ambienteDescription = nullptr;
     ERRCHECK(soundSystem->getEvent("event:/Ambientes/Ambientes", &ambienteDescription) );
 
@@ -117,8 +104,7 @@ void TheFachada::createdescriptions(){
     ERRCHECK(soundSystem->getEvent("event:/Voces/Personaje", &personajeDescription) );
 }
 
-ProgrammerSoundContext TheFachada::createinstance(int tipo){
-
+ProgrammerSoundContext TheFachada::createinstance(int tipo) {
     ProgrammerSoundContext sound;
     FMOD::Studio::EventInstance* eventInstance = nullptr;
 
@@ -166,38 +152,34 @@ ProgrammerSoundContext TheFachada::createinstance(int tipo){
 
     ERRCHECK( eventInstance->setUserData(&sound) );
     ERRCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
-
     
     sound.sound = eventInstance;
 
     return sound;
 }
 
-void TheFachada::changesound(SoundCmp& s){
+void TheFachada::changesound(SoundCmp& s) {
     ERRCHECK(s.programmerSoundContext.sound->setParameterByID(s.programmerSoundContext.id, s.parametro));
 }
 
-void TheFachada::startsound(SoundCmp& s){
-    if(isPlaying(s))
-        stopsound(s);
+void TheFachada::startsound(SoundCmp& s) {
+    if(isPlaying(s)) stopsound(s);
     ERRCHECK( s.programmerSoundContext.sound->start() );
-    
 }
 
-void TheFachada::stopsound(SoundCmp& s){
+void TheFachada::stopsound(SoundCmp& s) {
     ERRCHECK( s.programmerSoundContext.sound->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT) );
 }
 
-bool TheFachada::isPlaying(SoundCmp& s)
-    {
-        FMOD_STUDIO_PLAYBACK_STATE* state=nullptr;
-        bool devol=false;
-        if(s.programmerSoundContext.sound->getPlaybackState(state) != FMOD_STUDIO_PLAYBACK_STOPPED)
-            devol=true;
-        return devol;
-    }
+bool TheFachada::isPlaying(SoundCmp& s) {
+    FMOD_STUDIO_PLAYBACK_STATE* state = nullptr;
+    if(s.programmerSoundContext.sound->getPlaybackState(state) != FMOD_STUDIO_PLAYBACK_STOPPED)
+        return true;
 
-void TheFachada::close(){
+    return false;
+}
+
+void TheFachada::close() {
     ERRCHECK(ambienteDescription->releaseAllInstances());
     ERRCHECK(armaDescription->releaseAllInstances());
     ERRCHECK(mejoraDescription->releaseAllInstances());
@@ -212,7 +194,7 @@ void TheFachada::close(){
     ERRCHECK(soundSystem->unloadAll());
 }
 
-void TheFachada::chargeparameters(){
+void TheFachada::chargeparameters() {
     ERRCHECK(ambienteDescription->getParameterDescriptionByName("ambiente",&paramAmbiente));
 
     ERRCHECK(armaDescription->getParameterDescriptionByName("armatipo",&paramArma));
