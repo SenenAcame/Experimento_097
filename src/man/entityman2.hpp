@@ -32,7 +32,6 @@ struct EntityMan2 {
 
         template<typename CMP>
         constexpr void removeCMP() {
-            //if(hasCMP<CMP>())
             assert(hasCMP<CMP>());
             cmpmask -= cmp_storage::cmp_info::template mask<CMP>(); //RESTA de bit
             //devuelve un 1 espaciado con un valor de id
@@ -49,21 +48,20 @@ struct EntityMan2 {
 
         template<typename TAG>
         constexpr void removeTAG() {
-            if(hasTAG<TAG>())
-                tagmask -= cmp_storage::tag_info::template mask<TAG>();
+            if(hasTAG<TAG>()) tagmask -= cmp_storage::tag_info::template mask<TAG>();
         }
 
         constexpr void setDestroy() { destroy = true; }
 
         constexpr bool getDestroy() { return destroy; }
 
-        [[nodiscard]] size_t constexpr getID()  const noexcept{ return id; }
+        [[nodiscard]] size_t constexpr getID() const noexcept{ return id; }
 
         private:
         std::size_t id { nextID++ };
         smallest_mask_type<CMPLIST> cmpmask;
         smallest_mask_type<TAGLIST> tagmask;
-        key_storage st_key{};
+        key_storage st_key {};
         bool destroy { false };
         static inline std::size_t nextID { 1 };
     };
@@ -72,7 +70,7 @@ struct EntityMan2 {
 
     template<typename CMP, typename... InitParam>
     CMP& addComponent(Entity& e, InitParam&&... initVal) {
-        if(e.template hasCMP<CMP>()){ return getComponent<CMP>(e); }
+        if(e.template hasCMP<CMP>()) return getComponent<CMP>(e);
         return createComponent<CMP>(e, initVal...);
     }
 
@@ -98,8 +96,7 @@ struct EntityMan2 {
     
     template<typename CMP>
     bool removeComponent(Entity& e) {
-        if(e.template hasCMP<CMP>())
-            deleteComponent<CMP>(e);
+        if(e.template hasCMP<CMP>()) deleteComponent<CMP>(e);
         return true;
     }
 
@@ -111,18 +108,12 @@ struct EntityMan2 {
 
     Entity& createEntity() { return new_entities_.emplace_back(); }
 
-    //template<>
-    //bool removeComponent(Entity& e) {
-    //    if(e.template hasCMP<RenderCmp2>())
-    //        deleteComponent<RenderCmp2>(e);
-    //    return true;
-    //}
-
     template<typename T>
     void forall(T process) {
-        for(auto& e : entities_){
+        for(auto& e : entities_) {
             process(e);
         }
+
     }
 
     template<typename CMPs, typename TAGs>
@@ -143,9 +134,7 @@ struct EntityMan2 {
 
     auto& getEntityById(auto id) { 
         for(auto& cont : entities_){
-            if(cont.getID()== id){
-                return cont;
-            }
+            if(cont.getID()== id) return cont; 
         }
     }
 
@@ -155,21 +144,17 @@ struct EntityMan2 {
         sound.play   = true;
     }
 
-    void callDestroy() {
-        destroy_entities();
-    }
+    void callDestroy() { destroy_entities(); }
 
     auto& getEntities() { return entities_; }
     auto& getStorage()  { return cmpStorage_; }
     auto& getBoard()    { return blackboard_; }
 
 private:
-    void destroy_entities(){
+    void destroy_entities() {
         for(auto i {entities_.size()}; i != 0; i--){
             auto& e = entities_[i-1];
-            if(e.getDestroy()) { 
-                removeEntity(e, i-1); 
-            }
+            if(e.getDestroy())  removeEntity(e, i-1);
         }
     }
 
@@ -178,22 +163,20 @@ private:
         for(auto& e : entities_){
             bool hasCMPs = (true && ... && e.template hasCMP<CMPs>());
             bool hasTAGs = (true && ... && e.template hasTAG<TAGs>());
-            if(hasCMPs && hasTAGs){
-                process(e, getComponent<CMPs>(e)...);
-            }
+            if(hasCMPs && hasTAGs) process(e, getComponent<CMPs>(e)...); 
         }
     }
 
     template<typename CMP, typename... InitParam>
     CMP& createComponent(Entity& e, InitParam&&... initVal) {
         auto& st = cmpStorage_.template getStorage<CMP>();
-        Key<CMP> k = st.push_back(CMP{ std::forward<InitParam>(initVal)... });
+        Key<CMP> k = st.push_back(CMP { std::forward<InitParam>(initVal)... });
         e.template addCMP<CMP>(k);
         return st[k];
     }
 
     template<typename CMP>
-    constexpr bool deleteComponent(Entity& e) noexcept{
+    constexpr bool deleteComponent(Entity& e) noexcept {
         assert(e.template hasCMP<CMP>());
         auto k = e.template getKey<CMP>();
         cmpStorage_.template getStorage<CMP>().erase(k);
@@ -207,7 +190,7 @@ private:
     }
 
     void removeEntity(Entity& e, auto i) {
-        if(e.template hasCMP<RenderCmp2>()){ removeRender(e); }
+        if(e.template hasCMP<RenderCmp2>()) { removeRender(e); }
         removeComponents<
             PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
             InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp,
@@ -216,9 +199,9 @@ private:
     }
 
     void transfer_entities() {
-        for(auto& e : new_entities_) {
+        for(auto& e : new_entities_)
             entities_.push_back(std::move(e));
-        }
+            
         new_entities_.clear();
     }
 

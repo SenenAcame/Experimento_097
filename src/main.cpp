@@ -1,5 +1,6 @@
 #include "man/gameman.hpp" 
 
 int main() { 
-    GameMan::game(); 
+    GameMan GM;
+    GM.game();
 }
