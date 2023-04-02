@@ -1,14 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
-#include "entityman2.hpp"
-//#include "../util/types.hpp"
 #include "../eng/engine.hpp"
-//#include "../sys/nodemapsys.hpp"
-//#include <cstddef>
-//#include <cstdint>
-//#include <cstdlib>
-//#include <irrlicht/IGUIImage.h>
-//#include <string>
 
 struct SoundSystem_t;
 

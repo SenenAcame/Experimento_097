@@ -1,8 +1,6 @@
 #pragma once 
 #include "metaprogramming.hpp"
-#include <cstddef>
 #include <cstdint>
-#include <tuple>
 
 template<typename LIST>
 using smallest_mask_type = 
@@ -17,17 +15,20 @@ using smallest_mask_type =
 template<typename LIST>
 struct common_traits {
     using mask_type = smallest_mask_type<LIST>;
-
-    consteval static uint8_t size() noexcept { return LIST::size(); }
+    
+    //or consteval
+    constexpr static uint8_t size() noexcept { return LIST::size(); }
 
     template <typename TAG>
-    consteval static uint16_t id() noexcept {
+    //or consteval
+    constexpr static uint16_t id() noexcept {
         static_assert(LIST::template contains<TAG>());
         return LIST::template pos<TAG>(); 
     }
 
     template <typename... TAGS>
-    consteval static mask_type mask() noexcept { 
+    //or consteval
+    constexpr static mask_type mask() noexcept { 
         return (0 | ... | (1 << id<TAGS>())); 
     }
 };

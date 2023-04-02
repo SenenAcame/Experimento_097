@@ -1,6 +1,4 @@
 #include "gameman.hpp"
-#include "levelman.hpp"
-#include "../util/types.hpp"
 #include "../sys/soundsystem.hpp"
 #include "../sys/aisys.hpp"
 #include "../sys/rensys2.hpp"
@@ -13,7 +11,6 @@
 #include "../sys/spawnsys.hpp"
 #include "../sys/rensys2.hpp"
 #include <chrono>
-
 
 void GameMan::game() {
     LevelMan      LM;
@@ -84,7 +81,7 @@ void GameMan::init_config(TheEngine& dev) {
     dev.SetFont("assets/Interface/Font/FontBien.xml");
 }
 
-void init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
+void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
     LM.createMap(dev, SouSys);
     ColSys2::init_Hitoxes_Map2(LM, dev);
 }

@@ -1,6 +1,4 @@
 #include "keyboard.hpp"
-//#include <X11/X.h>
-//#include <unordered_map>
 
 bool Keyboard::isKeyPressed(KeySym k) noexcept{
     if(auto key = getIterator(k)){

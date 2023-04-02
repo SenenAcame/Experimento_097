@@ -1,9 +1,8 @@
 #pragma once
-#include <irrlicht/IEventReceiver.h>
 #include <unordered_map>
+#include <optional>
 #include <X11/X.h>
 #include <X11/keysym.h>
-#include <optional>
 
 struct Keyboard{
     using OptIter = std::optional<std::unordered_map<KeySym, bool>::iterator>;

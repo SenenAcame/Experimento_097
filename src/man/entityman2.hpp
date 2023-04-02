@@ -1,8 +1,7 @@
 #pragma once
 #include "../cmp/blackboardcmp.hpp"
 #include "cmpstorage2.hpp"
-#include "../util/types.hpp"
-#include <cstdint>
+#include "../util/cmps.hpp"
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
 struct EntityMan2 {
@@ -132,7 +131,7 @@ struct EntityMan2 {
         transfer_entities();
     }
 
-    auto& getEntityById(auto id) { 
+    auto& getEntityById(std::size_t id) { 
         for(auto& cont : entities_){
             if(cont.getID()== id) return cont; 
         }
@@ -189,7 +188,7 @@ private:
         r.n->remove();
     }
 
-    void removeEntity(Entity& e, auto i) {
+    void removeEntity(Entity& e, int i) {
         if(e.template hasCMP<RenderCmp2>()) { removeRender(e); }
         removeComponents<
             PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 

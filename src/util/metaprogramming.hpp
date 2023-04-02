@@ -53,11 +53,14 @@ namespace MP {
     // TYPELIST
     template<typename... Ts>
     struct Typelist{
-        consteval static std::size_t size() noexcept { return (sizeof...(Ts)); }
+        //or consteval
+        constexpr static std::size_t size() noexcept { return (sizeof...(Ts)); }
         template<typename T>
-        consteval static bool contains() noexcept { return (false || ... || is_same_v<T, Ts>); }
+        //or consteval
+        constexpr static bool contains() noexcept { return (false || ... || is_same_v<T, Ts>); }
         template<typename T>
-        consteval static std::size_t pos() noexcept {
+        //or consteval
+        constexpr static std::size_t pos() noexcept {
             static_assert(contains<T>());
             return pos_type_v<T, Ts...>;
         }

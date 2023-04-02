@@ -1,4 +1,5 @@
 #include "fachada.hpp"
+#include <iostream>
 
 void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
 	if(result != FMOD_OK) {
