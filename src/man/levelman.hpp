@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <iostream>
 #include <irrlicht/IGUIImage.h>
 #include <string>
 
@@ -14,9 +15,40 @@ struct LevelMan {
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
-                if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
+                std::cout<<"Enemigo muerto \n";
+                if(en.getDestroy()) aliveEnemys--; numberOfEnemysBasics--;
+                
+                //createBasicEnemy(-30, 30, dev, SouSys)
+                ;
             }
         );
+        if(inRound == true && numberOfEnemysBasics <= 0){
+            inRound = false;
+            numberOfEnemysBasics += extraEnemys;
+            std::cout<<"NOT In round: "<<inRound<<"\n";
+
+        }
+        else if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
+            createBasicEnemy(-30, 30, dev, SouSys, extraHeal, waveNumber);
+            std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
+            std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
+            std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
+            std::cout<<"Wave: "<<waveNumber<<"\n";
+            aliveEnemys++;
+            
+        }
+        else if(inRound == false){
+            clockToNextWave += dt;
+            std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
+            if(clockToNextWave >= timeBtwWaves){
+                inRound = true;
+                clockToNextWave = 0;
+                numberOfEnemysBasics = 2+extraEnemys*waveNumber;
+                waveNumber++;
+                std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
+                std::cout<<"In round: "<<inRound<<"\n";
+            }
+        }
         cleanHitsInterface(dev, dt);
     }
 
@@ -24,6 +56,7 @@ struct LevelMan {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
         createWeapon(-65, 5, 30, dev, SouSys, 2);
+        inRound = true;
         //createBasicEnemy(110, 60, dev, SouSys);
         //createBasicEnemy(120, 60, dev, SouSys);
         //createBasicEnemy(110, 70, dev, SouSys);
@@ -231,9 +264,9 @@ struct LevelMan {
         return player;
     }
 
-    Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+    Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=5, .damage=20, .speed=15.f});
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=50+extraHeal*waveNumber, .damage=20, .speed=15.f});
         
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
@@ -426,6 +459,18 @@ private:
     }
 
     EntyMan EM;
+
+    //Waves
+    int    waveNumber           = 1; //actual wave
+    double extraHeal            = 5; //extra EnemyHeal per wave
+    int    numberOfEnemysBasics = 2; //number of enemys per wave
+    int    aliveEnemys          = 0;
+    double extraEnemys          = 2; //extra number of enemys per wave
+    int    maxEnemysWave        = 5; //max number of enemy created
+    double timeBtwWaves         = 4;
+    double clockToNextWave      = 0; //clock unter next wave
+    bool   inRound              = false;
+
 
     //INTERFACE
     TheEngine::IGUIText*  mag  {};
