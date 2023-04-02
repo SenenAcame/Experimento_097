@@ -11,6 +11,7 @@
 #include "../sys/spawnsys.hpp"
 #include "../sys/rensys2.hpp"
 #include <chrono>
+#include <iostream>
 
 void GameMan::game() {
     LevelMan      LM;
