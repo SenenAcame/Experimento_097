@@ -369,7 +369,7 @@ struct LevelMan {
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
         //EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
         EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
-        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=1, .damage=5, .speed=40.f});
+        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=5, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
         EM.addComponent<SalaCmp>       (player);
