@@ -97,7 +97,7 @@ struct LevelMan {
                 clockToNextWave = 0;
                 if(extraSpeed<31){
                     
-                    extraSpeed+=1*waveNumber/0.9;
+                    extraSpeed+=4.5;
                 }
                 numberOfEnemysBasics = 2+extraEnemys*waveNumber;
                 waveNumber++;
@@ -209,7 +209,7 @@ struct LevelMan {
         //HP
         
         hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
-        h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers,widthScreen/10*2,widthNumbers2);
+        h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10*1.2,widthNumbers,widthScreen/10*2.5,widthNumbers2);
         //wave
         waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
         wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
@@ -383,7 +383,8 @@ struct LevelMan {
         auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
-        EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
+        //EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
+        EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
         return enemy;
     }
 
@@ -433,8 +434,14 @@ struct LevelMan {
     Enty& createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo){
         Enty& weapon = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
+        EM.addComponent<WeaponCmp>(weapon, tipo);
+        EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
+        EM.addComponent<EstadoCmp>(weapon, 1.f, 1.f, 3.f); 
+        EM.addTag      <TWeapon> (weapon);
+        EM.addTag      <TInteract>(weapon);
         switch (tipo) {
             case 0:
+                EM.getComponent<WeaponCmp>(weapon).pickIt = 1;
                 EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));
                 break;
             case 1:
