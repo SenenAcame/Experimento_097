@@ -42,13 +42,13 @@ struct NodeMapSys {
             }
         );
         int salaplayer = getSala(map, playerposx, playerposz);
+        EM.getComponent<SalaCmp>(player).sala = salaplayer; 
         EM.foreach<EneCMPs, EneTAGs>(
             [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
                 int salaene = getSala(map, p.x, p.z);
                 if(ai.behaviour!=SB::Diying){
                     if( salaplayer == salaene || salaene==-1){
-                        if(en.hasTAG<TDistEnemy>())
-                        EM.getComponent<SalaCmp>(player).sala = salaplayer; 
+                        if(en.hasTAG<TDistEnemy>()) 
                         EM.getComponent<SalaCmp>(en).sala = salaene;
                         if(en.hasTAG<TDistEnemy>() && sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz))<40 && salaene!=-1){    
                             ai.behaviour=SB::Shoot;

@@ -323,17 +323,17 @@ private:
         equipment.clockCadence = 0 ;
 
         if(equipment.equipada == 0){ //pistola
-            LM.createBullet(phy_player, eng, SS, 18., 5., 0.1, 9.);
+            LM.createBullet(phy_player, eng, SS, 25., 5., 0.1, 9.);
             equipment.magazine1 -= 1;
             //ammo = equipment.magazine1;
         }
         else if (equipment.equipada == 1){ //escopeta
-            LM.createShotgunBullets(phy_player, eng, SS, 8., 3., 0.15, 0.4, 10);
+            LM.createShotgunBullets(phy_player, eng, SS, 16., 3., 0.15, 0.4, 10);
             equipment.magazine2 -= 1;
             //ammo = equipment.magazine1;
         }
         else if(equipment.equipada == 2){ //ametralladora
-            LM.createBullet(phy_player, eng, SS, 15., 4., 0.1, 1.5);
+            LM.createBullet(phy_player, eng, SS, 30., 4., 0.1, 1.5);
             equipment.magazine3 -= 1;
             //ammo = equipment.magazine1;
         }

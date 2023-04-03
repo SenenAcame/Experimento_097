@@ -11,34 +11,54 @@
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
-    using voidCMP2 = MP::Typelist<PhysicsCmp2>;
+    using voidCMP2 = MP::Typelist<PhysicsCmp2, SalaCmp, SpawnCmp>;
     using EneTAGs2 = MP::Typelist<TSpawn>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt){
+    void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player){
+        
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 
-                if(en.getDestroy()) {std::cout<<"Enemigo muerto \n";
-                aliveEnemys--; numberOfEnemysBasics--;}
+                if(en.getDestroy()) {
+                aliveEnemys--;}
                 
                 //createBasicEnemy(-30, 30, dev, SouSys)
                 ;
             }
         );
-        double spawnX{0}, spawnY{0};
+        double spawnX{0}, spawnZ{0};
         EM.foreach<voidCMP2, EneTAGs2>(
-        [&](Enty& en, PhysicsCmp2& f) {
+        [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
+            spawnCMP.clockSpawn+=dt;
+            
             if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
-                spawnX = f.x;
-                spawnY = f.y;
-                createBasicEnemy(-30, 30, dev, SouSys, extraHeal, waveNumber);
-                aliveEnemys++;
+                
+
+                if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
+                
+                auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
+                auto nextSalaPlayer = (salaPlayer)%9+1;
+                auto prevSalaPlayer = salaPlayer-1;
+                if( prevSalaPlayer < 1){
+                    prevSalaPlayer = 9;
+                }
+                if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
+                    
+                      
+                    spawnCMP.clockSpawn = 0;                 
+                    spawnX = f.x;
+                    spawnZ = f.z;
+                    createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                    aliveEnemys++;
+                    numberOfEnemysBasics--;
+                }
+                
                 
             }
                 
         }
         );
-        if(inRound == true && numberOfEnemysBasics == 0){
+        if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
             inRound = false;
             
             std::cout<<"NOT In round: "<<inRound<<"\n";
@@ -70,7 +90,9 @@ struct LevelMan {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
         createWeapon(-65, 5, 30, dev, SouSys, 2);
-        
+        createSpawn(108, 58,dev,1);
+        createSpawn(-34, 34,dev,4);
+        createSpawn(37, -61,dev,7);
         inRound = true;
         //createBasicEnemy(110, 60, dev, SouSys);
         //createBasicEnemy(120, 60, dev, SouSys);
@@ -289,6 +311,16 @@ struct LevelMan {
         return enemy;
     }
 
+    Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2){
+        Enty& spawn = EM.createEntity();
+        EM.addComponent<SalaCmp>    (spawn, SalaCmp{.sala = sala2});
+        EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{.x=x_pos, .z=z_pos});
+        EM.addComponent<SpawnCmp>   (spawn);
+        EM.addTag      <TSpawn>     (spawn);
+        //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
+        return spawn;
+    }
+
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
     //    Enty& enemy = createEnemy(SouSys);
     //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
@@ -480,8 +512,8 @@ private:
     double extraHeal            = 5; //extra EnemyHeal per wave
     int    numberOfEnemysBasics = 2; //number of enemys per wave
     int    aliveEnemys          = 0;
-    double extraEnemys          = 2; //extra number of enemys per wave
-    int    maxEnemysWave        = 5; //max number of enemy created
+    double extraEnemys          = 3; //extra number of enemys per wave
+    int    maxEnemysWave        = 15; //max number of enemy created
     double timeBtwWaves         = 4;
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;

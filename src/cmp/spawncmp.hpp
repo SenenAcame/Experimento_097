@@ -8,5 +8,8 @@ struct SpawnCmp {
 
     size_t sala = 0; //sala en el que esta
 
+    double clockSpawn {0};
+    double SpawnTimer {1};
+
     static constexpr uint8_t id {10}; //10000000000
 };

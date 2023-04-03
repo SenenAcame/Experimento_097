@@ -60,7 +60,7 @@ struct GameMan {
                 PhySys.  update_after_colision(EM, dt);
                 //SouSys.  update(EM);
                 //SpawnSys.update(EM, dev, SouSys, player, map);
-                LM.      update(dev, SouSys, dt);
+                LM.      update(dev, SouSys, dt, player);
                 DestSys. update(EM, dt);
                 dead = EM.getEntityById(player_ID).getDestroy();
                 //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
