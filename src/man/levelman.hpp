@@ -11,32 +11,40 @@
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
+    using voidCMP2 = MP::Typelist<PhysicsCmp2>;
+    using EneTAGs2 = MP::Typelist<TSpawn>;
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt){
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
-                std::cout<<"Enemigo muerto \n";
-                if(en.getDestroy()) aliveEnemys--; numberOfEnemysBasics--;
+                
+                if(en.getDestroy()) {std::cout<<"Enemigo muerto \n";
+                aliveEnemys--; numberOfEnemysBasics--;}
                 
                 //createBasicEnemy(-30, 30, dev, SouSys)
                 ;
             }
         );
-        if(inRound == true && numberOfEnemysBasics <= 0){
+        double spawnX{0}, spawnY{0};
+        EM.foreach<voidCMP2, EneTAGs2>(
+        [&](Enty& en, PhysicsCmp2& f) {
+            if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
+                spawnX = f.x;
+                spawnY = f.y;
+                createBasicEnemy(-30, 30, dev, SouSys, extraHeal, waveNumber);
+                aliveEnemys++;
+                
+            }
+                
+        }
+        );
+        if(inRound == true && numberOfEnemysBasics == 0){
             inRound = false;
-            numberOfEnemysBasics += extraEnemys;
+            
             std::cout<<"NOT In round: "<<inRound<<"\n";
 
         }
-        else if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
-            createBasicEnemy(-30, 30, dev, SouSys, extraHeal, waveNumber);
-            std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
-            std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
-            std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
-            std::cout<<"Wave: "<<waveNumber<<"\n";
-            aliveEnemys++;
-            
-        }
+       
         else if(inRound == false){
             clockToNextWave += dt;
             std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
@@ -49,6 +57,12 @@ struct LevelMan {
                 std::cout<<"In round: "<<inRound<<"\n";
             }
         }
+        else if(inRound == true){ //only to debug without interface
+            std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
+            std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
+            std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
+            std::cout<<"Wave: "<<waveNumber<<"\n";
+        }
         cleanHitsInterface(dev, dt);
     }
 
@@ -56,6 +70,7 @@ struct LevelMan {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
         createWeapon(-65, 5, 30, dev, SouSys, 2);
+        
         inRound = true;
         //createBasicEnemy(110, 60, dev, SouSys);
         //createBasicEnemy(120, 60, dev, SouSys);
