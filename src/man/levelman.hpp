@@ -375,7 +375,7 @@ struct LevelMan {
         EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{.x=x_pos, .z=z_pos});
         EM.addComponent<SpawnCmp>   (spawn);
         EM.addTag      <TSpawn>     (spawn);
-        EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
+        //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
         return spawn;
     }
 

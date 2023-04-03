@@ -65,7 +65,7 @@ struct RenSys2 {
     void drawAll(EntyMan& EM, TheEngine& GFX) {
         GFX.beginScene();
         GFX.drawAll();
-        drawBBox(EM, GFX);
+        //drawBBox(EM, GFX);
         GFX.endScene();
     }
 
