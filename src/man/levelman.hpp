@@ -90,6 +90,9 @@ struct LevelMan {
             if(clockToNextWave >= timeBtwWaves){
                 inRound = true;
                 clockToNextWave = 0;
+                if(extraSpeed<31){
+                    extraSpeed+=1*waveNumber/0.9;
+                }
                 numberOfEnemysBasics = 2+extraEnemys*waveNumber;
                 waveNumber++;
                 updateInterfaceWave(dev);
@@ -115,10 +118,10 @@ struct LevelMan {
         auto& player = createPlayer(dev, SouSys);
         createInterface(dev, player);
 
-        createSpawn(100, 40,dev,1);
+        createSpawn(80, 30,dev,1);
         createWeapon(110, 5, 70, dev, SouSys, 1);
 
-        createSpawn(-34, 34,dev,4);
+        createSpawn(-8, 8,dev,4);
         createWeapon(-65, 5, 30, dev, SouSys, 0);
         
         createSpawn(35, -30,dev,7);
@@ -359,8 +362,7 @@ struct LevelMan {
 
     Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
         Enty& enemy = createEnemy(SouSys);
-        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f});
-        
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
         EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
         EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
         EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
@@ -516,6 +518,7 @@ struct LevelMan {
         dev.setInvisibleImage(hit3);
         waveNumber           = 1; //actual wave
         extraHeal            = 5; //extra EnemyHeal per wave
+        extraSpeed           = 0;
         numberOfEnemysBasics = 2; //number of enemys per wave
         aliveEnemys          = 0;
         extraEnemys          = 3; //extra number of enemys per wave
@@ -523,6 +526,10 @@ struct LevelMan {
         timeBtwWaves         = 4;
         clockToNextWave      = 0; //clock unter next wave
         inRound              = false;
+        points               = 0;
+
+        updateInterfacePoints(dev);
+        updateInterfaceWave(dev);   
 
         EM.callDestroy();
     }
@@ -575,6 +582,7 @@ private:
     //Waves
     int    waveNumber           = 1; //actual wave
     double extraHeal            = 5; //extra EnemyHeal per wave
+    float  extraSpeed           = 0; //extra speed per round
     int    numberOfEnemysBasics = 2; //number of enemys per wave
     int    aliveEnemys          = 0;
     double extraEnemys          = 3; //extra number of enemys per wave
@@ -583,6 +591,7 @@ private:
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;
     int    points               = 0;
+    
 
 
     //INTERFACE

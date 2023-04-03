@@ -238,6 +238,7 @@ struct LogicSystem {
                     default: break;
                 }
                 weaponCM.pickIt = 1;
+                LM.updateInterfaceWhenReload(eng, magazine, ammo);
             }
             else if(weaponCM.pickIt == 1){
                 
@@ -261,10 +262,14 @@ struct LogicSystem {
                             magazine = equipment.magazine3;
                             break;
                         default: break;
-                    } 
+                } 
+                if(weaponCM.typeWe == equipment.equipada){
+                    LM.updateInterfaceWhenReload(eng, magazine, ammo);
+                }
+
 
             }
-            LM.updateInterfaceWhenReload(eng, magazine, ammo);
+            
         }
         weaponRender.n->setVisible(false);
         
