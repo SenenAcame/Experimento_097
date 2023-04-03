@@ -4,7 +4,7 @@
 struct InventarioCmp {
     int equipada = 0;
     //1 =  desbloqueada, 0 = no, 2 = arma actual
-    size_t inventary [3] = {2, 1, 0}; //0 = pistola, 1 = escopeta, 2 = ametralladora
+    size_t inventary [3] = {2, 0, 0}; //0 = pistola, 1 = escopeta, 2 = ametralladora
     //size_t keys_inv  [1] = {0}; //Inventario para las llaves
     
     //weapon1

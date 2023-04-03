@@ -202,39 +202,74 @@ struct LogicSystem {
         auto& EM = LM.getEM();
         auto& equipment = EM.getComponent<InventarioCmp>(player);
         auto& playerRender = EM.getComponent<RenderCmp2>(player);
+        auto& weaponCM = EM.getComponent<WeaponCmp>(weapon);
+        auto& weaponRender = EM.getComponent<RenderCmp2>(weapon);
         int ammo {}, magazine {};
         size_t aux = 0;
 
-        for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
-            if(i == 2){
-                auto& wpn = EM.getComponent<WeaponCmp>(weapon);
-                equipment.inventary[aux] = 1;
-                equipment.inventary[wpn.typeWe] = 2;
-                equipment.equipada = wpn.typeWe;
-                break;
+        if(weaponRender.n->isVisible()==true){
+            
+            if(weaponCM.pickIt == 0){
+                
+                for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
+                    if(i == 2){
+                        auto& wpn = EM.getComponent<WeaponCmp>(weapon);
+                        equipment.inventary[aux] = 1;
+                        equipment.inventary[wpn.typeWe] = 2;
+                        equipment.equipada = wpn.typeWe;
+                        break;
+                    }
+                    aux++;
+                }
+                playerRender.n->remove();
+                switch (equipment.equipada) {
+                    case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+                        ammo = equipment.ammo1;
+                        magazine = equipment.magazine1;
+                        break;
+                    case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+                        ammo = equipment.ammo2;
+                        magazine = equipment.magazine2;
+                        break;
+                    case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+                        ammo = equipment.ammo3;
+                        magazine = equipment.magazine3;
+                        break;
+                    default: break;
+                }
+                weaponCM.pickIt = 1;
             }
-            aux++;
-        }
-        
-        playerRender.n->remove();
+            else if(weaponCM.pickIt == 1){
+                
+                switch (weaponCM.typeWe) {
+                        case 0: 
+                            equipment.ammo1 = 100;
+                            equipment.magazine1 = 5;
+                            ammo = equipment.ammo1;
+                            magazine = equipment.magazine1;
+                            break;
+                        case 1:
+                            equipment.ammo2 = 20;
+                            equipment.magazine2 = 2;
+                            ammo = equipment.ammo2;
+                            magazine = equipment.magazine2;
+                            break;
+                        case 2: 
+                            equipment.ammo3 = 200;
+                            equipment.magazine3 = 25;
+                            ammo = equipment.ammo3;
+                            magazine = equipment.magazine3;
+                            break;
+                        default: break;
+                    } 
 
-        switch (equipment.equipada) {
-            case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
-                ammo = equipment.ammo1;
-                magazine = equipment.magazine1;
-                break;
-            case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
-                ammo = equipment.ammo2;
-                magazine = equipment.magazine2;
-                break;
-            case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
-                ammo = equipment.ammo3;
-                magazine = equipment.magazine3;
-                break;
-            default: break;
+            }
+            LM.updateInterfaceWhenReload(eng, magazine, ammo);
         }
-        LM.updateInterfaceWhenReload(eng, magazine, ammo);
-        weapon.setDestroy();
+        weaponRender.n->setVisible(false);
+        
+        
+        //weapon.setDestroy();
     }
     //
     //void openDoor() {

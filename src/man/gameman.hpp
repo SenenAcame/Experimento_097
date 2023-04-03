@@ -58,7 +58,7 @@ struct GameMan {
                 ColSys.  update(EM);
                 LogicSys.update(LM, dev, dt);
                 PhySys.  update_after_colision(EM, dt);
-                //SouSys.  update(EM);
+                SouSys.  update(EM);
                 //SpawnSys.update(EM, dev, SouSys, player, map);
                 LM.      update(dev, SouSys, dt, player);
                 DestSys. update(EM, dt);
