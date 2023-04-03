@@ -199,6 +199,7 @@ struct LogicSystem {
 
     void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng) {
         //unificarlo en el level manager para que no este el codigo en input y aqui
+        
         auto& EM = LM.getEM();
         auto& equipment = EM.getComponent<InventarioCmp>(player);
         auto& playerRender = EM.getComponent<RenderCmp2>(player);
@@ -206,6 +207,7 @@ struct LogicSystem {
         auto& weaponRender = EM.getComponent<RenderCmp2>(weapon);
         int ammo {}, magazine {};
         size_t aux = 0;
+        
 
         if(weaponRender.n->isVisible()==true){
             

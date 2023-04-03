@@ -49,6 +49,7 @@ struct GameMan {
             
             while(!dead && dev.run()){
                 //auto frame_start = std::chrono::high_resolution_clock::now();
+                std::cout<<"Inicio\n";
                 EM.      update();
                 RenSys.  update(EM, dev);
                 MapSys.  update(EM);
@@ -61,6 +62,8 @@ struct GameMan {
                 SouSys.  update(EM);
                 //SpawnSys.update(EM, dev, SouSys, player, map);
                 LM.      update(dev, SouSys, dt, player);
+                
+                std::cout<<"Fin\n";
                 DestSys. update(EM, dt);
                 dead = EM.getEntityById(player_ID).getDestroy();
                 //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}

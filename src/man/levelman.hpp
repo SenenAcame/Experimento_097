@@ -18,7 +18,7 @@ struct LevelMan {
     using EneTAGs3 = MP::Typelist<TWeapon>;
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player){
-        
+        std::cout<<"InicioLM\n";
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 
@@ -52,15 +52,17 @@ struct LevelMan {
             
             if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
                 
+                
 
                 if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
-                
                 auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
+                
                 auto nextSalaPlayer = (salaPlayer)%9+1;
                 auto prevSalaPlayer = salaPlayer-1;
                 if( prevSalaPlayer < 1){
                     prevSalaPlayer = 9;
                 }
+                
                 if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
                     
                       
@@ -77,20 +79,23 @@ struct LevelMan {
                 
         }
         );
+        std::cout<<"EXploto aqui1\n";
         if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
             inRound = false;
             
             //std::cout<<"NOT In round: "<<inRound<<"\n";
 
         }
-       
         else if(inRound == false){
+            std::cout<<"EXploto aqui1\n";
             clockToNextWave += dt;
             //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
             if(clockToNextWave >= timeBtwWaves){
                 inRound = true;
+                std::cout<<"EXploto aqui3\n";
                 clockToNextWave = 0;
                 if(extraSpeed<31){
+                    
                     extraSpeed+=1*waveNumber/0.9;
                 }
                 numberOfEnemysBasics = 2+extraEnemys*waveNumber;
@@ -100,23 +105,28 @@ struct LevelMan {
                 std::wstring convert    = std::wstring(aux.begin(), aux.end());
                 const wchar_t* HPText   = convert.c_str();
                 dev.changeTextFromPointer(h1, HPText);
-                 
+                
                 //std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
                 //std::cout<<"In round: "<<inRound<<"\n";
             }
         }
+        std::cout<<"EXploto aqui4\n";
         //else if(inRound == true){ //only to debug without interface
         //    std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
         //    std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
         //    std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
         //    std::cout<<"Wave: "<<waveNumber<<"\n";
         //}
+        
         cleanHitsInterface(dev, dt);
+        std::cout<<"FINLM\n";
     }
 
     auto& init_level(TheEngine& dev, SoundSystem_t& SouSys) {
         auto& player = createPlayer(dev, SouSys);
+        
         createInterface(dev, player);
+        
 
         createSpawn(80, 30,dev,1);
         createWeapon(110, 5, 70, dev, SouSys, 1);
@@ -127,6 +137,7 @@ struct LevelMan {
         createSpawn(35, -30,dev,7);
         createWeapon(40, 5, -70, dev, SouSys, 2);
         inRound = true;
+        
         //createBasicEnemy(110, 60, dev, SouSys);
         //createBasicEnemy(120, 60, dev, SouSys);
         //createBasicEnemy(110, 70, dev, SouSys);
@@ -351,7 +362,7 @@ struct LevelMan {
         EM.addComponent<InputCmp2>     (player, InputCmp2{ });
         //EM.addComponent<EstadoCmp>     (player, 0.945f, 4.005f, 1.01f);
         EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
-        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=5, .speed=40.f});
+        EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=1, .damage=5, .speed=40.f});
         EM.addComponent<InventarioCmp> (player);
         EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
         EM.addComponent<SalaCmp>       (player);
@@ -492,7 +503,6 @@ struct LevelMan {
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
         EM.addComponent<EstadoCmp>  (bullet);
         EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-        EM.addComponent<SelfDestCmp>(bullet, slfD);
         EM.addTag<TBullet>          (bullet);
         EM.addTag<TInteract>        (bullet);
     }
@@ -508,6 +518,8 @@ struct LevelMan {
                 bool is_enemy_bullet_or_player = 
                     ent.hasTAG<TEnemy>()  ||
                     ent.hasTAG<TBullet>() ||
+                    ent.hasTAG<TWeapon>() ||
+                    ent.hasTAG<TSpawn>()  ||
                     ent.hasTAG<TPlayer>();
                 if(is_enemy_bullet_or_player) ent.setDestroy();
             }
@@ -516,6 +528,7 @@ struct LevelMan {
         dev.setInvisibleImage(hit1);
         dev.setInvisibleImage(hit2);
         dev.setInvisibleImage(hit3);
+
         waveNumber           = 1; //actual wave
         extraHeal            = 5; //extra EnemyHeal per wave
         extraSpeed           = 0;
@@ -523,7 +536,7 @@ struct LevelMan {
         aliveEnemys          = 0;
         extraEnemys          = 3; //extra number of enemys per wave
         maxEnemysWave        = 15; //max number of enemy created
-        timeBtwWaves         = 4;
+        timeBtwWaves         = 2;
         clockToNextWave      = 0; //clock unter next wave
         inRound              = false;
         points               = 0;
@@ -586,7 +599,7 @@ private:
     int    numberOfEnemysBasics = 2; //number of enemys per wave
     int    aliveEnemys          = 0;
     double extraEnemys          = 3; //extra number of enemys per wave
-    int    maxEnemysWave        = 15; //max number of enemy created
+    int    maxEnemysWave        = 11; //max number of enemy created
     double timeBtwWaves         = 4;
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;
