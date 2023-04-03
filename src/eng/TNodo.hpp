@@ -80,6 +80,9 @@ struct RShader;
         bool floor_{false};
         bool UI_{false};
         
+        float xRad{0.0f};
+        float yRad{0.0f};
+        float zRad{0.0f};
 
         vecNodo nodeSons_;
         TNodo *fatherNode_{nullptr};

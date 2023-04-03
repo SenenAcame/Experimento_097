@@ -12,6 +12,7 @@
 #include "resources/RMesh.hpp"
 #include "resources/RShader.hpp"
 #include "resources/RTexture.hpp"
+#include "resources/RAnimation.hpp"
 
 #define MATERIAL_ID 0
 
@@ -19,12 +20,12 @@ struct Resource;
 
 struct ResourceGestor {
 
-    using ResourceStorage = std::tuple<std::vector<RMaterial>, std::vector<RMesh>, std::vector<RShader>, std::vector<RTexture>>;
+    using ResourceStorage = std::tuple<std::vector<RMaterial>, std::vector<RMesh>, std::vector<RShader>, std::vector<RTexture>, std::vector<RAnimation>>;
 
     ResourceGestor();
     ResourceGestor(unsigned int);
 
-    unsigned int RMa, RMe, RS, RT;
+    unsigned int RMa, RMe, RS, RT, RAni;
     
     //Getters
     template <typename T>

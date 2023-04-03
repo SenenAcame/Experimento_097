@@ -3,16 +3,25 @@
 #include "TNodo.hpp"
 #include "entities/ECamera.hpp"
 #include "entities/EFoco.hpp"
+#include "entities/EGenParticle.hpp"
 #include "entities/EModel.hpp"
+#include "resources/RMaterial.hpp"
+#include "resources/RShader.hpp"
+#include "resources/RTexture.hpp"
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
 #include <stb_image.h>
 
 GlEngine::GlEngine() {
+
     initOpenGL();
     root_.addSon(&rootScene_);
+    root_.addSon(&rootUI_);
 
     registryFocos_.reserve(6);
     registryModels_.reserve(1000);
@@ -21,10 +30,13 @@ GlEngine::GlEngine() {
     modelEntities_.reserve(1000);
 
     RShader *shaderColor = resourceGestor_.getResource<RShader>("SHADER_COLOR");
+    RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
 
     shaderColor->setShader("assets/shaders/vertex/shader.vs", "assets/shaders/fragment/shader.fs", "");
+    shaderParticle->setShader("assets/shaders/vertex/shader_particle.vs", "assets/shaders/fragment/shader_particle.fs", "");
 
     shaderColor->loadShaders();
+    shaderParticle->loadShaders();
 
     Vec3 trans(0.0f, 0.0f, 0.0f);
     Vec3 trans3(c0);
@@ -223,7 +235,7 @@ TNodo *GlEngine::createFoco(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, float
     return &son;
 }
 
-TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std::string file, bool floor, bool UI) {
+TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std::string file, bool floor, bool UI, bool animated, std::vector<std::string> animations, std::vector<int> animationFrames) {
 
     auto &son = registryModel(trans, rot, sca);
     createNode(father, &son, UI);
@@ -247,9 +259,32 @@ TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std:
     
     son.setEntity(model);
     son.floor_ = floor;
+    auto *mash = model->getMesh();
+
+    son.xRad = (abs(mesh->maxVec.x) + abs(mesh->minVec.x)) / 2.0f;
+    son.yRad = (abs(mesh->maxVec.y) + abs(mesh->minVec.y)) / 2.0f;
+    son.zRad = (abs(mesh->maxVec.z) + abs(mesh->minVec.z)) / 2.0f;
+
+    if(animated && animations.size() > 0) {
+        model->loadAnimation(animations, resourceGestor_, animationFrames);
+    }
 
     return &son;
 }
+
+EGenParticle &GLgEngine::createGenParticle(std::string textureFileName /* = assets/wall.jpg */, unsigned int maxParticles) {
+    for(uint16_t i = =; i < genParticleEntities_.size(); i++) {
+        if(strcmp(genParticleEntities_[i].texture->getName().c_str(), texureFileName.c_str())) //if his maxparticles is less -> rescale
+            return genParticleEntities_[i];
+    }
+
+    RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
+    RTexture *texture = resourceGestor_.getResource<RTexture>(textureFileName);
+
+    return genParticleEntities_.emplace_back(shaderParticle, texture, maxParticles);
+}
+
+
 
 void GlEngine::restartPFocos() {
     pointSize = 0;
@@ -327,6 +362,24 @@ void GlEngine::drawScene() {
     shaderColor->setMat4("view", view);
 
     rootScene_.run(matrix, false);
+}
+
+void GlEngine::drawParticles() {
+
+    setActiveCamera(0);
+    auto *camera = getActiveCamera();
+
+    Mat4 projection = getPerspective();
+    Mat4 view = GetViewMatrix();
+
+    RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
+
+    shaderParticle->use();
+    shaderParticle->setMat4("projection", projection);
+
+    for(uint8_t i = 0; i < genParticleEntities_.size(); ++i) {
+        genParticleEntities_[i].draw(view);
+    }
 }
 
 TNodo &GlEngine::registryCamera(Vec3 transl, Vec3 rot, Vec3 sca) {

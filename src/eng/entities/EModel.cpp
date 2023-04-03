@@ -7,6 +7,8 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <iostream>
+#include <string>
+#include <vector>
 
 EModel::EModel(std::string name, ResourceGestor &rg, bool sky) {
 
@@ -77,4 +79,46 @@ void EModel::processNode(aiNode *node, const aiScene *scene, ResourceGestor &rg)
 
 RMesh *EModel::getRMesh() {
     return mesh_;
+}
+
+void EModel::loadAnimation(std::vector<std::string> animations, ResourceGestor &rg, std::vector<int> totalFrames) {
+    int nSize = animations[0].size();
+    auto minSize = nSize - animations[0].find('/') + 1;
+    std::string splitted = animations[0].substr(animations[0].find('/') + 1, minSize);
+    auto *anim = rg.getResource<RAnimation>(splitted);
+    animation_ = anim;
+
+    if(!anim->isLoaded()) {
+        for(int y = 0; y < animations.size(); y++) {
+            std::vector<RMesh> animation;
+            int i = 1;
+            while(i < totalFrames[y]) {
+                                    //cambiar paths
+                std::string route = "assets/animations" + animations[y] + '_' + std::to_string(i) + ".obj";
+                mesh_ = rg.getResource<RMesh>(animations[y] + '_' + std::to_string(i));
+
+                Assimp::Importer importer;
+                const aiScene *scene = importer.ReadFile(route, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+
+                if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+                    std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
+                } else{
+                    processNode(scene->mRootNode, scene, rg);
+                    
+                    animation.push_back(*mesh_);
+                    i++;
+                }
+            }
+            animation_->addAnimation(animation);
+        }
+        animation_->load();
+    }
+}
+
+void setAnimation(RAnimation *ranni) { 
+    animation_ = ranni;
+}
+
+void setMesh(RMesh *messi) { 
+    mesh_ = messi; 
 }

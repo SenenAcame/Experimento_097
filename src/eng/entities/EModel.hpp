@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 #include "Entity.hpp"
 #include "../resources/RMesh.hpp"
-//#include "../resources/RAnimation.hpp"
+#include "../resources/RAnimation.hpp"
 #include <string>
 #include <vector>
 
@@ -23,21 +23,21 @@ struct EModel : public Entity {
     void init();
 
     void loadModel(std::string, ResourceGestor &);
-    //void loadAnimation(std::vector<std::string>, ResourceGestor &, std::vector<int> totalFrames = {0});
+    void loadAnimation(std::vector<std::string>, ResourceGestor &, std::vector<int> totalFrames = {0});
     void processNode(aiNode *, const aiScene *, ResourceGestor &);
 
     RMesh *getRMesh();
     RMesh *getMesh() { return mesh_; }
 
-    void setMesh(RMesh *messi) { mesh_ = messi; }
-    //void setAnimation(RAnimation *ranni) { animation_ = ranni; }
+    void setMesh(RMesh *messi);
+    void setAnimation(RAnimation *ranni);
 
     void setTexture (RTexture *textura);
 
-    //int currentAnim = -1;
+    int currentAnim = -1;
     bool skybox_{false};
     RMesh *mesh_{nullptr};
-    //RAnimation animation_{nullptr};
+    RAnimation animation_{nullptr};
 
     float transparency_ {1.0f};
 };

@@ -11,6 +11,7 @@
 #include "entities/ECamera.hpp"
 #include "entities/EModel.hpp"
 #include "entities/ESkybox.hpp"
+#include "entities/EGenParticle.hpp"
 
 #include "resource_gestor.hpp"
 #include "resources/RShader.hpp"
@@ -41,7 +42,9 @@ struct GlEngine {
     TNodo *createFoco(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, float intensity, EFoco::lightType mLightType, float aperture, float angAtten, float constAtten, float linearAtten, float quadraAtten, Vec3 dir, Vec3 ambient, Vec3 diffuse, Vec3 pos, RShader *shader);
 
     // Crea un Model
-    TNodo *createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std::string file, bool floor = false, bool UI = false);
+    TNodo *createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std::string file, bool floor = false, bool UI = false, bool animated, std::vector<std::string> animations, std::vector<int> animationFrames);
+
+    EGenParticle &createGenParticle(std::string texFileName = "assets/wall.jpg", unsigned int maxParticles = 50);
 
     void restartPFocos();
     TNodo *useFirstUnusedPFoco(int posx, int posy, int posz, float intensity, std::string color, int distance);
@@ -52,6 +55,9 @@ struct GlEngine {
 
     void beginScene();
     void drawScene();
+    void drawParticles();
+    //void drawUI();
+    void drawBorder();
     void drawSkybox(int);
     void endScene();
 
@@ -113,6 +119,8 @@ private:
     std::vector<EFoco>   focoEntities_;
     std::vector<EModel>  modelEntities_;
     std::vector<ECamera> cameraEntities_;
+
+    std::vector<EGenParticle> genParticleEntities_;
 
     float lastFrame = 0.0f;
     int activeCamera_, activeViewport_;
