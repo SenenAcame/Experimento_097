@@ -3,6 +3,7 @@
 #include <cmath>
 #include <numbers>
 
+
 struct PhySys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2>;
     using POSTCOLLCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
@@ -10,6 +11,7 @@ struct PhySys2 {
     static constexpr double PI { std::numbers::pi };
 
     void update(EntyMan& EM, double delta) {
+      
         EM.foreach<SYSCMPs, SYSTAGs>(
             [&](Enty& en, PhysicsCmp2& physic) {
                 if(en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>()) bulletPhysics(physic);
@@ -66,6 +68,7 @@ struct PhySys2 {
     }
 
     void update_after_colision(EntyMan& EM, double dt) {
+        
         EM.foreach<POSTCOLLCMPs, SYSTAGs>(
             [&](Enty& en, PhysicsCmp2& phy, EstadoCmp& state) {
                 if((en.hasTAG<TPlayer>() || en.hasTAG<TEnemy>()) && state.wall_collision){

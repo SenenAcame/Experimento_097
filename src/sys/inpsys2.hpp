@@ -16,6 +16,7 @@ struct InpSys2 : public irr::IEventReceiver{
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
     void update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
+        
         auto& EM = LM.getEM();
         auto& bb = EM.getBoard();
         EM.foreach<SYSCMPs, SYSTAGs>(
@@ -157,6 +158,7 @@ private:
         notReloading(equipment);
         
         if(ammo > 0) { 
+            //std::cout<<"DISPARO\n";
             createBullet(LM, player, weaponCadence, eng, SS);
             LM.updateInterfaceMag(eng, ammo-1);
         }

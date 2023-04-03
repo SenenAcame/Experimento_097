@@ -18,7 +18,7 @@ struct LevelMan {
     using EneTAGs3 = MP::Typelist<TWeapon>;
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player){
-        std::cout<<"InicioLM\n";
+        
         EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
                 
@@ -53,8 +53,11 @@ struct LevelMan {
             if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
                 
                 
-
+              
+                
+                
                 if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
+                
                 auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
                 
                 auto nextSalaPlayer = (salaPlayer)%9+1;
@@ -72,6 +75,7 @@ struct LevelMan {
                     createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
                     aliveEnemys++;
                     numberOfEnemysBasics--;
+                    
                 }
                 
                 
@@ -79,7 +83,6 @@ struct LevelMan {
                 
         }
         );
-        std::cout<<"EXploto aqui1\n";
         if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
             inRound = false;
             
@@ -87,12 +90,10 @@ struct LevelMan {
 
         }
         else if(inRound == false){
-            std::cout<<"EXploto aqui1\n";
             clockToNextWave += dt;
             //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
             if(clockToNextWave >= timeBtwWaves){
                 inRound = true;
-                std::cout<<"EXploto aqui3\n";
                 clockToNextWave = 0;
                 if(extraSpeed<31){
                     
@@ -110,7 +111,7 @@ struct LevelMan {
                 //std::cout<<"In round: "<<inRound<<"\n";
             }
         }
-        std::cout<<"EXploto aqui4\n";
+        
         //else if(inRound == true){ //only to debug without interface
         //    std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
         //    std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
@@ -119,14 +120,13 @@ struct LevelMan {
         //}
         
         cleanHitsInterface(dev, dt);
-        std::cout<<"FINLM\n";
+        
     }
 
     auto& init_level(TheEngine& dev, SoundSystem_t& SouSys) {
         auto& player = createPlayer(dev, SouSys);
-        
-        createInterface(dev, player);
-        
+
+        initInterface(dev, player);
 
         createSpawn(80, 30,dev,1);
         createWeapon(110, 5, 70, dev, SouSys, 1);
@@ -144,22 +144,12 @@ struct LevelMan {
         //createBasicEnemy(35, -60, dev, SouSys);
         //createBasicEnemy(45, -60, dev, SouSys);
         //createBasicEnemy(35, -70, dev, SouSys);
+        
         return player;
     }
 
-    void createInterface (TheEngine& dev, Enty& player){
-        auto heightScreen   = dev.getHeight();
-        auto widthScreen    = dev.getWidth();
-        auto widthNumbers   = heightScreen-100;
-        auto widthNumbers2  = heightScreen-20;
-
-        //hits
-        hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
-        dev.setInvisibleImage(hit1);
-        hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
-        dev.setInvisibleImage(hit2);
-        hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
-        dev.setInvisibleImage(hit3);
+    void initInterface (TheEngine& dev, Enty& player){
+        
 
         //Magazine
         auto equipment = EM.getComponent<InventarioCmp> (player);
@@ -181,35 +171,50 @@ struct LevelMan {
             break;
             default: break;
         }
-        std::string aux = std::to_string(magazine);
-        std::wstring convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* magText = convert.c_str();
-        mag = dev.addTextToPositionInScreen(magText, widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
+       
+        
+        //amos
+        updateInterfaceWhenReload(dev, magazine, ammo);
+        //HP
+        updateInterfaceHP(dev, player);
+        //wave
+        updateInterfaceWave(dev);
+        //points
+        updateInterfacePoints(dev);
+
+    }
+
+    void createEmptyInterface (TheEngine& dev){
+        auto heightScreen   = dev.getHeight();
+        auto widthScreen    = dev.getWidth();
+        auto widthNumbers   = heightScreen-100;
+        auto widthNumbers2  = heightScreen-20;
+
+        //hits
+        hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
+        dev.setInvisibleImage(hit1);
+        hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
+        dev.setInvisibleImage(hit2);
+        hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
+        dev.setInvisibleImage(hit3);
+
+        
+        mag = dev.addTextToPositionInScreen(L"", widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
         //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
         //std::cout<< "MAG ES " << mag <<"\n";
         //total ammo
-        aux = std::to_string(ammo);
-        convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* ammText = convert.c_str();
-        amm1 = dev.addTextToPositionInScreen(ammText,widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
+        
+        amm1 = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
         separacion = dev.addTextToPositionInScreen(L"/",widthScreen/10*8.5,widthNumbers,widthScreen,widthNumbers2);
         //HP
-        aux = std::to_string(stats.hitpoints);
-        convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* HPText = convert.c_str();
+        
         hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
-        h1 =  dev.addTextToPositionInScreen(HPText,widthScreen/10,widthNumbers,widthScreen/10*2,widthNumbers2);
+        h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers,widthScreen/10*2,widthNumbers2);
         //wave
-        aux = std::to_string(waveNumber);
-        convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* waveNumber2 = convert.c_str();
         waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
-        wave =  dev.addTextToPositionInScreen(waveNumber2,widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
+        wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
         //points
-        aux = std::to_string(points);
-        convert = std::wstring(aux.begin(), aux.end());
-        const wchar_t* points2 = convert.c_str();
-        pointsUI = dev.addTextToPositionInScreen(points2,widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
+        pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
         pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
         //mira
         mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", widthScreen/2, heightScreen/2);
@@ -267,14 +272,16 @@ struct LevelMan {
         const wchar_t* ammText = convert.c_str();
         dev.changeTextFromPointer(amm1, ammText);
     }
-
-    void updateInterfaceHit(TheEngine& dev, Enty& player){
+    void updateInterfaceHP(TheEngine& dev, Enty&player){
         auto stats        = EM.getComponent<EstadisticaCmp> (player);
         std::string  aux        = std::to_string(stats.hitpoints);
         std::wstring convert    = std::wstring(aux.begin(), aux.end());
         const wchar_t* HPText   = convert.c_str();
         dev.changeTextFromPointer(h1, HPText);
-       
+    }
+    void updateInterfaceHit(TheEngine& dev, Enty& player){
+        
+        updateInterfaceHP(dev, player);
         int random = activateHit;
         while(activateHit==random){
             random = rand()%3+1;
@@ -512,6 +519,8 @@ struct LevelMan {
         dev.changeTextFromPointer(amm1, empty);
         dev.changeTextFromPointer(mag, empty);
         dev.changeTextFromPointer(h1, empty);
+        dev.changeTextFromPointer(pointsUI, empty);
+        dev.changeTextFromPointer(wave, empty);
 
         EM.forall(
             [](Enty& ent) {

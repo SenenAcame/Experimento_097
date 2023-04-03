@@ -1,6 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
-#include <iostream>
+
 
 struct SelfDestSys {
     using SYSCMPs = MP::Typelist<SelfDestCmp>;

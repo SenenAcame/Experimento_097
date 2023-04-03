@@ -35,9 +35,11 @@ struct GameMan {
 
         init_config(dev);
         init_map(LM, dev, SouSys);
+        LM.createEmptyInterface(dev);
 
         while(dev.run()) {
-            auto& player = LM.init_level(dev, SouSys);
+            auto player = LM.init_level(dev, SouSys);
+            
             std::size_t player_ID = player.getID();
             bool dead { false };
             //actual moment ini
@@ -49,7 +51,7 @@ struct GameMan {
             
             while(!dead && dev.run()){
                 //auto frame_start = std::chrono::high_resolution_clock::now();
-                std::cout<<"Inicio\n";
+                
                 EM.      update();
                 RenSys.  update(EM, dev);
                 MapSys.  update(EM);
@@ -63,7 +65,7 @@ struct GameMan {
                 //SpawnSys.update(EM, dev, SouSys, player, map);
                 LM.      update(dev, SouSys, dt, player);
                 
-                std::cout<<"Fin\n";
+                
                 DestSys. update(EM, dt);
                 dead = EM.getEntityById(player_ID).getDestroy();
                 //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
@@ -86,11 +88,12 @@ struct GameMan {
     void init_config(TheEngine& dev) {
         srand(time(NULL));
         dev.getDevice()->getCursorControl()->setVisible(false);
-        dev.SetFont("assets/Interface/Font/FontBien.xml");
+        dev.SetFont("assets/Interface/Font/chill.xml");
     }
 
     void init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
         LM.createMap(dev, SouSys);
         ColSys2::init_Hitoxes_Map2(LM, dev);
+
     }
 };
