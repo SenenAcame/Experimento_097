@@ -125,8 +125,12 @@ struct AISys {
             //persue(target, phyEnem, velPlayer,ai.timeArrive); 
         }
         else {
-            bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
-            bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
+            //Mapa grande
+            //bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
+            //bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
+
+            bool inRoom { sala == 1 ||sala == 4 ||sala == 5};
+            bool inCorr { sala == 2 ||sala == 3 ||sala == 5 ||sala == 6 ||sala == 8 ||sala == 9};
 
             if(inRoom)     { ai.rad = 15.; }
             else if(inCorr){ ai.rad = 3.;  }
