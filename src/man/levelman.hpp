@@ -217,7 +217,7 @@ struct LevelMan {
         pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
         pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
         //mira
-        mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", widthScreen/2, heightScreen/2);
+        mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", widthScreen/2, heightScreen/2+29);
 
     }
 

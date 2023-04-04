@@ -22,7 +22,7 @@ struct NodeMapSys {
                 //std::cout << "Soy player y estoy: x= " << x << ", z= " << z << " sala: " << devol+1 << std::endl;
             }
         }
-        return devol+1;
+        return devol;
     }
 
     void update(EntyMan& EM){
