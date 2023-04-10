@@ -1,7 +1,7 @@
 #pragma once
+#include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
-#include "../util/types.hpp"
 #include <irrlicht/IEventReceiver.h>
 
 struct TheEngine;

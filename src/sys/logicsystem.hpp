@@ -5,9 +5,9 @@ struct TheEngine;
 struct LevelMan;
 
 struct LogicSystem {
-    using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
-    using SYSTAGs = MP::Typelist<TInteract>;
+    using SYSCMPs       = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSCMP_Player = MP::Typelist<SoundCmp>;
+    using SYSTAGs       = MP::Typelist<TInteract>;
     using SYSTAG_Player = MP::Typelist<TPlayer>;
     using SYSTAG_Walls  = MP::Typelist<TWall>;
 

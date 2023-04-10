@@ -1,6 +1,6 @@
 #pragma once
-#include "tags.hpp"
 #include "cmps.hpp"
+#include "tags.hpp"
 #include "../man/entityman2.hpp"
 
 using ComponentList = MP::Typelist<

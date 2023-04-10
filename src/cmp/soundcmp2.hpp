@@ -1,6 +1,6 @@
 #pragma once
-#include <cstdint>
-extern "C"{
+//#include <cstdint>
+extern "C" {
     #include <FMOD/src/fmod_errors.h>
 }
 #include <FMOD/src/fmod.hpp>

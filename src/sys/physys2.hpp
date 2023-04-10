@@ -2,9 +2,9 @@
 #include "../util/types.hpp"
 
 struct PhySys2 {
-    using SYSCMPs = MP::Typelist<PhysicsCmp2>;
+    using SYSCMPs      = MP::Typelist<PhysicsCmp2>;
     using POSTCOLLCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
-    using SYSTAGs = MP::Typelist<>;
+    using SYSTAGs      = MP::Typelist<>;
 
     static constexpr double PI { std::numbers::pi };
 
