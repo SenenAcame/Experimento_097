@@ -4,7 +4,7 @@
 struct InventarioCmp {
     int equipada { 0 };
     //1 =  desbloqueada, 0 = no, 2 = arma actual
-    std::size_t inventary [3] = { 2, 1, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
+    std::size_t inventary [3] = { 2, 0, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
     
     //weapon1
     int ammo1           { 100 };
@@ -17,7 +17,7 @@ struct InventarioCmp {
     int ammo2           { 20 };
     int magazine2       { 2 };
     double reloadTime2  { 3 };
-    double clockReload2 { 3 };
+    double clockReload2 { 1.5 };
     //double cadenceWeapon2 {0.2}; //5 veces por segundo
 
     //weapon3

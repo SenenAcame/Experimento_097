@@ -41,18 +41,45 @@ private:
 
     EntyMan EM;
 
+    //Waves
+    int    waveNumber           = 1; //actual wave
+    double extraHeal            = 5; //extra EnemyHeal per wave
+    float  extraSpeed           = 0; //extra speed per round
+    int    numberOfEnemysBasics = 2; //number of enemys per wave
+    int    aliveEnemys          = 0;
+    double extraEnemys          = 3; //extra number of enemys per wave
+    int    maxEnemysWave        = 11; //max number of enemy created
+    double timeBtwWaves         = 4;
+    double clockToNextWave      = 0; //clock unter next wave
+    bool   inRound              = false;
+    int    points               = 0;
+    
+
+
     //INTERFACE
-    TheEngine::IGUIText* mag {};
-    TheEngine::IGUIText* h1 {};
-    TheEngine::IGUIText* hp {};
-    TheEngine::IGUIText* amm1 {};
-    TheEngine::IGUIText* separacion {};
-    TheEngine::IGUIImage* mir {};
+    TheEngine::IGUIText*  mag  {};
+    //wchar_t*        magText{};
+    TheEngine::IGUIText*  h1   {};
+    TheEngine::IGUIText*  hp   {};
+    //wchar_t*        HPText{};
+    TheEngine::IGUIText*  amm1 {};
+    TheEngine::IGUIText*  separacion {};
+    //wchar_t*        ammText{};
+    TheEngine::IGUIImage* mir  {};
+
+    TheEngine::IGUIText*  wave {};
+    TheEngine::IGUIText*  waveText {};
+
+    TheEngine::IGUIText*  pointsUI {};
+    TheEngine::IGUIText*  pointsText {};
+
+    //Hits
+    
+    int activateHit {0};
+    
+    double cd1 {0}, cd2 {0}, cd3 {0};
+    double clockHit1 {}, clockHit2 {}, clockHit3 {};
     TheEngine::IGUIImage* hit1 {};
     TheEngine::IGUIImage* hit2 {};
     TheEngine::IGUIImage* hit3 {};
-
-    int activateHit { 0 };
-    double cd1 { 0 }, cd2 { 0 }, cd3 { 0 };
-    double clockHit1 {}, clockHit2 {}, clockHit3 {};
 };
