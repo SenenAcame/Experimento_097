@@ -7,6 +7,10 @@ struct SoundSystem_t;
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
+    using voidCMP2 = MP::Typelist<PhysicsCmp2, SalaCmp, SpawnCmp>;
+    using EneTAGs2 = MP::Typelist<TSpawn>;
+    using voidCMP3 = MP::Typelist<WeaponCmp>;
+    using EneTAGs3 = MP::Typelist<TWeapon>;
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
     Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
@@ -15,6 +19,8 @@ struct LevelMan {
     void createEmptyInterface (TheEngine& dev);
 
     void updateInterfaceMag(TheEngine& dev, int maga);
+    void updateInterfacePoints(TheEngine& dev);
+    void updateInterfaceWave(TheEngine& dev);
     void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm);
     void updateInterfaceHP(TheEngine& dev, Enty&player);
     void updateInterfaceHit(TheEngine& dev, Enty& player);

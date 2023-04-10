@@ -266,6 +266,20 @@ void LevelMan::updateInterfaceMag(TheEngine& dev, int maga) {
     dev.changeTextFromPointer(mag, magText);
 }
 
+void LevelMan::updateInterfacePoints(TheEngine& dev) {
+    std::string aux = std::to_string(points);
+    std::wstring convert = std::wstring(aux.begin(), aux.end());
+    const wchar_t* points2= convert.c_str();
+    dev.changeTextFromPointer(pointsUI, points2);
+}
+
+void LevelMan::updateInterfaceWave(TheEngine& dev) {
+    std::string aux = std::to_string(waveNumber);
+    std::wstring convert = std::wstring(aux.begin(), aux.end());
+    const wchar_t* wave2= convert.c_str();
+    dev.changeTextFromPointer(wave, wave2);
+}
+
 void LevelMan::updateInterfaceWhenReload(TheEngine& dev, int maga, int amm) {
     std::string aux = std::to_string(maga);
     std::wstring convert = std::wstring(aux.begin(), aux.end());
