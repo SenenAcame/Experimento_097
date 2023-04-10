@@ -28,7 +28,7 @@ struct LevelMan {
     void cleanHitsInterface(TheEngine& dev ,double dt);
     void createMap(TheEngine& dev, SoundSystem_t& SouSys);
     Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
-    Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
+    Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);

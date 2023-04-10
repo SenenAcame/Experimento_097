@@ -11,15 +11,12 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
     //cleanHitsInterface(dev, dt);
     EM.foreach<voidCMP, EneTAGs>(
             [&](Enty& en, PhysicsCmp2&) {
-                
                 if(en.getDestroy()) {
                     points+=5;
                     updateInterfacePoints(dev);
                     aliveEnemys--;
                 }
-                
                 //createBasicEnemy(-30, 30, dev, SouSys)
-                
             }
         );
         //for weapons only
@@ -31,7 +28,6 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
                 if(weaponCM.clockForAmmo <= weaponCM.AmmoSpawn){return;} 
                 weaponCM.clockForAmmo = 0;
                 weaponRender.n->setVisible(true);
-                
             }
         );
 
@@ -40,12 +36,7 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
         [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
             spawnCMP.clockSpawn+=dt;
             
-            if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
-                
-                
-              
-                
-                
+            if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
                 if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
                 
                 auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
@@ -57,8 +48,6 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
                 }
                 
                 if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
-                    
-                      
                     spawnCMP.clockSpawn = 0;                 
                     spawnX = f.x;
                     spawnZ = f.z;
@@ -67,17 +56,12 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
                     numberOfEnemysBasics--;
                     
                 }
-                
-                
-            }
-                
+            }  
         }
         );
         if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
             inRound = false;
-            
             //std::cout<<"NOT In round: "<<inRound<<"\n";
-
         }
         else if(inRound == false){
             clockToNextWave += dt;
@@ -393,10 +377,9 @@ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
     return player;
 }
 
-Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
     Enty& enemy = createEnemy(SouSys);
-    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=5, .damage=20, .speed=15.f});
-    
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
     EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
     //EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
