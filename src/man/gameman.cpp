@@ -30,9 +30,10 @@ void GameMan::game() {
 
     init_config(dev);
     init_map(LM, dev, SouSys);
+    LM.createEmptyInterface(dev);
 
     while(dev.run()) {
-        auto& player = LM.init_level(dev, SouSys);
+        auto player = LM.init_level(dev, SouSys);
         std::size_t player_ID = player.getID();
         bool dead { false };
 
@@ -56,7 +57,8 @@ void GameMan::game() {
             PhySys.  update_after_colision(EM, dt);
             SouSys.  update(EM);
             //SpawnSys.update(EM, dev, SouSys, player, map);
-            LM.      update(dev, SouSys, dt);
+            //LM.      update(dev, SouSys, dt);
+            LM.      update(dev, SouSys, dt, player);
             DestSys. update(EM, dt);
 
             dead = EM.getEntityById(player_ID).getDestroy();
@@ -79,7 +81,7 @@ void GameMan::game() {
 void GameMan::init_config(TheEngine& dev) {
     srand(time(NULL));
     dev.getDevice()->getCursorControl()->setVisible(false);
-    dev.SetFont("assets/Interface/Font/FontBien.xml");
+    dev.SetFont("assets/Interface/Font/chill.xml");
 }
 
 void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
