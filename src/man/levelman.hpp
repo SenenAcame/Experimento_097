@@ -36,6 +36,7 @@ struct LevelMan {
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
     //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
     void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev);
+    Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
     void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 

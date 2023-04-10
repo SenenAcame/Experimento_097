@@ -19,81 +19,81 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
                 //createBasicEnemy(-30, 30, dev, SouSys)
             }
         );
-        //for weapons only
-        EM.foreach<voidCMP3, EneTAGs3>(
-            [&](Enty& en, WeaponCmp& weaponCM) {
-                auto& weaponRender = EM.getComponent<RenderCmp2>(en);
-                if(weaponRender.n->isVisible() == true){return;}
-                weaponCM.clockForAmmo+=dt;
-                if(weaponCM.clockForAmmo <= weaponCM.AmmoSpawn){return;} 
-                weaponCM.clockForAmmo = 0;
-                weaponRender.n->setVisible(true);
-            }
-        );
+    //for weapons only
+    EM.foreach<voidCMP3, EneTAGs3>(
+        [&](Enty& en, WeaponCmp& weaponCM) {
+            auto& weaponRender = EM.getComponent<RenderCmp2>(en);
+            if(weaponRender.n->isVisible() == true){return;}
+            weaponCM.clockForAmmo+=dt;
+            if(weaponCM.clockForAmmo <= weaponCM.AmmoSpawn){return;} 
+            weaponCM.clockForAmmo = 0;
+            weaponRender.n->setVisible(true);
+        }
+    );
 
-        double spawnX{0}, spawnZ{0};
-        EM.foreach<voidCMP2, EneTAGs2>(
-        [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
-            spawnCMP.clockSpawn+=dt;
+    double spawnX{0}, spawnZ{0};
+    EM.foreach<voidCMP2, EneTAGs2>(
+    [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
+        spawnCMP.clockSpawn+=dt;
+        
+        if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
+            if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
             
-            if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
-                if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
-                
-                auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
-                
-                auto nextSalaPlayer = (salaPlayer)%9+1;
-                auto prevSalaPlayer = salaPlayer-1;
-                if( prevSalaPlayer < 1){
-                    prevSalaPlayer = 9;
-                }
-                
-                if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
-                    spawnCMP.clockSpawn = 0;                 
-                    spawnX = f.x;
-                    spawnZ = f.z;
-                    createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
-                    aliveEnemys++;
-                    numberOfEnemysBasics--;
-                    
-                }
-            }  
-        }
-        );
-        if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
-            inRound = false;
-            //std::cout<<"NOT In round: "<<inRound<<"\n";
-        }
-        else if(inRound == false){
-            clockToNextWave += dt;
-            //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
-            if(clockToNextWave >= timeBtwWaves){
-                inRound = true;
-                clockToNextWave = 0;
-                if(extraSpeed<31){
-                    
-                    extraSpeed+=4.5;
-                }
-                numberOfEnemysBasics = 2+extraEnemys*waveNumber;
-                waveNumber++;
-                updateInterfaceWave(dev);
-                std::string  aux        = std::to_string(100);
-                std::wstring convert    = std::wstring(aux.begin(), aux.end());
-                const wchar_t* HPText   = convert.c_str();
-                dev.changeTextFromPointer(h1, HPText);
-                
-                //std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
-                //std::cout<<"In round: "<<inRound<<"\n";
+            auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
+            
+            auto nextSalaPlayer = (salaPlayer)%9+1;
+            auto prevSalaPlayer = salaPlayer-1;
+            if( prevSalaPlayer < 1){
+                prevSalaPlayer = 9;
             }
+            
+            if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
+                spawnCMP.clockSpawn = 0;                 
+                spawnX = f.x;
+                spawnZ = f.z;
+                createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                aliveEnemys++;
+                numberOfEnemysBasics--;
+                
+            }
+        }  
+    }
+    );
+    if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
+        inRound = false;
+        //std::cout<<"NOT In round: "<<inRound<<"\n";
+    }
+    else if(inRound == false){
+        clockToNextWave += dt;
+        //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
+        if(clockToNextWave >= timeBtwWaves){
+            inRound = true;
+            clockToNextWave = 0;
+            if(extraSpeed<31){
+                
+                extraSpeed+=4.5;
+            }
+            numberOfEnemysBasics = 2+extraEnemys*waveNumber;
+            waveNumber++;
+            updateInterfaceWave(dev);
+            std::string  aux        = std::to_string(100);
+            std::wstring convert    = std::wstring(aux.begin(), aux.end());
+            const wchar_t* HPText   = convert.c_str();
+            dev.changeTextFromPointer(h1, HPText);
+            
+            //std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
+            //std::cout<<"In round: "<<inRound<<"\n";
         }
-        
-        //else if(inRound == true){ //only to debug without interface
-        //    std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
-        //    std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
-        //    std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
-        //    std::cout<<"Wave: "<<waveNumber<<"\n";
-        //}
-        
-        cleanHitsInterface(dev, dt);
+    }
+    
+    //else if(inRound == true){ //only to debug without interface
+    //    std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
+    //    std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
+    //    std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
+    //    std::cout<<"Wave: "<<waveNumber<<"\n";
+    //}
+    
+    cleanHitsInterface(dev, dt);
 }
 
 Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
@@ -471,6 +471,16 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
     //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/otros/enemy.obj","assets/textures/fire.bmp"));
     EM.addTag<TInteract>(wall);
     EM.addTag<TWall>    (wall);
+}
+
+Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2){
+    Enty& spawn = EM.createEntity();
+    EM.addComponent<SalaCmp>    (spawn, SalaCmp{.sala = sala2});
+    EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{.x=x_pos, .z=z_pos});
+    EM.addComponent<SpawnCmp>   (spawn);
+    EM.addTag      <TSpawn>     (spawn);
+    //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
+    return spawn;
 }
 
 void LevelMan::createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
