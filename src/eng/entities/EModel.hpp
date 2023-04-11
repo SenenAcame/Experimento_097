@@ -29,15 +29,15 @@ struct EModel : public Entity {
     RMesh *getRMesh();
     RMesh *getMesh() { return mesh_; }
 
-    void setMesh(RMesh *messi);
-    void setAnimation(RAnimation *ranni);
+    void setAnimation(RAnimation *ranni) { animation_ = ranni; }
+    void setMesh(RMesh *messi) { mesh_ = messi; }
 
     void setTexture (RTexture *textura);
 
     int currentAnim = -1;
     bool skybox_{false};
     RMesh *mesh_{nullptr};
-    RAnimation animation_{nullptr};
+    RAnimation *animation_{nullptr};
 
     float transparency_ {1.0f};
 };

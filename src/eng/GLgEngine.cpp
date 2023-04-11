@@ -259,7 +259,7 @@ TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std:
     
     son.setEntity(model);
     son.floor_ = floor;
-    auto *mash = model->getMesh();
+    auto *mesh = model->getMesh();
 
     son.xRad = (abs(mesh->maxVec.x) + abs(mesh->minVec.x)) / 2.0f;
     son.yRad = (abs(mesh->maxVec.y) + abs(mesh->minVec.y)) / 2.0f;
@@ -272,9 +272,9 @@ TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std:
     return &son;
 }
 
-EGenParticle &GLgEngine::createGenParticle(std::string textureFileName /* = assets/wall.jpg */, unsigned int maxParticles) {
-    for(uint16_t i = =; i < genParticleEntities_.size(); i++) {
-        if(strcmp(genParticleEntities_[i].texture->getName().c_str(), texureFileName.c_str())) //if his maxparticles is less -> rescale
+EGenParticle &GlEngine::createGenParticle(std::string textureFileName /* = assets/wall.jpg */, unsigned int maxParticles) {
+    for(uint16_t i = 0; i < genParticleEntities_.size(); i++) {
+        if(strcmp(genParticleEntities_[i].texture->getName().c_str(), textureFileName.c_str())) //if his maxparticles is less -> rescale
             return genParticleEntities_[i];
     }
 
@@ -370,7 +370,7 @@ void GlEngine::drawParticles() {
     auto *camera = getActiveCamera();
 
     Mat4 projection = getPerspective();
-    Mat4 view = GetViewMatrix();
+    Mat4 view = camera->GetViewMatrix();
 
     RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
 

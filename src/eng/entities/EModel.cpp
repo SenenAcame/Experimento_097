@@ -115,10 +115,3 @@ void EModel::loadAnimation(std::vector<std::string> animations, ResourceGestor &
     }
 }
 
-void setAnimation(RAnimation *ranni) { 
-    animation_ = ranni;
-}
-
-void setMesh(RMesh *messi) { 
-    mesh_ = messi; 
-}

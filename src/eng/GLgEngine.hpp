@@ -42,7 +42,7 @@ struct GlEngine {
     TNodo *createFoco(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, float intensity, EFoco::lightType mLightType, float aperture, float angAtten, float constAtten, float linearAtten, float quadraAtten, Vec3 dir, Vec3 ambient, Vec3 diffuse, Vec3 pos, RShader *shader);
 
     // Crea un Model
-    TNodo *createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std::string file, bool floor = false, bool UI = false, bool animated, std::vector<std::string> animations, std::vector<int> animationFrames);
+    TNodo *createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std::string file, bool floor = false, bool UI = false, bool animated = false, std::vector<std::string> animations = {}, std::vector<int> animationFrames = {});
 
     EGenParticle &createGenParticle(std::string texFileName = "assets/wall.jpg", unsigned int maxParticles = 50);
 
