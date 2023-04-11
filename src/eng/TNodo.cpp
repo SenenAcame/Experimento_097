@@ -3,7 +3,7 @@
 #include "resources/RShader.hpp"
 #include "resources/RMesh.hpp"
 #include "entities/Entity.hpp"
-//#include "../assets/shaders/model.hpp"
+#include "entities/EModel.hpp"
 #include <GL/gl.h>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -126,8 +126,9 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
         for(TNodo *son : nodeSons_) 
             son->run(matTmp, actualChange, border);
         
-        if(entity_)
+        if(entity_){
             entity_->draw(matTmp, border);
+        }
     } else if (!border) {
         for(TNodo *son : nodeSons_) {
             son->run(matTransf_, actualChange, border);
@@ -179,7 +180,7 @@ void TNodo::setScale(Vec3 scale) {
 }
 
 void TNodo::setMesh(RMesh *sMesh) {
-    mesh_ = sMesh;
+    ((EModel *)entity_)->setMesh(sMesh);
 }
 
 void TNodo::setEntity(Entity *nEnt) {
@@ -195,9 +196,12 @@ void TNodo::setMatrizTransf(Mat4 transf) {
 }
 
 void TNodo::setTexture(RTexture *tex) {
-    texture_ = tex;
+    ((EModel *)entity_)->setTexture(tex);
 }
 
+void TNodo::setAnimation(RAnimation *ranni) {
+    ((EModel *)entity_)->setAnimation(ranni);
+}
 //-----------------------------------
 //-----------  GETTERS  -------------
 //-----------------------------------

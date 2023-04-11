@@ -27,6 +27,8 @@ EModel::~EModel() {
 void EModel::init() {
     
     skybox_ = false;
+    animation_ = nullptr;
+    currentAnim = 0;
     mesh_ = nullptr;
     transparency_ = 1.f;
 }

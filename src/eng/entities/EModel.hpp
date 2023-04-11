@@ -32,7 +32,15 @@ struct EModel : public Entity {
     void setAnimation(RAnimation *ranni) { animation_ = ranni; }
     void setMesh(RMesh *messi) { mesh_ = messi; }
 
-    void setTexture (RTexture *textura);
+    void setTexture (RTexture *textura) {
+        for(unsigned int i = 0; i < mesh_->meshes_.size(); ++i) {
+            int texSize = mesh_->meshes_[i].material_->textures_.size();
+
+            for (unsigned int j = 0; j < texSize; ++j) {
+                mesh_->meshes_[i].material_->textures_[j] = textura;
+            }
+        }
+    };
 
     int currentAnim = -1;
     bool skybox_{false};

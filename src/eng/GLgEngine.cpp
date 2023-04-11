@@ -35,7 +35,7 @@ GlEngine::GlEngine() {
     RShader *shaderColor = resourceGestor_.getResource<RShader>("SHADER_COLOR");
     RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
 
-    shaderColor->setShader("assets/shaders/vertex/shader.vs", "assets/shaders/fragment/shader.fs", "");
+    shaderColor->setShader("assets/shaders/vertex/vcolor.vs", "assets/shaders/fragment/fcolor.fs", "");
     shaderParticle->setShader("assets/shaders/vertex/shader_particle.vs", "assets/shaders/fragment/shader_particle.fs", "");
 
     shaderColor->loadShaders();

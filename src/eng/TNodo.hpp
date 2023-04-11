@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <glm/glm.hpp>
+#include "resources/RAnimation.hpp"
 #include "utils/typeUsing.hpp"
 
 struct Entity;
@@ -45,6 +46,7 @@ struct TNodo {
     void setMesh(RMesh *sMesh);
     void setEntity(Entity *nEnt);
     void setFatherNode(TNodo *nFather);
+    void setAnimation(RAnimation *ranni);
     //transformadores
     // Suma la translacion pasada por parametro a la existente
     void translade(Vec3 trans);
@@ -70,8 +72,8 @@ struct TNodo {
 //___________________________
 
     Entity *entity_{nullptr}; 
-    RMesh *mesh_{nullptr}; // dentro de Entity si puede ser
-    RTexture *texture_{nullptr}; // dentro de Entity si puede ser
+    //RMesh *mesh_{nullptr}; // dentro de Entity si puede ser
+    //RTexture *texture_{nullptr}; // dentro de Entity si puede ser
 
     bool updateMat_{true};
     bool floor_{false};

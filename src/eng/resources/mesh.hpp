@@ -40,9 +40,9 @@ struct Mesh {
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
 
-    RMaterial* material_{nullptr};
-    RShader* shader_{nullptr};
-    RShader* shaderBorder_{nullptr};
+    RMaterial* material_    {nullptr};
+    RShader* shader_        {nullptr};
+    RShader* shaderBorder_  {nullptr};
 
     unsigned int VAO;
     unsigned int VBO, EBO;
