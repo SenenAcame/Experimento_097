@@ -35,8 +35,10 @@ void EModel::draw(Mat4 mat, bool border) {
 
     mesh_->meshes_[0].shader_->use();
     mesh_->meshes_[0].shader_->setFloat("material.transparecy", transparency_);
-
-    mesh_->draw(mat);
+    if(animation_ != nullptr && currentAnim >= 0)
+        animation_->draw(mat, &currentAnim);
+    else 
+        mesh_->draw(mat);
 }
 
 void EModel::loadModel(std::string path, ResourceGestor &rg) {

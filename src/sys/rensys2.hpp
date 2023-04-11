@@ -13,6 +13,7 @@
 //#include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
 struct TheEngine;
+struct GraphicEngine;
 
 struct RenSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, RenderCmp2>;
@@ -22,6 +23,8 @@ struct RenSys2 {
     void update  (EntyMan& EM, TheEngine& GFX);
     void drawAll (EntyMan& EM, TheEngine& GFX);
     void drawBBox(EntyMan& EM, TheEngine& GFX);
+
+    void drawWorld(GraphicEngine& GE);
 
     //IMGUI
     //void ImGUI_renderOpenGlContext() const noexcept;

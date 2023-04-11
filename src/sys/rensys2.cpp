@@ -1,5 +1,6 @@
 #include "rensys2.hpp"
 #include "../eng/engine.hpp"
+#include "../eng/engine2.hpp"
 
 void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
     //ImGUI_Prerender();
@@ -36,6 +37,15 @@ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
             });
         }
     );
+}
+
+void RenSys2::drawWorld(GraphicEngine &GE) {
+    GE.glEng.beginScene();
+    GE.glEng.drawScene();
+    GE.glEng.drawParticles();
+    //GE.glEng.drawBorder();
+    GE.glEng.drawSkybox(0);
+    GE.glEng.endScene();
 }
 
 //IMGUI

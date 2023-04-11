@@ -23,9 +23,12 @@ GlEngine::GlEngine() {
     root_.addSon(&rootScene_);
     root_.addSon(&rootUI_);
 
+    registryCameras_.reserve(2);
     registryFocos_.reserve(6);
     registryModels_.reserve(1000);
 
+    cameraEntities_.reserve(2);
+    genParticleEntities_.reserve(50);
     focoEntities_.reserve(6);
     modelEntities_.reserve(1000);
 
@@ -135,6 +138,7 @@ GlEngine::GlEngine() {
     };
 
     Skybox.initSkybox();
+    Skybox.addFaces(faces);
 }
 
 GlEngine::~GlEngine(){
@@ -213,10 +217,12 @@ void GlEngine::createNode(TNodo *father, TNodo *son, bool UI) {
 }
 
 TNodo *GlEngine::createCamera(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca) {
-    TNodo &son = registryFoco(trans, rot, sca);
+    TNodo &son = registryCamera(trans, rot, sca);
 
     auto &camera = cameraEntities_.emplace_back();
     son.setEntity(&camera);
+
+    return &son;
 }
 
 TNodo *GlEngine::createFoco(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, float intensity, EFoco::lightType mLightType, float aperture, float angAtten, float constAtten, float linearAtten, float quadraAtten, Vec3 dir, Vec3 ambient, Vec3 diffuse, Vec3 pos, RShader *shader) {
@@ -283,8 +289,6 @@ EGenParticle &GlEngine::createGenParticle(std::string textureFileName /* = asset
 
     return genParticleEntities_.emplace_back(shaderParticle, texture, maxParticles);
 }
-
-
 
 void GlEngine::restartPFocos() {
     pointSize = 0;

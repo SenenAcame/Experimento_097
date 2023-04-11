@@ -28,7 +28,7 @@ MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
 #LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
-LIBS	 := -lfmod -lfmodstudio -lIrrlicht -limgui -lglfw -lGL -Llib/FMOD/lib -Llib -limgui -lglad -lassimp -lGL
+LIBS	 := -lfmod -lfmodstudio -lIrrlicht -Llib/FMOD/lib -Llib -limgui -lglad -lglfw -lGL -lassimp
 INCS	 := -Ilib
 #EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
 STD++	 := -std=c++20
