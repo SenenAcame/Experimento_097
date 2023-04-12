@@ -45,6 +45,8 @@ void GameMan::game() {
             "assets/models/personajes/monstruo2.obj"
         )}
     );
+
+    
     
 
     while(!glfwWindowShouldClose(ge.glEng.getWindow())) {

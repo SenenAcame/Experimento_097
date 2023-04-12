@@ -268,6 +268,7 @@ TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std:
     
     son.setEntity(model);
     son.floor_ = floor;
+    
     auto *mesh = model->getMesh();
 
     son.xRad = (abs(mesh->maxVec.x) + abs(mesh->minVec.x)) / 2.0f;

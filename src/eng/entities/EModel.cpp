@@ -6,6 +6,7 @@
 #include <assimp/mesh.h>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
+#include <cstddef>
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -36,6 +37,12 @@ void EModel::init() {
 
 void EModel::draw(Mat4 mat, bool border) {
 
+    if(mesh_ == nullptr)
+        std::cout << "null el de la clase RMesh" << std::endl;
+    
+    if(mesh_->meshes_.size() == 0)
+        std::cout << "null el vector de Meshes" << std::endl;
+    
     mesh_->meshes_[0].shader_->use();
     mesh_->meshes_[0].shader_->setFloat("material.transparecy", transparency_);
     if(animation_ != nullptr && currentAnim >= 0)
@@ -55,8 +62,7 @@ void EModel::loadModel(std::string path, ResourceGestor &rg) {
 
     //read file with Assimp
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals |
-     aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     //check if ok
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
