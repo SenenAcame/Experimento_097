@@ -32,13 +32,16 @@ GlEngine::GlEngine() {
     focoEntities_.reserve(6);
     modelEntities_.reserve(1000);
 
-    RShader *shaderColor = resourceGestor_.getResource<RShader>("SHADER_COLOR");
+    RShader *scolor = resourceGestor_.getResource<RShader>("SHADER_COLOR");
+    RShader *shaderLine = resourceGestor_.getResource<RShader>("SHADER_LINE");
     RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
 
-    shaderColor->setShader("assets/shaders/vertex/vcolor.vs", "assets/shaders/fragment/fcolor.fs", "");
+    scolor->setShader("assets/shaders/vertex/vcolor.vs", "assets/shaders/fragment/fcolor.fs", "");
+    shaderLine->setShader("assets/shaders/vertex/vline.vs", "assets/shaders/fragment/fline.fs", "");
     shaderParticle->setShader("assets/shaders/vertex/shader_particle.vs", "assets/shaders/fragment/shader_particle.fs", "");
 
-    shaderColor->loadShaders();
+    scolor->loadShaders();
+    shaderLine->loadShaders();
     shaderParticle->loadShaders();
 
     Vec3 trans(0.0f, 0.0f, 0.0f);
@@ -67,7 +70,7 @@ GlEngine::GlEngine() {
                Vec3(0.2f),                  //  ambient
                Vec3(0.8f),                  //  diffusion
                Vec3(0.05f),                 //  pos
-               shaderColor );               //  shader
+               scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
                1.0f,                        //  intensidad
@@ -81,7 +84,7 @@ GlEngine::GlEngine() {
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
                Vec3(1000000.0f),            //  pos
-               shaderColor );               //  shader
+               scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
                1.0f,                        //  intensidad
@@ -95,7 +98,7 @@ GlEngine::GlEngine() {
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
                Vec3(1000000.0f),            //  pos
-               shaderColor );               //  shader
+               scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
                1.0f,                        //  intensidad
@@ -109,7 +112,7 @@ GlEngine::GlEngine() {
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
                Vec3(1000000.0f),            //  pos
-               shaderColor );               //  shader
+               scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
                1.0f,                        //  intensidad
@@ -123,7 +126,7 @@ GlEngine::GlEngine() {
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
                Vec3(1000000.0f),            //  pos
-               shaderColor );               //  shader
+               scolor );               //  shader
 
     pointSize = 0;
 

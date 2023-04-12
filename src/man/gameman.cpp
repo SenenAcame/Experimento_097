@@ -32,6 +32,9 @@ void GameMan::game() {
     GraphicEngine ge;
 
     Enty& player = EM.createEntity();
+    //RShader shader {};
+    //shader.setShader("assets/shaders/vertex/vcolor.vs", "assets/shaders/fragment/fcolor.fs", "");
+    //shader.load();
     EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{});
     EM.addComponent<RenderCmp2>    (player, 
         RenderCmp2{ .node=ge.glEng.createModel(

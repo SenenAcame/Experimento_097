@@ -7,6 +7,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <iostream>
+#include <ostream>
 #include <string>
 #include <vector>
 
