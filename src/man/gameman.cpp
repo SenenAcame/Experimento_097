@@ -39,15 +39,12 @@ void GameMan::game() {
     EM.addComponent<RenderCmp2>    (player, 
         RenderCmp2{ .node=ge.glEng.createModel(
             nullptr,
-            Vec3{0,0,0},
-            Vec3{0,0,0},
-            Vec3{0,0,0},
+            Vec3(0.f),
+            Vec3(0.f),
+            Vec3(1.f),
             "assets/models/personajes/monstruo2.obj"
         )}
     );
-
-    
-    
 
     while(!glfwWindowShouldClose(ge.glEng.getWindow())) {
 

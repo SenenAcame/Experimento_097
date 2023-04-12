@@ -62,7 +62,7 @@ void EModel::loadModel(std::string path, ResourceGestor &rg) {
 
     //read file with Assimp
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
     //check if ok
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
@@ -83,7 +83,7 @@ void EModel::processNode(aiNode *node, const aiScene *scene, ResourceGestor &rg)
     }
 
     //all sons now
-    for(unsigned int i = 0; i < node->mNumMeshes; i++) {
+    for(unsigned int i = 0; i < node->mNumChildren; i++) {
         processNode(node->mChildren[i], scene, rg);
     }
 }
