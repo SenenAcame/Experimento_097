@@ -70,7 +70,7 @@ void Mesh::draw(Mat4 mat, bool border) {
                 //set the sampler to the correct texture unit
                 glUniform1i(glGetUniformLocation(shader_->ID, (name + number).c_str()), i);
                 //and bind the texture
-                glBindTexture(GL_TEXTURE_2D, material_->textures_[i]->id_);
+                glBindTexture(GL_TEXTURE_2D, material_->textures_[i]->ID_);
             }
         }
         else {
