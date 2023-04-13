@@ -89,7 +89,7 @@ void main() {
     vec4 diffuseColor = diffuseVar();
 
     if(diffuseColor.a < 0.1) {
-
+        discard;
         // Phase 1: directional lightning
         vec3 result = CalcDirLight(diffuseColor.rgb, dirLight, norm);
 

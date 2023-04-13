@@ -31,23 +31,9 @@ void GameMan::game() {
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine ge;
 
-    Enty& player = EM.createEntity();
-    //RShader shader {};
-    //shader.setShader("assets/shaders/vertex/vcolor.vs", "assets/shaders/fragment/fcolor.fs", "");
-    //shader.load();
-    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{});
-    EM.addComponent<RenderCmp2>    (player, 
-        RenderCmp2{ .node=ge.glEng.createModel(
-            nullptr,
-            Vec3(0.f),
-            Vec3(0.f),
-            Vec3(1.f),
-            "assets/models/personajes/monstruo2.obj"
-        )}
-    );
+    ge.createEnemy(LM);
 
     while(!glfwWindowShouldClose(ge.glEng.getWindow())) {
-
         RenSys.drawWorld(ge);
     }
 //    init_config(dev);
