@@ -5,7 +5,6 @@ extern "C" {
 }
 #include <FMOD/src/fmod.hpp>
 #include <FMOD/src/fmod_studio.hpp>
-#include <FMOD/src/common.hpp>
 
 struct ProgrammerSoundContext {
     FMOD::System* coreSystem;
