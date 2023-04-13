@@ -31,9 +31,9 @@ void GameMan::game() {
     init_config(dev);
     init_map(LM, dev, SouSys);
     LM.createEmptyInterface(dev);
-
+    
     while(dev.run()) {
-        auto player = LM.init_level(dev, SouSys);
+        auto& player = LM.init_level(dev, SouSys);
         std::size_t player_ID = player.getID();
         bool dead { false };
 
@@ -55,10 +55,10 @@ void GameMan::game() {
             ColSys.  update(EM);
             LogicSys.update(LM, dev, dt);
             PhySys.  update_after_colision(EM, dt);
-            SouSys.  update(EM);
+            //SouSys.  update(EM);
             //SpawnSys.update(EM, dev, SouSys, player, map);
             //LM.      update(dev, SouSys, dt);
-            LM.      update(dev, SouSys, dt, player);
+            LM.      update(dev, SouSys, dt, player_ID);
             DestSys. update(EM, dt);
 
             dead = EM.getEntityById(player_ID).getDestroy();

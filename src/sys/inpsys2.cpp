@@ -1,6 +1,8 @@
 #include "inpsys2.hpp"
 #include "../man/levelman.hpp"
 #include "soundsystem.hpp"
+#include <iostream>
+
 
 void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
@@ -16,8 +18,12 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             movementMouse(eng, rend, phy);
             if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
 
-            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
-            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
+            if(keyboard.isKeyPressed(input.key_shot)) {
+                eng.getDevice()->sleep(10000);
+            }
+
+            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up   = true; }
+            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down = true; }
             if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, up, down); }
             if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, down, up); }
             if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload(LM, eng, equip); }
@@ -26,7 +32,9 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(LM, equip, rend, 2, eng); }
             //if(keyboard.isKeyPressed(input.key_interaction)) { interact(EM, player, input.key_interaction); }
 
-            if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
+            if(keyboard.isKeyPressed(input.key_unlockAll))  { 
+                unlockAll(equip.inventary);
+            }
             if(keyboard.isKeyPressed(input.key_rldALLAmmo)) { reloadAll(EM, equip); }
             
             bb = { phy.x, phy.z, true, true , player.getID()};

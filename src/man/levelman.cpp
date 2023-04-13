@@ -1,8 +1,9 @@
 #include "levelman.hpp"
 #include "../sys/nodemapsys.hpp"
 #include "../sys/soundsystem.hpp"
+#include <cstddef>
 
-void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) {
+void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, std::size_t player_ID) {
     //EM.foreach<voidCMP, EneTAGs>(
     //    [&](Enty& en, PhysicsCmp2&) {
     //        if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
@@ -32,32 +33,34 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
     );
 
     double spawnX{0}, spawnZ{0};
+    auto& player = EM.getEntityById(player_ID);
+    
     EM.foreach<voidCMP2, EneTAGs2>(
-    [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
-        spawnCMP.clockSpawn+=dt;
-        
-        if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
-            if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
+        [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
+            spawnCMP.clockSpawn+=dt;
             
-            auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
-            
-            auto nextSalaPlayer = (salaPlayer)%9+1;
-            auto prevSalaPlayer = salaPlayer-1;
-            if( prevSalaPlayer < 1){
-                prevSalaPlayer = 9;
-            }
-            
-            if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
-                spawnCMP.clockSpawn = 0;                 
-                spawnX = f.x;
-                spawnZ = f.z;
-                createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
-                aliveEnemys++;
-                numberOfEnemysBasics--;
+            if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
+                if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
                 
-            }
-        }  
-    }
+                auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
+                
+                auto nextSalaPlayer = (salaPlayer)%9+1;
+                auto prevSalaPlayer = salaPlayer-1;
+                if( prevSalaPlayer < 1){
+                    prevSalaPlayer = 9;
+                }
+                
+                if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
+                    spawnCMP.clockSpawn = 0;                 
+                    spawnX = f.x;
+                    spawnZ = f.z;
+                    createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                    aliveEnemys++;
+                    numberOfEnemysBasics--;
+                    
+                }
+            }  
+        }
     );
     if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
         inRound = false;
