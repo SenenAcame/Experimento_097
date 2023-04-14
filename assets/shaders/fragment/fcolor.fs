@@ -88,20 +88,20 @@ void main() {
 
     vec4 diffuseColor = diffuseVar();
 
-    if(diffuseColor.a < 0.1) {
+    if(diffuseColor.a < 0.1) 
         discard;
         // Phase 1: directional lightning
-        vec3 result = CalcDirLight(diffuseColor.rgb, dirLight, norm);
+    vec3 result = CalcDirLight(diffuseColor.rgb, dirLight, norm);
 
-        // Phase 2: point Lights
-        for(int i = 0; i < pointSize; i++) {
-            result += CalcPointLight(diffuseColor.rgb, pointLights[i], norm, FragPos);
-        }
-        // Phase 3: spot Lights
-        //result += CalcSpotLight(diffuseColor.rgb, pointLights[i], norm, FragPos, viewDir);
-
-        FragColor = vec4(result, diffuseColor.a * material.transparency);
+    // Phase 2: point Lights
+    for(int i = 0; i < pointSize; i++) {
+        result += CalcPointLight(diffuseColor.rgb, pointLights[i], norm, FragPos);
     }
+    // Phase 3: spot Lights
+    //result += CalcSpotLight(diffuseColor.rgb, pointLights[i], norm, FragPos, viewDir);
+
+    FragColor = vec4(result, diffuseColor.a * material.transparency);
+    
 }
 
 vec3 CommonLight(vec3 diffMat, vec3 lPos, vec3 normal, vec3 ambient, vec3 diffuse, float intensity) {
