@@ -40,7 +40,11 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             bb = { phy.x, phy.z, true, true , player.getID()};
         }
     );
-} 
+}
+
+//void InpSys2::update_menu() {
+//    
+//}
 
 bool InpSys2::OnEvent(const irr::SEvent& event) {
     if (event.EventType == irr::EET_KEY_INPUT_EVENT){

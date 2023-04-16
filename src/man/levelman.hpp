@@ -12,7 +12,10 @@ struct LevelMan {
     using voidCMP3 = MP::Typelist<WeaponCmp>;
     using EneTAGs3 = MP::Typelist<TWeapon>;
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
+    using Text  = TheEngine::IGUIText*;
+    using Image = TheEngine::IGUIImage*;
+
+    void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, std::size_t player_ID) ;
     Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
     void initInterface (TheEngine& dev, Enty& player);
     //void createInterface (TheEngine& dev, Enty& player);
@@ -55,39 +58,29 @@ private:
 
     //Waves
     int    waveNumber           = 1; //actual wave
-    double extraHeal            = 5; //extra EnemyHeal per wave
-    float  extraSpeed           = 0; //extra speed per round
     int    numberOfEnemysBasics = 2; //number of enemys per wave
     int    aliveEnemys          = 0;
-    double extraEnemys          = 3; //extra number of enemys per wave
     int    maxEnemysWave        = 11; //max number of enemy created
+    int    points               = 0;
+    float  extraSpeed           = 0; //extra speed per round
+    double extraHeal            = 5; //extra EnemyHeal per wave
+    double extraEnemys          = 3; //extra number of enemys per wave
     double timeBtwWaves         = 4;
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;
-    int    points               = 0;
 
     //INTERFACE
-    TheEngine::IGUIText*  mag  {};
-    //wchar_t*        magText{};
-    TheEngine::IGUIText*  h1   {};
-    TheEngine::IGUIText*  hp   {};
-    //wchar_t*        HPText{};
-    TheEngine::IGUIText*  amm1 {};
-    TheEngine::IGUIText*  separacion {};
-    //wchar_t*        ammText{};
-    TheEngine::IGUIImage* mir  {};
+    Text mag  {}, h1 {}, hp {};
+    Text amm1 {}, separacion {};
+    Text wave {}, waveText   {};
+    Text pointsUI {}, pointsText {};
 
-    TheEngine::IGUIText*  wave {};
-    TheEngine::IGUIText*  waveText {};
-
-    TheEngine::IGUIText*  pointsUI {};
-    TheEngine::IGUIText*  pointsText {};
+    Image mir  {}, hit1 {};
+    Image hit2 {}, hit3 {};
+    Image menu_init {};
 
     //Hits
     int activateHit {0};
     double cd1 {0}, cd2 {0}, cd3 {0};
     double clockHit1 {}, clockHit2 {}, clockHit3 {};
-    TheEngine::IGUIImage* hit1 {};
-    TheEngine::IGUIImage* hit2 {};
-    TheEngine::IGUIImage* hit3 {};
 };

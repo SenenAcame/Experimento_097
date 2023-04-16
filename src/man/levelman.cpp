@@ -100,16 +100,6 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, st
 }
 
 Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
-    //Enty& player = createPlayer(dev, SouSys);
-    //createInterface(dev, player);
-    //createWeapon(-30, 5, 60, dev, SouSys, 2);
-    //createBasicEnemy(110, 60, dev, SouSys);
-    //createBasicEnemy(120, 60, dev, SouSys);
-    //createBasicEnemy(110, 70, dev, SouSys);
-    //createBasicEnemy(35, -60, dev, SouSys);
-    //createBasicEnemy(45, -60, dev, SouSys);
-    //createBasicEnemy(35, -70, dev, SouSys);
-    //return player;
     auto& player = createPlayer(dev, SouSys);
     initInterface(dev, player);
     createSpawn(80, 30,dev,1);
@@ -211,39 +201,43 @@ void LevelMan::initInterface (TheEngine& dev, Enty& player) {
 //}
 
 void LevelMan::createEmptyInterface (TheEngine& dev) {
-    auto heightScreen   = dev.getHeight();
-    auto widthScreen    = dev.getWidth();
-    auto widthNumbers   = heightScreen-100;
-    auto widthNumbers2  = heightScreen-20;
+    auto heightScreen  = dev.getHeight();
+    auto widthScreen   = dev.getWidth();
+    auto widthNumbers  = heightScreen - 100;
+    auto widthNumbers2 = heightScreen - 20;
 
     //hits
     hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
     dev.setInvisibleImage(hit1);
+
     hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
     dev.setInvisibleImage(hit2);
+    
     hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
     dev.setInvisibleImage(hit3);
 
     mag = dev.addTextToPositionInScreen(L"", widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
     //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
     //std::cout<< "MAG ES " << mag <<"\n";
+
     //total ammo
-    
     amm1 = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
     separacion = dev.addTextToPositionInScreen(L"/",widthScreen/10*8.5,widthNumbers,widthScreen,widthNumbers2);
+
     //HP
-    
     hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
     h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10*1.2,widthNumbers,widthScreen/10*2.5,widthNumbers2);
+
     //wave
     waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
     wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
+
     //points
     pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
     pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
+
     //mira
     mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira_2.png", widthScreen/2, heightScreen/2+29);
-
 }
 
 void LevelMan::updateInterfaceMag(TheEngine& dev, int maga) {

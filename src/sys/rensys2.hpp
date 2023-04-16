@@ -20,6 +20,7 @@ struct RenSys2 {
     using SYSTAGs = MP::Typelist<>;
 
     void update  (EntyMan& EM, TheEngine& GFX);
+//    void update_menu();
     void drawAll (EntyMan& EM, TheEngine& GFX);
     void drawBBox(EntyMan& EM, TheEngine& GFX);
 
