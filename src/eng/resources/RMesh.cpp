@@ -126,10 +126,12 @@ void RMesh::processMesh(aiMesh *mesh, const aiScene *scene, bool sky, ResourceGe
     }
 
     //process materials
-    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    auto cont = scene->mMaterials;
+    auto ind = mesh->mMaterialIndex;
+    aiMaterial *material = cont[ind];
     //std::string matName = name_ + material->GetName().C_Str();
 
-    RMaterial *rMat = rg.getResource<RMaterial>(name_);
+    RMaterial *rMat = rg.getResource<RMaterial>("assets/models/personajes/monstruo2.mtl");
 
     if(!rMat->isLoaded())
         rMat->loadMaterial(material, rg);
