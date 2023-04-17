@@ -17,6 +17,7 @@ void GraphicEngine::createEnemy(LevelMan& LM) {
             "assets/models/personajes/monstruo2.obj"
         )}
     );
+    
     RTexture* texture = nullptr;
     texture = glEng.getRG()->getResource<RTexture>("assets/textures/fire.bmp");
     rend.node->setTexture(texture);

@@ -34,7 +34,14 @@ struct EModel : public Entity {
 
     void setTexture (RTexture *textura) {
         for(unsigned int i = 0; i < mesh_->meshes_.size(); ++i) {
-            int texSize = mesh_->meshes_[i].material_->textures_.size();
+            auto vec_mesh = mesh_->meshes_[i];
+            
+            auto mat      = vec_mesh.material_;
+
+            auto name     = mat->getName();
+            auto text     = mat->textures_;
+
+            int texSize = text.size();
 
             for (unsigned int j = 0; j < texSize; ++j) {
                 mesh_->meshes_[i].material_->textures_[j] = textura;
