@@ -554,6 +554,14 @@ void LevelMan::resetLevel(TheEngine& dev) {
     EM.callDestroy();
 }
 
+void LevelMan::setVisibleMenu(TheEngine& dev) {
+    menu_init = dev.addImageToPositionInScreen("assets/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
+}
+
+void LevelMan::setInvisibleMenu(TheEngine& dev) {
+    dev.setInvisibleImage(menu_init);
+}
+
 void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
     Enty& weapon = EM.createEntity();
     EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));

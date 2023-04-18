@@ -46,6 +46,8 @@ struct LevelMan {
         int const dmg, float const spd, float const rad, double const slfD,
         double const pbx = 0, double const pby = 0);
     void resetLevel(TheEngine& dev);
+    void setVisibleMenu(TheEngine& dev);
+    void setInvisibleMenu(TheEngine& dev);
     EntyMan& getEM() { return EM; }
 private:
     void createSoundEffect(SoundSystem_t& SouSys);
@@ -53,6 +55,7 @@ private:
     void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
     void defineAI(Enty& enemy);
     double randAng(uint8_t ang);
+    
 
     EntyMan EM;
 

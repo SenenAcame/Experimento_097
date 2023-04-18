@@ -2,6 +2,7 @@
 #include "../man/levelman.hpp"
 #include "soundsystem.hpp"
 #include <iostream>
+#include <irrlicht/Keycodes.h>
 
 
 void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
@@ -42,9 +43,12 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
     );
 }
 
-//void InpSys2::update_menu() {
-//    
-//}
+bool InpSys2::update_menu() {
+    if(keyboard.isKeyPressed(XK_KP_Enter))
+        return false;
+
+    return true;
+}
 
 bool InpSys2::OnEvent(const irr::SEvent& event) {
     if (event.EventType == irr::EET_KEY_INPUT_EVENT){
@@ -82,8 +86,8 @@ bool InpSys2::OnEvent(const irr::SEvent& event) {
             case irr::KEY_KEY_3:
                 checkPressed(event,XK_3);
                 break;
-            case irr::KEY_KEY_L:
-                checkPressed(event,XK_L);
+            case irr::KEY_RETURN:
+                checkPressed(event,XK_KP_Enter);
                 break;
             case irr::KEY_ESCAPE:
                 exit(0);

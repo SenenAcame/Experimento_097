@@ -16,7 +16,7 @@ struct InpSys2 : public irr::IEventReceiver {
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
     void update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
-    //void update_menu();
+    bool update_menu();
     virtual bool OnEvent(const irr::SEvent& event);
     void checkPressed(const irr::SEvent& event, KeySym k);
 
