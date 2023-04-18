@@ -17,6 +17,7 @@ struct InpSys2 : public irr::IEventReceiver {
 
     void update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
     bool update_menu();
+    bool update_pause(bool pause);
     virtual bool OnEvent(const irr::SEvent& event);
     void checkPressed(const irr::SEvent& event, KeySym k);
 

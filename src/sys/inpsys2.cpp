@@ -50,6 +50,15 @@ bool InpSys2::update_menu() {
     return true;
 }
 
+bool InpSys2::update_pause(bool pause) {
+    if(keyboard.isKeyPressed(XK_KP_Space)) {
+        keyboard.keyReleased(XK_KP_Space);
+        return !pause;
+    }
+
+    return pause;
+}
+
 bool InpSys2::OnEvent(const irr::SEvent& event) {
     if (event.EventType == irr::EET_KEY_INPUT_EVENT){
         switch (event.KeyInput.Key) {
@@ -88,6 +97,9 @@ bool InpSys2::OnEvent(const irr::SEvent& event) {
                 break;
             case irr::KEY_RETURN:
                 checkPressed(event,XK_KP_Enter);
+                break;
+            case irr::KEY_SPACE:
+                checkPressed(event,XK_KP_Space);
                 break;
             case irr::KEY_ESCAPE:
                 exit(0);

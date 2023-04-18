@@ -522,13 +522,14 @@ void LevelMan::resetLevel(TheEngine& dev) {
 
     EM.forall(
         [](Enty& ent) {
-            bool is_enemy_bullet_or_player = 
-                ent.hasTAG<TEnemy>()  ||
-                ent.hasTAG<TBullet>() ||
-                ent.hasTAG<TWeapon>() ||
-                ent.hasTAG<TSpawn>()  ||
-                ent.hasTAG<TPlayer>();
-            if(is_enemy_bullet_or_player) ent.setDestroy();
+            //bool is_enemy_bullet_or_player = 
+            //    ent.hasTAG<TEnemy>()  ||
+            //    ent.hasTAG<TBullet>() ||
+            //    ent.hasTAG<TWeapon>() ||
+            //    ent.hasTAG<TSpawn>()  ||
+            //    ent.hasTAG<TPlayer>();
+            //if(is_enemy_bullet_or_player) ent.setDestroy();
+            ent.setDestroy();
         }
     );
 

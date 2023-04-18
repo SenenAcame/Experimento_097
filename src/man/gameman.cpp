@@ -15,11 +15,10 @@
 
 void GameMan::game() {
     InpSys2   InpSys;
-    TheEngine dev { 1080, 720, &InpSys };
     RenSys2   RenSys;
     LevelMan  LM;
-    EntyMan&  EM = LM.getEM();
-
+    TheEngine dev { 1000, 1000, &InpSys };
+    
     PhySys2       PhySys;
     ColSys2       ColSys;
     AISys         AISys;
@@ -29,30 +28,24 @@ void GameMan::game() {
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
 
-//////////////////////////////////////////////////////////////
-//  Menu inicial
-    bool menu { true };
-
-    LM.setVisibleMenu(dev);
-    
-    while(menu && dev.run()) {
-        RenSys.update(EM, dev);
-        menu = InpSys.update_menu();
-    }
-
-    LM.setInvisibleMenu(dev);
-    
-/////////////////////////////////////////////////////////////
-// Bucle principal del juego
-
-    init_config(dev);
-    init_map(LM, dev, SouSys);
-    LM.createEmptyInterface(dev);
-    
     while(dev.run()) {
+        //////////////////////////////////////////////////////////////
+        //  Menu inicial
+
+        initial_menu(LM, dev, RenSys, InpSys);
+    
+        /////////////////////////////////////////////////////////////
+        // Bucle principal del juego
+
+        EntyMan&  EM = LM.getEM();
+
+        init_config(dev);
+        init_map(LM, dev, SouSys);
+        LM.createEmptyInterface(dev);
+    
         auto& player = LM.init_level(dev, SouSys);
         std::size_t player_ID = player.getID();
-        bool dead { false };
+        bool dead { false }, pause { false };
 
         //actual moment ini
         constexpr double dt = 1.0/60;
@@ -63,26 +56,36 @@ void GameMan::game() {
 
         while(!dead && dev.run()){
             auto frame_start = std::chrono::high_resolution_clock::now();
-            EM.      update();
-            RenSys.  update(EM, dev);
-            MapSys.  update(EM);
-            InpSys.  update(LM, dev, SouSys, dt);
-            AISys.   update(EM, dt, dev);
-            PhySys.  update(EM, dt);
-            ColSys.  update(EM);
-            LogicSys.update(LM, dev, dt);
-            PhySys.  update_after_colision(EM, dt);
-            //SouSys.  update(EM);
-            //SpawnSys.update(EM, dev, SouSys, player, map);
-            //LM.      update(dev, SouSys, dt);
-            LM.      update(dev, SouSys, dt, player_ID);
-            DestSys. update(EM, dt);
+            
+            if(pause) {
+                RenSys.update(EM, dev);
+                pause = InpSys.update_pause(pause);
+            }
+            else {
+                EM.      update();
+                RenSys.  update(EM, dev);
+                MapSys.  update(EM);
+                InpSys.  update(LM, dev, SouSys, dt);
+                pause =  InpSys.update_pause(pause);
+                AISys.   update(EM, dt, dev);
+                PhySys.  update(EM, dt);
+                ColSys.  update(EM);
+                LogicSys.update(LM, dev, dt);
+                PhySys.  update_after_colision(EM, dt);
+                //SouSys.  update(EM);
+                //SpawnSys.update(EM, dev, SouSys, player, map);
+                //LM.      update(dev, SouSys, dt);
+                LM.      update(dev, SouSys, dt, player_ID);
+                DestSys. update(EM, dt);
+                dead = EM.getEntityById(player_ID).getDestroy();
+            }
 
-            dead = EM.getEntityById(player_ID).getDestroy();
+            
 
             while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
             ++frames;
         }
+
         LM.resetLevel(dev);
 
         auto end = std::chrono::high_resolution_clock::now();
@@ -95,17 +98,19 @@ void GameMan::game() {
     //RenSys.EndImgui();
 }
 
-//void GameMan::initial_menu(TheEngine& dev) {
-//    dev.addImageToPositionInScreen("assets/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
-//
-//    while(dev.run()) {
-//        bool dead { false };
-//
-//        while(!dead && dev.run()) {
-//            RenSys.update(EM, dev);
-//        }
-//    }
-//}
+void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys2& InpSys) {
+    EntyMan&  EM = LM.getEM();
+    bool menu { true };
+
+    LM.setVisibleMenu(dev);
+    
+    while(menu && dev.run()) {
+        RenSys.update(EM, dev);
+        menu = InpSys.update_menu();
+    }
+
+    LM.setInvisibleMenu(dev);
+}
 
 void GameMan::init_config(TheEngine& dev) {
     srand(time(NULL));
