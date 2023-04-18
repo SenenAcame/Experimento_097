@@ -11,14 +11,15 @@ void SoundSystem_t::update(EntyMan& EM) {
                 changesound(s);
                 s.cambia = false;
             }
+            if(isPlaying(s))
+                s.play = false;
             if(s.play) {
-                if(isPlaying(s)) {
-                    s.isplaying = true;
+                if(!isPlaying(s)) {
                     s.play = false;
                     startsound(s);
                 }
-                else s.isplaying = false;
             }
+            
             //if(s.release) {
             //    s.programmerSoundContext.sound->release();
             //}

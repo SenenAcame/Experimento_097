@@ -173,8 +173,9 @@ void TheFachada::stopsound(SoundCmp& s) {
 }
 
 bool TheFachada::isPlaying(SoundCmp& s) {
-    FMOD_STUDIO_PLAYBACK_STATE* state = nullptr;
-    if(s.programmerSoundContext.sound->getPlaybackState(state) != FMOD_STUDIO_PLAYBACK_STOPPED)
+    FMOD_STUDIO_PLAYBACK_STATE state;
+    s.programmerSoundContext.sound->getPlaybackState(&state); // 0 PLAYING, 1 SUSTAINING, 2 STOPPED, 3 STARTING, 4 STOPPING
+    if(state == 0)
         return true;
 
     return false;
