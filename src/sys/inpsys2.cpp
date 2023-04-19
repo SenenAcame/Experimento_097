@@ -31,6 +31,7 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
 
             if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
             if(keyboard.isKeyPressed(input.key_rldALLAmmo)) { reloadAll(EM, equip); }
+            
             exit(eng);
             bb = { phy.x, phy.z, true, true , player.getID()};
         }
@@ -47,6 +48,9 @@ bool InpSys2::update_menu(TheEngine& dev) {
 bool InpSys2::update_pause(TheEngine& dev, bool pause) {
     if(keyboard.isKeyPressed(XK_KP_Space)) {
         keyboard.keyReleased(XK_KP_Space);
+        if(!pause) dev.getDevice()->getCursorControl()->setVisible(true);
+        else       dev.getDevice()->getCursorControl()->setVisible(false);
+
         return !pause;
     }
     exit(dev);
