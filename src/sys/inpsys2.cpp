@@ -10,7 +10,7 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
     auto& bb = EM.getBoard();
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
-            bool up = false, down = false;
+            bool up { false }, down { false };
 
             if(equip.reloading == 1) { equip.clockReload += dt; }
             equip.clockCadence += dt;
@@ -18,10 +18,6 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             
             movementMouse(eng, rend, phy);
             if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
-
-            if(keyboard.isKeyPressed(input.key_shot)) {
-                eng.getDevice()->sleep(10000);
-            }
 
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up   = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down = true; }
@@ -33,30 +29,33 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(LM, equip, rend, 2, eng); }
             //if(keyboard.isKeyPressed(input.key_interaction)) { interact(EM, player, input.key_interaction); }
 
-            if(keyboard.isKeyPressed(input.key_unlockAll))  { 
-                unlockAll(equip.inventary);
-            }
+            if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
             if(keyboard.isKeyPressed(input.key_rldALLAmmo)) { reloadAll(EM, equip); }
-            
+            exit(eng);
             bb = { phy.x, phy.z, true, true , player.getID()};
         }
     );
 }
 
-bool InpSys2::update_menu() {
-    if(keyboard.isKeyPressed(XK_KP_Enter))
-        return false;
+bool InpSys2::update_menu(TheEngine& dev) {
+    if(keyboard.isKeyPressed(XK_KP_Enter)) return false;
+    exit(dev);
 
     return true;
 }
 
-bool InpSys2::update_pause(bool pause) {
+bool InpSys2::update_pause(TheEngine& dev, bool pause) {
     if(keyboard.isKeyPressed(XK_KP_Space)) {
         keyboard.keyReleased(XK_KP_Space);
         return !pause;
     }
+    exit(dev);
 
     return pause;
+}
+
+void InpSys2::exit(TheEngine& dev) {
+    if(keyboard.isKeyPressed(XK_Escape)) dev.close();
 }
 
 bool InpSys2::OnEvent(const irr::SEvent& event) {
@@ -87,22 +86,22 @@ bool InpSys2::OnEvent(const irr::SEvent& event) {
                 checkPressed(event, XK_F);
                 break;
             case irr::KEY_KEY_1:
-                checkPressed(event,XK_1);
+                checkPressed(event, XK_1);
                 break;
             case irr::KEY_KEY_2:
-                checkPressed(event,XK_2);
+                checkPressed(event, XK_2);
                 break;
             case irr::KEY_KEY_3:
-                checkPressed(event,XK_3);
+                checkPressed(event, XK_3);
                 break;
             case irr::KEY_RETURN:
-                checkPressed(event,XK_KP_Enter);
+                checkPressed(event, XK_KP_Enter);
                 break;
             case irr::KEY_SPACE:
-                checkPressed(event,XK_KP_Space);
+                checkPressed(event, XK_KP_Space);
                 break;
             case irr::KEY_ESCAPE:
-                exit(0);
+                checkPressed(event, XK_Escape);
                 break;
             default:
                 break;

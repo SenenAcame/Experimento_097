@@ -32,6 +32,8 @@ struct TheEngine {
     AnimatedMeshNode* createPlayer(Path obj, Path asset);
     IMeshSceneNode*   createSphere(float r = 5.0f);
 
+    void  close()                                    { device_->closeDevice(); }
+    
     auto& getDevice()           { return device_; }
     auto  getSceneManager() { return device_->getSceneManager(); }
     auto  getCamera()           { return getSceneManager()->getActiveCamera(); }

@@ -28,6 +28,8 @@ void GameMan::game() {
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
 
+    dev.getDevice();
+
     while(dev.run()) {
         //////////////////////////////////////////////////////////////
         //  Menu inicial
@@ -59,14 +61,13 @@ void GameMan::game() {
             
             if(pause) {
                 RenSys.update(EM, dev);
-                pause = InpSys.update_pause(pause);
+                pause = InpSys.update_pause(dev, pause);
             }
             else {
                 EM.      update();
                 RenSys.  update(EM, dev);
                 MapSys.  update(EM);
                 InpSys.  update(LM, dev, SouSys, dt);
-                pause =  InpSys.update_pause(pause);
                 AISys.   update(EM, dt, dev);
                 PhySys.  update(EM, dt);
                 ColSys.  update(EM);
@@ -77,10 +78,10 @@ void GameMan::game() {
                 //LM.      update(dev, SouSys, dt);
                 LM.      update(dev, SouSys, dt, player_ID);
                 DestSys. update(EM, dt);
-                dead = EM.getEntityById(player_ID).getDestroy();
-            }
 
-            
+                pause = InpSys.update_pause(dev, pause);
+                dead  = EM.getEntityById(player_ID).getDestroy();
+            }            
 
             while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
             ++frames;
@@ -103,10 +104,11 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
     bool menu { true };
 
     LM.setVisibleMenu(dev);
+    dev.getDevice()->getCursorControl()->setVisible(true);
     
     while(menu && dev.run()) {
         RenSys.update(EM, dev);
-        menu = InpSys.update_menu();
+        menu = InpSys.update_menu(dev);
     }
 
     LM.setInvisibleMenu(dev);
