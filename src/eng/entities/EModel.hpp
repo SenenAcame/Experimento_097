@@ -41,7 +41,7 @@ struct EModel : public Entity {
             auto name     = mat->getName();
             auto text     = mat->textures_;
 
-            int texSize = text.size();
+            int texSize = mesh_->meshes_[i].material_->textures_.size();
 
             for (unsigned int j = 0; j < texSize; ++j) {
                 mesh_->meshes_[i].material_->textures_[j] = textura;

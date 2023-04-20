@@ -10,7 +10,7 @@ void GraphicEngine::createEnemy(LevelMan& LM) {
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{ });
     auto& rend = EM.addComponent<RenderCmp2> (player, 
         RenderCmp2{ .node = glEng.createModel(
-            nullptr,
+            NULL,
             {5, 0, 0},
             Vec3(0.f),
             Vec3(0.5f),

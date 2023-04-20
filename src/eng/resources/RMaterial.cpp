@@ -68,7 +68,7 @@ void RMaterial::loadMaterial(aiMaterial *mtl, ResourceGestor &rg) {
 std::vector<RTexture *> RMaterial::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName, ResourceGestor &rg) {
 
     std::vector<RTexture *> textures;
-    for(unsigned int i = 0; i<mat->GetTextureCount(type); i++) {
+    for(unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
         mat->GetTexture(type, i, &str);
 
@@ -80,7 +80,7 @@ std::vector<RTexture *> RMaterial::loadMaterialTextures(aiMaterial *mat, aiTextu
         if(nSize != minSize)
             name = name.substr(name.find_last_of('\\') +1, minSize);
 
-        name = "assets/" + name;
+        name = "assets/textures/" + name;
         RTexture *tmptex = rg.getResource<RTexture>(name);
 
         if(tmptex->isLoaded()) {
