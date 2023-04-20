@@ -15,7 +15,7 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
 }
 
 void NodeMapSys::update(EntyMan& EM){
-    float playerposx, playerposz;
+    float playerposx {}, playerposz {};
     Enty player;
     NodoCmp map;
     EM.foreach<PlayCMPs, PlayTAGs>(

@@ -2,6 +2,8 @@
 #include "../cmp/blackboardcmp.hpp"
 #include "cmpstorage2.hpp"
 #include "../util/cmps.hpp"
+#include <cassert>
+#include <cstddef>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
 struct EntityMan2 {
@@ -58,8 +60,8 @@ struct EntityMan2 {
 
         private:
         std::size_t id { nextID++ };
-        smallest_mask_type<CMPLIST> cmpmask;
-        smallest_mask_type<TAGLIST> tagmask;
+        smallest_mask_type<CMPLIST> cmpmask {};
+        smallest_mask_type<TAGLIST> tagmask {};
         key_storage st_key {};
         bool destroy { false };
         static inline std::size_t nextID { 1 };
@@ -131,10 +133,14 @@ struct EntityMan2 {
         transfer_entities();
     }
 
-    auto& getEntityById(std::size_t id) { 
-        for(auto& cont : entities_){
-            if(cont.getID()== id) return cont; 
+    auto& getEntityById(std::size_t id) {
+        assert(existEntity(id));
+        
+        Entity& ent = entities_[0];
+        for(auto& cont : entities_) {
+            if(cont.getID() == id) ent = cont; 
         }
+        return ent;
     }
 
     void changeSound(SoundCmp& sound, uint8_t value) {
@@ -150,6 +156,13 @@ struct EntityMan2 {
     auto& getBoard()    { return blackboard_; }
 
 private:
+    bool existEntity(std::size_t id) {
+        for(auto& cont : entities_) {
+            if(cont.getID() == id) return true; 
+        }
+        return false;
+    }
+
     void destroy_entities() {
         for(auto i {entities_.size()}; i != 0; i--){
             auto& e = entities_[i-1];

@@ -121,7 +121,7 @@ Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
 void LevelMan::initInterface (TheEngine& dev, Enty& player) {
     //Magazine
     auto equipment = EM.getComponent<InventarioCmp> (player);
-    auto stats = EM.getComponent<EstadisticaCmp> (player);
+    //auto stats = EM.getComponent<EstadisticaCmp> (player);
     int magazine = 0;
     int ammo     = 0;
     switch (equipment.equipada) {
