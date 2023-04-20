@@ -4,16 +4,16 @@
 RMaterial::RMaterial() {
     Ns_ = 500;
     d_ = 1;
-    Kambient_ = Kspecular_ = {0.8f, 0.8f, 0.8f};
-    Kdiffuse_ = {0.8f, 0.8f, 0.8f, 1.0f};
+    Ka_ = Ks_ = {0.8f, 0.8f, 0.8f};
+    Kd_ = {0.8f, 0.8f, 0.8f, 1.0f};
 }
 
 RMaterial::RMaterial(std::string name) {
     name_ = name;
     Ns_ = 500;
     d_ = 1;
-    Kambient_ = Kspecular_ = {0.8f, 0.8f, 0.8f};
-    Kdiffuse_ = {0.8f, 0.8f, 0.8f, 1.0f};
+    Ka_ = Ks_ = {0.8f, 0.8f, 0.8f};
+    Kd_ = {0.8f, 0.8f, 0.8f, 1.0f};
 }
 
 RMaterial::RMaterial(Vec3 ka, Vec4 kd, Vec3 ks, float ns, float d, bool tex) {
@@ -30,7 +30,7 @@ void RMaterial::loadMaterial(aiMaterial *mtl, ResourceGestor &rg) {
     if(mtl->GetTextureCount(aiTextureType_DIFFUSE) == 0 && mtl->GetTextureCount(aiTextureType_HEIGHT) == 0) {
         aiColor4D diffuse;
         if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
-            Kdiffuse_ = {diffuse.r, diffuse.g, diffuse.b, diffuse.a};
+            Kd_ = {diffuse.r, diffuse.g, diffuse.b, diffuse.a};
     }
     else {
         texture_ = true;
@@ -54,11 +54,11 @@ void RMaterial::loadMaterial(aiMaterial *mtl, ResourceGestor &rg) {
 
     aiColor4D ambient;
     if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient))
-        Kambient_ = {ambient.r, ambient.g, ambient.b};
+        Ka_ = {ambient.r, ambient.g, ambient.b};
     
     aiColor4D especular;
     if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &especular))
-        Kspecular_ = {especular.r, especular.g, especular.b};
+        Ks_ = {especular.r, especular.g, especular.b};
 
     aiGetMaterialFloat(mtl, AI_MATKEY_OPACITY, &d_);
     aiGetMaterialFloat(mtl, AI_MATKEY_SHININESS, &Ns_);
@@ -109,9 +109,9 @@ std::vector<RTexture *> RMaterial::loadMaterialTextures(aiMaterial *mat, aiTextu
 void RMaterial::setAll(Vec3 ka, Vec4 kd, Vec3 ks, float ns, float d, bool tex) {
     Ns_ = ns;
     d_ = d;
-    Kambient_ = ka;
-    Kdiffuse_ = kd;
-    Kspecular_ = ks;
+    Ka_ = ka;
+    Kd_ = kd;
+    Ks_ = ks;
     texture_ = tex;
 }
 

@@ -11,7 +11,7 @@ void GraphicEngine::createEnemy(LevelMan& LM) {
     auto& rend = EM.addComponent<RenderCmp2> (player, 
         RenderCmp2{ .node = glEng.createModel(
             NULL,
-            {5, 0, 0},
+            {-5, 0, 0},
             Vec3(0.f),
             Vec3(0.5f),
             "assets/models/personajes/monstruo2.obj"
