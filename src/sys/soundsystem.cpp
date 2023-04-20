@@ -4,7 +4,13 @@ SoundSystem_t::SoundSystem_t() {
     facherita.init();
 }
 
-void SoundSystem_t::update(EntyMan& EM) {
+void SoundSystem_t::update(EntyMan& EM, Enty& player) {
+    EM.foreach<PHYCMPs,ENETAGs>(
+        [&](Enty& e, PhysicsCmp2& p, SoundCmp& s) {
+            facherita.set3DAttributes(s, p, EM.getComponent<PhysicsCmp2>(player));
+        }
+    );
+    facherita.setListener(EM.getComponent<PhysicsCmp2>(player));
     EM.foreach<SYSCMPs,SYSTAGs>(
         [&](Enty& e, SoundCmp& s) {
             if(s.cambia) {

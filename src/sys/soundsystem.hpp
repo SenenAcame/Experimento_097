@@ -4,10 +4,12 @@
 
 struct SoundSystem_t {
     using SYSCMPs = MP::Typelist<SoundCmp>;
+    using PHYCMPs = MP::Typelist<PhysicsCmp2, SoundCmp>;
     using SYSTAGs = MP::Typelist<>;
+    using ENETAGs = MP::Typelist<TEnemy>;
 
     explicit SoundSystem_t();
-    void update(EntyMan& EM);
+    void update(EntyMan&, Enty&);
     ProgrammerSoundContext createinstance(int);
     void close();
     void startsound(SoundCmp&);

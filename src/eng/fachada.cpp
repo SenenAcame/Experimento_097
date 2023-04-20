@@ -168,6 +168,24 @@ void TheFachada::startsound(SoundCmp& s) {
     ERRCHECK( s.programmerSoundContext.sound->start() );
 }
 
+void TheFachada::set3DAttributes(SoundCmp& s, PhysicsCmp2& enty, PhysicsCmp2& player) {
+    FMOD_3D_ATTRIBUTES att;
+    att.position = FMOD_VECTOR{(enty.z-player.z)/10, (enty.y-player.y)/10, (enty.x-player.x)/10};
+    att.velocity = FMOD_VECTOR{0, 0, 0};
+    att.forward  = FMOD_VECTOR{0, enty.orieny, 0};
+    att.up       = FMOD_VECTOR{1, 0, 0};
+    s.programmerSoundContext.sound->set3DAttributes(&att);
+}
+
+void TheFachada::setListener(PhysicsCmp2& player) {
+    FMOD_3D_ATTRIBUTES att;
+    att.position = FMOD_VECTOR{player.z, player.y, player.x};
+    att.velocity = FMOD_VECTOR{0, 0, 0};
+    att.forward  = FMOD_VECTOR{player.orienx, player.orieny, 0};
+    att.up       = FMOD_VECTOR{1, 0, 0};
+    soundSystem->setListenerAttributes(0, &att);
+}
+
 void TheFachada::stopsound(SoundCmp& s) {
     ERRCHECK( s.programmerSoundContext.sound->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT) );
 }
@@ -175,7 +193,7 @@ void TheFachada::stopsound(SoundCmp& s) {
 bool TheFachada::isPlaying(SoundCmp& s) {
     FMOD_STUDIO_PLAYBACK_STATE state;
     s.programmerSoundContext.sound->getPlaybackState(&state); // 0 PLAYING, 1 SUSTAINING, 2 STOPPED, 3 STARTING, 4 STOPPING
-    if(state == 0)
+    if(state == 0 || state == 3)
         return true;
 
     return false;
