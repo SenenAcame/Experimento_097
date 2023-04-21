@@ -170,7 +170,7 @@ void TheFachada::startsound(SoundCmp& s) {
 
 void TheFachada::set3DAttributes(SoundCmp& s, PhysicsCmp2& enty, PhysicsCmp2& player) {
     FMOD_3D_ATTRIBUTES att;
-    att.position = FMOD_VECTOR{(enty.x-player.x)/10, 0, (enty.z-player.z)/10};
+    att.position = FMOD_VECTOR{static_cast<float>((enty.x-player.x)/10), 0, static_cast<float>((enty.z-player.z)/10)};
     att.velocity = FMOD_VECTOR{0, 0, 0};
     att.forward  = FMOD_VECTOR{1, 0, 1};
     att.up       = FMOD_VECTOR{0, 1, 0};
@@ -179,7 +179,7 @@ void TheFachada::set3DAttributes(SoundCmp& s, PhysicsCmp2& enty, PhysicsCmp2& pl
 
 void TheFachada::setListener(PhysicsCmp2& player) {
     FMOD_3D_ATTRIBUTES att;
-    att.position = FMOD_VECTOR{player.x, 0, player.z};
+    att.position = FMOD_VECTOR{static_cast<float>(player.x), 0, static_cast<float>(player.z)};
     att.velocity = FMOD_VECTOR{0, 0, 0};
     att.forward  = FMOD_VECTOR{1, 0, 1};
     att.up       = FMOD_VECTOR{0, 1, 0};
