@@ -10,8 +10,8 @@ void GraphicEngine::createEnemy(LevelMan& LM) {
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{ });
     auto& rend = EM.addComponent<RenderCmp2> (player, 
         RenderCmp2{ .node = glEng.createModel(
-            nullptr,
-            {5, 0, 0},
+            NULL,
+            {-5, 0, 0},
             Vec3(0.f),
             Vec3(0.5f),
             "assets/models/personajes/monstruo2/monstruo2_prueba_verde267.obj"

@@ -1,7 +1,9 @@
 #include "RMesh.hpp"
 
+#include <assimp/material.h>
 #include <iostream>
 #include "../resource_gestor.hpp"
+#include "RMaterial.hpp"
 
 // ____CONSTRUCTORES____________
 //______________________________
@@ -127,11 +129,13 @@ void RMesh::processMesh(aiMesh *mesh, const aiScene *scene, bool sky, ResourceGe
 
     //process materials
     auto cont = scene->mMaterials;
+    std::cout << scene->mMaterials[0]->GetName().C_Str() << std::endl;
     auto ind = mesh->mMaterialIndex;
-    aiMaterial *material = cont[ind];
+    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    //aiMaterial *material = cont[ind];
     std::string matName = name_ + material->GetName().C_Str();
-
-    //RMaterial *rMat = rg.getResource<RMaterial>("assets/models/personajes/monstruo2/monstruo2.mtl");
+    std::cout << matName << std::endl;
+    //RMaterial *rMat = rg.getResource<RMaterial>("assets/models/personajes/monstruo2.mtl");
     RMaterial *rMat = rg.getResource<RMaterial>(matName);
 
     if(!rMat->isLoaded())

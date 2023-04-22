@@ -64,7 +64,7 @@ void Mesh::draw(Mat4 mat, bool border) {
                     number = std::to_string(heightNr++);
 
                 shader_->setInt("material.diffuseSampler", 0);
-                shader_->setVec3("material.specular", material_->Kspecular_);
+                shader_->setVec3("material.specular", material_->Ks_);
                 shader_->setFloat("material.shininess", material_->Ns_);
 
                 //set the sampler to the correct texture unit
@@ -74,8 +74,8 @@ void Mesh::draw(Mat4 mat, bool border) {
             }
         }
         else {
-            shader_->setVec4("material.diffuse", material_->Kdiffuse_);
-            shader_->setVec3("material.specular", material_->Kspecular_);
+            shader_->setVec4("material.diffuse", material_->Kd_);
+            shader_->setVec3("material.specular", material_->Ks_);
             shader_->setFloat("material.shininess", material_->Ns_);
         }
 

@@ -27,8 +27,8 @@ struct RMaterial : public Resource {
     constexpr inline static  uint8_t id_{0};
 
     bool texture_{false};
-    Vec3 Kambient_, Kspecular_;
-    Vec4 Kdiffuse_;
+    Vec3 Ka_, Ks_;
+    Vec4 Kd_;
     float Ns_, d_;
     std::vector<RTexture *> textures_;
 };
