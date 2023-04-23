@@ -53,7 +53,7 @@ OBJSUBDIRS := $(patsubst $(SRC)%,$(OBJ)%,$(SUBDIRS))
 .PHONY: dir clean play lib lib-clean
 
 $(APP) : $(OBJSUBDIRS) $(ALLOBJ)
-	$(CCACHE) $(CC) $(STD++) -o $(APP) $(ALLOBJ) $(LIBS) $(DINAMIC)
+	$(CCACHE) $(CC) $(STD++) -o $(APP) $(ALLOBJ) $(LIBS) $(SANITIZE) $(DINAMIC)
 
 $(eval $(call EACHFILE,$(ALLCPPS),$(CCACHE),$(CC),$(CCFLAGS),$(STD++),$(INCS)))
 $(eval $(call EACHFILE,$(ALLCS),$(CCACHE),$(C),$(CFLAGS),$(STD),$(INCS)))

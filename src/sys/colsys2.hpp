@@ -13,7 +13,7 @@ struct ColSys2 {
 
     void update(EntyMan& EM);
 
-    [[nodiscard]] static float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept;
+    [[nodiscard]] static constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept;
 
     void static init_Hitoxes_Map(LevelMan& LM, TheEngine& dev) noexcept;
     void static init_Hitoxes_Map2(LevelMan& LM, TheEngine& dev) noexcept;

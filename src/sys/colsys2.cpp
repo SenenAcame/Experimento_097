@@ -35,7 +35,7 @@ void ColSys2::update(EntyMan& EM) {
     );
 }
 
-[[nodiscard]] float ColSys2::calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept {
+[[nodiscard]] constexpr float ColSys2::calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept {
     float d {};
     d = abs(main_pos - coll_pos);
     d -= main_dim + coll_dim;
