@@ -83,7 +83,7 @@ void GameMan::game() {
                 dead  = EM.getEntityById(player_ID).getDestroy();
             }            
 
-            while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+            while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame) {}
             ++frames;
         }
 
@@ -115,7 +115,7 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
 }
 
 void GameMan::init_config(TheEngine& dev) {
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
     dev.getDevice()->getCursorControl()->setVisible(false);
     dev.SetFont("assets/Interface/Font/chill.xml");
 }

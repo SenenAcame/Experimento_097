@@ -16,7 +16,7 @@ $(foreach F,$(1),$(eval $(call COMPILE,$(2),$(3),$(call C2Convert,$(O),$(O),$(ca
 endef
 
 APP 	 := experiment_97
-CCFLAGS  := -Wall -pedantic
+CCFLAGS  := -Wall -Wpedantic -Wextra -Wconversion
 CFLAGS	 := $(CCFLAGS)
 H		 := %.h
 O		 := %.o
@@ -27,14 +27,21 @@ C		 := gcc
 MKDIR 	 := mkdir -p
 SRC		 := src
 OBJ		 := obj
+
 #LIBS2	 := lib/FMOD/libFMOD.a -lX11 -lGL -lm -lpthread -ldl -lrt 
-LIBS	 := -lfmod -lfmodstudio -lIrrlicht -limgui -lglfw -lGL -Llib/FMOD/lib -Llib/imgui
-INCS	 := -Ilib
-EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
+#old LIBS	 := -lfmod -lfmodstudio -lIrrlicht -limgui -lglfw -lGL -Llib/FMOD/lib -Llib/imgui
+
+IRRLICHT := -lIrrlicht
+FMOD     := -lfmod -lfmodstudio -Llib/FMOD/lib
+LIBS	 := $(IRRLICHT) $(FMOD)
+INCS	 := -Ilib				#includes locales de FMOD
+
+#EXPTR	 := LD_LIBRARY_PATH=./lib/FMOD/lib
+
 STD++	 := -std=c++20
 STD		 := -std=c17
 SANITIZE := -fsanitize=address
-DINAMIC  := -Wl,-rpath=libs/
+DINAMIC  := -Wl,-rpath=libs/   	#enlazar librerias dinamicas al ejecutar en caarpeta libs/
 
 ifdef RELEASE
 	CCFLAGS += -O3

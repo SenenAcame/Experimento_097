@@ -16,7 +16,7 @@ struct ProgrammerSoundContext {
 
 struct SoundCmp{
     ProgrammerSoundContext programmerSoundContext {};
-    int parametro;
+    int parametro  { 0 };
     bool play      { false };
     bool isplaying { false };
     bool cambia    { false };

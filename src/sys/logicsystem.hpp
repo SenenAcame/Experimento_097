@@ -14,7 +14,7 @@ struct LogicSystem {
     static constexpr double PI { std::numbers::pi };
 
     void update(LevelMan& LM, TheEngine& eng, double dt);
-    void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
+    void colisionWall(EntyMan& EM, Enty& colisioned, double dt);
     void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
@@ -35,5 +35,5 @@ struct LogicSystem {
     void partialVelocities(EntyMan& EM, Enty& player, double dt);
     void preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt);
     void secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt);
-    bool checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept;
+    bool checkFutureCollision(EntyMan& EM, size_t const colld_id, double const f_coordx, double const f_coordz, float const width, float const depth) const noexcept;
 };

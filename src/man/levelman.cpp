@@ -36,7 +36,7 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, st
     auto& player = EM.getEntityById(player_ID);
     
     EM.foreach<voidCMP2, EneTAGs2>(
-        [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
+        [&](Enty&, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
             spawnCMP.clockSpawn+=dt;
             
             if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
@@ -54,7 +54,7 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, st
                     spawnCMP.clockSpawn = 0;                 
                     spawnX = f.x;
                     spawnZ = f.z;
-                    createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                    createBasicEnemy(static_cast<float>(spawnX), static_cast<float>(spawnZ), dev, SouSys, extraHeal, waveNumber);
                     aliveEnemys++;
                     numberOfEnemysBasics--;
                     
@@ -69,14 +69,13 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, st
     else if(inRound == false){
         clockToNextWave += dt;
         //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
-        if(clockToNextWave >= timeBtwWaves){
+        if(clockToNextWave >= timeBtwWaves) {
             inRound = true;
             clockToNextWave = 0;
-            if(extraSpeed<31){
-                
-                extraSpeed+=4.5;
+            if(extraSpeed < 31) {
+                extraSpeed += 4.5f;
             }
-            numberOfEnemysBasics = 2+extraEnemys*waveNumber;
+            numberOfEnemysBasics = 2 + extraEnemys * waveNumber;
             waveNumber++;
             updateInterfaceWave(dev);
             std::string  aux        = std::to_string(100);
@@ -102,11 +101,11 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, st
 Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
     auto& player = createPlayer(dev, SouSys);
     initInterface(dev, player);
-    createSpawn(80, 30,dev,1);
+    createSpawn(80, 30, 1);
     createWeapon(110, 5, 70, dev, SouSys, 1);
-    createSpawn(-8, 8,dev,4);
+    createSpawn(-8, 8, 4);
     createWeapon(-65, 5, 30, dev, SouSys, 0);
-    createSpawn(35, -30,dev,7);
+    createSpawn(35, -30, 7);
     createWeapon(40, 5, -70, dev, SouSys, 2);
     inRound = true;
     //createBasicEnemy(110, 60, dev, SouSys);
@@ -121,7 +120,7 @@ Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
 void LevelMan::initInterface (TheEngine& dev, Enty& player) {
     //Magazine
     auto equipment = EM.getComponent<InventarioCmp> (player);
-    auto stats = EM.getComponent<EstadisticaCmp> (player);
+    //auto stats = EM.getComponent<EstadisticaCmp> (player);
     int magazine = 0;
     int ammo     = 0;
     switch (equipment.equipada) {
@@ -201,43 +200,43 @@ void LevelMan::initInterface (TheEngine& dev, Enty& player) {
 //}
 
 void LevelMan::createEmptyInterface (TheEngine& dev) {
-    auto heightScreen  = dev.getHeight();
-    auto widthScreen   = dev.getWidth();
-    auto widthNumbers  = heightScreen - 100;
-    auto widthNumbers2 = heightScreen - 20;
+    auto hSrcn  = dev.getHeight();
+    auto wScrn  = dev.getWidth();
+    auto wNmb   = hSrcn - 100;
+    auto wNmb2  = hSrcn - 20;
 
     //hits
-    hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
+    hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",wScrn/2-200,hSrcn/2-100);
     dev.setInvisibleImage(hit1);
 
-    hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
+    hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",wScrn/2+200,hSrcn/2);
     dev.setInvisibleImage(hit2);
     
-    hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
+    hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",wScrn/2,hSrcn/2+100);
     dev.setInvisibleImage(hit3);
 
-    mag = dev.addTextToPositionInScreen(L"", widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
+    mag = dev.addTextToPositionInScreen(L"", wScrn/10*8,wNmb,wScrn/10*9,wNmb2);
     //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
     //std::cout<< "MAG ES " << mag <<"\n";
 
     //total ammo
-    amm1 = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
-    separacion = dev.addTextToPositionInScreen(L"/",widthScreen/10*8.5,widthNumbers,widthScreen,widthNumbers2);
+    amm1       = dev.addTextToPositionInScreen(L"",  wScrn/10*9,                     wNmb, wScrn, wNmb2);
+    separacion = dev.addTextToPositionInScreen(L"/", static_cast<int>(wScrn/10*8.5), wNmb, wScrn, wNmb2);
 
     //HP
-    hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
-    h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10*1.2,widthNumbers,widthScreen/10*2.5,widthNumbers2);
+    hp         = dev.addTextToPositionInScreen(L"VIDA:", 0,                              wNmb, wScrn/10*2,                     wNmb2);
+    h1         = dev.addTextToPositionInScreen(L"",      static_cast<int>(wScrn/10*1.2), wNmb, static_cast<int>(wScrn/10*2.5), wNmb2);
 
     //wave
-    waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
-    wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
+    waveText   = dev.addTextToPositionInScreen(L"Wave:",0,        wNmb-100, wScrn/10*2, wNmb2);
+    wave       = dev.addTextToPositionInScreen(L"",     wScrn/10, wNmb-100, wScrn/10*2, wNmb2);
 
     //points
-    pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
-    pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
+    pointsUI   = dev.addTextToPositionInScreen(L"",        wScrn/10*9,                      wNmb-100, wScrn,      wNmb2);
+    pointsText = dev.addTextToPositionInScreen(L"Points:", static_cast<int>(wScrn/10*7.85), wNmb-100, wScrn/10*9, wNmb2);
 
     //mira
-    mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira_2.png", widthScreen/2, heightScreen/2+29);
+    mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira_2.png", wScrn/2, hSrcn/2+29);
 }
 
 void LevelMan::updateInterfaceMag(TheEngine& dev, int maga) {
@@ -461,7 +460,7 @@ Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& d
 //    return key;
 //}
 
-void LevelMan::createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev) {
+void LevelMan::createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& /*dev*/) {
     Enty& wall = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(wall, pos_x, pos_y,  pos_z);
     EM.addComponent<EstadoCmp>  (wall, width, height, depth);
@@ -470,7 +469,7 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
     EM.addTag<TWall>    (wall);
 }
 
-Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2){
+Enty& LevelMan::createSpawn(float x_pos, float z_pos, int sala2){
     Enty& spawn = EM.createEntity();
     EM.addComponent<SalaCmp>    (spawn, SalaCmp{.sala = sala2});
     EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{.x=x_pos, .z=z_pos});
@@ -587,8 +586,8 @@ void LevelMan::createRoom(TheEngine& dev, irr::io::path const model, irr::io::pa
 }
 
 void LevelMan::defineAI(Enty& enemy) {
-    int num = rand() % 360;
-    double angle = num * irr::core::PI / 180;
+    float  num    = static_cast<float>(rand() % 360);
+    double angle  = num * irr::core::PI / 180;
     double radius = 30.0;
     EM.addComponent<AICmp>(
         enemy, 
@@ -607,6 +606,6 @@ void LevelMan::defineAI(Enty& enemy) {
 }
 
 double LevelMan::randAng(uint8_t ang) {
-    float alpha = rand() % ang - (ang/2);
+    double alpha = rand() % ang - (ang/2);
     return alpha * irr::core::PI / 180;
 }

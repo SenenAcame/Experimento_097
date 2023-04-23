@@ -107,7 +107,7 @@ void AISys::persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlay
     seek(predict, phyEnem, timeArrive);
 }
 
-void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int const sala) const noexcept {
+void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const /*velPlayer*/, int const sala) const noexcept {
     Point target { ai.ox, ai.oz };
     auto t_lin_dist { distance(target, { phyEnem.x, phyEnem.z }) };
 

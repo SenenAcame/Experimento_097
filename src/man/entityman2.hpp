@@ -2,6 +2,7 @@
 #include "../cmp/blackboardcmp.hpp"
 #include "cmpstorage2.hpp"
 #include "../util/cmps.hpp"
+#include <cstddef>
 
 template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
 struct EntityMan2 {
@@ -132,9 +133,13 @@ struct EntityMan2 {
     }
 
     auto& getEntityById(std::size_t id) { 
-        for(auto& cont : entities_){
-            if(cont.getID()== id) return cont; 
+        //assert(existEntity(id));
+        //Entity& ent { entities_[0] };
+        for(auto& cont : entities_) {
+            if(cont.getID() == id) return cont; 
         }
+        assert(false);
+        //return ent;
     }
 
     void changeSound(SoundCmp& sound, uint8_t value) {
@@ -150,8 +155,15 @@ struct EntityMan2 {
     auto& getBoard()    { return blackboard_; }
 
 private:
+    //bool existEntity(std::size_t id) {
+    //    for(auto& cont : entities_) {
+    //        if(cont.getID() == id) return true;
+    //    }
+    //    return false;
+    //}
+
     void destroy_entities() {
-        for(auto i {entities_.size()}; i != 0; i--){
+        for(auto i { entities_.size() }; i != 0; i--){
             auto& e = entities_[i-1];
             if(e.getDestroy())  removeEntity(e, i-1);
         }
@@ -188,7 +200,7 @@ private:
         r.n->remove();
     }
 
-    void removeEntity(Entity& e, int i) {
+    void removeEntity(Entity& e, std::size_t i) {
         if(e.template hasCMP<RenderCmp2>()) { removeRender(e); }
         removeComponents<
             PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 

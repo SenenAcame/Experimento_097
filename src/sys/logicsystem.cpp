@@ -15,7 +15,7 @@ void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
                     auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
                     if(entity.hasTAG<TWall>()){
                         //proceso Colision Wall
-                        colisionWall     (EM, entity, entity_colisioned, dt);
+                        colisionWall     (EM, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
@@ -54,7 +54,7 @@ void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
     );
 }
 
-void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
+void LogicSystem::colisionWall(EntyMan& EM, Enty& colisioned, double dt) {
     if(colisioned.hasTAG<TPlayer>() || colisioned.hasTAG<TEnemy>()){
         //mover el jugador hacia atras
         cancelMove(EM, colisioned, dt);
@@ -299,7 +299,7 @@ void LogicSystem::secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2
     }
 }
 
-bool LogicSystem::checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept {
+bool LogicSystem::checkFutureCollision(EntyMan& EM, size_t const colld_id, double const f_coordx, double const f_coordz, float const width, float const depth) const noexcept {
     bool check = false;
     EM.foreach<SYSCMPs, SYSTAG_Walls>(
         [&](Enty& future_collisioned, PhysicsCmp2& future_phy, EstadoCmp& future_state){

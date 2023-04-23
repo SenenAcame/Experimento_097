@@ -1,14 +1,15 @@
 #include "fachada.hpp"
 #include <iostream>
 
-void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
+//void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
+void ERRCHECK_FMOD (FMOD_RESULT result) {
 	if(result != FMOD_OK) {
         std::cerr << FMOD_ErrorString(result) << std::endl;
 		exit(-1);
 	}
 }
 
-#define ERRCHECK(_result) ERRCHECK_FMOD(_result, __FILE__, __LINE__)
+#define ERRORCHECK(_result) ERRCHECK_FMOD(_result)
 
 FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void* parameters);
 
@@ -54,23 +55,23 @@ FMOD_RESULT F_CALLBACK programmerSoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE t
 TheFachada::TheFachada() {}
 
 void TheFachada::init() {
-    ERRCHECK(FMOD::Studio::System::create(&soundSystem));
-    ERRCHECK(soundSystem->getCoreSystem(&coreSystem));
-    ERRCHECK(coreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0));
-    ERRCHECK(coreSystem->setOutput(FMOD_OUTPUTTYPE_AUTODETECT));
-    ERRCHECK(soundSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+    ERRORCHECK(FMOD::Studio::System::create(&soundSystem));
+    ERRORCHECK(soundSystem->getCoreSystem(&coreSystem));
+    ERRORCHECK(coreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0));
+    ERRORCHECK(coreSystem->setOutput(FMOD_OUTPUTTYPE_AUTODETECT));
+    ERRORCHECK(soundSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
 
     chargebanks();
 }
 
-void TheFachada::update() { ERRCHECK(soundSystem->update() ); }
+void TheFachada::update() { ERRORCHECK(soundSystem->update() ); }
 
 void TheFachada::chargebanks() {
     masterBank = nullptr;
     stringsBank = nullptr;
     
-    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &masterBank) );
-    ERRCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &stringsBank) );
+    ERRORCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &masterBank) );
+    ERRORCHECK(soundSystem->loadBankFile("assets/FMOD_BANKS/Master.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL, &stringsBank) );
 
     createdescriptions();
     chargeparameters();
@@ -78,31 +79,31 @@ void TheFachada::chargebanks() {
 
 void TheFachada::createdescriptions() {
     ambienteDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Ambientes/Ambientes", &ambienteDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Ambientes/Ambientes", &ambienteDescription) );
 
     armaDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Efectos/Arma", &armaDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Efectos/Arma", &armaDescription) );
 
     mejoraDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Efectos/Comprar", &mejoraDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Efectos/Comprar", &mejoraDescription) );
 
     danyoDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Efectos/Daño", &danyoDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Efectos/Daño", &danyoDescription) );
 
     moverseDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Efectos/Moverse", &moverseDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Efectos/Moverse", &moverseDescription) );
 
     menuDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Menus/Menu", &menuDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Menus/Menu", &menuDescription) );
 
     musicaDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Musica/Musica menu", &musicaDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Musica/Musica menu", &musicaDescription) );
 
     enemigoDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Voces/Enemigos", &enemigoDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Voces/Enemigos", &enemigoDescription) );
 
     personajeDescription = nullptr;
-    ERRCHECK(soundSystem->getEvent("event:/Voces/Personaje", &personajeDescription) );
+    ERRORCHECK(soundSystem->getEvent("event:/Voces/Personaje", &personajeDescription) );
 }
 
 ProgrammerSoundContext TheFachada::createinstance(int tipo) {
@@ -111,48 +112,48 @@ ProgrammerSoundContext TheFachada::createinstance(int tipo) {
 
     switch(tipo){
         case 0:
-            ERRCHECK(ambienteDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramAmbiente.id), 0.0f));
+            ERRORCHECK(ambienteDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramAmbiente.id), 0.0f));
             break;
         case 1:
-            ERRCHECK(armaDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramArma.id), 0.0f));
+            ERRORCHECK(armaDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramArma.id), 0.0f));
             break;
             
         case 2:
-            ERRCHECK(mejoraDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMejora.id), 0.0f));
+            ERRORCHECK(mejoraDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramMejora.id), 0.0f));
             break;
         case 3:
-            ERRCHECK(danyoDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramDanyo.id), 0.0f));
+            ERRORCHECK(danyoDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramDanyo.id), 0.0f));
             break;
         case 4:
-            ERRCHECK(moverseDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMoverse.id), 0.0f));
+            ERRORCHECK(moverseDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramMoverse.id), 0.0f));
             break;
         case 5:
-            ERRCHECK(menuDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMenu.id), 0.0f));
+            ERRORCHECK(menuDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramMenu.id), 0.0f));
             break;
         case 6:
-            ERRCHECK(musicaDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramMusica.id), 0.0f));
+            ERRORCHECK(musicaDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramMusica.id), 0.0f));
             break;
         case 7:
-            ERRCHECK(enemigoDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramEnemigo.id), 0.0f));
+            ERRORCHECK(enemigoDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramEnemigo.id), 0.0f));
             break;
         default:
-            ERRCHECK(personajeDescription->createInstance(&eventInstance));
-            ERRCHECK( eventInstance->setParameterByID((sound.id=paramPersonaje.id), 0.0f));
+            ERRORCHECK(personajeDescription->createInstance(&eventInstance));
+            ERRORCHECK( eventInstance->setParameterByID((sound.id=paramPersonaje.id), 0.0f));
     }
 
     sound.system = soundSystem;
     sound.coreSystem = coreSystem;
 
-    ERRCHECK( eventInstance->setUserData(&sound) );
-    ERRCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
+    ERRORCHECK( eventInstance->setUserData(&sound) );
+    ERRORCHECK( eventInstance->setCallback(programmerSoundCallback, FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND | FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND) );
     
     sound.sound = eventInstance;
 
@@ -160,57 +161,57 @@ ProgrammerSoundContext TheFachada::createinstance(int tipo) {
 }
 
 void TheFachada::changesound(SoundCmp& s) {
-    ERRCHECK(s.programmerSoundContext.sound->setParameterByID(s.programmerSoundContext.id, s.parametro));
+    ERRORCHECK(s.programmerSoundContext.sound->setParameterByID(s.programmerSoundContext.id, static_cast<float>(s.parametro)));
 }
 
 void TheFachada::startsound(SoundCmp& s) {
     if(isPlaying(s)) stopsound(s);
-    ERRCHECK( s.programmerSoundContext.sound->start() );
+    ERRORCHECK( s.programmerSoundContext.sound->start() );
 }
 
 void TheFachada::stopsound(SoundCmp& s) {
-    ERRCHECK( s.programmerSoundContext.sound->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT) );
+    ERRORCHECK( s.programmerSoundContext.sound->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT) );
 }
 
 bool TheFachada::isPlaying(SoundCmp& s) {
     FMOD_STUDIO_PLAYBACK_STATE* state = nullptr;
-    if(s.programmerSoundContext.sound->getPlaybackState(state) != FMOD_STUDIO_PLAYBACK_STOPPED)
+    if(s.programmerSoundContext.sound->getPlaybackState(state) != 2/*FMOD_STUDIO_PLAYBACK_STOPPED*/)
         return true;
 
     return false;
 }
 
 void TheFachada::close() {
-    ERRCHECK(ambienteDescription->releaseAllInstances());
-    ERRCHECK(armaDescription->releaseAllInstances());
-    ERRCHECK(mejoraDescription->releaseAllInstances());
-    ERRCHECK(danyoDescription->releaseAllInstances());
-    ERRCHECK(moverseDescription->releaseAllInstances());
-    ERRCHECK(menuDescription->releaseAllInstances());
-    ERRCHECK(musicaDescription->releaseAllInstances());
-    ERRCHECK(enemigoDescription->releaseAllInstances());
-    ERRCHECK(personajeDescription->releaseAllInstances());
-    ERRCHECK(masterBank->unload());
-    ERRCHECK(stringsBank->unload());
-    ERRCHECK(soundSystem->unloadAll());
+    ERRORCHECK(ambienteDescription->releaseAllInstances());
+    ERRORCHECK(armaDescription->releaseAllInstances());
+    ERRORCHECK(mejoraDescription->releaseAllInstances());
+    ERRORCHECK(danyoDescription->releaseAllInstances());
+    ERRORCHECK(moverseDescription->releaseAllInstances());
+    ERRORCHECK(menuDescription->releaseAllInstances());
+    ERRORCHECK(musicaDescription->releaseAllInstances());
+    ERRORCHECK(enemigoDescription->releaseAllInstances());
+    ERRORCHECK(personajeDescription->releaseAllInstances());
+    ERRORCHECK(masterBank->unload());
+    ERRORCHECK(stringsBank->unload());
+    ERRORCHECK(soundSystem->unloadAll());
 }
 
 void TheFachada::chargeparameters() {
-    ERRCHECK(ambienteDescription->getParameterDescriptionByName("ambiente",&paramAmbiente));
+    ERRORCHECK(ambienteDescription->getParameterDescriptionByName("ambiente",&paramAmbiente));
 
-    ERRCHECK(armaDescription->getParameterDescriptionByName("armatipo",&paramArma));
+    ERRORCHECK(armaDescription->getParameterDescriptionByName("armatipo",&paramArma));
 
-    ERRCHECK(mejoraDescription->getParameterDescriptionByName("Mejora",&paramMejora));
+    ERRORCHECK(mejoraDescription->getParameterDescriptionByName("Mejora",&paramMejora));
 
-    ERRCHECK(danyoDescription->getParameterDescriptionByName("Danyo",&paramDanyo));
+    ERRORCHECK(danyoDescription->getParameterDescriptionByName("Danyo",&paramDanyo));
 
-    ERRCHECK(moverseDescription->getParameterDescriptionByName("moverse",&paramMoverse));
+    ERRORCHECK(moverseDescription->getParameterDescriptionByName("moverse",&paramMoverse));
 
-    ERRCHECK(menuDescription->getParameterDescriptionByName("Menu",&paramMenu));
+    ERRORCHECK(menuDescription->getParameterDescriptionByName("Menu",&paramMenu));
 
-    ERRCHECK(musicaDescription->getParameterDescriptionByName("musica",&paramMusica));
+    ERRORCHECK(musicaDescription->getParameterDescriptionByName("musica",&paramMusica));
 
-    ERRCHECK(enemigoDescription->getParameterDescriptionByName("vozenemigo",&paramEnemigo));
+    ERRORCHECK(enemigoDescription->getParameterDescriptionByName("vozenemigo",&paramEnemigo));
 
-    ERRCHECK(personajeDescription->getParameterDescriptionByName("vozpersonaje",&paramPersonaje));
+    ERRORCHECK(personajeDescription->getParameterDescriptionByName("vozpersonaje",&paramPersonaje));
 }

@@ -6,7 +6,7 @@ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend) {
             if(ent.hasTAG<TEnemy>()) {
-                float giro = (-phy.orieny)*180/irr::core::PI+360;
+                float giro = static_cast<float>(-phy.orieny)*180/irr::core::PI+360;
                 rend.n->setRotation({rend.n->getRotation().X,giro,rend.n->getRotation().Z});
             }
             rend.n->setPosition({static_cast<float>(phy.x), static_cast<float>(phy.y), static_cast<float>(phy.z)});
@@ -18,7 +18,7 @@ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
     //ImGUI_Postrender();
 };
 
-void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
+void RenSys2::drawAll(EntyMan& /*EM*/, TheEngine& GFX) {
     GFX.beginScene();
     GFX.drawAll();
     //drawBBox(EM, GFX);
@@ -29,10 +29,10 @@ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
     auto vd = GFX.getDevice()->getVideoDriver();
     vd->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
     EM.foreach<BOXCMPs, SYSTAGs>(
-        [&](Enty& ent, PhysicsCmp2 const& phy, EstadoCmp const& state){
+        [&](Enty&, PhysicsCmp2 const& phy, EstadoCmp const& state){
             vd->draw3DBox({
-                { (float)phy.x-state.width, (float)phy.y-state.height, (float)phy.z-state.depth }, 
-                { (float)phy.x+state.width, (float)phy.y+state.height, (float)phy.z+state.depth }
+                { static_cast<float>(phy.x-state.width), static_cast<float>(phy.y-state.height), static_cast<float>(phy.z-state.depth) }, 
+                { static_cast<float>(phy.x+state.width), static_cast<float>(phy.y+state.height), static_cast<float>(phy.z+state.depth) }
             });
         }
     );

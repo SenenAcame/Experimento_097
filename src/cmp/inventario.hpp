@@ -2,8 +2,8 @@
 #include <cstdint>
 
 struct InventarioCmp {
-    int equipada { 0 };
-    //1 =  desbloqueada, 0 = no, 2 = arma actual
+    std::size_t equipada { 0 };
+    //0 = bloqueada, 1 = desbloqueada, 2 = arma actual
     std::size_t inventary [3] = { 2, 0, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
     
     //weapon1

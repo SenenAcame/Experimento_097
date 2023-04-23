@@ -206,7 +206,7 @@ void InpSys2::reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
     soundWeapon(EM);
 }
 
-void InpSys2::changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng) {
+void InpSys2::changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, int equip, TheEngine& eng) {
     int magazine {}, ammo{};
     playerRender.n->remove();
     
@@ -333,17 +333,17 @@ void InpSys2::createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, Th
     equipment.clockCadence = 0 ;
 
     if(equipment.equipada == 0){ //pistola
-        LM.createBullet(phy_player, eng, SS, 18., 5., 0.1, 9.);
+        LM.createBullet(phy_player, eng, SS, 18., 5., 0.1f, 9.);
         equipment.magazine1 -= 1;
         //ammo = equipment.magazine1;
     }
     else if (equipment.equipada == 1){ //escopeta
-        LM.createShotgunBullets(phy_player, eng, SS, 8., 3., 0.15, 0.4, 10);
+        LM.createShotgunBullets(phy_player, eng, SS, 8., 3., 0.15f, 0.4f, 10);
         equipment.magazine2 -= 1;
         //ammo = equipment.magazine1;
     }
     else if(equipment.equipada == 2){ //ametralladora
-        LM.createBullet(phy_player, eng, SS, 15., 4., 0.1, 1.5);
+        LM.createBullet(phy_player, eng, SS, 15., 4., 0.1f, 1.5);
         equipment.magazine3 -= 1;
         //ammo = equipment.magazine1;
     }

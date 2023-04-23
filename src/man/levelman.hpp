@@ -39,7 +39,7 @@ struct LevelMan {
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
     //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
     void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev);
-    Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
+    Enty& createSpawn(float x_pos, float z_pos, int sala2);
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
     void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
@@ -65,9 +65,9 @@ private:
     int    aliveEnemys          = 0;
     int    maxEnemysWave        = 11; //max number of enemy created
     int    points               = 0;
+    int    extraHeal            = 5; //extra EnemyHeal per wave
+    int    extraEnemys          = 3; //extra number of enemys per wave
     float  extraSpeed           = 0; //extra speed per round
-    double extraHeal            = 5; //extra EnemyHeal per wave
-    double extraEnemys          = 3; //extra number of enemys per wave
     double timeBtwWaves         = 4;
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;

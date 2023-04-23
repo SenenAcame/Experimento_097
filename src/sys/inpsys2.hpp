@@ -28,7 +28,7 @@ private:
     void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment);
     void digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down);
     void reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment);
-    void changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng);
+    void changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, int equip, TheEngine& eng);
     //void interact(EntyMan& EM, Enty& player, KeySym key);
     void unlockAll(size_t* invent);
     void reloadAll(EntyMan& EM, InventarioCmp& equip);

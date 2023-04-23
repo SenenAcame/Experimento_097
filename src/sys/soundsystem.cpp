@@ -6,7 +6,7 @@ SoundSystem_t::SoundSystem_t() {
 
 void SoundSystem_t::update(EntyMan& EM) {
     EM.foreach<SYSCMPs,SYSTAGs>(
-        [&](Enty& e, SoundCmp& s) {
+        [&](Enty&, SoundCmp& s) {
             if(s.cambia) {
                 changesound(s);
                 s.cambia = false;
