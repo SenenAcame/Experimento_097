@@ -10,6 +10,8 @@ struct TheEngine {
     using IGUIImage        = irr::gui::IGUIImage;
     using IGUIText         = irr::gui::IGUIStaticText;
     using IGUIFont         = irr::gui::IGUIFont;
+    using IGUIEnvironment  = irr::gui::IGUIEnvironment;
+    using IGUIButton       = irr::gui::IGUIButton;
 
     explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
     bool run() const { return device_->run(); }
@@ -34,6 +36,7 @@ struct TheEngine {
 
     void  close()                                    { device_->closeDevice(); }
     
+    auto* getGuienv()  { return guienv_; }
     auto& getDevice()           { return device_; }
     auto  getSceneManager() { return device_->getSceneManager(); }
     auto  getCamera()           { return getSceneManager()->getActiveCamera(); }

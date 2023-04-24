@@ -28,7 +28,8 @@ void GameMan::game() {
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
 
-    dev.getDevice();
+    //dev.getDevice();
+    LM.initMenu(dev);
 
     while(dev.run()) {
         //////////////////////////////////////////////////////////////
@@ -108,7 +109,7 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
     
     while(menu && dev.run()) {
         RenSys.update(EM, dev);
-        menu = InpSys.update_menu(dev);
+        menu = InpSys.update_menu(LM, dev);
     }
 
     LM.setInvisibleMenu(dev);
@@ -117,7 +118,7 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
 void GameMan::init_config(TheEngine& dev) {
     srand(static_cast<unsigned int>(time(NULL)));
     dev.getDevice()->getCursorControl()->setVisible(false);
-    dev.SetFont("assets/Interface/Font/chill.xml");
+    //dev.SetFont("assets/Interface/Font/chill.xml");
 }
 
 void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <irrlicht/Keycodes.h>
 
-
 void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
     auto& bb = EM.getBoard();
@@ -38,9 +37,9 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
     );
 }
 
-bool InpSys2::update_menu(TheEngine& dev) {
-    if(keyboard.isKeyPressed(XK_KP_Enter)) return false;
-    exit(dev);
+bool InpSys2::update_menu(LevelMan& LM, TheEngine& dev) {
+    if(LM.isStartPressed()) return false;
+    if(LM.isExitPressed())  dev.close();
 
     return true;
 }

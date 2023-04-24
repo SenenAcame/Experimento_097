@@ -16,7 +16,7 @@ struct InpSys2 : public irr::IEventReceiver {
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
     void update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
-    bool update_menu(TheEngine& dev);
+    bool update_menu(LevelMan& LM, TheEngine& dev);
     bool update_pause(TheEngine& dev, bool pause);
     void exit(TheEngine& dev);
     virtual bool OnEvent(const irr::SEvent& event);
