@@ -30,35 +30,41 @@ struct LevelMan {
     void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm);
     void updateInterfaceHP(TheEngine& dev, Enty&player);
     void updateInterfaceHit(TheEngine& dev, Enty& player);
-
     void cleanHitsInterface(TheEngine& dev ,double dt);
-    void createMap(TheEngine& dev, SoundSystem_t& SouSys);
+
+    void  createMap(TheEngine& dev, SoundSystem_t& SouSys);
     Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
     Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
-    Enty& createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
+    Enty&  createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
     //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
-    void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev);
+    void  createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev);
     Enty& createSpawn(float x_pos, float z_pos, int sala2);
-    void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+    void  createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
-    void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+    void  createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD,
         double const pbx = 0, double const pby = 0);
     void resetLevel(TheEngine& dev);
+
     void setVisibleMenu(TheEngine& dev);
     void setInvisibleMenu(TheEngine& dev);
+    void setVisibleControls();
+    void setInvisibleControls();
+
     bool isStartPressed() { return start->isPressed(); }
-    bool isExitPressed()  { return exit->isPressed(); }
+    bool isExitPressed()  { return exit->isPressed();  }
+
     EntyMan& getEM() { return EM; }
+
 private:
-    void createSoundEffect(SoundSystem_t& SouSys);
-    Enty& createEnemy(SoundSystem_t& SouSys);
-    void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
-    void defineAI(Enty& enemy);
+    void   createSoundEffect(SoundSystem_t& SouSys);
+    Enty&  createEnemy(SoundSystem_t& SouSys);
+    void   createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
+    void   defineAI(Enty& enemy);
     double randAng(uint8_t ang);
 
     EntyMan EM;
@@ -85,6 +91,7 @@ private:
     Image mir  {}, hit1 {};
     Image hit2 {}, hit3 {};
     Image menu_init {};
+    Image controls {};
 
     Button start {};
     Button exit {};

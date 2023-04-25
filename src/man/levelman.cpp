@@ -119,17 +119,19 @@ Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
 
 void LevelMan::initMenu(TheEngine &dev) {
     Gui imgui = dev.getGuienv();
+    auto part_w = dev.getWidth()/10;
+    auto part_h = dev.getHeight()/10;
 
     dev.SetFont("assets/Interface/Font/chill.xml");
-    menu_init = dev.addImageToPositionInScreen("assets/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
-    
-    start = imgui->addButton({ 100, 100, 400, 200 });
-    start->setText(L"Comenzar");
-    //start->setVisible(true);
 
-    exit = imgui->addButton({ 100, 200, 400, 300 });
+    start = imgui->addButton({ static_cast<int>(3*part_w), static_cast<int>(2.5*part_h), static_cast<int>(7*part_w), static_cast<int>(4*part_h) });
+    start->setText(L"Comenzar");
+
+    exit = imgui->addButton({ static_cast<int>(3*part_w), static_cast<int>(6*part_h), static_cast<int>(7*part_w), static_cast<int>(7.5*part_h) });
     exit->setText(L"Salir");
-    //exit->setVisible(true);
+
+    controls = dev.addImageToPositionInScreen("assets/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
+    controls->setVisible(false);
 }
 
 void LevelMan::initInterface (TheEngine& dev, Enty& player) {
@@ -580,15 +582,23 @@ void LevelMan::resetLevel(TheEngine& dev) {
 
 void LevelMan::setVisibleMenu(TheEngine& dev) {
     //menu_init = dev.addImageToPositionInScreen("assets/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
-    dev.setVisibleImage(menu_init);
+    //dev.setVisibleImage(menu_init);
     start->setVisible(true);
     exit->setVisible(true);
 }
 
 void LevelMan::setInvisibleMenu(TheEngine& dev) {
-    dev.setInvisibleImage(menu_init);
+    //dev.setInvisibleImage(menu_init);
     start->setVisible(false);
     exit->setVisible(false);
+}
+
+void LevelMan::setVisibleControls() {
+    controls->setVisible(true);
+}
+
+void LevelMan::setInvisibleControls() {
+    controls->setVisible(false);
 }
 
 void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {

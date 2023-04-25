@@ -44,6 +44,11 @@ bool InpSys2::update_menu(LevelMan& LM, TheEngine& dev) {
     return true;
 }
 
+bool InpSys2::update_controls() {
+    if(keyboard.isKeyPressed(XK_KP_Enter)) return false;
+    return true;
+}
+
 bool InpSys2::update_pause(TheEngine& dev, bool pause) {
     if(keyboard.isKeyPressed(XK_KP_Space)) {
         keyboard.keyReleased(XK_KP_Space);
