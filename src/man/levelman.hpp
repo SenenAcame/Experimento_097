@@ -23,7 +23,7 @@ struct LevelMan {
             [&](Enty& en, PhysicsCmp2&) {
                 
                 if(en.getDestroy()) {
-                    points+=5;
+                    points+=1;
                     updateInterfacePoints(dev);
                     aliveEnemys--;
                 }
@@ -51,10 +51,6 @@ struct LevelMan {
             spawnCMP.clockSpawn+=dt;
             
             if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
-                
-                
-              
-                
                 
                 if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
                 
@@ -85,27 +81,18 @@ struct LevelMan {
         );
         if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
             inRound = false;
+
             
             //std::cout<<"NOT In round: "<<inRound<<"\n";
 
         }
         else if(inRound == false){
             clockToNextWave += dt;
+            notificationNewRound(dev);
             //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
             if(clockToNextWave >= timeBtwWaves){
-                inRound = true;
-                clockToNextWave = 0;
-                if(extraSpeed<31){
-                    
-                    extraSpeed+=4.5;
-                }
-                numberOfEnemysBasics = 2+extraEnemys*waveNumber;
-                waveNumber++;
-                updateInterfaceWave(dev);
-                std::string  aux        = std::to_string(100);
-                std::wstring convert    = std::wstring(aux.begin(), aux.end());
-                const wchar_t* HPText   = convert.c_str();
-                dev.changeTextFromPointer(h1, HPText);
+                passRound(dev, player);
+                
                 
                 //std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
                 //std::cout<<"In round: "<<inRound<<"\n";
@@ -137,13 +124,7 @@ struct LevelMan {
         createSpawn(35, -30,dev,7);
         createWeapon(40, 5, -70, dev, SouSys, 2);
         inRound = true;
-        
-        //createBasicEnemy(110, 60, dev, SouSys);
-        //createBasicEnemy(120, 60, dev, SouSys);
-        //createBasicEnemy(110, 70, dev, SouSys);
-        //createBasicEnemy(35, -60, dev, SouSys);
-        //createBasicEnemy(45, -60, dev, SouSys);
-        //createBasicEnemy(35, -70, dev, SouSys);
+    
         
         return player;
     }
@@ -181,6 +162,7 @@ struct LevelMan {
         updateInterfaceWave(dev);
         //points
         updateInterfacePoints(dev);
+        
 
     }
 
@@ -213,9 +195,14 @@ struct LevelMan {
         //wave
         waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
         wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
+
+        waveText2 =  dev.addTextToPositionInScreen(L"Wave:",widthScreen/10*4,widthNumbers/10*5,widthScreen,widthNumbers2);
+        dev.setInvisibleText(waveText2);
+        wave2 =  dev.addTextToPositionInScreen(L"",widthScreen/10*5,widthNumbers/10*5,widthScreen,widthNumbers2);
+        dev.setInvisibleText(wave2);
         //points
         pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
-        pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
+        pointsText = dev.addTextToPositionInScreen(L"Kills:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
         //mira
         mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira_2.png", widthScreen/2, heightScreen/2+29);
 
@@ -239,6 +226,37 @@ struct LevelMan {
     //        default: break;
     //    }
     //}
+    void notificationNewRound(TheEngine& dev){
+
+        dev.setVisibleText(waveText2);
+        dev.setVisibleText(wave2);
+        std::string aux = std::to_string(waveNumber+1);
+        std::wstring convert = std::wstring(aux.begin(), aux.end());
+        const wchar_t* waveNew= convert.c_str();
+        dev.changeTextFromPointer(wave2, waveNew);
+        //sound Here new Wave
+    }
+
+    void passRound(TheEngine& dev, Enty& player){
+
+        inRound = true;
+        clockToNextWave = 0;
+        if(extraSpeed<27){
+            
+            extraSpeed+=4.5;
+        }
+        numberOfEnemysBasics = 2+extraEnemys*waveNumber;
+        waveNumber++;
+        updateInterfaceWave(dev);
+        std::string  aux        = std::to_string(100);
+        std::wstring convert    = std::wstring(aux.begin(), aux.end());
+        const wchar_t* HPText   = convert.c_str();
+        dev.changeTextFromPointer(h1, HPText);
+        EM.getComponent<EstadisticaCmp>(player).hitpoints = 100;
+        dev.setInvisibleText(waveText2);
+        dev.setInvisibleText(wave2);
+    }
+
 
     void updateInterfaceMag(TheEngine& dev, int maga){
         std::string aux = std::to_string(maga);
@@ -636,6 +654,9 @@ private:
 
     TheEngine::IGUIText*  wave {};
     TheEngine::IGUIText*  waveText {};
+
+    TheEngine::IGUIText*  wave2 {};
+    TheEngine::IGUIText*  waveText2 {};
 
     TheEngine::IGUIText*  pointsUI {};
     TheEngine::IGUIText*  pointsText {};

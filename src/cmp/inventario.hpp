@@ -12,6 +12,7 @@ struct InventarioCmp {
     int magazine1       = 5;
     double reloadTime1  {0.8};
     double clockReload1 {0.8};
+    double retroceso1   {1.0};
     //double cadenceWeapon1{1}; // 1 vez por segundo
     
 
@@ -20,6 +21,7 @@ struct InventarioCmp {
     int magazine2       = 2;
     double reloadTime2  {3};
     double clockReload2 {1.5};
+    double retroceso2   {3.0};
     //double cadenceWeapon2 {0.2}; //5 veces por segundo
 
     //weapon3
@@ -28,6 +30,7 @@ struct InventarioCmp {
     double cadenceWeapon3 {0.05}; 
     double reloadTime3    {1.1};
     double clockReload3   {1.1};
+    double retroceso3     {0.4};
     
 
     size_t reloading = 0; //0 not reloading 1 reloading

@@ -85,6 +85,8 @@ TheEngine::IGUIImage* TheEngine::addImageToPositionInScreen(Path image, int x, i
    
 }
 
+
+
 void TheEngine::changeImageFromPointer(IGUIImage* pointer, Path image){
 
     irr::video::ITexture* images = driver_->getTexture(image);
@@ -105,9 +107,22 @@ void TheEngine::setVisibleImage(IGUIImage* pointer){
 
 }
 
+void TheEngine::setInvisibleText(IGUIText* pointer){
+
+    pointer->setVisible(false);
+
+}
+
+void TheEngine::setVisibleText(IGUIText* pointer){
+
+    pointer->setVisible(true);
+
+}
+
 void TheEngine::changeTextFromPointer(IGUIText* pointer, const wchar_t * text){
     
     pointer->setText(text);
+
 
 }
 

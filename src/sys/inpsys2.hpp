@@ -139,16 +139,20 @@ private:
         int ammo = 0;
         double weaponCadence = 0;
         double reloadTimer = 0;
+        double retroceso = 0;
         switch (equipment.equipada) {
             case 0: ammo = equipment.magazine1;
                     reloadTimer = equipment.reloadTime1;
+                    retroceso = equipment.retroceso1;
             break;
             case 1: ammo = equipment.magazine2;
                     reloadTimer = equipment.reloadTime2;
+                    retroceso = equipment.retroceso2;
             break;
             case 2: ammo = equipment.magazine3;
                     reloadTimer = equipment.reloadTime3;
                     weaponCadence = equipment.cadenceWeapon3;
+                    retroceso = equipment.retroceso3;
             break;
             default: break;
         }
@@ -159,8 +163,15 @@ private:
         
         if(ammo > 0) { 
             //std::cout<<"DISPARO\n";
+            auto &EM = LM.getEM();
             createBullet(LM, player, weaponCadence, eng, SS);
             LM.updateInterfaceMag(eng, ammo-1);
+            auto physicsPlayer = EM.getComponent<PhysicsCmp2>(player);
+            eng.getCamera()->setRotation({
+                eng.getCamera()->getRotation().X - sin(eng.getCamera()->getPosition().Y * retroceso), 
+                eng.getCamera()->getRotation().Y, 
+                eng.getCamera()->getRotation().Z - cos(eng.getCamera()->getPosition().Y * retroceso),
+            });
         }
         else if(ammo == 0) { reload(LM, eng, equipment); }
 
