@@ -630,7 +630,7 @@ private:
     int    waveNumber           = 1; //actual wave
     double extraHeal            = 5; //extra EnemyHeal per wave
     float  extraSpeed           = 0; //extra speed per round
-    int    numberOfEnemysBasics = 2; //number of enemys per wave
+    int    numberOfEnemysBasics = 0; //number of enemys per wave
     int    aliveEnemys          = 0;
     double extraEnemys          = 3; //extra number of enemys per wave
     int    maxEnemysWave        = 11; //max number of enemy created
