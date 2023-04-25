@@ -37,6 +37,11 @@ void GameMan::game() {
 
         loop_game(LM, dev, RenSys, InpSys);
 
+        /////////////////////////////////////////////////////////////
+        // Pantalla de muerte
+
+        //dead(LM, dev, RenSys, InpSys);
+
     }
     //RenSys.EndImgui();
 }
@@ -136,6 +141,21 @@ void GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &
     std::cout <<" TIMEPO (s): " << ellapseS << "\n";
     std::cout <<" Frames " << frames<< "\n";
     std::cout <<" FPS " << double(frames)/ellapseS << "\n";
+}
+
+void GameMan::dead(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &InpSys) {
+    EntyMan&  EM = LM.getEM();
+    bool restart { true };
+
+    //LM.setVisibleMenu(dev);
+    //dev.getDevice()->getCursorControl()->setVisible(true);
+    
+    while(restart && dev.run()) {
+        //RenSys.update(EM, dev);
+        //menu = InpSys.update_menu(LM, dev);
+    }
+
+    //LM.setInvisibleMenu(dev);
 }
 
 void GameMan::init_config(TheEngine& dev) {
