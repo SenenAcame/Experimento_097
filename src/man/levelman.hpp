@@ -54,9 +54,13 @@ struct LevelMan {
     void setInvisibleMenu(TheEngine& dev);
     void setVisibleControls();
     void setInvisibleControls();
+    void setVisiblePause();
+    void setInvisiblePause();
 
-    bool isStartPressed() { return start->isPressed(); }
-    bool isExitPressed()  { return exit->isPressed();  }
+    bool isStartPressed()   { return start->isPressed();   }
+    bool isExitPressed()    { return exit->isPressed();    }
+    bool isReturnPressed()  { return return_->isPressed(); }
+    bool isAbandonPressed() { return abandon->isPressed(); }
 
     EntyMan& getEM() { return EM; }
 
@@ -95,6 +99,8 @@ private:
 
     Button start {};
     Button exit {};
+    Button return_ {};
+    Button abandon {};
 
     //Hits
     int activateHit {0};

@@ -31,7 +31,7 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
             if(keyboard.isKeyPressed(input.key_rldALLAmmo)) { reloadAll(EM, equip); }
             
-            exit(eng);
+            //exit(eng);
             bb = { phy.x, phy.z, true, true , player.getID()};
         }
     );
@@ -49,22 +49,53 @@ bool InpSys2::update_controls() {
     return true;
 }
 
-bool InpSys2::update_pause(TheEngine& dev, bool pause) {
-    if(keyboard.isKeyPressed(XK_KP_Space)) {
-        keyboard.keyReleased(XK_KP_Space);
-        if(!pause) dev.getDevice()->getCursorControl()->setVisible(true);
-        else       dev.getDevice()->getCursorControl()->setVisible(false);
+bool InpSys2::update_unpause(LevelMan& LM, TheEngine& dev, bool pause) {
+    if(LM.isReturnPressed()) {
+        dev.getDevice()->getCursorControl()->setVisible(false);
+        LM.setInvisiblePause();
 
         return !pause;
     }
-    exit(dev);
+    if(LM.isAbandonPressed()) 
+        dev.close();
 
     return pause;
 }
 
-void InpSys2::exit(TheEngine& dev) {
-    if(keyboard.isKeyPressed(XK_Escape)) dev.close();
+bool InpSys2::update_pause(LevelMan& LM, TheEngine& dev, bool pause) {
+    //if(LM.isReturnPressed() || keyboard.isKeyPressed(XK_KP_Space)) {
+    //    keyboard.keyReleased(XK_KP_Space);
+    //    if(!pause) {
+    //        dev.getDevice()->getCursorControl()->setVisible(true);
+    //        LM.setVisiblePause();
+    //    }
+    //    else {
+    //        dev.getDevice()->getCursorControl()->setVisible(false);
+    //        LM.setInvisiblePause();
+    //    }
+    //
+    //    return !pause;
+    //}
+    //if(LM.isAbandonPressed()) exit(dev);
+
+    if(keyboard.isKeyPressed(XK_Escape)) {
+        keyboard.keyReleased(XK_Escape);
+        dev.getDevice()->getCursorControl()->setVisible(true);
+        LM.setVisiblePause();
+        //if(!pause) 
+        //    dev.getDevice()->getCursorControl()->setVisible(true);
+        //else
+        //    dev.getDevice()->getCursorControl()->setVisible(false);
+        //
+        return !pause;
+    }
+    
+    return pause;
 }
+
+//void InpSys2::exit(TheEngine& dev) {
+//    if(keyboard.isKeyPressed(XK_Escape)) dev.close();
+//}
 
 bool InpSys2::OnEvent(const irr::SEvent& event) {
     if (event.EventType == irr::EET_KEY_INPUT_EVENT){

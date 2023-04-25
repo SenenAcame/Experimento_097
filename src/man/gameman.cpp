@@ -97,12 +97,12 @@ void GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &
     constexpr int64_t nanos_per_frame {1000000000/maxFPS};
     int64_t frames = 0;
 
-    while(!dead && dev.run()){
+    while(!dead && dev.run()) {
         auto frame_start = std::chrono::high_resolution_clock::now();
         
         if(pause) {
             RenSys.update(EM, dev);
-            pause = InpSys.update_pause(dev, pause);
+            pause = InpSys.update_unpause(LM, dev, pause);
         }
         else {
             EM.      update();
@@ -120,7 +120,7 @@ void GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &
             LM.      update(dev, SouSys, dt, player_ID);
             DestSys. update(EM, dt);
 
-            pause = InpSys.update_pause(dev, pause);
+            pause = InpSys.update_pause(LM, dev, pause);
             dead  = EM.getEntityById(player_ID).getDestroy();
         }            
 

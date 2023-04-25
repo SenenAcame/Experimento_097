@@ -44,9 +44,11 @@ SANITIZE := -fsanitize=address
 DINAMIC  := -Wl,-rpath=libs/   	#enlazar librerias dinamicas al ejecutar en caarpeta libs/
 
 ifdef RELEASE
+#optimizciones del compilador
 	CCFLAGS += -O3
 	CFLAGS += -O3
 else
+#simbolos de depuracion
 	CCFLAGS += -g
 	CFLAGS += -g
 endif
