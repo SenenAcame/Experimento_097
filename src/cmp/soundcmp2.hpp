@@ -17,7 +17,7 @@ struct SoundCmp{
     ProgrammerSoundContext programmerSoundContext {};
     int parametro;
     bool play      { false };
-    bool isplaying { false };
+    bool loop      { false };
     bool cambia    { false };
 
     static constexpr uint8_t id { 7 }; //0010000000

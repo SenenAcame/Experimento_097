@@ -354,7 +354,7 @@ void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
     EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
-    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
+    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true, .loop=true});
     EM.addTag      <TMap>       (map);
     
     for(uint8_t i {0}; i<6; i++) 
@@ -509,7 +509,7 @@ double const pbx, double const pby) {
     );
     EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
     EM.addComponent<EstadoCmp>  (bullet);
-    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=0, .play=true, .cambia=true});
     EM.addComponent<SelfDestCmp>(bullet, slfD);
     EM.addTag<TBullet>          (bullet);
     EM.addTag<TInteract>        (bullet);

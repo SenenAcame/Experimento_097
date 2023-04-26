@@ -172,7 +172,7 @@ void InpSys2::reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
         break;
         default: break;
     }
-    soundWeapon(EM);
+    soundWeapon(EM, equipment.equipada);
 }
 
 void InpSys2::changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng) {
@@ -258,7 +258,7 @@ void InpSys2::reloadAll(EntyMan& EM, InventarioCmp& equip) {
     equip.ammo1 = 20;
     equip.ammo2 = 10;
     equip.ammo3 = 100;
-    soundWeapon(EM);
+    soundWeapon(EM, equip.equipada);
 }
 
 //void InpSys2::addKeyToInventary(EntyMan& EM, Enty& player) {
@@ -320,11 +320,14 @@ void InpSys2::createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, Th
     return;
 }
 
-void InpSys2::soundWeapon(EntyMan& EM) {
+void InpSys2::soundWeapon(EntyMan& EM, int esescopeta) {
     for(auto& a : EM.getEntities()){
         if(a.hasTAG<TWeapon>() && a.hasCMP<SoundCmp>()) {
             auto& sound = EM.getComponent<SoundCmp>(a);
-            EM.changeSound(sound, 1);
+            if(esescopeta == 1)
+                EM.changeSound(sound, 2);
+            else
+                EM.changeSound(sound, 1);
         }
     }
 }

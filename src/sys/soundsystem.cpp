@@ -17,11 +17,12 @@ void SoundSystem_t::update(EntyMan& EM, Enty& player) {
                 changesound(s);
                 s.cambia = false;
             }
-            if(isPlaying(s))
+            if(isPlaying(s) && !s.loop)
                 s.play = false;
             if(s.play) {
                 if(!isPlaying(s)) {
-                    s.play = false;
+                    if(!s.loop)
+                        s.play = false;
                     startsound(s);
                 }
             }
@@ -46,7 +47,13 @@ void SoundSystem_t::startsound(SoundCmp& s) {
     facherita.startsound(s);
 }
 
+void SoundSystem_t::setloop(SoundCmp& s) {
+    s.loop = !s.loop;
+}
+
 void SoundSystem_t::stopsound(SoundCmp& s) {
+    if(s.loop)
+        setloop(s);
     facherita.stopsound(s);
 }
 

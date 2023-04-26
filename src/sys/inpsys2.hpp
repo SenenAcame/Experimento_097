@@ -37,7 +37,7 @@ private:
     void iAmReloading(InventarioCmp& equipment) { equipment.reloading = 1; }
     void notReloading(InventarioCmp& equipment) { equipment.reloading = 0; }
     void createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, TheEngine& eng, SoundSystem_t& SS);
-    void soundWeapon(EntyMan& EM);
+    void soundWeapon(EntyMan& EM, int esescopeta);
 
     static void onkeypressed(KeySym k)  { keyboard.keyPressed(k);  }
     static void onkeyreleased(KeySym k) { keyboard.keyReleased(k); }

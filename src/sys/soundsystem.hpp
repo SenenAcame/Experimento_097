@@ -13,6 +13,7 @@ struct SoundSystem_t {
     ProgrammerSoundContext createinstance(int);
     void close();
     void startsound(SoundCmp&);
+    void setloop(SoundCmp&);
     void stopsound(SoundCmp&);
     bool isPlaying(SoundCmp&);
     void changesound(SoundCmp&);
