@@ -128,15 +128,11 @@ void RMesh::processMesh(aiMesh *mesh, const aiScene *scene, bool sky, ResourceGe
     }
 
     //process materials
-<<<<<<< HEAD
     auto cont = scene->mMaterials;
-    //std::cout << scene->mMaterials[0]->GetName().C_Str() << std::endl;
-    auto ind = mesh->mMaterialIndex;
-=======
-    //auto cont = scene->mMaterials;
     std::cout << scene->mMaterials[0]->GetName().C_Str() << std::endl;
     //auto ind = mesh->mMaterialIndex;
 >>>>>>> 9b85309 (El problema esta con las luces)
+    //auto ind = mesh->mMaterialIndex;
     aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
     //aiMaterial *material = cont[ind];
     //std::string matName = name_ + material->GetName().C_Str();
