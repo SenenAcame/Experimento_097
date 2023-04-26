@@ -50,17 +50,21 @@ struct LevelMan {
         double const pbx = 0, double const pby = 0);
     void resetLevel(TheEngine& dev);
 
-    void setVisibleMenu(TheEngine& dev);
-    void setInvisibleMenu(TheEngine& dev);
+    void setVisibleMenu();
+    void setInvisibleMenu();
     void setVisibleControls();
     void setInvisibleControls();
     void setVisiblePause();
     void setInvisiblePause();
+    void setVisibleDead();
+    void setInvisibleDead();
 
-    bool isStartPressed()   { return start->isPressed();   }
-    bool isExitPressed()    { return exit->isPressed();    }
-    bool isReturnPressed()  { return return_->isPressed(); }
-    bool isAbandonPressed() { return abandon->isPressed(); }
+    bool isStartPressed()    { return start->isPressed();     }
+    bool isExitPressed()     { return exit->isPressed();      }
+    bool isReturnPressed()   { return return_->isPressed();   }
+    bool isAbandonPressed()  { return abandon->isPressed();   }
+    bool isRestartPressed()  { return restart->isPressed();   }
+    bool isExitDeadPressed() { return exit_dead->isPressed(); }
 
     EntyMan& getEM() { return EM; }
 
@@ -95,12 +99,14 @@ private:
     Image mir  {}, hit1 {};
     Image hit2 {}, hit3 {};
     Image menu_init {};
-    Image controls {};
+    Image controls  {};
 
-    Button start {};
-    Button exit {};
-    Button return_ {};
-    Button abandon {};
+    Button start     {};
+    Button exit      {};
+    Button return_   {};
+    Button abandon   {};
+    Button restart   {};
+    Button exit_dead {};
 
     //Hits
     int activateHit {0};

@@ -46,51 +46,57 @@ bool InpSys2::update_menu(LevelMan& LM, TheEngine& dev) {
 
 bool InpSys2::update_controls() {
     if(keyboard.isKeyPressed(XK_KP_Enter)) return false;
+
     return true;
 }
 
-bool InpSys2::update_unpause(LevelMan& LM, TheEngine& dev, bool pause) {
-    if(LM.isReturnPressed()) {
-        dev.getDevice()->getCursorControl()->setVisible(false);
-        LM.setInvisiblePause();
-
-        return !pause;
-    }
-    if(LM.isAbandonPressed()) 
-        dev.close();
-
-    return pause;
-}
-
-bool InpSys2::update_pause(LevelMan& LM, TheEngine& dev, bool pause) {
-    //if(LM.isReturnPressed() || keyboard.isKeyPressed(XK_KP_Space)) {
-    //    keyboard.keyReleased(XK_KP_Space);
-    //    if(!pause) {
-    //        dev.getDevice()->getCursorControl()->setVisible(true);
-    //        LM.setVisiblePause();
-    //    }
-    //    else {
-    //        dev.getDevice()->getCursorControl()->setVisible(false);
-    //        LM.setInvisiblePause();
-    //    }
-    //
-    //    return !pause;
-    //}
-    //if(LM.isAbandonPressed()) exit(dev);
-
+bool InpSys2::update_pause(LevelMan& LM, TheEngine& dev) {
     if(keyboard.isKeyPressed(XK_Escape)) {
         keyboard.keyReleased(XK_Escape);
         dev.getDevice()->getCursorControl()->setVisible(true);
         LM.setVisiblePause();
-        //if(!pause) 
-        //    dev.getDevice()->getCursorControl()->setVisible(true);
-        //else
-        //    dev.getDevice()->getCursorControl()->setVisible(false);
-        //
-        return !pause;
+        return true;
     }
     
-    return pause;
+    return false;
+}
+
+bool InpSys2::update_unpause(LevelMan& LM, TheEngine& dev) {
+    if(LM.isReturnPressed()) {
+        dev.getDevice()->getCursorControl()->setVisible(false);
+        LM.setInvisiblePause();
+        return false;
+    }
+
+    return true;
+}
+
+bool InpSys2::update_abandon(LevelMan& LM) {
+    if(LM.isAbandonPressed()) {
+        LM.setInvisiblePause();
+        return true;
+    }
+
+    return false;
+}
+
+bool InpSys2::update_restart(LevelMan& LM) {
+    if(LM.isRestartPressed()) {
+        //dev.getDevice()->getCursorControl()->setVisible(false);
+        LM.setInvisibleDead();
+        return false;
+    }
+
+    return true;
+}
+
+bool InpSys2::update_exit_dead(LevelMan& LM) {
+    if(LM.isExitDeadPressed()) {
+        LM.setInvisibleDead();
+        return true;
+    }
+
+    return false;
 }
 
 //void InpSys2::exit(TheEngine& dev) {

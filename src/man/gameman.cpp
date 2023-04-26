@@ -19,29 +19,42 @@ void GameMan::game() {
     LevelMan  LM;
     TheEngine dev { 1000, 1000, &InpSys };
 
+    bool abandon {false};
+
     LM.initMenu(dev);
 
+//  while(device) {
+//    
+//  menu_inicial                            empezar->continua   // salir->device=false
+//
+//  while(device && !abandon) {
+//      juego                               muerte->continua    // abandonar->abandon=true
+//
+//      if(!abandon)
+//          muerte                          reiniciar->continua // salir->abandon=true
+//  }
+//  }
+
+
     while(dev.run()) {
-        //////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////
         //  Menu inicial
 
         initial_menu(LM, dev, RenSys, InpSys);
-
-        //////////////////////////////////////////////////////////////
-        //  Controles
-
-        controls(LM, dev, RenSys, InpSys);
     
-        /////////////////////////////////////////////////////////////
-        // Bucle principal del juego
+        while(dev.run() && !abandon) {
+            /////////////////////////////////////////////////////////////
+            // Bucle principal del juego
 
-        loop_game(LM, dev, RenSys, InpSys);
+            abandon = loop_game(LM, dev, RenSys, InpSys, abandon);
+        
+            /////////////////////////////////////////////////////////////
+            // Pantalla de muerte
+            if(!abandon) 
+                abandon = dead(LM, dev, RenSys, InpSys, abandon);
+        }
 
-        /////////////////////////////////////////////////////////////
-        // Pantalla de muerte
-
-        //dead(LM, dev, RenSys, InpSys);
-
+        abandon = false;
     }
     //RenSys.EndImgui();
 }
@@ -50,7 +63,7 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
     EntyMan&  EM = LM.getEM();
     bool menu { true };
 
-    LM.setVisibleMenu(dev);
+    LM.setVisibleMenu();
     dev.getDevice()->getCursorControl()->setVisible(true);
     
     while(menu && dev.run()) {
@@ -58,24 +71,15 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
         menu = InpSys.update_menu(LM, dev);
     }
 
-    LM.setInvisibleMenu(dev);
+    LM.setInvisibleMenu();
+
+    /////////////////////////////////////////////////////////////
+    //  Controles
+
+    controls(LM, dev, RenSys, InpSys);
 }
 
-void GameMan::controls(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys2& InpSys) {
-    EntyMan&  EM = LM.getEM();
-    bool controls { true };
-
-    LM.setVisibleControls();
-    
-    while(controls && dev.run()) {
-        RenSys.update(EM, dev);
-        controls = InpSys.update_controls();
-    }
-
-    LM.setInvisibleControls();
-}
-
-void GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &InpSys) {
+bool GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &InpSys, bool abandon) {
     PhySys2       PhySys;
     ColSys2       ColSys;
     AISys         AISys;
@@ -97,17 +101,18 @@ void GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &
 
     //actual moment ini
     constexpr double dt = 1.0/60;
-    auto start = std::chrono::high_resolution_clock::now();
-    constexpr int64_t maxFPS {60};
-    constexpr int64_t nanos_per_frame {1000000000/maxFPS};
-    int64_t frames = 0;
+    //auto start = std::chrono::high_resolution_clock::now();
+    //constexpr int64_t maxFPS {60};
+    //constexpr int64_t nanos_per_frame {1000000000/maxFPS};
+    //int64_t frames = 0;
 
-    while(!dead && dev.run()) {
-        auto frame_start = std::chrono::high_resolution_clock::now();
+    while(!dead && !abandon && dev.run()) {
+        //auto frame_start = std::chrono::high_resolution_clock::now();
         
         if(pause) {
             RenSys.update(EM, dev);
-            pause = InpSys.update_unpause(LM, dev, pause);
+            pause   = InpSys.update_unpause(LM, dev);
+            abandon = InpSys.update_abandon(LM);
         }
         else {
             EM.      update();
@@ -121,41 +126,59 @@ void GameMan::loop_game(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &
             PhySys.  update_after_colision(EM, dt);
             //SouSys.  update(EM);
             //SpawnSys.update(EM, dev, SouSys, player, map);
-            //LM.      update(dev, SouSys, dt);
             LM.      update(dev, SouSys, dt, player_ID);
             DestSys. update(EM, dt);
 
-            pause = InpSys.update_pause(LM, dev, pause);
+            pause = InpSys.update_pause(LM, dev);
             dead  = EM.getEntityById(player_ID).getDestroy();
         }            
 
-        while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame) {}
-        ++frames;
+        //while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame) {}
+        //++frames;
     }
 
     LM.resetLevel(dev);
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto ellapse =  (end - start).count(); //how many nano sec has pass
-    auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
-    std::cout <<" TIMEPO (s): " << ellapseS << "\n";
-    std::cout <<" Frames " << frames<< "\n";
-    std::cout <<" FPS " << double(frames)/ellapseS << "\n";
+    //auto end = std::chrono::high_resolution_clock::now();
+    //auto ellapse =  (end - start).count(); //how many nano sec has pass
+    //auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+    //std::cout <<" TIMEPO (s): " << ellapseS << "\n";
+    //std::cout <<" Frames " << frames<< "\n";
+    //std::cout <<" FPS " << double(frames)/ellapseS << "\n";
+
+    return abandon;
 }
 
-void GameMan::dead(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &InpSys) {
+bool GameMan::dead(LevelMan &LM, TheEngine &dev, RenSys2 &RenSys, InpSys2 &InpSys, bool abandon) {
     EntyMan&  EM = LM.getEM();
-    bool restart { true };
 
-    //LM.setVisibleMenu(dev);
-    //dev.getDevice()->getCursorControl()->setVisible(true);
+    bool restart { !abandon };
+    LM.setVisibleDead();
+    dev.getDevice()->getCursorControl()->setVisible(true);
     
-    while(restart && dev.run()) {
-        //RenSys.update(EM, dev);
-        //menu = InpSys.update_menu(LM, dev);
+    while(restart && !abandon && dev.run()) {
+        RenSys.update(EM, dev);
+        restart = InpSys.update_restart(LM);
+        abandon = InpSys.update_exit_dead(LM);
     }
 
-    //LM.setInvisibleMenu(dev);
+    LM.setInvisibleDead();
+
+    return abandon;
+}
+
+void GameMan::controls(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys2& InpSys) {
+    EntyMan&  EM = LM.getEM();
+    bool controls { true };
+
+    LM.setVisibleControls();
+    
+    while(controls && dev.run()) {
+        RenSys.update(EM, dev);
+        controls = InpSys.update_controls();
+    }
+
+    LM.setInvisibleControls();
 }
 
 void GameMan::init_config(TheEngine& dev) {
