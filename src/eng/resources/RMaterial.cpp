@@ -1,5 +1,7 @@
 #include "RMaterial.hpp"
 #include "../resource_gestor.hpp"
+#include <iostream>
+#include <ostream>
 
 RMaterial::RMaterial() {
     Ns_ = 500;
@@ -80,8 +82,14 @@ std::vector<RTexture *> RMaterial::loadMaterialTextures(aiMaterial *mat, aiTextu
         if(nSize != minSize)
             name = name.substr(name.find_last_of('\\') +1, minSize);
 
-        name = "assets/textures/" + name;
+        std::cout << name << std::endl;
+
+        name = "assets/" + name;
         RTexture *tmptex = rg.getResource<RTexture>(name);
+        
+        std::cout << name << std::endl;
+        std::cout << tmptex->texImage_ << std::endl;
+        std::cout << typeName << std::endl;
 
         if(tmptex->isLoaded()) {
             bool alreadyLoaded = false;
