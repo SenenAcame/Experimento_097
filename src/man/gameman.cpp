@@ -23,19 +23,6 @@ void GameMan::game() {
 
     LM.initMenu(dev);
 
-//  while(device) {
-//    
-//  menu_inicial                            empezar->continua   // salir->device=false
-//
-//  while(device && !abandon) {
-//      juego                               muerte->continua    // abandonar->abandon=true
-//
-//      if(!abandon)
-//          muerte                          reiniciar->continua // salir->abandon=true
-//  }
-//  }
-
-
     while(dev.run()) {
         /////////////////////////////////////////////////////////////
         //  Menu inicial
@@ -50,8 +37,7 @@ void GameMan::game() {
         
             /////////////////////////////////////////////////////////////
             // Pantalla de muerte
-            if(!abandon) 
-                abandon = dead(LM, dev, RenSys, InpSys, abandon);
+            if(!abandon) abandon = dead(LM, dev, RenSys, InpSys, abandon);
         }
 
         abandon = false;

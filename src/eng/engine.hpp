@@ -12,6 +12,7 @@ struct TheEngine {
     using IGUIFont         = irr::gui::IGUIFont;
     using IGUIEnvironment  = irr::gui::IGUIEnvironment;
     using IGUIButton       = irr::gui::IGUIButton;
+    using ITexture         = irr::video::ITexture;
 
     explicit TheEngine(uint32_t const w, uint32_t const h, irr::IEventReceiver* r);
     bool run() const { return device_->run(); }
@@ -28,6 +29,7 @@ struct TheEngine {
     void       SetFont                   (Path p);
     IGUIText*  addTextToPositionInScreen (const wchar_t * text, int x, int y, int x2, int y2);
     void       changeTextFromPointer     (IGUIText* pointer,const wchar_t * text) { pointer->setText(text); }
+    ITexture*  fromPath(Path path);
 
     AnimatedMeshNode* loadNode(AnimatedMesh* model, Path text);
     AnimatedMeshNode* createModel (Path obj, Path asset);

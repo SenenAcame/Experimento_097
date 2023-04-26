@@ -65,6 +65,12 @@ TheEngine::IGUIText* TheEngine::addTextToPositionInScreen (const wchar_t * text,
     );
 }
 
+TheEngine::ITexture* TheEngine::fromPath(Path path) {
+    auto* text = driver_->getTexture(path);
+    driver_->makeColorKeyTexture(text, {10,10});
+    return text;
+}
+
 TheEngine::AnimatedMeshNode* TheEngine::loadNode(AnimatedMesh* model, Path text) {
     AnimatedMeshNode* node = smgr_->addAnimatedMeshSceneNode(model);
     auto* texture = driver_->getTexture(text);

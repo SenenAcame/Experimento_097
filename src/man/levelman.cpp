@@ -124,9 +124,15 @@ void LevelMan::initMenu(TheEngine &dev) {
 
     dev.SetFont("assets/Interface/Font/chill.xml");
 
+    //menu_init = dev.addImageToPositionInScreen("assets/Interface/1280x720/pantalla_jugar.png", dev.getWidth()/2, dev.getHeight()/2);
+    controls = dev.addImageToPositionInScreen("assets/Interface/1280x720/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
+
+    setInvisibleControls();
+
     // Botones de menu de inicio
     start = imgui->addButton({ static_cast<int>(1*part_w), static_cast<int>(2.5*part_h), static_cast<int>(4*part_w), static_cast<int>(4*part_h) });
-    start->setText(L"Start");
+    //start->setText(L"Start");
+    start->setImage(dev.fromPath("assets/Interface/1280x720/boton_jugar_2.png"));
 
     exit = imgui->addButton({ static_cast<int>(1*part_w), static_cast<int>(6*part_h), static_cast<int>(4*part_w), static_cast<int>(7.5*part_h) });
     exit->setText(L"Exit");
@@ -145,9 +151,6 @@ void LevelMan::initMenu(TheEngine &dev) {
     exit_dead = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(7*part_h), static_cast<int>(7*part_w), static_cast<int>(8.5*part_h) });
     exit_dead->setText(L"Exit");
 
-    controls = dev.addImageToPositionInScreen("assets/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
-
-    setInvisibleControls();
     setInvisiblePause();
     setInvisibleDead();
 }
