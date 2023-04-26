@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{53e3dd1f-6abe-4716-b191-a8245faaebde}">
+		<property name="assetPath">
+			<value>Sintetizados/pulso.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>32</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.990375</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{fb9b18e4-0618-457f-ac59-1f8b0319a84e}</destination>
+		</relationship>
+	</object>
+</objects>

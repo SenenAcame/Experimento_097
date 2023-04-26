@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{e0ec48a7-e1b6-4898-b33c-e107b2a2d199}">
+		<property name="assetPath">
+			<value>Grabados/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{fb9b18e4-0618-457f-ac59-1f8b0319a84e}</destination>
+		</relationship>
+	</object>
+</objects>

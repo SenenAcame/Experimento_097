@@ -77,6 +77,7 @@ void TheFachada::chargebanks() {
 }
 
 void TheFachada::createdescriptions() {
+
     ambienteDescription = nullptr;
     ERRCHECK(soundSystem->getEvent("event:/Ambientes/Ambientes", &ambienteDescription) );
 
@@ -91,6 +92,9 @@ void TheFachada::createdescriptions() {
 
     moverseDescription = nullptr;
     ERRCHECK(soundSystem->getEvent("event:/Efectos/Moverse", &moverseDescription) );
+
+    rondaDescription = nullptr;
+    ERRCHECK(soundSystem->getEvent("event:/Efectos/Ronda", &rondaDescription) );
 
     menuDescription = nullptr;
     ERRCHECK(soundSystem->getEvent("event:/Menus/Menu", &menuDescription) );
@@ -142,6 +146,10 @@ ProgrammerSoundContext TheFachada::createinstance(int tipo) {
         case 7:
             ERRCHECK(enemigoDescription->createInstance(&eventInstance));
             ERRCHECK( eventInstance->setParameterByID((sound.id=paramEnemigo.id), 0.0f));
+            break;
+        case 8:
+            ERRCHECK(rondaDescription->createInstance(&eventInstance));
+            ERRCHECK( eventInstance->setParameterByID((sound.id=paramRonda.id), 0.0f));
             break;
         default:
             ERRCHECK(personajeDescription->createInstance(&eventInstance));
@@ -209,6 +217,7 @@ void TheFachada::close() {
     ERRCHECK(musicaDescription->releaseAllInstances());
     ERRCHECK(enemigoDescription->releaseAllInstances());
     ERRCHECK(personajeDescription->releaseAllInstances());
+    ERRCHECK(rondaDescription->releaseAllInstances());
     ERRCHECK(masterBank->unload());
     ERRCHECK(stringsBank->unload());
     ERRCHECK(soundSystem->unloadAll());
@@ -232,4 +241,6 @@ void TheFachada::chargeparameters() {
     ERRCHECK(enemigoDescription->getParameterDescriptionByName("vozenemigo",&paramEnemigo));
 
     ERRCHECK(personajeDescription->getParameterDescriptionByName("vozpersonaje",&paramPersonaje));
+
+    ERRCHECK(rondaDescription->getParameterDescriptionByName("ronda",&paramRonda));
 }

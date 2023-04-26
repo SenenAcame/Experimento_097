@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{6af01d94-ec01-4a0e-b3b8-b6f37f600b3a}">
+		<property name="assetPath">
+			<value>Externos/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{fb9b18e4-0618-457f-ac59-1f8b0319a84e}</destination>
+		</relationship>
+	</object>
+</objects>

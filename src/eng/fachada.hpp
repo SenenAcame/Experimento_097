@@ -36,6 +36,7 @@ private:
     FMOD::Studio::EventDescription* musicaDescription;
     FMOD::Studio::EventDescription* enemigoDescription;
     FMOD::Studio::EventDescription* personajeDescription;
+    FMOD::Studio::EventDescription* rondaDescription;
 
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramAmbiente;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramArma;
@@ -46,6 +47,7 @@ private:
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramMusica;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramEnemigo;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramPersonaje;
+    FMOD_STUDIO_PARAMETER_DESCRIPTION paramRonda;
 
     FMOD::Studio::Bank * masterBank;
     FMOD::Studio::Bank* stringsBank;
