@@ -2,18 +2,18 @@
 
 void PhySys2::update(EntyMan& EM, double delta) {
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& en, PhysicsCmp2& physic) {
-            bool is_bullet = en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>();
-
-            if(is_bullet) bulletPhysics(physic);
-            else {
-                bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Diying);
-                bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Shoot);
-                
-                if(enemy_is_diying) physic.y -= 0.1;
-                else if(player_or_enemy_not_shooting) 
-                    entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
-            }
+        [&](Enty& enty, PhysicsCmp2& physic) {
+            //bool is_bullet = en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>();
+            //
+            //if(is_bullet) bulletPhysics(physic);
+            //else {
+            //    bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Diying);
+            //    bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Shoot);
+            //    
+            //    if(enemy_is_diying) physic.y -= 0.1;
+            //    else if(player_or_enemy_not_shooting) 
+            //        entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
+            //}
         }
     );
 }

@@ -20,7 +20,8 @@ struct RenSys2 {
     using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
 
-    void update  (EntyMan& EM, TheEngine& GFX);
+    /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
+    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE);
     void drawAll (EntyMan& EM, TheEngine& GFX);
     void drawBBox(EntyMan& EM, TheEngine& GFX);
 

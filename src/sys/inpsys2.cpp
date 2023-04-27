@@ -1,8 +1,9 @@
 #include "inpsys2.hpp"
 #include "../man/levelman.hpp"
 #include "soundsystem.hpp"
+#include "../eng/engine2.hpp"
 
-void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
+/*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
     auto& bb = EM.getBoard();
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -13,7 +14,7 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
             equip.clockCadence += dt;
             phy.v_lin = phy.v_ang = 0;
             
-            movementMouse(eng, rend, phy);
+//            movementMouse(eng, rend, phy);
             if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
 
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
@@ -34,90 +35,101 @@ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double con
     );
 } 
 
-bool InpSys2::OnEvent(const irr::SEvent& event) {
-    if (event.EventType == irr::EET_KEY_INPUT_EVENT){
-        switch (event.KeyInput.Key) {
-            case irr::KEY_KEY_W:
-                checkPressed(event, XK_W);
-                break;
-            case irr::KEY_KEY_A:
-                checkPressed(event, XK_A);
-                break;
-            case irr::KEY_KEY_S:
-                checkPressed(event, XK_S);
-                break;
-            case irr::KEY_KEY_D:
-                checkPressed(event, XK_D);
-                break;
-            case irr::KEY_KEY_E:
-                checkPressed(event, XK_E);
-                break;
-            case irr::KEY_KEY_P:
-                checkPressed(event, XK_P);
-                break;
-            case irr::KEY_KEY_R:
-                checkPressed(event, XK_R);
-                break;
-            case irr::KEY_KEY_F:
-                checkPressed(event, XK_F);
-                break;
-            case irr::KEY_KEY_1:
-                checkPressed(event,XK_1);
-                break;
-            case irr::KEY_KEY_2:
-                checkPressed(event,XK_2);
-                break;
-            case irr::KEY_KEY_3:
-                checkPressed(event,XK_3);
-                break;
-            case irr::KEY_KEY_L:
-                checkPressed(event,XK_L);
-                break;
-            case irr::KEY_ESCAPE:
-                exit(0);
-                break;
-            default:
-                break;
-        }
+/*NUEVO*/ void InpSys2::update2(LevelMan &LM, GraphicEngine &GE) {
+    //auto& EM = LM.getEM();
+    auto a = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W);
+    if(a) {
+        std::cout<<"Funciona\n";
     }
-    else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
-        switch(event.MouseInput.Event) {
-            case irr::EMIE_LMOUSE_PRESSED_DOWN:
-                mouse.pressLeft();
-                break;
-            case irr::EMIE_LMOUSE_LEFT_UP:
-                mouse.releaseLeft();
-                break;
-            default: break;
-        }
-    }
-    return false;
+    //EM.foreach<SYSCMPs, SYSTAGs>(
+    //    [&]() {}
+    //);
 }
 
-void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
-    if(event.KeyInput.PressedDown) { keyboard.keyPressed(k);  }
-    else                           { keyboard.keyReleased(k); }
-}
+//bool InpSys2::OnEvent(const irr::SEvent& event) {
+//    if (event.EventType == irr::EET_KEY_INPUT_EVENT){
+//        switch (event.KeyInput.Key) {
+//            case irr::KEY_KEY_W:
+//                checkPressed(event, XK_W);
+//                break;
+//            case irr::KEY_KEY_A:
+//                checkPressed(event, XK_A);
+//                break;
+//            case irr::KEY_KEY_S:
+//                checkPressed(event, XK_S);
+//                break;
+//            case irr::KEY_KEY_D:
+//                checkPressed(event, XK_D);
+//                break;
+//            case irr::KEY_KEY_E:
+//                checkPressed(event, XK_E);
+//                break;
+//            case irr::KEY_KEY_P:
+//                checkPressed(event, XK_P);
+//                break;
+//            case irr::KEY_KEY_R:
+//                checkPressed(event, XK_R);
+//                break;
+//            case irr::KEY_KEY_F:
+//                checkPressed(event, XK_F);
+//                break;
+//            case irr::KEY_KEY_1:
+//                checkPressed(event,XK_1);
+//                break;
+//            case irr::KEY_KEY_2:
+//                checkPressed(event,XK_2);
+//                break;
+//            case irr::KEY_KEY_3:
+//                checkPressed(event,XK_3);
+//                break;
+//            case irr::KEY_KEY_L:
+//                checkPressed(event,XK_L);
+//                break;
+//            case irr::KEY_ESCAPE:
+//                exit(0);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
+//        switch(event.MouseInput.Event) {
+//            case irr::EMIE_LMOUSE_PRESSED_DOWN:
+//                mouse.pressLeft();
+//                break;
+//            case irr::EMIE_LMOUSE_LEFT_UP:
+//                mouse.releaseLeft();
+//                break;
+//            default: break;
+//        }
+//    }
+//    return false;
+//}
 
-void InpSys2::movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {
-    auto centerWidth  = static_cast<irr::s32>(eng.getWidth() /2);
-    auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
-    auto cursor       = eng.getDevice()->getCursorControl();
-    auto ray_traced   = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
-    auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
-    auto angy = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
-    
-    eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
-    rend.n->setRotation({
-        eng.getCamera()->getRotation().X, 
-        eng.getCamera()->getRotation().Y, 
-        0
-    });
-    cursor->setPosition(centerWidth, centerHeight);
+//void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
+//    if(event.KeyInput.PressedDown) { keyboard.keyPressed(k);  }
+//    else                           { keyboard.keyReleased(k); }
+//}
 
-    phy.orieny = angy;
-    phy.orienx = angx;
-}
+//void InpSys2::movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {
+//    auto centerWidth  = static_cast<irr::s32>(eng.getWidth() /2);
+//    auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
+//    auto cursor       = eng.getDevice()->getCursorControl();
+//    auto ray_traced   = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
+//    auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
+//    auto angy = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
+//    
+//    eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
+//    rend.n->setRotation({
+//        eng.getCamera()->getRotation().X, 
+//        eng.getCamera()->getRotation().Y, 
+//        0
+//    });
+//    cursor->setPosition(centerWidth, centerHeight);
+//
+//    phy.orieny = angy;
+//    phy.orienx = angx;
+//}
 
 void InpSys2::shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
     int ammo = 0;

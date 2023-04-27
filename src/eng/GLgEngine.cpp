@@ -18,7 +18,6 @@
 #include <stb_image.h>
 
 GlEngine::GlEngine() {
-
     initOpenGL();
     root_.addSon(&rootScene_);
     root_.addSon(&rootUI_);
@@ -50,10 +49,9 @@ GlEngine::GlEngine() {
     Vec3 rot(0.0f, 0.0f, 0.0f);
     Vec3 scl(1.0f);
 
-    createCamera(NULL, Vec3{0, 0, 0}, rot, scl);
-    setActiveCamera(0);
-    camera_ = getActiveCamera();
-    //camera_->setPosition(Vec3 {0, 10, 0});
+    //createCamera(NULL, Vec3{0, 0, 0}, rot, scl);
+    //setActiveCamera(0);
+    //camera_ = getActiveCamera();
 
     EFoco::lightType direct = EFoco::directional;
     EFoco::lightType point  = EFoco::punctual;
@@ -222,6 +220,8 @@ void GlEngine::createNode(TNodo *father, TNodo *son, bool UI) {
 
 TNodo *GlEngine::createCamera(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca) {
     TNodo &son = registryCamera(trans, rot, sca);
+
+    createNode(father, &son, false);
 
     auto &camera = cameraEntities_.emplace_back();
     son.setEntity(&camera);
@@ -493,6 +493,10 @@ TNodo *GlEngine::getActiveCameraNode() {
 Mat4 GlEngine::getPerspective() {
     auto *camera = getActiveCamera();
     return glm::perspective(glm::radians(camera->Zoom), (float)width_ / (float)height_, 0.01f, 100.0f);
+}
+
+void GlEngine::setCamera_(ECamera* cam) {
+    camera_ =cam;
 }
 
 void GlEngine::setActiveCamera(int nCamera) {

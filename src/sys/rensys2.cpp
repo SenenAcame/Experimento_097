@@ -2,7 +2,7 @@
 #include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
 
-void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
+/*VIEJO*/ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
     //ImGUI_Prerender();
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend) {
@@ -18,6 +18,16 @@ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
     //ImGUI_renderOpenGlContext();
     //ImGUI_Postrender();
 };
+
+/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE) {
+    EM.foreach<SYSCMPs, SYSTAGs>(
+        [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend){
+            rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
+        }
+    );
+
+    drawWorld(GE);
+}
 
 void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
     GFX.beginScene();
@@ -42,7 +52,7 @@ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
 void RenSys2::drawWorld(GraphicEngine &GE) {
     GE.glEng.beginScene();
     GE.glEng.drawScene();
-    GE.glEng.drawParticles();
+    //GE.glEng.drawParticles();
     //GE.glEng.drawBorder();
     GE.glEng.drawSkybox(0);
     GE.glEng.endScene();

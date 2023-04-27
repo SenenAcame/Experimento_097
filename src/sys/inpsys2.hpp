@@ -2,22 +2,25 @@
 #include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
-#include <irrlicht/IEventReceiver.h>
+//#include <irrlicht/IEventReceiver.h>
 
 struct TheEngine;
 struct LevelMan;
 struct SoundSystem_t;
+struct GraphicEngine;
 
-struct InpSys2 : public irr::IEventReceiver {
+struct InpSys2 {
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2, PhysicsCmp2, InventarioCmp, EstadisticaCmp>;
     using SYSTAGs = MP::Typelist<>;
 
     using SYSCMP_Weapon = MP::Typelist<SoundCmp>;
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
-    void update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
-    virtual bool OnEvent(const irr::SEvent& event);
-    void checkPressed(const irr::SEvent& event, KeySym k);
+    /*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE);
+
+    //virtual bool OnEvent(const irr::SEvent& event);
+    //void checkPressed(const irr::SEvent& event, KeySym k);
 
 private:
     //metodos del input

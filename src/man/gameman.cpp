@@ -30,10 +30,10 @@ void GameMan::game() {
     SelfDestSys   DestSys;
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
-    GE.glEng.setResolution(1920, 1080);
+    //GE.glEng.setResolution(1920, 1080);
 
-    //LM.createPlayer2(GE, Vec3{0});
-    LM.createNormalEnemy(GE, Vec3{0});
+    LM.createPlayer2(GE, Vec3{0});
+    //LM.createNormalEnemy(GE, Vec3{0});
     //LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });
@@ -44,9 +44,14 @@ void GameMan::game() {
     //    ge.glEng.setActiveFoco(i, true);
     //}
 
+    constexpr double dt = 1.0 / 60;
+
     while(!glfwWindowShouldClose(GE.glEng.getWindow())) {
         //ge.glEng.drawFocos();
-        RenSys.drawWorld(GE);
+        //RenSys.drawWorld(GE);
+        RenSys.update2(EM, GE);
+        InpSys.update2(LM, GE);
+        PhySys.update (EM, dt);
     }
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);

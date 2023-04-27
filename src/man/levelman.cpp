@@ -406,9 +406,16 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
-    EM.addComponent<RenderCmp2>(player, RenderCmp2 {
+    auto r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
         .node = GE.loadModel(file_model)
     });
+
+    
+    GE.glEng.createCamera(r_cmp.node, Vec3{0}, Vec3{0}, Vec3{1});
+    //GE.glEng.createCamera(NULL, Vec3{0}, Vec3{0}, Vec3{1});
+    GE.glEng.setActiveCamera(0);
+    auto* cam = GE.glEng.getActiveCamera();
+    GE.glEng.setCamera_(cam);
 }
 
 /*VIEJO*/ Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {

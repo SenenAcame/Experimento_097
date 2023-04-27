@@ -93,7 +93,7 @@ struct GlEngine {
     // _______________________
     // _______Setters_________
     // _______________________
-
+    void setCamera_(ECamera* cam);
     void setActiveCamera(int nCamera);
     void setActiveFoco(int nFoco, bool active);
     void setResolution(uint16_t width, uint16_t height);

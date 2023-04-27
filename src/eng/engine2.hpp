@@ -16,6 +16,5 @@ struct GraphicEngine {
     TNodo* loadModel(std::string file);
 
 private:
-    
     void   loadTexture(TNodo* node, std::string text);
 };
