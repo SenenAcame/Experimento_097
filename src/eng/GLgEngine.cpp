@@ -80,10 +80,10 @@ GlEngine::GlEngine() {
                1.0f,                        //  constAtt
                0.09f,                       //  linearAtt
                0.032f,                      //  quadratic
-               Vec3(0.f),   //  direction
+               Vec3(0.f),                   //  direction
                Vec3(0.1f),                  //  ambient
-               White_light,                //  diffusion
-               Vec3(-3.0f),            //  pos
+               White_light,                 //  diffusion
+               Vec3(-3.0f, 3.0f, 3.0f),     //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -97,7 +97,7 @@ GlEngine::GlEngine() {
                Vec3(0.f),   //  direction
                Vec3(0.1f),                  //  ambient
                White_light,                //  diffusion
-               Vec3(3.0f),            //  pos
+               Vec3(3.0f, 3.0f, 3.0f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -125,7 +125,7 @@ GlEngine::GlEngine() {
                Vec3(0.f),   //  direction
                Vec3(0.1f),                  //  ambient
                White_light,                //  diffusion
-               Vec3(-4.f, 4.f, 4.f),            //  pos
+               Vec3(-4.f, 10.f, 4.f),            //  pos
                scolor );               //  shader
 
     pointSize = 0;

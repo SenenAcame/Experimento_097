@@ -20,7 +20,7 @@ void GraphicEngine::createEnemy(LevelMan& LM) {
         )}
     );
     
-    //RTexture* texture = nullptr;
-    //texture = glEng.getRG()->getResource<RTexture>("assets/models/personajes/monstruo2/textura_monstruo_dos.png");
-    //rend.node->setTexture(texture);
+    RTexture* texture = nullptr;
+    texture = glEng.getRG()->getResource<RTexture>("assets/models/personajes/monstruo2/monstruo_dos_verde.png");
+    rend.node->setTexture(texture);
 }
