@@ -50,9 +50,10 @@ GlEngine::GlEngine() {
     Vec3 rot(0.0f, 0.0f, 0.0f);
     Vec3 scl(1.0f);
 
-    createCamera(NULL, trans, rot, scl);
+    createCamera(NULL, Vec3{0, 0, 0}, rot, scl);
     setActiveCamera(0);
     camera_ = getActiveCamera();
+    //camera_->setPosition(Vec3 {0, 10, 0});
 
     EFoco::lightType direct = EFoco::directional;
     EFoco::lightType point  = EFoco::punctual;

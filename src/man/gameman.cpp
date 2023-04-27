@@ -30,9 +30,10 @@ void GameMan::game() {
     SelfDestSys   DestSys;
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
+    GE.glEng.setResolution(1920, 1080);
 
-    LM.createPlayer2(GE, Vec3{0});
-    //LM.createNormalEnemy(GE, Vec3{0});
+    //LM.createPlayer2(GE, Vec3{0});
+    LM.createNormalEnemy(GE, Vec3{0});
     //LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });

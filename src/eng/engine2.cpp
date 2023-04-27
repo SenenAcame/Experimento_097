@@ -10,7 +10,7 @@ TNodo* GraphicEngine::createNode(std::string file, std::string texture) {
 TNodo* GraphicEngine::loadModel(std::string file) {
     return glEng.createModel(
         NULL,
-        Vec3(0.f),
+        Vec3(1,0,0),
         Vec3(0.f),
         Vec3(1.f),
         file
