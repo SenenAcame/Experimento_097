@@ -3,6 +3,7 @@
 #include "../eng/engine.hpp"
 
 struct SoundSystem_t;
+struct GraphicEngine;
 
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
@@ -26,9 +27,16 @@ struct LevelMan {
     void updateInterfaceHit(TheEngine& dev, Enty& player);
 
     void cleanHitsInterface(TheEngine& dev ,double dt);
-    void createMap(TheEngine& dev, SoundSystem_t& SouSys);
-    Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
-    Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
+
+    /*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
+    /*NUEVO*/ void createMap2(GraphicEngine& GE);
+
+    /*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
+    /*NUEVO*/ Enty& createPlayer2(GraphicEngine& GE, Vec3 pos);
+
+    /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
+    /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos);
+    
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);

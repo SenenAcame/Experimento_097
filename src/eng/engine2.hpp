@@ -1,11 +1,21 @@
 #pragma once
 #include "GLgEngine.hpp"
+#include "../util/types.hpp"
+#include "TNodo.hpp"
+#include "entities/ECamera.hpp"
+#include "utils/typeUsing.hpp"
 
-struct LevelMan;
+//struct LevelMan;
 
 struct GraphicEngine {
-    void createEnemy(LevelMan& LM);
-    void createMap(LevelMan& LM);
+    TNodo*   createNode(std::string file, std::string texture);
+    ECamera* getCamera() { return glEng.getActiveCamera(); }
 
     GlEngine glEng;
+
+    TNodo* loadModel(std::string file);
+
+private:
+    
+    void   loadTexture(TNodo* node, std::string text);
 };

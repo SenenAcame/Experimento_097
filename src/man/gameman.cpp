@@ -29,20 +29,23 @@ void GameMan::game() {
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
     //TheEngine     dev {1280, 720, &InpSys};
-    GraphicEngine ge;
+    GraphicEngine GE;
 
-    //ge.createEnemy(LM);
-    ge.createMap(LM);
-
+    LM.createPlayer2(GE, Vec3{0});
+    //LM.createNormalEnemy(GE, Vec3{0});
+    //LM.createMap2(GE);
+    
+    //GE.createNormalEnemy(EM, Vec3{ 0 });
+    //GE.createMap(EM);
 
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);
     //}
 
-    while(!glfwWindowShouldClose(ge.glEng.getWindow())) {
+    while(!glfwWindowShouldClose(GE.glEng.getWindow())) {
         //ge.glEng.drawFocos();
-        RenSys.drawWorld(ge);
+        RenSys.drawWorld(GE);
     }
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);

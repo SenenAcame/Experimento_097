@@ -1,6 +1,9 @@
 #include "levelman.hpp"
+#include "../eng/engine2.hpp"
 #include "../sys/nodemapsys.hpp"
 #include "../sys/soundsystem.hpp"
+#include <string>
+#include <vector>
 
 void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) {
     //EM.foreach<voidCMP, EneTAGs>(
@@ -333,7 +336,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     }
 }
 
-void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
+/*VIEJO*/ void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
     irr::io::path models[6] = {
         "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
         "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
@@ -361,7 +364,28 @@ void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
         createRoom(dev, models[i], textures[i]);
 }
 
-Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
+/*NUEVO*/ void LevelMan::createMap2(GraphicEngine& GE) {
+    std::vector<std::string> models {
+        "assets/models/mapas/salas_independientes/Sala_1.obj",
+        "assets/models/mapas/salas_independientes/Sala_2.obj",
+        "assets/models/mapas/salas_independientes/Sala_3.obj",
+        "assets/models/mapas/salas_independientes/Pasillo_1.obj",
+        "assets/models/mapas/salas_independientes/Pasillo_2.obj",
+        "assets/models/mapas/salas_independientes/Pasillo_3.obj"
+    };
+
+    //std::vector<std::string> textures {};
+
+    for(auto& model : models) {
+        Enty& room = EM.createEntity();
+        EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
+        EM.addComponent<RenderCmp2>(room, RenderCmp2 {
+            .node = GE.loadModel(model)
+        });
+    }
+}
+
+/*VIEJO*/ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=20.f});
     EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
@@ -377,13 +401,37 @@ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
     return player;
 }
 
-Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
+/**NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
+    std::string file_model = "assets/models/armas/pistola.obj";
+
+    Enty& player = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
+    EM.addComponent<RenderCmp2>(player, RenderCmp2 {
+        .node = GE.loadModel(file_model)
+    });
+}
+
+/*VIEJO*/ Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
     Enty& enemy = createEnemy(SouSys);
     auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
     EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
     //EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
     EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
+    return enemy;
+}
+
+/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine &GE, Vec3 pos) {
+    std::string file_model   = "assets/models/personajes/monstruo2/monstruo2_prueba_verde267.obj";
+    std::string file_texture = "assets/models/personajes/monstruo2/monstruo_dos_verde.png";
+    
+    Enty& enemy = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
+
+    EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
+        .node = GE.createNode(file_model, file_texture)
+    });
+
     return enemy;
 }
 
