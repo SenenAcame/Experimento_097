@@ -17,7 +17,7 @@ void GameMan::game() {
     InpSys2   InpSys;
     RenSys2   RenSys;
     LevelMan  LM;
-    TheEngine dev { 1000, 1000, &InpSys };
+    TheEngine dev { 1920, 1080, &InpSys };
 
     bool abandon {false};
 
@@ -49,7 +49,7 @@ void GameMan::initial_menu(LevelMan& LM, TheEngine& dev, RenSys2& RenSys, InpSys
     EntyMan&  EM = LM.getEM();
     bool menu { true };
 
-    LM.setVisibleMenu();
+    //LM.setVisibleMenu();
     dev.getDevice()->getCursorControl()->setVisible(true);
     
     while(menu && dev.run()) {

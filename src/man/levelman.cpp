@@ -124,35 +124,35 @@ void LevelMan::initMenu(TheEngine &dev) {
 
     dev.SetFont("assets/Interface/Font/chill.xml");
 
-    //menu_init = dev.addImageToPositionInScreen("assets/Interface/1280x720/pantalla_jugar.png", dev.getWidth()/2, dev.getHeight()/2);
+    menu_init = dev.addImageToPositionInScreen("assets/Interface/1280x720/pantalla_inicio.png", dev.getWidth()/2, dev.getHeight()/2);
+    //menu_init->setScaleImage(true);
+    
     controls = dev.addImageToPositionInScreen("assets/Interface/1280x720/pantalla_controles_2.png", dev.getWidth()/2, dev.getHeight()/2);
-
     setInvisibleControls();
 
     // Botones de menu de inicio
-    start = imgui->addButton({ static_cast<int>(1*part_w), static_cast<int>(2.5*part_h), static_cast<int>(4*part_w), static_cast<int>(4*part_h) });
-    //start->setText(L"Start");
-    start->setImage(dev.fromPath("assets/Interface/1280x720/boton_jugar_2.png"));
+    start = imgui->addButton({ static_cast<int>(1*part_w), static_cast<int>(2.5*part_h), static_cast<int>(3.5*part_w), static_cast<int>(3.5*part_h) });
+    start->setImage(dev.fromPath("assets/Interface/1280x720/boton_jugar_fondo.png"));
 
-    exit = imgui->addButton({ static_cast<int>(1*part_w), static_cast<int>(6*part_h), static_cast<int>(4*part_w), static_cast<int>(7.5*part_h) });
-    exit->setText(L"Exit");
+    exit = imgui->addButton({ static_cast<int>(1*part_w), static_cast<int>(6*part_h), static_cast<int>(3.5*part_w), static_cast<int>(7*part_h) });
+    exit->setImage(dev.fromPath("assets/Interface/1280x720/boton_salir_fondo.png"));
 
-    //Botones de menu de pausa
-    return_ = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(1.5*part_h), static_cast<int>(6*part_w), static_cast<int>(3*part_h) });
-    return_->setText(L"Return");
-
-    abandon = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(7*part_h), static_cast<int>(6*part_w), static_cast<int>(8.5*part_h) });
-    abandon->setText(L"Abandon");
-
-    //Botones de menu de muerte
-    restart = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(1.5*part_h), static_cast<int>(6*part_w), static_cast<int>(3*part_h) });
-    restart->setText(L"Restart");
-
-    exit_dead = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(7*part_h), static_cast<int>(7*part_w), static_cast<int>(8.5*part_h) });
-    exit_dead->setText(L"Exit");
-
-    setInvisiblePause();
-    setInvisibleDead();
+    ////Botones de menu de pausa
+    //return_ = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(1.5*part_h), static_cast<int>(6*part_w), static_cast<int>(3*part_h) });
+    //return_->setText(L"Return");
+//
+    //abandon = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(7*part_h), static_cast<int>(6*part_w), static_cast<int>(8.5*part_h) });
+    //abandon->setText(L"Abandon");
+//
+    ////Botones de menu de muerte
+    //restart = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(1.5*part_h), static_cast<int>(6*part_w), static_cast<int>(3*part_h) });
+    //restart->setText(L"Restart");
+//
+    //exit_dead = imgui->addButton({ static_cast<int>(4*part_w), static_cast<int>(7*part_h), static_cast<int>(7*part_w), static_cast<int>(8.5*part_h) });
+    //exit_dead->setText(L"Exit");
+//
+    //setInvisiblePause();
+    //setInvisibleDead();
 }
 
 void LevelMan::initInterface (TheEngine& dev, Enty& player) {
