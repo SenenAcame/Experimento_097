@@ -32,9 +32,15 @@ void GameMan::game() {
     GraphicEngine ge;
 
     ge.createEnemy(LM);
+    ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
+    for (int i =0; i<6; i++) {
+        ge.glEng.setActiveFoco(i, true);
+    }
 
     while(!glfwWindowShouldClose(ge.glEng.getWindow())) {
+        ge.glEng.drawFocos();
         RenSys.drawWorld(ge);
+
     }
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);

@@ -110,7 +110,8 @@ void main()
         // phase 3: spot light
         //result += CalcSpotLight(diffuseColor.rgb, spotLight, norm, FragPos, viewDir);    
         
-        FragColor = diffuseColor; //vec4(result, diffuseColor.a * material.transparency);
+        FragColor = diffuseColor; 
+        //FragColor =vec4(result, diffuseColor.a * material.transparency);
     
     
 } 

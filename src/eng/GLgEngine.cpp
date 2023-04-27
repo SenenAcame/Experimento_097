@@ -83,7 +83,7 @@ GlEngine::GlEngine() {
                Vec3(-0.2f, -1.0f, -0.3f),   //  direction
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
-               Vec3(1000000.0f),            //  pos
+               Vec3(1.0f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -97,7 +97,7 @@ GlEngine::GlEngine() {
                Vec3(-0.2f, -1.0f, -0.3f),   //  direction
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
-               Vec3(1000000.0f),            //  pos
+               Vec3(1.0f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -111,7 +111,7 @@ GlEngine::GlEngine() {
                Vec3(-0.2f, -1.0f, -0.3f),   //  direction
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
-               Vec3(1000000.0f),            //  pos
+               Vec3(10.0f, -10.f, 0.f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -125,7 +125,7 @@ GlEngine::GlEngine() {
                Vec3(-0.2f, -1.0f, -0.3f),   //  direction
                Vec3(0.1f),                  //  ambient
                Orange_light,                //  diffusion
-               Vec3(1000000.0f),            //  pos
+               Vec3(0.f, 20.f, 0.f),            //  pos
                scolor );               //  shader
 
     pointSize = 0;
@@ -506,4 +506,16 @@ void GlEngine::setResolution(uint16_t width, uint16_t height) {
     width_ = width;
     height_ = height;
     glfwSetWindowSize(window, width_, height_);
+}
+
+void GlEngine::drawFocos() {
+    setActiveCamera(0);
+    auto *camera = getActiveCamera();
+
+    Mat4 projection = getPerspective();
+    Mat4 view = camera->GetViewMatrix();
+    
+    for(uint8_t i = 0; i < focoEntities_.size(); i++) {
+        focoEntities_[i].draw(projection, true);
+    }
 }

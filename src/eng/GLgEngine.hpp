@@ -60,6 +60,7 @@ struct GlEngine {
     void drawBorder();
     void drawSkybox(int);
     void endScene();
+    void drawFocos();
 
     void drop() { glfwTerminate(); }; 
     
