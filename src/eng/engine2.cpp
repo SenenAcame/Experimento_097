@@ -15,12 +15,29 @@ void GraphicEngine::createEnemy(LevelMan& LM) {
             Vec3(0.f),
             Vec3(0.5f),
             "assets/models/personajes/monstruo2/monstruo2_prueba_verde267.obj"
-            //"assets/models/personajes/monstruo2/monstruo2.obj"
-            //"assets/Caja_roja.obj"
         )}
     );
     
     RTexture* texture = nullptr;
     texture = glEng.getRG()->getResource<RTexture>("assets/models/personajes/monstruo2/monstruo_dos_verde.png");
     rend.node->setTexture(texture);
+}
+
+void GraphicEngine::createMap(LevelMan& LM) {
+    auto& EM = LM.getEM();
+    Enty& player = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2{ });
+    auto& rend = EM.addComponent<RenderCmp2> (player, 
+        RenderCmp2{ .node = glEng.createModel(
+            NULL,
+            {0, 0, 0},
+            Vec3(0.f),
+            Vec3(0.5f),
+            "assets/models/mapas/salas_independientes/Sala_1.obj"
+        )}
+    );
+
+    //RTexture* texture = nullptr;
+    //texture = glEng.getRG()->getResource<RTexture>("assets/models/personajes/monstruo2/monstruo_dos_verde.png");
+    //rend.node->setTexture(texture);
 }

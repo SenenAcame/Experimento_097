@@ -31,16 +31,18 @@ void GameMan::game() {
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine ge;
 
-    ge.createEnemy(LM);
-    ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
-    for (int i =0; i<6; i++) {
-        ge.glEng.setActiveFoco(i, true);
-    }
+    //ge.createEnemy(LM);
+    ge.createMap(LM);
+
+
+    //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
+    //for (int i =0; i<6; i++) {
+    //    ge.glEng.setActiveFoco(i, true);
+    //}
 
     while(!glfwWindowShouldClose(ge.glEng.getWindow())) {
-        ge.glEng.drawFocos();
+        //ge.glEng.drawFocos();
         RenSys.drawWorld(ge);
-
     }
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);
