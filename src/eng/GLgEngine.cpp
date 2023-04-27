@@ -44,9 +44,9 @@ GlEngine::GlEngine() {
     shaderLine->loadShaders();
     shaderParticle->loadShaders();
 
-    Vec3 trans(0.0f, 0.0f, 0.0f);
+    Vec3 trans(0.0f, 10.0f, 0.0f);
     Vec3 trans3(c0);
-    Vec3 trans2(20.0f, 0.0f, -3.0f);
+    Vec3 trans2(20.0f, 10.0f, -3.0f);
     Vec3 rot(0.0f, 0.0f, 0.0f);
     Vec3 scl(1.0f);
 
@@ -80,10 +80,10 @@ GlEngine::GlEngine() {
                1.0f,                        //  constAtt
                0.09f,                       //  linearAtt
                0.032f,                      //  quadratic
-               Vec3(-0.2f, -1.0f, -0.3f),   //  direction
+               Vec3(0.f),   //  direction
                Vec3(0.1f),                  //  ambient
-               Orange_light,                //  diffusion
-               Vec3(1.0f),            //  pos
+               White_light,                //  diffusion
+               Vec3(-3.0f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -94,10 +94,10 @@ GlEngine::GlEngine() {
                1.0f,                        //  constAtt
                0.09f,                       //  linearAtt
                0.032f,                      //  quadratic
-               Vec3(-0.2f, -1.0f, -0.3f),   //  direction
+               Vec3(0.f),   //  direction
                Vec3(0.1f),                  //  ambient
-               Orange_light,                //  diffusion
-               Vec3(1.0f),            //  pos
+               White_light,                //  diffusion
+               Vec3(3.0f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -108,10 +108,10 @@ GlEngine::GlEngine() {
                1.0f,                        //  constAtt
                0.09f,                       //  linearAtt
                0.032f,                      //  quadratic
-               Vec3(-0.2f, -1.0f, -0.3f),   //  direction
+               Vec3(-0.f),   //  direction
                Vec3(0.1f),                  //  ambient
-               Orange_light,                //  diffusion
-               Vec3(10.0f, -10.f, 0.f),            //  pos
+               White_light,                //  diffusion
+               Vec3(4.0f, -4.f, -4.f),            //  pos
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
@@ -122,10 +122,10 @@ GlEngine::GlEngine() {
                1.0f,                        //  constAtt
                0.09f,                       //  linearAtt
                0.032f,                      //  quadratic
-               Vec3(-0.2f, -1.0f, -0.3f),   //  direction
+               Vec3(0.f),   //  direction
                Vec3(0.1f),                  //  ambient
-               Orange_light,                //  diffusion
-               Vec3(0.f, 20.f, 0.f),            //  pos
+               White_light,                //  diffusion
+               Vec3(-4.f, 4.f, 4.f),            //  pos
                scolor );               //  shader
 
     pointSize = 0;
