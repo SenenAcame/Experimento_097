@@ -162,6 +162,13 @@ void AISys::update(EntyMan& EM, double dt, TheEngine& dev) {
 
             if(!ai.enable) return;
 
+            Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
+            auto t_lin_dist { distanceModule(t_dist) };
+            if(t_lin_dist < 10 ){
+                auto& sound = EM.getComponent<SoundCmp>(entity);
+                EM.changeSound(sound, 0);
+            }
+
             switch(ai.behaviour){
                 case SB::Arrive: arrive(ai, phy); break;
                 case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;

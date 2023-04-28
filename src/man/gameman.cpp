@@ -30,6 +30,7 @@ void GameMan::game() {
 
     init_config(dev);
     init_map(LM, dev, SouSys);
+    soundsEffects(EM, SouSys);
     LM.createEmptyInterface(dev);
 
     while(dev.run()) {
@@ -87,4 +88,18 @@ void GameMan::init_config(TheEngine& dev) {
 void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
     LM.createMap(dev, SouSys);
     ColSys2::init_Hitoxes_Map2(LM, dev);
+}
+
+void GameMan::soundsEffects(EntyMan& EM, SoundSystem_t& SouSys){
+    auto& pulso=EM.createEntity();
+    EM.addComponent<SoundCmp>      (pulso, SoundCmp{.programmerSoundContext = SouSys.createinstance(3), .parametro = 0, .play = false, .loop=true});
+    EM.addTag      <TPulso>        (pulso);
+
+    auto& pasos=EM.createEntity();
+    EM.addComponent<SoundCmp>      (pasos, SouSys.createinstance(4));
+    EM.addTag      <TPasos>        (pasos);
+
+    auto& ronda=EM.createEntity();
+    EM.addComponent<SoundCmp>      (ronda, SouSys.createinstance(8));
+    EM.addTag      <TRonda>        (ronda);
 }

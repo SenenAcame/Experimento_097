@@ -9,6 +9,7 @@ struct LogicSystem {
     using SYSCMP_Player = MP::Typelist<SoundCmp>;
     using SYSTAGs       = MP::Typelist<TInteract>;
     using SYSTAG_Player = MP::Typelist<TPlayer>;
+    using SYSTAG_Pulso  = MP::Typelist<TPulso>;
     using SYSTAG_Walls  = MP::Typelist<TWall>;
 
     static constexpr double PI { std::numbers::pi };

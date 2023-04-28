@@ -370,7 +370,7 @@ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
     EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=5, .speed=40.f});
     EM.addComponent<InventarioCmp> (player);
-    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(9));
     EM.addComponent<SalaCmp>       (player);
     EM.addTag      <TPlayer>       (player);
     EM.addTag      <TInteract>     (player);

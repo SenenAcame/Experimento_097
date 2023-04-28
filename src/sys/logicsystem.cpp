@@ -2,6 +2,7 @@
 #include "colsys2.hpp"
 #include "physys2.hpp"
 #include "../man/levelman.hpp"
+#include <iostream>
 
 void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
     auto& EM = LM.getEM();
@@ -166,18 +167,29 @@ void LogicSystem::receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& recept
 void LogicSystem::reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
     auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
     auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
+
+    EM.changeSound(EM.getComponent<SoundCmp>(receptor),1);
     
     recept_stats.hitpoints -= agress_stats.damage;
-    
+
     if(recept_stats.hitpoints <= 0) {
-        if(receptor.hasTAG<TEnemy>()) { 
+        if(receptor.hasTAG<TEnemy>()) {
+            soundMonster(EM, receptor);
             EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
             EM.removeComponent<EstadoCmp>(receptor);
         }
-        else { markDestroy(receptor); } 
+        else { EM.changeSound(EM.getComponent<SoundCmp>(receptor),2);markDestroy(receptor); } 
     }
     
     if(!agressor.hasTAG<TEnemy>()) { markDestroy(agressor); }
+
+    if(receptor.hasTAG<TPlayer>() && recept_stats.hitpoints <= 20){
+        EM.foreach<SYSCMP_Player, SYSTAG_Pulso>(
+            [&](Enty&, SoundCmp& voice){
+                EM.changeSound(voice, 0);
+            }
+        );
+    }
 }
 
 void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
@@ -194,8 +206,11 @@ void LogicSystem::takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine
     int ammo {}, magazine {};
     size_t aux = 0;
 
+    
+
     for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
         if(i == 2){
+            EM.changeSound(EM.getComponent<SoundCmp>(player), 0);
             auto& wpn = EM.getComponent<WeaponCmp>(weapon);
             equipment.inventary[aux] = 1;
             equipment.inventary[wpn.typeWe] = 2;
@@ -249,11 +264,15 @@ void LogicSystem::resetCollision(EstadoCmp& state) {
 }
 
 void LogicSystem::soundMonster(EntyMan& EM, Enty& e) {
-    auto& monster = EM.getComponent<SoundCmp>(e);
-    EM.changeSound(monster, 2);
+    if((rand()%5)==0){
+        auto& monster = EM.getComponent<SoundCmp>(e);
+        EM.changeSound(monster, 1);
+    }
     EM.foreach<SYSCMP_Player, SYSTAG_Player>(
         [&](Enty&, SoundCmp& voice){
-            EM.changeSound(voice, 1);
+            if((rand()%5)==0){
+                EM.changeSound(voice, 3);
+            }
         }
     );
 }
