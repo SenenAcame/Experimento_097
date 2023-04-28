@@ -45,7 +45,7 @@
             phy.vx = 0;
     
             if(keyboard.isKeyPressed(input.key_up)) {
-                std::cout<<"Funciona\n";
+                //std::cout<<"Funciona\n";
                 phy.vx = 1;
             }
         }

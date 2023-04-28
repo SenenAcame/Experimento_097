@@ -14,15 +14,16 @@ void PhySys2::update(EntyMan& EM, double delta) {
             //    else if(player_or_enemy_not_shooting) 
             //        entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
             //}
-            //bulletPhysics(physic);
-            Vec3 pos = rend.node->getTranslation();
-            std::cout<<pos.x<<" "<<pos.y<<" "<<pos.z<<"\n";
 
-            rend.node->setTranslation(Vec3 {
-                pos.x += physic.vx, 
-                pos.y += physic.vy, 
-                pos.z += physic.vz, 
-            });
+            bulletPhysics(physic);
+            //Vec3 pos = rend.node->getTranslation();
+            //Vec3 pos = rend.node->getTranslation();
+            //rend.node->translade(Vec3 {
+            //    pos.x += physic.vx, 
+            //    pos.y += physic.vy, 
+            //    pos.z += physic.vz, 
+            //});
+            //std::cout<<pos.x<<" "<<pos.y<<" "<<pos.z<<"\n";
             //rend.node->translade(Vec3 trans)
         }
     );

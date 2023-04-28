@@ -410,6 +410,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
         .node = GE.loadModel(file_model)
     });
     EM.addComponent<InputCmp2>(player, InputCmp2{});
+    EM.addTag<TPlayer>(player);
 
     GE.glEng.createCamera(r_cmp.node, Vec3{0}, Vec3{0}, Vec3{1});
     //GE.glEng.createCamera(NULL, Vec3{0}, Vec3{0}, Vec3{1});
