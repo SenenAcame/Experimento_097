@@ -9,7 +9,9 @@
 
 struct GraphicEngine {
     TNodo*   createNode(std::string file, std::string texture);
-    ECamera* getCamera() { return glEng.getActiveCamera(); }
+
+    ECamera*    getCamera() { return glEng.getActiveCamera(); }
+    GLFWwindow* getWindow() { return glEng.getWindow();       }
 
     GlEngine glEng;
 

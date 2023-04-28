@@ -2,14 +2,17 @@
 #include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
+#include <irrlicht/IEventReceiver.h>
 //#include <irrlicht/IEventReceiver.h>
 
 struct TheEngine;
 struct LevelMan;
 struct SoundSystem_t;
 struct GraphicEngine;
+struct GLFWwindow;
 
 struct InpSys2 {
+    using EXACMPs = MP::Typelist<InputCmp2, PhysicsCmp2>;
     using SYSCMPs = MP::Typelist<InputCmp2, RenderCmp2, PhysicsCmp2, InventarioCmp, EstadisticaCmp>;
     using SYSTAGs = MP::Typelist<>;
 
@@ -19,8 +22,11 @@ struct InpSys2 {
     /*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE);
 
-    //virtual bool OnEvent(const irr::SEvent& event);
-    //void checkPressed(const irr::SEvent& event, KeySym k);
+    ///*VIEJO*/ virtual bool OnEvent(const irr::SEvent& event);
+    /*NUEVO*/ bool OnEvent(GraphicEngine& GE);
+
+    ///*VIEJO*/ void checkPressed(const irr::SEvent& event, KeySym k);
+    /*NUEVO*/ void checkPressed(GLFWwindow* window, KeySym k, int GL_k);
 
 private:
     //metodos del input
@@ -47,4 +53,6 @@ private:
 
     inline static Keyboard keyboard {};
     inline static Mouse mouse {};
+
+
 };

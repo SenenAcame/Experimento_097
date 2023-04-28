@@ -32,7 +32,13 @@ void GameMan::game() {
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
 
-    LM.createPlayer2(GE, Vec3{0});
+    auto& player = LM.createPlayer2(GE, Vec3{0});
+
+    if(player.hasCMP<SoundCmp>())
+        std::cout<<"Tiene fisicas\n";
+    else {
+        std::cout<<"No tiene fisicas\n";
+    }
     //LM.createNormalEnemy(GE, Vec3{0});
     //LM.createMap2(GE);
     
@@ -47,6 +53,7 @@ void GameMan::game() {
     constexpr double dt = 1.0 / 60;
 
     while(!glfwWindowShouldClose(GE.glEng.getWindow())) {
+        EM.update();
         //ge.glEng.drawFocos();
         //RenSys.drawWorld(GE);
         RenSys.update2(EM, GE);

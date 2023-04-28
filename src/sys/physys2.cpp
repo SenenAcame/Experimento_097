@@ -14,6 +14,7 @@ void PhySys2::update(EntyMan& EM, double delta) {
             //    else if(player_or_enemy_not_shooting) 
             //        entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
             //}
+            bulletPhysics(physic);
         }
     );
 }

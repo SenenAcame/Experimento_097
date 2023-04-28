@@ -16,6 +16,7 @@ struct TheEngine;
 struct GraphicEngine;
 
 struct RenSys2 {
+    using Render  = MP::Typelist<RenderCmp2>;
     using SYSCMPs = MP::Typelist<PhysicsCmp2, RenderCmp2>;
     using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;

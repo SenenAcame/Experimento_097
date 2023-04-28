@@ -2,6 +2,7 @@
 #include "../man/levelman.hpp"
 #include "soundsystem.hpp"
 #include "../eng/engine2.hpp"
+#include <GL/glut.h>
 
 /*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
@@ -14,7 +15,7 @@
             equip.clockCadence += dt;
             phy.v_lin = phy.v_ang = 0;
             
-//            movementMouse(eng, rend, phy);
+            //movementMouse(eng, rend, phy);
             if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
 
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
@@ -36,17 +37,35 @@
 } 
 
 /*NUEVO*/ void InpSys2::update2(LevelMan &LM, GraphicEngine &GE) {
+    auto& EM = LM.getEM();
+    OnEvent(GE);
+
+    EM.foreach<EXACMPs, SYSTAGs>(
+        [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
+            phy.vx = 0;
+    
+            if(keyboard.isKeyPressed(input.key_up)) {
+                //std::cout<<"Funciona\n";
+                phy.vx = 1;
+            }
+        }
+    );
+    //if(keyboard.isKeyPressed(XK_W)) {
+    //    std::cout<<"Funciona\n";
+    //    //phy.vx = 1;
+    //}
+    
     //auto& EM = LM.getEM();
-    auto a = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W);
-    if(a) {
-        std::cout<<"Funciona\n";
-    }
+    //auto a = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W);
+    //if(a) {
+    //    std::cout<<"Funciona\n";
+    //}
     //EM.foreach<SYSCMPs, SYSTAGs>(
     //    [&]() {}
     //);
 }
 
-//bool InpSys2::OnEvent(const irr::SEvent& event) {
+///*VIEJO*/ bool InpSys2::OnEvent(const irr::SEvent& event) {
 //    if (event.EventType == irr::EET_KEY_INPUT_EVENT){
 //        switch (event.KeyInput.Key) {
 //            case irr::KEY_KEY_W:
@@ -106,10 +125,28 @@
 //    return false;
 //}
 
-//void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
+/*NUEVO*/ bool InpSys2::OnEvent(GraphicEngine& GE) {
+    //glutKeyboardUpFunc(
+    //    [](unsigned char a, int b, int c) {
+    //
+    //    });
+    checkPressed(GE.getWindow(), XK_W, GLFW_KEY_W);
+    //if(glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W) == GLFW_PRESS) {
+    //    checkPressed(XK_W);
+    //}
+}
+
+///*VIEJO*/ void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
 //    if(event.KeyInput.PressedDown) { keyboard.keyPressed(k);  }
 //    else                           { keyboard.keyReleased(k); }
 //}
+
+/*NUEVO*/ void InpSys2::checkPressed(GLFWwindow* window, KeySym k, int GL_k) {
+    if(glfwGetKey(window, GL_k) == GLFW_PRESS)
+        keyboard.keyPressed(k);
+    else
+        keyboard.keyReleased(k);
+}
 
 //void InpSys2::movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {
 //    auto centerWidth  = static_cast<irr::s32>(eng.getWidth() /2);

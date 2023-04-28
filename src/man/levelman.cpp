@@ -401,21 +401,23 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     return player;
 }
 
-/**NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
+/*NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
     std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
-    auto r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
+    auto& r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
         .node = GE.loadModel(file_model)
     });
+    EM.addComponent<InputCmp2>(player, InputCmp2{});
 
-    
     GE.glEng.createCamera(r_cmp.node, Vec3{0}, Vec3{0}, Vec3{1});
     //GE.glEng.createCamera(NULL, Vec3{0}, Vec3{0}, Vec3{1});
     GE.glEng.setActiveCamera(0);
     auto* cam = GE.glEng.getActiveCamera();
     GE.glEng.setCamera_(cam);
+
+    return player;
 }
 
 /*VIEJO*/ Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
