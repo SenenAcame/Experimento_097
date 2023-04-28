@@ -24,8 +24,15 @@
         [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend){
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             
-            if(ent.hasTAG<TPlayer>())
-                GE.getCamera()->setPosition(Vec3 { phy.x, phy.y, phy.z });
+            if(ent.hasTAG<TPlayer>()) {
+                float pitch = GE.getCamera()->Pitch;
+                float yaw   = GE.getCamera()->Yaw;
+
+                //std::cout<<pitch<<" "<<yaw<<"\n";
+
+                GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
+                rend.node->setRotation(Vec3 {pitch, 0, 0});
+            }
         }
     );
 

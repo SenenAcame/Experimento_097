@@ -42,11 +42,22 @@
 
     EM.foreach<EXACMPs, SYSTAGs>(
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
-            phy.vx = 0;
-    
+            phy.vx = 0; phy.vz = 0;
+
+            //auto v = GE.getCamera()->Pitch;
+            //std::cout<<v<<"\n";
+
             if(keyboard.isKeyPressed(input.key_up)) {
-                //std::cout<<"Funciona\n";
-                phy.vx = 1;
+                phy.vx = 0.1;
+            }
+            if(keyboard.isKeyPressed(input.key_down)) {
+                phy.vx = -0.1;
+            }
+            if(keyboard.isKeyPressed(input.key_left)) {
+                phy.vz = -0.1;
+            }
+            if(keyboard.isKeyPressed(input.key_right)) {
+                phy.vz = 0.1;
             }
         }
     );
@@ -131,6 +142,9 @@
     //
     //    });
     checkPressed(GE.getWindow(), XK_W, GLFW_KEY_W);
+    checkPressed(GE.getWindow(), XK_S, GLFW_KEY_S);
+    checkPressed(GE.getWindow(), XK_A, GLFW_KEY_A);
+    checkPressed(GE.getWindow(), XK_D, GLFW_KEY_D);
     //if(glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W) == GLFW_PRESS) {
     //    checkPressed(XK_W);
     //}

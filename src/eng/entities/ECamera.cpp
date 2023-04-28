@@ -51,7 +51,6 @@ void ECamera::draw(Mat4 mat, bool){
 
 // actualiza la posicion y la suma a la que tenia
 void ECamera::translate(Vec3 pos) {
-
     Position += pos;
     updateCameraVectors();
 }
