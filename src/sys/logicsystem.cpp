@@ -183,13 +183,14 @@ void LogicSystem::reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
     
     if(!agressor.hasTAG<TEnemy>()) { markDestroy(agressor); }
 
-    if(receptor.hasTAG<TPlayer>() && recept_stats.hitpoints <= 20){
+    /*if(receptor.hasTAG<TPlayer>() && recept_stats.hitpoints <= 20){
         EM.foreach<SYSCMP_Player, SYSTAG_Pulso>(
             [&](Enty&, SoundCmp& voice){
+                std::cout<<"Alcachofa\n";
                 EM.changeSound(voice, 0);
             }
         );
-    }
+    }*/
 }
 
 void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
@@ -286,7 +287,7 @@ void LogicSystem::partialVelocities(EntyMan& EM, Enty& player, double dt) {
     float dx, dz;
 
     //precalculo de coordenadas
-    preCalculation(copy_physics, player.hasTAG<TEnemy>(), dt);
+    preCalculation(EM, copy_physics, player.hasTAG<TEnemy>(), dt);
 
     //comprobar colision en la siguiente posicion
     dx = ColSys2::calculateDist(copy_physics.x, wall_physc.x, state.width, wall_state.width);
@@ -299,8 +300,8 @@ void LogicSystem::partialVelocities(EntyMan& EM, Enty& player, double dt) {
     }
 }
 
-void LogicSystem::preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt) {
-    PhySys2::calculatePosition(is_enemy, copy_physics, dt);
+void LogicSystem::preCalculation(EntyMan& EM, PhysicsCmp2& copy_physics, bool const is_enemy, double const dt) {
+    PhySys2::calculatePosition(EM, is_enemy, copy_physics, dt);
 }
 
 void LogicSystem::secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt) {

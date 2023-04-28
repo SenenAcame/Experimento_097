@@ -91,13 +91,13 @@ void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
 }
 
 void GameMan::soundsEffects(EntyMan& EM, SoundSystem_t& SouSys){
-    auto& pulso=EM.createEntity();
-    EM.addComponent<SoundCmp>      (pulso, SoundCmp{.programmerSoundContext = SouSys.createinstance(3), .parametro = 0, .play = false, .loop=true});
-    EM.addTag      <TPulso>        (pulso);
+    /*auto& pulso=EM.createEntity();
+    EM.addComponent<SoundCmp>      (pulso, SoundCmp{.programmerSoundContext = SouSys.createinstance(3)});
+    EM.addTag      <TPulso>        (pulso);*/
 
-    auto& pasos=EM.createEntity();
+    /*auto& pasos=EM.createEntity();
     EM.addComponent<SoundCmp>      (pasos, SouSys.createinstance(4));
-    EM.addTag      <TPasos>        (pasos);
+    EM.addTag      <TPasos>        (pasos);*/
 
     auto& ronda=EM.createEntity();
     EM.addComponent<SoundCmp>      (ronda, SouSys.createinstance(8));

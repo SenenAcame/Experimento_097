@@ -54,6 +54,7 @@ void SoundSystem_t::setloop(SoundCmp& s) {
 void SoundSystem_t::stopsound(SoundCmp& s) {
     if(s.loop)
         setloop(s);
+    s.play=false;
     facherita.stopsound(s);
 }
 

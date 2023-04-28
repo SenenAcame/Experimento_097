@@ -6,11 +6,14 @@ struct SoundSystem_t;
 
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
+    using SYSCMP_Sound = MP::Typelist<SoundCmp>;
     using EneTAGs = MP::Typelist<TEnemy>;
     using voidCMP2 = MP::Typelist<PhysicsCmp2, SalaCmp, SpawnCmp>;
     using EneTAGs2 = MP::Typelist<TSpawn>;
     using voidCMP3 = MP::Typelist<WeaponCmp>;
     using EneTAGs3 = MP::Typelist<TWeapon>;
+    using SYSTAG_Ronda = MP::Typelist<TRonda>;
+    using SYSTAG_Pulso  = MP::Typelist<TPulso>;
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
     Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);

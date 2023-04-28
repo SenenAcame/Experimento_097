@@ -1,4 +1,5 @@
 #include "physys2.hpp"
+#include <iostream>
 
 void PhySys2::update(EntyMan& EM, double delta) {
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -12,7 +13,7 @@ void PhySys2::update(EntyMan& EM, double delta) {
                 
                 if(enemy_is_diying) physic.y -= 0.1;
                 else if(player_or_enemy_not_shooting) 
-                    entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
+                    entityPhysics(EM, en.hasTAG<TEnemy>(), physic, delta);
             }
         }
     );
@@ -34,8 +35,8 @@ void PhySys2::bulletPhysics(PhysicsCmp2& p) const noexcept{
     p.z += p.vz;
 }
 
-void PhySys2::entityPhysics(bool const is_enemy, PhysicsCmp2& phy, double const dt) const noexcept{
-    calculatePosition(is_enemy, phy, dt);
+void PhySys2::entityPhysics(EntyMan& EM, bool const is_enemy, PhysicsCmp2& phy, double const dt) const noexcept{
+    calculatePosition(EM, is_enemy, phy, dt);
 
     phy.v_lin += dt * phy.a_lin;
     phy.v_ang += dt * phy.a_ang;
@@ -48,7 +49,7 @@ void PhySys2::entityPhysics(bool const is_enemy, PhysicsCmp2& phy, double const 
     else              phy.v_lin += roz;  
 }
 
-void PhySys2::calculatePosition(bool const is_enemy, PhysicsCmp2& p, double const dt) {
+void PhySys2::calculatePosition(EntyMan& EM, bool const is_enemy, PhysicsCmp2& p, double const dt) {
     p.orieny += dt * p.v_ang;
 
     while (p.orieny > 2*PI) p.orieny -= 2*PI;
@@ -61,6 +62,14 @@ void PhySys2::calculatePosition(bool const is_enemy, PhysicsCmp2& p, double cons
     else {
         p.vx =  p.v_lin * std::sin(p.orieny);
         p.vz =  p.v_lin * std::cos(p.orieny);
+        /*if(p.vz>0 || p.vx>0){
+            EM.foreach<SYSCMP_Player, SYSTAG_Pasos>(
+                [&](Enty&, SoundCmp& voice){
+                    std::cout<<"Hola\n";
+                    EM.changeSound(voice, 0);
+                }
+            );
+        }*/
     }
 
     p.x += dt * p.vx;

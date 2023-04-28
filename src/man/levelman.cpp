@@ -60,6 +60,11 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
     }
     );
     if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
+        EM.foreach<SYSCMP_Sound, SYSTAG_Ronda>(
+            [&](Enty&, SoundCmp& voice){
+                EM.changeSound(voice, 0);
+            }
+        );
         inRound = false;
         //std::cout<<"NOT In round: "<<inRound<<"\n";
     }
@@ -67,6 +72,8 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
         clockToNextWave += dt;
         //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
         if(clockToNextWave >= timeBtwWaves){
+
+            EM.getComponent<EstadisticaCmp>(player).hitpoints=100;
             inRound = true;
             clockToNextWave = 0;
             if(extraSpeed<31){

@@ -34,7 +34,7 @@ struct LogicSystem {
     void resetCollision(EstadoCmp& state);
     void soundMonster(EntyMan& EM, Enty& e);
     void partialVelocities(EntyMan& EM, Enty& player, double dt);
-    void preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt);
+    void preCalculation(EntyMan& EM, PhysicsCmp2& copy_physics, bool const is_enemy, double const dt);
     void secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt);
     bool checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept;
 };
