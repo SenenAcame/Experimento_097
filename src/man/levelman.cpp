@@ -415,7 +415,12 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     GE.glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
     //GE.getCamera()->setPosition(Vec3{0,0,0});
     GE.glEng.setActiveCamera(0);
+    auto* cam_node = GE.glEng.getActiveCameraNode();
     auto* cam = GE.glEng.getActiveCamera();
+    r_cmp.node->addSon(cam_node);
+    cam_node->setFatherNode(r_cmp.node);
+    cam->Yaw = 0.0f;
+    cam->updateCameraVectors();
     GE.glEng.setCamera_(cam);
 
     return player;
