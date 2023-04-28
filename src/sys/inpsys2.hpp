@@ -32,8 +32,6 @@ struct InpSys2 : public irr::IEventReceiver{
                 equip.clockCadence += dt;
                 phy.v_lin = phy.v_ang = 0;
             
-                
-
                 switch (equip.equipada) {
                     case 0: 
                         weaponReloadTimer = equip.reloadTime1;
@@ -59,7 +57,6 @@ struct InpSys2 : public irr::IEventReceiver{
                     default: break;
                 }
                 
-
                 if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer){
                     
                     notReloading(LM, eng, equip); 
@@ -74,17 +71,13 @@ struct InpSys2 : public irr::IEventReceiver{
                     
                     if(equip.reloading == 0 && magazine > 0){
                         
-                        
                         shoot(LM, player, eng, SS, equip);
                         movementMouse(eng, rend, phy, retroceso); 
-                        
-                       
+                         
                     }
                     else if (magazine == 0 && equip.reloading == 0){
                         
-                        
                         reload(LM, eng, equip); 
-                        
                     }
                 }
                 else{
@@ -99,7 +92,6 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, down, up); }
                 if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { 
                     keyboard.keyReleased(input.key_rldCrrAmmo);
-                    
                     reload(LM, eng, equip); 
                 }
                 if(keyboard.isKeyPressed(input.key_weapon1))    { 
