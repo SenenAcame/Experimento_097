@@ -23,59 +23,67 @@ struct InpSys2 : public irr::IEventReceiver{
             [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
                 bool up = false, down = false;
 
-
+                
+                double weaponReloadTimer = 0;
+                double maxMagazine = 0;
                 double retroceso = 0;
-                int& magazine = equip.magazine1;
-                int& ammo = equip.ammo1;
-                int maxMagazine = 0;
-                double reloadTimer = 0;
 
-                switch (equip.equipada) {
-                    case 0: retroceso = equip.retroceso1;
-                    magazine = equip.magazine1;
-                    ammo = equip.ammo1;
-                    maxMagazine = equip.Maxmagazine1;
-                    reloadTimer = equip.reloadTime1;
-                    break;
-                    case 1: retroceso = equip.retroceso2;
-                    magazine = equip.magazine2;
-                    ammo = equip.ammo2;
-                    maxMagazine = equip.Maxmagazine2;
-                    reloadTimer = equip.reloadTime2;
-                    break;
-                    case 2: retroceso = equip.retroceso3;
-                    magazine = equip.magazine3;
-                    ammo = equip.ammo3;
-                    maxMagazine = equip.Maxmagazine3;
-                    reloadTimer = equip.reloadTime3;
-                    break;
-                    default: break;
-                }
-
-                
-                
-                if(equip.reloading == 1) {equip.clockReload += dt; }
                 equip.clockCadence += dt;
                 phy.v_lin = phy.v_ang = 0;
-                if(equip.reloading == 1 && equip.clockReload >= reloadTimer){ 
-                    notReloading(LM, eng, equip, 0, ammo, magazine, maxMagazine);
-                    std::cout<<"RELOADING ES: "<<equip.reloading<<"\n";
-                    std::cout<<"MAGAZINE ES : "<<equip.magazine1<<"\n";
-                    equip.clockReload = 0;
+
+                int magazine = 0;
+                switch (equip.equipada) {
+                    case 0: 
+                        weaponReloadTimer = equip.reloadTime1;
+                        magazine = equip.magazine1;
+                        maxMagazine = equip.Maxmagazine1;
+                        retroceso = equip.retroceso1;
+                    break;
+
+                    case 1: 
+                        weaponReloadTimer = equip.reloadTime2;
+                        magazine = equip.magazine2;
+                        maxMagazine = equip.Maxmagazine2;
+                        retroceso = equip.retroceso2;
+                    break;
+
+                    case 2: 
+                        weaponReloadTimer = equip.reloadTime3; 
+                        magazine = equip.magazine3;
+                        maxMagazine = equip.Maxmagazine3;
+                        retroceso = equip.retroceso3;
+                    break;
+
+                    default: break;
                 }
                 
-                
+
+                if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer){
+                    //reload
+                    std::cout<<"--------------------------\n";
+                    std::cout<<"VOY A RECARGAR :\n";
+                    std::cout<<"--------------------------\n";
+                    notReloading(LM, eng, equip); 
+                    equip.clockReload = 0;
+                }
+                else if(equip.reloading == 1 && equip.clockReload < weaponReloadTimer){
+
+                    equip.clockReload+=dt;
+                }
+
                 if(mouse.isLeftPressed()) { 
                     
-
-                    if(magazine > 0){
+                    if(equip.reloading == 0 && magazine > 0){
+                        
                         movementMouse(eng, rend, phy, retroceso); 
-                        shoot(LM, player, eng, SS, equip, magazine);
+                        shoot(LM, player, eng, SS, equip);
                        
                     }
-                    else{
+                    else if (magazine == 0 && equip.reloading == 0){
+                        
                         movementMouse(eng, rend, phy, 0);
                         reload(LM, eng, equip); 
+                        
                     }
                 }
                 else{
@@ -88,10 +96,23 @@ struct InpSys2 : public irr::IEventReceiver{
                 if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
                 if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, up, down); }
                 if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, down, up); }
-                if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload(LM, eng, equip); }
-                if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon(LM, equip, rend, 0, eng); }
-                if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon(LM, equip, rend, 1, eng); }
-                if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(LM, equip, rend, 2, eng); }
+                if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { 
+                    keyboard.keyReleased(input.key_rldCrrAmmo);
+                    
+                    reload(LM, eng, equip); 
+                }
+                if(keyboard.isKeyPressed(input.key_weapon1))    { 
+                    keyboard.keyReleased(input.key_weapon1);
+                    changeWeapon(LM, equip, rend, 0, eng); 
+                }
+                if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) {
+                    keyboard.keyReleased(input.key_weapon2); 
+                    changeWeapon(LM, equip, rend, 1, eng); 
+                }
+                if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { 
+                    keyboard.keyReleased(input.key_weapon3);
+                    changeWeapon(LM, equip, rend, 2, eng); 
+                }
                 //if(keyboard.isKeyPressed(input.key_interaction)) { interact(EM, player, input.key_interaction); }
 
                 if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
@@ -189,29 +210,31 @@ private:
         phy.orienx = angx;
     }
     
-    void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment, int magazine) {
+    void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
         
         double weaponCadence = 0;
         double reloadTimer = 0;
         double retroceso = 0;
-
-        
+        int magazine = 0;
 
         switch (equipment.equipada) {
             case 0: 
                     reloadTimer = equipment.reloadTime1;
                     retroceso = equipment.retroceso1;
+                    magazine = equipment.magazine1;
                     
             break;
             case 1: 
                     reloadTimer = equipment.reloadTime2;
                     retroceso = equipment.retroceso2;
+                    magazine = equipment.magazine2;
                     
             break;
             case 2: 
                     reloadTimer = equipment.reloadTime3;
                     weaponCadence = equipment.cadenceWeapon3;
                     retroceso = equipment.retroceso3;
+                    magazine = equipment.magazine3;
                     
             break;
             default: break;
@@ -236,24 +259,11 @@ private:
     }
 
     void reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
-        if(equipment.reloading != 1){
-            equipment.clockReload = 0;
-            auto& EM = LM.getEM();
-            
-            switch (equipment.equipada) {
-                case 0:
-                    reloadProcess(equipment);
-                break;
-                case 1:
-                    reloadProcess(equipment);
-                break;
-                case 2:
-                    reloadProcess(equipment);
-                break;
-                default: break;
-            }
-            soundWeapon(EM);
-        }
+
+        auto& EM = LM.getEM();
+        iAmReloading(equipment);
+        soundWeapon(EM);
+        
     }
 
     void changeWeaponReloading(InventarioCmp& equipment){
@@ -261,57 +271,77 @@ private:
         equipment.reloading = 0;
     }
 
-    void changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng) {
+    void changeWeapon(LevelMan& LM, InventarioCmp& equip, RenderCmp2& playerRender, size_t Wequip, TheEngine& eng) {
+        
         int magazine {}, ammo{};
         playerRender.n->remove();
-        
-        if(p_invent.reloading == 1) {
-            switch (p_invent.equipada) {
-                case 0: p_invent.clockReload1 = p_invent.clockReload;
+
+        if(equip.reloading == 1) {
+            
+            switch (equip.equipada) {
+                case 0: equip.clockReload1 = equip.clockReload;
+                
                     break;
-                case 1: p_invent.clockReload2 = p_invent.clockReload;
+                case 1: equip.clockReload2 = equip.clockReload;
+                
                     break;
-                case 2: p_invent.clockReload3 = p_invent.clockReload;
+                case 2: equip.clockReload3 = equip.clockReload;
+                
                     break;
                 default: break;
             }
         }
         
-        p_invent.inventary[p_invent.equipada] = 1;
-        p_invent.equipada = equip;
-        p_invent.inventary[equip] = 2;
+        equip.inventary[equip.equipada] = 1;
+        equip.equipada = Wequip;
+        equip.inventary[Wequip] = 2;
 
-        switch (p_invent.equipada) {
-            case 0:
+        switch (equip.equipada) {
+            case 0: 
                 playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
-                p_invent.clockReload = p_invent.clockReload1;
-                if(p_invent.clockReload >= p_invent.reloadTime1) { changeWeaponReloading(p_invent); }
-                else { iAmReloading(p_invent); }
-                magazine = p_invent.magazine1;
-                ammo = p_invent.ammo1;
-                break;
-
-            case 1:
+                if(equip.magazine1 > 0){
+                    equip.reloading = 0;
+                    
+                }
+                else{
+                    equip.reloading = 1;
+                }
+                magazine = equip.magazine1;
+                ammo = equip.ammo1;
+                equip.clockReload = equip.clockReload1;
+            
+            break;
+            case 1: 
                 playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
-                p_invent.clockReload = p_invent.clockReload2;
-                if(p_invent.clockReload >= p_invent.reloadTime2) { changeWeaponReloading(p_invent); }
-                else { iAmReloading(p_invent); }
-                magazine = p_invent.magazine2;
-                ammo = p_invent.ammo2;
+                if(equip.magazine2 > 0){
+                    equip.reloading = 0;
+                    
+                }
+                else{
+                    equip.reloading = 1;
+                }
+                magazine = equip.magazine2;
+                ammo = equip.ammo2;
+                equip.clockReload = equip.clockReload2;
                 break;
-
-            case 2:
+            case 2: 
                 playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
-                p_invent.clockReload = p_invent.clockReload3;
-                if(p_invent.clockReload >= p_invent.reloadTime3) { changeWeaponReloading(p_invent); }
-                else { iAmReloading(p_invent); }
-                magazine = p_invent.magazine3;
-                ammo = p_invent.ammo3;
+                if(equip.magazine3 > 0){
+                    equip.reloading = 0;
+                    
+                }
+                else{
+                    equip.reloading = 1;
+                }
+                magazine = equip.magazine3;
+                ammo = equip.ammo3;
+                equip.clockReload = equip.clockReload3;
                 break;
-
             default: break;
         }
+
         LM.updateInterfaceWhenReload(eng, magazine, ammo);
+     
     }
 
     //void interact(EntyMan& EM, Enty& player, KeySym key) {
@@ -365,24 +395,74 @@ private:
     //    }
     //}
 
-    void notReloading(LevelMan& LM, TheEngine& dev, InventarioCmp& p_invent, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
-        currentAmmo = maxAmmo - magazine; //0 is magazine complete
-        if((ammo-currentAmmo) > 0){
-            ammo = ammo - currentAmmo;
-            magazine = magazine + currentAmmo;
+    void notReloading(LevelMan& LM, TheEngine& dev, InventarioCmp& equip) {
+        
+       
+        int ammo = 0;
+        int magazine = 0;
+        int maxAmmo = 0;
+        int needIt = 0;
+        switch (equip.equipada) {
+            case 0: 
+                    
+                    ammo = equip.ammo1;
+                    magazine = equip.magazine1;
+                    maxAmmo = equip.Maxmagazine1;
+                    needIt = maxAmmo - magazine;
+                    if((ammo-needIt) > 0){
+                        equip.magazine1 = maxAmmo;
+                        equip.ammo1 = ammo-needIt;
+                    }
+                    else {
+                        equip.magazine1 = ammo;
+                        equip.ammo1 = 0;
+                    }
+                    LM.updateInterfaceWhenReload(dev, equip.magazine1, equip.ammo1);
+                    
+            break;
+            case 1: 
+                    
+                    ammo = equip.ammo2;
+                    magazine = equip.magazine2;
+                    maxAmmo = equip.Maxmagazine2;
+                    needIt = maxAmmo - magazine;
+                    if((ammo-needIt) > 0){
+                        equip.magazine2 = maxAmmo;
+                        equip.ammo2 = ammo-needIt;
+                    }
+                    else {
+                        equip.magazine2 = ammo;
+                        equip.ammo2 = 0;
+                    }
+                    LM.updateInterfaceWhenReload(dev, equip.magazine2, equip.ammo2);
+                    
+            break;
+            case 2: 
+                    
+                    ammo = equip.ammo3;
+                    magazine = equip.magazine3;
+                    maxAmmo = equip.Maxmagazine3;
+                    needIt = maxAmmo - magazine;
+                    if((ammo-needIt) > 0){
+                        equip.magazine3 = maxAmmo;
+                        equip.ammo3 = ammo-needIt;
+                    }
+                    else {
+                        equip.magazine3 = ammo;
+                        equip.ammo3 = 0;
+                    }
+                    LM.updateInterfaceWhenReload(dev, equip.magazine3, equip.ammo3);
+                    
+            break;
+            default: break;
         }
-        else {
-            magazine = ammo;
-            ammo = 0;
-        }
-        p_invent.reloading = 0;
-        LM.updateInterfaceWhenReload(dev, magazine, ammo);
+
+        equip.reloading = 0;
+        
     }
 
     void iAmReloading(InventarioCmp& equipment){ equipment.reloading = 1; }
 
-    void reloadProcess(InventarioCmp& equipment){ 
-        iAmReloading(equipment); }
 
     void createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, TheEngine& eng, SoundSystem_t& SS) {
         auto& EM = LM.getEM();
