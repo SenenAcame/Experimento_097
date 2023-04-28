@@ -27,11 +27,13 @@ struct InpSys2 : public irr::IEventReceiver{
                 double weaponReloadTimer = 0;
                 double maxMagazine = 0;
                 double retroceso = 0;
+                int magazine = 0;
 
                 equip.clockCadence += dt;
                 phy.v_lin = phy.v_ang = 0;
+            
+                
 
-                int magazine = 0;
                 switch (equip.equipada) {
                     case 0: 
                         weaponReloadTimer = equip.reloadTime1;
@@ -59,10 +61,7 @@ struct InpSys2 : public irr::IEventReceiver{
                 
 
                 if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer){
-                    //reload
-                    std::cout<<"--------------------------\n";
-                    std::cout<<"VOY A RECARGAR :\n";
-                    std::cout<<"--------------------------\n";
+                    
                     notReloading(LM, eng, equip); 
                     equip.clockReload = 0;
                 }
@@ -75,22 +74,24 @@ struct InpSys2 : public irr::IEventReceiver{
                     
                     if(equip.reloading == 0 && magazine > 0){
                         
-                        movementMouse(eng, rend, phy, retroceso); 
+                        
                         shoot(LM, player, eng, SS, equip);
+                        movementMouse(eng, rend, phy, retroceso); 
+                        
                        
                     }
                     else if (magazine == 0 && equip.reloading == 0){
                         
-                        movementMouse(eng, rend, phy, 0);
+                        
                         reload(LM, eng, equip); 
                         
                     }
                 }
                 else{
-
+                    
                     movementMouse(eng, rend, phy, 0);
 
-                } 
+                }
 
                 if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
                 if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
