@@ -31,7 +31,7 @@ struct InpSys2 : public irr::IEventReceiver{
 
                 equip.clockCadence += dt;
                 phy.v_lin = phy.v_ang = 0;
-            
+
                 switch (equip.equipada) {
                     case 0: 
                         weaponReloadTimer = equip.reloadTime1;
@@ -58,11 +58,10 @@ struct InpSys2 : public irr::IEventReceiver{
                 }
                 
                 if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer){
-                    
                     notReloading(LM, eng, equip); 
                     equip.clockReload = 0;
                 }
-                else if(equip.reloading == 1 && equip.clockReload < weaponReloadTimer){
+                else if(equip.reloading == 1){
 
                     equip.clockReload+=dt;
                 }
@@ -71,13 +70,18 @@ struct InpSys2 : public irr::IEventReceiver{
                     
                     if(equip.reloading == 0 && magazine > 0){
                         
-                        shoot(LM, player, eng, SS, equip);
                         movementMouse(eng, rend, phy, retroceso); 
-                         
+                        shoot(LM, player, eng, SS, equip);
+                            
                     }
                     else if (magazine == 0 && equip.reloading == 0){
                         
+                        movementMouse(eng, rend, phy, 0);
                         reload(LM, eng, equip); 
+                        
+                    }
+                    else{
+                        movementMouse(eng, rend, phy, 0);
                     }
                 }
                 else{
@@ -195,7 +199,7 @@ private:
         rend.n->setRotation({
             eng.getCamera()->getRotation().X, 
             eng.getCamera()->getRotation().Y, 
-            eng.getCamera()->getRotation().Z,
+            0,
         });
         cursor->setPosition(centerWidth, centerHeight);
 
@@ -207,26 +211,22 @@ private:
         
         double weaponCadence = 0;
         double reloadTimer = 0;
-        double retroceso = 0;
         int magazine = 0;
 
         switch (equipment.equipada) {
             case 0: 
                     reloadTimer = equipment.reloadTime1;
-                    retroceso = equipment.retroceso1;
                     magazine = equipment.magazine1;
                     
             break;
             case 1: 
                     reloadTimer = equipment.reloadTime2;
-                    retroceso = equipment.retroceso2;
                     magazine = equipment.magazine2;
                     
             break;
             case 2: 
                     reloadTimer = equipment.reloadTime3;
                     weaponCadence = equipment.cadenceWeapon3;
-                    retroceso = equipment.retroceso3;
                     magazine = equipment.magazine3;
                     
             break;
@@ -259,18 +259,12 @@ private:
         
     }
 
-    void changeWeaponReloading(InventarioCmp& equipment){
-
-        equipment.reloading = 0;
-    }
-
     void changeWeapon(LevelMan& LM, InventarioCmp& equip, RenderCmp2& playerRender, size_t Wequip, TheEngine& eng) {
         
         int magazine {}, ammo{};
         playerRender.n->remove();
 
         if(equip.reloading == 1) {
-            
             switch (equip.equipada) {
                 case 0: equip.clockReload1 = equip.clockReload;
                 
@@ -390,7 +384,6 @@ private:
 
     void notReloading(LevelMan& LM, TheEngine& dev, InventarioCmp& equip) {
         
-       
         int ammo = 0;
         int magazine = 0;
         int maxAmmo = 0;
@@ -470,7 +463,6 @@ private:
         if(equipment.equipada == 0){ //pistola
             LM.createBullet(phy_player, eng, SS, 19., 5., 0.1, 9.);
             equipment.magazine1 -= 1;
-            std::cout<<"MAGAZINE: "<<equipment.magazine1<<"\n";
             //ammo = equipment.magazine1;
         }
         else if (equipment.equipada == 1){ //escopeta
