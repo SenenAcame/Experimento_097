@@ -28,26 +28,26 @@
 
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             
-
-            TNodo* node_cam = GE.glEng.getActiveCameraNode();
+            //TNodo* node_cam = GE.glEng.getActiveCameraNode();
             //auto* cam = GE.getCamera();
 
-            std::cout << "___________________________________________________________\n";
-            std::cout << "Translacion nodo :" << node_cam->getTranslation()[0] << ", " << node_cam->getTranslation()[1] << ", " <<  node_cam->getTranslation()[2] << std::endl;
-            std::cout << "___________________________________________________________\n";
-            //node_cam->translade(node_cam->translation_ - cam->Position);
-            std::cout << "___________________________________________________________\n";
-            std::cout << "Translacion nodo :" << cam->Position[0] << ", " << cam->Position[1] << ", " <<  cam->Position[2] << std::endl;
-            std::cout << "___________________________________________________________\n";
-            //if(ent.hasTAG<TPlayer>()) {
-            //    float pitch = GE.getCamera()->Pitch;
-            //    float yaw   = GE.getCamera()->Yaw;
-//
-            //    //std::cout<<pitch<<" "<<yaw<<"\n";
-//
-            //    GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
-            //    rend.node->setRotation(Vec3 {pitch, 0, 0});
-            //}
+            //std::cout << "___________________________________________________________\n";
+            //std::cout << "Translacion nodo :" << node_cam->getTranslation()[0] << ", " << node_cam->getTranslation()[1] << ", " <<  node_cam->getTranslation()[2] << std::endl;
+            //std::cout << "___________________________________________________________\n";
+            ////node_cam->translade(node_cam->translation_ - cam->Position);
+            //std::cout << "___________________________________________________________\n";
+            //std::cout << "Translacion nodo :" << cam->Position[0] << ", " << cam->Position[1] << ", " <<  cam->Position[2] << std::endl;
+            //std::cout << "___________________________________________________________\n";
+            if(ent.hasTAG<TPlayer>()) {
+                float pitch = GE.getCamera()->Pitch;
+                float yaw   = GE.getCamera()->Yaw;
+            
+                //std::cout<<pitch<<" "<<yaw<<"\n";
+            
+                //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
+                GE.getCamera()->setPosition(Vec3 { phy.x, phy.y, phy.z });
+                rend.node->setRotation(Vec3 {pitch, 0, 0});
+            }
         }
     );
 
