@@ -2,6 +2,7 @@
 #include "../util/types.hpp"
 
 struct PhySys2 {
+    using prueba = MP::Typelist<PhysicsCmp2, RenderCmp2>;
     using SYSCMPs      = MP::Typelist<PhysicsCmp2>;
     using POSTCOLLCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs      = MP::Typelist<>;

@@ -64,17 +64,17 @@ int TNodo::deleteSon(TNodo *hijo) noexcept {
 }
 
 void TNodo::translade(Vec3 trans) {
-    translation_ = trans;
+    translation_ += trans;
     updateMat_ = true;
 }
 
 void TNodo::rotate(Vec3 rot) {
-    rotation_ = rot;
+    rotation_ += rot;
     updateMat_ = true;
 }
 
 void TNodo::scale(Vec3 scale) {
-    scale_ = scale;
+    scale_ += scale;
     updateMat_ = true;
 }
 

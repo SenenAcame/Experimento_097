@@ -33,13 +33,7 @@ void GameMan::game() {
     //GE.glEng.setResolution(1920, 1080);
 
     auto& player = LM.createPlayer2(GE, Vec3{0});
-
-    if(player.hasCMP<SoundCmp>())
-        std::cout<<"Tiene fisicas\n";
-    else {
-        std::cout<<"No tiene fisicas\n";
-    }
-    //LM.createNormalEnemy(GE, Vec3{0});
+    LM.createNormalEnemy(GE, Vec3{0});
     //LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });

@@ -1,8 +1,8 @@
 #include "physys2.hpp"
 
 void PhySys2::update(EntyMan& EM, double delta) {
-    EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& enty, PhysicsCmp2& physic) {
+    EM.foreach<prueba, SYSTAGs>(
+        [&](Enty& enty, PhysicsCmp2& physic, RenderCmp2& rend) {
             //bool is_bullet = en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>();
             //
             //if(is_bullet) bulletPhysics(physic);
@@ -14,7 +14,16 @@ void PhySys2::update(EntyMan& EM, double delta) {
             //    else if(player_or_enemy_not_shooting) 
             //        entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
             //}
-            bulletPhysics(physic);
+            //bulletPhysics(physic);
+            Vec3 pos = rend.node->getTranslation();
+            std::cout<<pos.x<<" "<<pos.y<<" "<<pos.z<<"\n";
+
+            rend.node->setTranslation(Vec3 {
+                pos.x += physic.vx, 
+                pos.y += physic.vy, 
+                pos.z += physic.vz, 
+            });
+            //rend.node->translade(Vec3 trans)
         }
     );
 }
