@@ -29,6 +29,8 @@ struct InpSys2 : public irr::IEventReceiver{
                 double retroceso = 0;
                 int magazine = 0;
 
+                
+
                 equip.clockCadence += dt;
                 phy.v_lin = phy.v_ang = 0;
 
@@ -466,7 +468,7 @@ private:
             //ammo = equipment.magazine1;
         }
         else if (equipment.equipada == 1){ //escopeta
-            LM.createShotgunBullets(phy_player, eng, SS, 24., 3., 0.15, 0.4, 10);
+            LM.createShotgunBullets(phy_player, eng, SS, 34., 3., 0.15, 0.4, 10);
             equipment.magazine2 -= 1;
             //ammo = equipment.magazine1;
         }

@@ -510,7 +510,7 @@ struct LevelMan {
 
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
     int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
-        for(uint8_t i = 0; i < 10; i++) {
+        for(uint8_t i = 0; i < 12; i++) {
             double ang_alp = randAng(dispersion);
             double ang_bet = randAng(dispersion);
             createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);

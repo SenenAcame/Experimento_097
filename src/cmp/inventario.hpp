@@ -21,7 +21,7 @@ struct InventarioCmp {
     int ammo2           = 20;
     int Maxmagazine2    = 2;
     int magazine2       = 2;
-    double reloadTime2  {0.5};
+    double reloadTime2  {1.5};
     double clockReload2 {0};
     double retroceso2   {-30.0};
     //double cadenceWeapon2 {0.2}; //5 veces por segundo
