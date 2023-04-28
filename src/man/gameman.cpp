@@ -31,9 +31,14 @@ void GameMan::game() {
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
+    
+    //GE.glEng.createCamera(NULL, Vec3{}, Vec3{0}, Vec3{1});
+    //GE.glEng.setActiveCamera(0);
+    //auto* cam = GE.glEng.getActiveCamera();
+    //GE.glEng.setCamera_(cam);
 
     auto& player = LM.createPlayer2(GE, Vec3{0});
-    LM.createNormalEnemy(GE, Vec3{0});
+    //LM.createNormalEnemy(GE, Vec3{0});
     //LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });

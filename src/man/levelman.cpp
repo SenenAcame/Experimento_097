@@ -412,10 +412,14 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addComponent<InputCmp2>(player, InputCmp2{});
     EM.addTag<TPlayer>(player);
 
-    GE.glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
-    //GE.getCamera()->setPosition(Vec3{0,0,0});
+    auto* n_cam = GE.glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
+    
+    //n_cam->setFatherNode(r_cmp.node);
+    //int a = r_cmp.node->addSon(n_cam);
+
     GE.glEng.setActiveCamera(0);
     auto* cam = GE.glEng.getActiveCamera();
+    
     GE.glEng.setCamera_(cam);
 
     return player;
@@ -432,14 +436,17 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine &GE, Vec3 pos) {
-    std::string file_model   = "assets/models/personajes/monstruo2/monstruo2_prueba_verde267.obj";
-    std::string file_texture = "assets/models/personajes/monstruo2/monstruo_dos_verde.png";
+    //std::string file_model   = "assets/models/personajes/monstruo2/monstruo2_prueba_verde267.obj";
+    //std::string file_texture = "assets/models/personajes/monstruo2/monstruo_dos_verde.png";
+    std::string file_model   = "assets/models/personajes/prueba/enemigo2_escalado.obj";
+    std::string file_texture = "assets/models/personajes/prueba/material_monstruo_2.png";
     
     Enty& enemy = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
 
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
         .node = GE.createNode(file_model, file_texture)
+        //.node = GE.loadModel(file_model)
     });
 
     return enemy;

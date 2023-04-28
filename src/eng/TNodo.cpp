@@ -89,7 +89,6 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         glStencilMask(0xFF);
     }
-    
     if(floor_) {
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         glStencilMask(0x00);
