@@ -46,7 +46,7 @@ void ECamera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean const
 
  //No hace nada
 void ECamera::draw(Mat4 mat, bool){
-
+    this->Position = Vec3(mat[3][0], mat[3][1], mat[3][2]);
 }
 
 // actualiza la posicion y la suma a la que tenia

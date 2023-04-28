@@ -89,6 +89,7 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         glStencilMask(0xFF);
     }
+    
     if(floor_) {
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         glStencilMask(0x00);
@@ -123,7 +124,6 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
             std::cout << matTransf_[3][0] << ", " << matTransf_[3][1] << ", " << matTransf_[3][2] << ", " << matTransf_[3][3] << ", " << std::endl;
             std::cout << "______________________________________________\n";
         actualChange = true;
-        setTranslation(matTransf_[3]);
     }
 
     if(border && floor_) {

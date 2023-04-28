@@ -33,6 +33,7 @@ struct ECamera : public Entity {
     void setPosition(Vec3 pos);
         //camera attrib
     glm::vec3 Position;
+    Vec3 firstPosition;
     glm::vec3 Front;
     glm::vec3 Up;
     glm::vec3 Right;
