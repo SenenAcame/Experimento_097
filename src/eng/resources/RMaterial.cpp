@@ -76,15 +76,16 @@ std::vector<RTexture *> RMaterial::loadMaterialTextures(aiMaterial *mat, aiTextu
 
         std::string name = (str.C_Str());
 
+        //std::cout << name << std::endl;
+
         auto nSize = name.size();
         auto minSize = nSize - name.find_last_of('\\') -1;
 
         if(nSize != minSize)
             name = name.substr(name.find_last_of('\\') +1, minSize);
 
-        std::cout << name << std::endl;
-
-        name = "assets/" + name;
+        // Revisar directorio de texturas
+        name = "assets/textures/" + name;
         RTexture *tmptex = rg.getResource<RTexture>(name);
         
         //std::cout << name << std::endl;

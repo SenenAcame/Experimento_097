@@ -129,7 +129,8 @@ void RMesh::processMesh(aiMesh *mesh, const aiScene *scene, bool sky, ResourceGe
 
     //process materials
     aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-    std::string matName = name_ + material->GetName().C_Str();
+    auto subname = material->GetName().C_Str();
+    std::string matName = name_ + subname;
     RMaterial *rMat = rg.getResource<RMaterial>(matName);
 
     if(!rMat->isLoaded())
