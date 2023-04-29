@@ -3,6 +3,7 @@
 #include "soundsystem.hpp"
 #include "../eng/engine2.hpp"
 #include <GL/glut.h>
+#include <GLFW/glfw3.h>
 
 /*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
@@ -44,9 +45,6 @@
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
             phy.vx = 0; phy.vz = 0;
 
-            //auto v = GE.getCamera()->Pitch;
-            //std::cout<<v<<"\n";
-
             if(keyboard.isKeyPressed(input.key_up)) {
                 phy.vx = 0.1;
             }
@@ -61,19 +59,6 @@
             }
         }
     );
-    //if(keyboard.isKeyPressed(XK_W)) {
-    //    std::cout<<"Funciona\n";
-    //    //phy.vx = 1;
-    //}
-    
-    //auto& EM = LM.getEM();
-    //auto a = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W);
-    //if(a) {
-    //    std::cout<<"Funciona\n";
-    //}
-    //EM.foreach<SYSCMPs, SYSTAGs>(
-    //    [&]() {}
-    //);
 }
 
 ///*VIEJO*/ bool InpSys2::OnEvent(const irr::SEvent& event) {
@@ -137,17 +122,15 @@
 //}
 
 /*NUEVO*/ bool InpSys2::OnEvent(GraphicEngine& GE) {
-    //glutKeyboardUpFunc(
-    //    [](unsigned char a, int b, int c) {
-    //
-    //    });
-    checkPressed(GE.getWindow(), XK_W, GLFW_KEY_W);
-    checkPressed(GE.getWindow(), XK_S, GLFW_KEY_S);
-    checkPressed(GE.getWindow(), XK_A, GLFW_KEY_A);
-    checkPressed(GE.getWindow(), XK_D, GLFW_KEY_D);
-    //if(glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W) == GLFW_PRESS) {
-    //    checkPressed(XK_W);
-    //}
+    int w_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W);
+    int s_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_S);
+    int a_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_A);
+    int d_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_D);
+
+    checkPressed(XK_W, GLFW_KEY_W, w_state);
+    checkPressed(XK_S, GLFW_KEY_S, s_state);
+    checkPressed(XK_A, GLFW_KEY_A, a_state);
+    checkPressed(XK_D, GLFW_KEY_D, d_state);
 }
 
 ///*VIEJO*/ void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
@@ -155,11 +138,34 @@
 //    else                           { keyboard.keyReleased(k); }
 //}
 
-/*NUEVO*/ void InpSys2::checkPressed(GLFWwindow* window, KeySym k, int GL_k) {
-    if(glfwGetKey(window, GL_k) == GLFW_PRESS)
-        keyboard.keyPressed(k);
-    else
-        keyboard.keyReleased(k);
+
+/*NUEVO*/ void InpSys2::checkPressed(KeySym k, int GL_k, int actual) {
+    switch(GL_k) {
+        case GLFW_KEY_W:
+            previousStatus(prev_W, actual);
+            prev_W = actual;
+            break;
+        case GLFW_KEY_S:
+            previousStatus(prev_S, actual);
+            prev_S = actual;
+            break;
+        case GLFW_KEY_A:
+            previousStatus(prev_A, actual);
+            prev_A = actual;
+            break;
+        case GLFW_KEY_D:
+            previousStatus(prev_D, actual);
+            prev_D = actual;
+            break;
+    }
+}
+
+void InpSys2::previousStatus(int prev, int actual) {
+    if(!actual)   std::cout<<"Soltado\n";           // Actual   state: Release
+    else {                                          // Actual   state: Press
+        if(!prev) std::cout<<"Pulsado boton\n";     // Previous state: Release
+        else      std::cout<<"Manteniendo\n";       // Previous state: Press
+    }
 }
 
 //void InpSys2::movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {

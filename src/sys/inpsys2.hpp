@@ -2,6 +2,7 @@
 #include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
+#include <GLFW/glfw3.h>
 #include <irrlicht/IEventReceiver.h>
 //#include <irrlicht/IEventReceiver.h>
 
@@ -26,9 +27,10 @@ struct InpSys2 {
     /*NUEVO*/ bool OnEvent(GraphicEngine& GE);
 
     ///*VIEJO*/ void checkPressed(const irr::SEvent& event, KeySym k);
-    /*NUEVO*/ void checkPressed(GLFWwindow* window, KeySym k, int GL_k);
+    /*NUEVO*/ void checkPressed(KeySym k, int GL_k, int actual);
 
 private:
+    void previousStatus(int prev, int actual);
     //metodos del input
     void movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy);
     void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment);
@@ -54,5 +56,8 @@ private:
     inline static Keyboard keyboard {};
     inline static Mouse mouse {};
 
-
+    int prev_W { GLFW_RELEASE };
+    int prev_S { GLFW_RELEASE };
+    int prev_A { GLFW_RELEASE };
+    int prev_D { GLFW_RELEASE };
 };
