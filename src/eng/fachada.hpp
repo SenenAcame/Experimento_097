@@ -24,19 +24,19 @@ struct TheFachada {
     void createdescriptions();
 
 private:
-    FMOD::System* coreSystem;
-    FMOD::Studio::System* soundSystem;
+    FMOD_SYSTEM *coreSystem;
+    FMOD_STUDIO_SYSTEM *system;
 
-    FMOD::Studio::EventDescription* ambienteDescription;
-    FMOD::Studio::EventDescription* armaDescription;
-    FMOD::Studio::EventDescription* mejoraDescription;
-    FMOD::Studio::EventDescription* danyoDescription;
-    FMOD::Studio::EventDescription* moverseDescription;
-    FMOD::Studio::EventDescription* menuDescription;
-    FMOD::Studio::EventDescription* musicaDescription;
-    FMOD::Studio::EventDescription* enemigoDescription;
-    FMOD::Studio::EventDescription* personajeDescription;
-    FMOD::Studio::EventDescription* rondaDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *ambienteDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *armaDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *mejoraDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *danyoDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *moverseDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *menuDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *musicaDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *enemigoDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *personajeDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *rondaDescription;
 
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramAmbiente;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramArma;
@@ -49,6 +49,6 @@ private:
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramPersonaje;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramRonda;
 
-    FMOD::Studio::Bank * masterBank;
-    FMOD::Studio::Bank* stringsBank;
+    FMOD_STUDIO_BANK *masterBank;
+    FMOD_STUDIO_BANK *stringsBank;
 };

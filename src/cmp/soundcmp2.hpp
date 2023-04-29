@@ -7,9 +7,9 @@ extern "C" {
 #include <FMOD/src/fmod_studio.hpp>
 
 struct ProgrammerSoundContext {
-    FMOD::System* coreSystem;
-    FMOD::Studio::System* system;
-    FMOD::Studio::EventInstance* sound {};
+    FMOD_SYSTEM *coreSystem;
+    FMOD_STUDIO_SYSTEM *system;
+    FMOD_STUDIO_EVENTINSTANCE* sound {};
     FMOD_STUDIO_PARAMETER_ID id;
 };
 
