@@ -17,7 +17,6 @@ RTexture::~RTexture(){
 }
 
 void RTexture::loadTexture(){
-
     unsigned int textureID;
     glGenTextures(1, &textureID);
 
@@ -28,11 +27,11 @@ void RTexture::loadTexture(){
         GLenum format2;
         format = format2 = GL_RED;
 
-        if(nrComponents == 3){
-            format = GL_RGB;
+        if(nrComponents == 3) {
+            format  = GL_RGB;
             format2 = GL_SRGB;
-        } else if(nrComponents == 4){
-            format = GL_RGBA;
+        } else if(nrComponents == 4) {
+            format  = GL_RGBA;
             format2 = GL_SRGB_ALPHA;
         }
 
@@ -48,7 +47,7 @@ void RTexture::loadTexture(){
         stbi_image_free(data);
     }
     else{
-        std::cout << "Texture failed to load" << texImage_ << std::endl;
+        std::cout << "Texture failed to load " << texImage_ << std::endl;
         stbi_image_free(data);
     }
     ID_ = textureID;

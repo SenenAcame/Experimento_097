@@ -87,9 +87,9 @@ std::vector<RTexture *> RMaterial::loadMaterialTextures(aiMaterial *mat, aiTextu
         name = "assets/" + name;
         RTexture *tmptex = rg.getResource<RTexture>(name);
         
-        std::cout << name << std::endl;
-        std::cout << tmptex->texImage_ << std::endl;
-        std::cout << typeName << std::endl;
+        //std::cout << name << std::endl;
+        //std::cout << tmptex->texImage_ << std::endl;
+        //std::cout << typeName << std::endl;
 
         if(tmptex->isLoaded()) {
             bool alreadyLoaded = false;

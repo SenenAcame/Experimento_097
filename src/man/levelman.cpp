@@ -365,22 +365,25 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ void LevelMan::createMap2(GraphicEngine& GE) {
-    std::vector<std::string> models {
-        "assets/models/mapas/salas_independientes/Sala_1.obj",
-        "assets/models/mapas/salas_independientes/Sala_2.obj",
-        "assets/models/mapas/salas_independientes/Sala_3.obj",
-        "assets/models/mapas/salas_independientes/Pasillo_1.obj",
-        "assets/models/mapas/salas_independientes/Pasillo_2.obj",
-        "assets/models/mapas/salas_independientes/Pasillo_3.obj"
+    std::string models [4] {
+        "assets/models/mapas/prueba/Sala_1.obj",
+        "assets/models/mapas/prueba/Sala_2.obj",
+        "assets/models/mapas/prueba/Sala_3.obj",
+        "assets/models/mapas/prueba/Sala_4.obj"
     };
 
-    //std::vector<std::string> textures {};
+    std::string textures [4] {
+        "assets/models/mapas/prueba/material_sala_1.png",
+        "assets/models/mapas/prueba/material_sala_2.png",
+        "assets/models/mapas/prueba/material_sala_3.png",
+        "assets/models/mapas/prueba/material_sala_4.png"
+    };
 
-    for(auto& model : models) {
+    for(int i = 0; i < 4; i++) {
         Enty& room = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
-        EM.addComponent<RenderCmp2>(room, RenderCmp2 {
-            .node = GE.loadModel(model)
+        EM.addComponent<RenderCmp2> (room, RenderCmp2 {
+            .node = GE.createNode(models[i], textures[i])
         });
     }
 }
@@ -440,17 +443,14 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine &GE, Vec3 pos) {
-    //std::string file_model   = "assets/models/personajes/monstruo2/monstruo2_prueba_verde267.obj";
-    //std::string file_texture = "assets/models/personajes/monstruo2/monstruo_dos_verde.png";
-    std::string file_model   = "assets/models/personajes/prueba/enemigo2_escalado.obj";
-    std::string file_texture = "assets/models/personajes/prueba/material_monstruo_2.png";
+    std::string file_model   = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
+    std::string file_texture = "assets/models/personajes/monstruo2/material_monstruo_2.png";
     
     Enty& enemy = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
 
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
         .node = GE.createNode(file_model, file_texture)
-        //.node = GE.loadModel(file_model)
     });
 
     return enemy;

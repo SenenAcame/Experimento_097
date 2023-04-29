@@ -100,12 +100,12 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
     // Comprueba que no hemos cambiado la matriz acumulativa o un vector
     if(fatherChange || updateMat_) {
         if(fatherNode_!=nullptr){
-            std::cout << "Matriz Acumulada :\n";
-            std::cout << acumMat[0][0] << ", " << acumMat[0][1] << ", " << acumMat[0][2] << ", " << acumMat[0][3] << ", " << std::endl;
-            std::cout << acumMat[1][0] << ", " << acumMat[1][1] << ", " << acumMat[1][2] << ", " << acumMat[1][3] << ", " << std::endl;
-            std::cout << acumMat[2][0] << ", " << acumMat[2][1] << ", " << acumMat[2][2] << ", " << acumMat[2][3] << ", " << std::endl;
-            std::cout << acumMat[3][0] << ", " << acumMat[3][1] << ", " << acumMat[3][2] << ", " << acumMat[3][3] << ", " << std::endl;
-            std::cout << "______________________________________________\n";
+        //    std::cout << "Matriz Acumulada :\n";
+        //    std::cout << acumMat[0][0] << ", " << acumMat[0][1] << ", " << acumMat[0][2] << ", " << acumMat[0][3] << ", " << std::endl;
+        //    std::cout << acumMat[1][0] << ", " << acumMat[1][1] << ", " << acumMat[1][2] << ", " << acumMat[1][3] << ", " << std::endl;
+        //    std::cout << acumMat[2][0] << ", " << acumMat[2][1] << ", " << acumMat[2][2] << ", " << acumMat[2][3] << ", " << std::endl;
+        //    std::cout << acumMat[3][0] << ", " << acumMat[3][1] << ", " << acumMat[3][2] << ", " << acumMat[3][3] << ", " << std::endl;
+        //    std::cout << "______________________________________________\n";
         }
         matTransf_ = glm::translate(Mat4(1.f), translation_);
 
@@ -117,12 +117,12 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
 
         matTransf_ = matTransf_ * acumMat;
 
-        std::cout << "Matriz Transformada :\n";
-            std::cout << matTransf_[0][0] << ", " << matTransf_[0][1] << ", " << matTransf_[0][2] << ", " << matTransf_[0][3] << ", " << std::endl;
-            std::cout << matTransf_[1][0] << ", " << matTransf_[1][1] << ", " << matTransf_[1][2] << ", " << matTransf_[1][3] << ", " << std::endl;
-            std::cout << matTransf_[2][0] << ", " << matTransf_[2][1] << ", " << matTransf_[2][2] << ", " << matTransf_[2][3] << ", " << std::endl;
-            std::cout << matTransf_[3][0] << ", " << matTransf_[3][1] << ", " << matTransf_[3][2] << ", " << matTransf_[3][3] << ", " << std::endl;
-            std::cout << "______________________________________________\n";
+        //std::cout << "Matriz Transformada :\n";
+        //    std::cout << matTransf_[0][0] << ", " << matTransf_[0][1] << ", " << matTransf_[0][2] << ", " << matTransf_[0][3] << ", " << std::endl;
+        //    std::cout << matTransf_[1][0] << ", " << matTransf_[1][1] << ", " << matTransf_[1][2] << ", " << matTransf_[1][3] << ", " << std::endl;
+        //    std::cout << matTransf_[2][0] << ", " << matTransf_[2][1] << ", " << matTransf_[2][2] << ", " << matTransf_[2][3] << ", " << std::endl;
+        //    std::cout << matTransf_[3][0] << ", " << matTransf_[3][1] << ", " << matTransf_[3][2] << ", " << matTransf_[3][3] << ", " << std::endl;
+        //    std::cout << "______________________________________________\n";
         actualChange = true;
     }
 

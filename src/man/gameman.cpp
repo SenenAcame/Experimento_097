@@ -38,8 +38,8 @@ void GameMan::game() {
     //GE.glEng.setCamera_(cam);
 
     auto& player = LM.createPlayer2(GE, Vec3{0});
-    LM.createNormalEnemy(GE, Vec3{0});
-    //LM.createMap2(GE);
+    //LM.createNormalEnemy(GE, Vec3{0});
+    LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });
     //GE.createMap(EM);
@@ -54,7 +54,6 @@ void GameMan::game() {
     while(!glfwWindowShouldClose(GE.glEng.getWindow())) {
         EM.update();
         //ge.glEng.drawFocos();
-        //RenSys.drawWorld(GE);
         RenSys.update2(EM, GE);
         InpSys.update2(LM, GE);
         PhySys.update (EM, dt);
