@@ -405,7 +405,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
-    std::string file_model = "assets/models/armas/pistola.obj";
+    std::string file_model = "assets/models/armas/prueba/subfusil.obj";
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
@@ -425,8 +425,8 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     auto* cam = GE.glEng.getActiveCamera();
     //r_cmp.node->addSon(cam_node);
     //cam_node->setFatherNode(r_cmp.node);
-    cam->Yaw = 0.0f;
-    cam->updateCameraVectors();
+    //cam->Yaw = 0.0f;
+    //cam->updateCameraVectors();
     GE.glEng.setCamera_(cam);
 
     return player;

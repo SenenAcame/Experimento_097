@@ -144,11 +144,12 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
             entity_->draw(matTmp, border);
         }
     } else if (!border) {
+        if(entity_)
+            entity_->draw(matTransf_, border);
+            
         for(TNodo *son : nodeSons_) {
             son->run(matTransf_, actualChange, border);
         }
-        if(entity_)
-            entity_->draw(matTransf_, border);
     }
 
     updateMat_ = false;
