@@ -442,7 +442,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine &GE, Vec3 pos) {
-    std::string file_model   = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
+    std::string file_model = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
     
     Enty& enemy = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
