@@ -8,7 +8,7 @@
 //struct LevelMan;
 
 struct GraphicEngine {
-    TNodo* createNode(std::string file, std::string texture);
+    TNodo* createNode(std::string file);
 
     ECamera*    getCamera() { return glEng.getActiveCamera(); }
     GLFWwindow* getWindow() { return glEng.getWindow();       }

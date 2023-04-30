@@ -38,16 +38,16 @@
             //std::cout << "___________________________________________________________\n";
             //std::cout << "Translacion nodo :" << cam->Position[0] << ", " << cam->Position[1] << ", " <<  cam->Position[2] << std::endl;
             //std::cout << "___________________________________________________________\n";
-            //if(ent.hasTAG<TPlayer>()) {
-            //    float pitch = GE.getCamera()->Pitch;
-            //    float yaw   = GE.getCamera()->Yaw;
-            //
-            //    //std::cout<<pitch<<" "<<yaw<<"\n";
-            //
-            //    //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
-            //    GE.getCamera()->setPosition(Vec3 { phy.x, phy.y, phy.z });
-            //    rend.node->setRotation(Vec3 {pitch, 0, 0});
-            //}
+            if(ent.hasTAG<TPlayer>()) {
+                float pitch = GE.getCamera()->Pitch;
+                float yaw   = GE.getCamera()->Yaw;
+            
+                //std::cout<<pitch<<" "<<yaw<<"\n";
+            
+                //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
+                GE.getCamera()->setPosition(Vec3 { phy.x, 3+phy.y, phy.z });
+                //rend.node->setRotation(Vec3 {pitch, 0, 0});
+            }
         }
     );
 

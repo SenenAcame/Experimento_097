@@ -365,25 +365,24 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ void LevelMan::createMap2(GraphicEngine& GE) {
-    std::string models [4] {
-        "assets/models/mapas/prueba/Sala_1.obj",
-        "assets/models/mapas/prueba/Sala_2.obj",
-        "assets/models/mapas/prueba/Sala_3.obj",
-        "assets/models/mapas/prueba/Sala_4.obj"
+    std::string models [] {
+        "assets/models/mapas/Sala_1.obj",
+        "assets/models/mapas/Sala_2.obj",
+        "assets/models/mapas/Sala_3.obj",
+        "assets/models/mapas/Sala_4.obj",
+        "assets/models/mapas/Sala_5.obj",
+        "assets/models/mapas/Pasillo_1.obj",
+        "assets/models/mapas/Pasillo_2.obj",
+        "assets/models/mapas/Pasillo_3.obj",
+        "assets/models/mapas/Pasillo_4.obj",
+        "assets/models/mapas/Pasillo_5.obj"
     };
 
-    std::string textures [4] {
-        "assets/models/mapas/prueba/material_sala_1.png",
-        "assets/models/mapas/prueba/material_sala_2.png",
-        "assets/models/mapas/prueba/material_sala_3.png",
-        "assets/models/mapas/prueba/material_sala_4.png"
-    };
-
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < 10; i++) {
         Enty& room = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
         EM.addComponent<RenderCmp2> (room, RenderCmp2 {
-            .node = GE.createNode(models[i], textures[i])
+            .node = GE.createNode(models[i])
         });
     }
 }
@@ -405,12 +404,12 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
-    std::string file_model = "assets/models/armas/prueba/subfusil.obj";
+    std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     auto& r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
-        .node = GE.loadModel(file_model)
+        .node = GE.createNode(file_model)
     });
     EM.addComponent<InputCmp2>(player, InputCmp2{});
     EM.addTag<TPlayer>(player);
@@ -444,13 +443,12 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine &GE, Vec3 pos) {
     std::string file_model   = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
-    std::string file_texture = "assets/models/personajes/monstruo2/material_monstruo_2.png";
     
     Enty& enemy = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
 
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
-        .node = GE.createNode(file_model, file_texture)
+        .node = GE.createNode(file_model)
     });
 
     return enemy;

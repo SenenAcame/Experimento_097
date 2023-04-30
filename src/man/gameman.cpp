@@ -39,7 +39,7 @@ void GameMan::game() {
 
     auto& player = LM.createPlayer2(GE, Vec3{0});
     //LM.createNormalEnemy(GE, Vec3{0});
-    //LM.createMap2(GE);
+    LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });
     //GE.createMap(EM);

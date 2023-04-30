@@ -1,7 +1,7 @@
 #include "engine2.hpp"
 #include "../man/levelman.hpp"
 
-TNodo* GraphicEngine::createNode(std::string file, std::string texture) {
+TNodo* GraphicEngine::createNode(std::string file) {
     TNodo* node = loadModel(file);
     //loadTexture(node, texture);
     return node;
