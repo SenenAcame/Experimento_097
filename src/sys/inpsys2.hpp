@@ -24,13 +24,14 @@ struct InpSys2 {
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE);
 
     ///*VIEJO*/ virtual bool OnEvent(const irr::SEvent& event);
-    /*NUEVO*/ bool OnEvent(GraphicEngine& GE);
+    /*NUEVO*/ bool checkKeyboard(GLFWwindow* window);
 
     ///*VIEJO*/ void checkPressed(const irr::SEvent& event, KeySym k);
-    /*NUEVO*/ void checkPressed(KeySym k, int GL_k, int actual);
+    /*NUEVO*/ void checkPressed(int k, int GL_k, int actual);
 
 private:
-    void previousStatus(int prev, int actual);
+    /*NUEVO*/ int previousKeyStatus(int k, int actual, int prev, int lock);
+    /*NUEVO*/ int previousMouseStatus(int actual, int prev, int lock);
     //metodos del input
     void movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy);
     void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment);
@@ -56,8 +57,15 @@ private:
     inline static Keyboard keyboard {};
     inline static Mouse mouse {};
 
-    int prev_W { GLFW_RELEASE };
-    int prev_S { GLFW_RELEASE };
-    int prev_A { GLFW_RELEASE };
-    int prev_D { GLFW_RELEASE };
+    int prev_Left { GLFW_RELEASE }, lock_Left { 1 };
+
+    int prev_Esc { GLFW_RELEASE }, lock_Esc { 0 };
+    int prev_W { GLFW_RELEASE }, lock_W { 1 };
+    int prev_S { GLFW_RELEASE }, lock_S { 1 };
+    int prev_A { GLFW_RELEASE }, lock_A { 1 };
+    int prev_D { GLFW_RELEASE }, lock_D { 1 };
+    int prev_R { GLFW_RELEASE }, lock_R { 0 };
+    int prev_1 { GLFW_RELEASE }, lock_1 { 0 };
+    int prev_2 { GLFW_RELEASE }, lock_2 { 0 };
+    int prev_3 { GLFW_RELEASE }, lock_3 { 0 };
 };

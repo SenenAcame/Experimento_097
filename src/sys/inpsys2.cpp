@@ -4,6 +4,8 @@
 #include "../eng/engine2.hpp"
 #include <GL/glut.h>
 #include <GLFW/glfw3.h>
+#include <cstdint>
+#include <glm/fwd.hpp>
 
 /*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
@@ -39,24 +41,22 @@
 
 /*NUEVO*/ void InpSys2::update2(LevelMan &LM, GraphicEngine &GE) {
     auto& EM = LM.getEM();
-    OnEvent(GE);
+    checkKeyboard(GE.getWindow());
 
     EM.foreach<EXACMPs, SYSTAGs>(
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
             phy.vx = 0; phy.vz = 0;
 
-            if(keyboard.isKeyPressed(input.key_up)) {
-                phy.vx = 0.1;
-            }
-            if(keyboard.isKeyPressed(input.key_down)) {
-                phy.vx = -0.1;
-            }
-            if(keyboard.isKeyPressed(input.key_left)) {
-                phy.vz = -0.1;
-            }
-            if(keyboard.isKeyPressed(input.key_right)) {
-                phy.vz = 0.1;
-            }
+            if(mouse.isLeftPressed()) {  std::cout<<"Left button\n";  }
+            if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1; }
+            if(keyboard.isKeyPressed(input.key_down))       { phy.vx = -0.1; }
+            if(keyboard.isKeyPressed(input.key_left))       { phy.vz = -0.1; }
+            if(keyboard.isKeyPressed(input.key_right))      { phy.vz = 0.1; }
+            if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { std::cout<<"R\n"; }
+            if(keyboard.isKeyPressed(input.key_weapon1))    { std::cout<<"1\n"; }
+            if(keyboard.isKeyPressed(input.key_weapon2))    { std::cout<<"2\n"; }
+            if(keyboard.isKeyPressed(input.key_weapon3))    { std::cout<<"3\n"; }
+            if(keyboard.isKeyPressed(XK_Escape))            { std::cout<<"Esc\n"; }
         }
     );
 }
@@ -121,16 +121,23 @@
 //    return false;
 //}
 
-/*NUEVO*/ bool InpSys2::OnEvent(GraphicEngine& GE) {
-    int w_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_W);
-    int s_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_S);
-    int a_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_A);
-    int d_state = glfwGetKey(GE.glEng.getWindow(), GLFW_KEY_D);
+/*NUEVO*/ bool InpSys2::checkKeyboard(GLFWwindow* window) {
+    int GLFW_keys[] 
+        {GLFW_MOUSE_BUTTON_LEFT, GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, 
+         GLFW_KEY_D, GLFW_KEY_ESCAPE, GLFW_KEY_R, GLFW_KEY_1,
+         GLFW_KEY_2, GLFW_KEY_3};
 
-    checkPressed(XK_W, GLFW_KEY_W, w_state);
-    checkPressed(XK_S, GLFW_KEY_S, s_state);
-    checkPressed(XK_A, GLFW_KEY_A, a_state);
-    checkPressed(XK_D, GLFW_KEY_D, d_state);
+    int keyboar_k[] 
+        {LEFT_Button, XK_W, XK_S, XK_A, XK_D, XK_Escape,
+        XK_R, XK_1, XK_2, XK_3};
+
+    int state = glfwGetMouseButton(window, GLFW_keys[0]);
+    checkPressed(keyboar_k[0], GLFW_keys[0], state);
+
+    for(unsigned int i = 1; i < sizeof(keyboar_k); i++) {
+        int actual_state = glfwGetKey(window, GLFW_keys[i]);
+        checkPressed(keyboar_k[i], GLFW_keys[i], actual_state);
+    }
 }
 
 ///*VIEJO*/ void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
@@ -139,33 +146,65 @@
 //}
 
 
-/*NUEVO*/ void InpSys2::checkPressed(KeySym k, int GL_k, int actual) {
+/*NUEVO*/ void InpSys2::checkPressed(int k, int GL_k, int actual) {
     switch(GL_k) {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            prev_Left = previousMouseStatus(actual, prev_Left, lock_Left);
+            break;
         case GLFW_KEY_W:
-            previousStatus(prev_W, actual);
-            prev_W = actual;
+            prev_W = previousKeyStatus(k, actual, prev_W, lock_W);
             break;
         case GLFW_KEY_S:
-            previousStatus(prev_S, actual);
-            prev_S = actual;
+            prev_S = previousKeyStatus(k, actual, prev_S, lock_S);
             break;
         case GLFW_KEY_A:
-            previousStatus(prev_A, actual);
-            prev_A = actual;
+            prev_A = previousKeyStatus(k, actual, prev_A, lock_A);
             break;
         case GLFW_KEY_D:
-            previousStatus(prev_D, actual);
-            prev_D = actual;
+            prev_D = previousKeyStatus(k, actual, prev_D, lock_D);
+            break;
+        case GLFW_KEY_R:
+            prev_R = previousKeyStatus(k, actual, prev_R, lock_R);
+            break;
+        case GLFW_KEY_1:
+            prev_1 = previousKeyStatus(k, actual, prev_1, lock_1);
+            break;
+        case GLFW_KEY_2:
+            prev_2 = previousKeyStatus(k, actual, prev_2, lock_2);
+            break;
+        case GLFW_KEY_3:
+            prev_3 = previousKeyStatus(k, actual, prev_3, lock_3);
+            break;
+        case GLFW_KEY_ESCAPE:
+            prev_Esc = previousKeyStatus(k, actual, prev_Esc, lock_Esc);
             break;
     }
 }
 
-void InpSys2::previousStatus(int prev, int actual) {
-    if(!actual)   std::cout<<"Soltado\n";           // Actual   state: Release
-    else {                                          // Actual   state: Press
-        if(!prev) std::cout<<"Pulsado boton\n";     // Previous state: Release
-        else      std::cout<<"Manteniendo\n";       // Previous state: Press
+/*NUEVO*/ int InpSys2::previousKeyStatus(int k, int actual, int prev, int lock) {
+    if(!actual)      keyboard.keyReleased(k);   // Actual   state: Release
+    else {                                      // Actual   state: Press
+        if(!prev)    keyboard.keyPressed(k);    // Previous state: Release
+        else {                                  // Previous state: Press
+            if(lock) keyboard.keyPressed(k);    // Lock          : On
+            else     keyboard.keyReleased(k);   // Lock          : Off
+        }      
     }
+
+    return actual;
+}
+
+/*NUEVO*/ int InpSys2::previousMouseStatus(int actual, int prev, int lock) {
+    if(!actual)      mouse.releaseLeft();       // Actual   state: Release
+    else {                                      // Actual   state: Press
+        if(!prev)    mouse.pressLeft();         // Previous state: Release
+        else {                                  // Previous state: Press
+            if(lock) mouse.pressLeft();         // Lock          : On
+            else     mouse.releaseLeft();       // Lock          : Off
+        }      
+    }
+
+    return actual;
 }
 
 //void InpSys2::movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {

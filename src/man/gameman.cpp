@@ -51,7 +51,7 @@ void GameMan::game() {
 
     constexpr double dt = 1.0 / 60;
 
-    while(!glfwWindowShouldClose(GE.glEng.getWindow())) {
+    while(!glfwWindowShouldClose(GE.getWindow())) {
         EM.update();
         //ge.glEng.drawFocos();
         RenSys.update2(EM, GE);
