@@ -38,7 +38,7 @@ void GameMan::game() {
     //GE.glEng.setCamera_(cam);
 
     auto& player = LM.createPlayer2(GE, Vec3{0});
-    LM.createNormalEnemy(GE, Vec3{0});
+    LM.createNormalEnemy(GE, Vec3{10, 0, 10});
     LM.createMap2(GE);
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });
@@ -57,6 +57,8 @@ void GameMan::game() {
         RenSys.update2(EM, GE);
         InpSys.update2(LM, GE);
         PhySys.update (EM, dt);
+        ColSys.update (EM);
+        LogicSys.update2(LM, GE, dt);
     }
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);
@@ -76,13 +78,13 @@ void GameMan::game() {
 //        
 //        while(!dead && dev.run()){
 //            auto frame_start = std::chrono::high_resolution_clock::now();
-//            EM.      update();
-//            RenSys.  update(EM, dev);
+//   ->       EM.      update();
+//   ->       RenSys.  update(EM, dev);
 //            MapSys.  update(EM);
-//            InpSys.  update(LM, dev, SouSys, dt);
+//   ->       InpSys.  update(LM, dev, SouSys, dt);
 //            AISys.   update(EM, dt, dev);
-//            PhySys.  update(EM, dt);
-//            ColSys.  update(EM);
+//   ->       PhySys.  update(EM, dt);
+//   ->       ColSys.  update(EM);
 //            LogicSys.update(LM, dev, dt);
 //            PhySys.  update_after_colision(EM, dt);
 //            SouSys.  update(EM);

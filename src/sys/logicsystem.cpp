@@ -3,49 +3,82 @@
 #include "physys2.hpp"
 #include "../man/levelman.hpp"
 
-void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
+///*VIEJO*/ void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
+//    auto& EM = LM.getEM();
+//    EM.foreach<SYSCMPs, SYSTAGs >(
+//        [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
+//            if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
+//
+//            if(state.colision != 0) {
+//                auto& entity_colisioned = EM.getEntityById(state.entityCol);
+//                if(entity_colisioned.hasCMP<EstadoCmp>()) {
+//                    auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
+//                    if(entity.hasTAG<TWall>()){
+//                        //proceso Colision Wall
+//                        colisionWall     (EM, entity, entity_colisioned, dt);
+//                    }
+//                    else if(entity.hasTAG<TPlayer>()){
+//                        //proceso Colision Jugador
+//                        colisionPlayer   (LM, eng, entity, entity_colisioned, dt);
+//                    }
+//                    else if(entity.hasTAG<TEnemy>()){
+//                        //proceso Colision Enemy
+//                        colisionEnemy    (LM, eng, entity, entity_colisioned, dt);
+//                    }
+//                    else if(entity.hasTAG<TBullet>()){
+//                        //proceso Colision Bullet
+//                        colisionBullet   (EM, entity, entity_colisioned);
+//                    }
+//                    //else if(entity.hasTAG<TEneBullet>()){
+//                    //    //proceso Colision EnemyBullet
+//                    //    colisionEneBullet(EM, entity, entity_colisioned);
+//                    //}
+//                    else if(entity.hasTAG<TWeapon>()){
+//                        //proceso Colision Weapon
+//                        colisionWeapon   (LM, entity, entity_colisioned, eng);
+//                    }
+//                    //else if(entity.hasTAG<TDoor>()){
+//                    //    //proceso Colision Door
+//                    //    colisionDoor     (EM, entity, entity_colisioned);
+//                    //}
+//                    //else if(entity.hasTAG<TKey>()){
+//                    //    //proceso Colision Key
+//                    //    colisionKey     (EM, entity, entity_colisioned);
+//                    //
+//                    //resetCollision(state, colisiones_state);
+//                    resetCollision(colisiones_state);
+//                }
+//                resetCollision(state);
+//            }
+//        }
+//    );
+//}
+
+/*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt) {
     auto& EM = LM.getEM();
     EM.foreach<SYSCMPs, SYSTAGs >(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
-            if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
-
             if(state.colision != 0) {
                 auto& entity_colisioned = EM.getEntityById(state.entityCol);
                 if(entity_colisioned.hasCMP<EstadoCmp>()) {
                     auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
                     if(entity.hasTAG<TWall>()){
                         //proceso Colision Wall
-                        colisionWall     (EM, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
-                        colisionPlayer   (LM, eng, entity, entity_colisioned, dt);
+                        colisionPlayer2(LM, GE, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
-                        colisionEnemy    (LM, eng, entity, entity_colisioned, dt);
+                        colisionEnemy2(LM, GE, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TBullet>()){
                         //proceso Colision Bullet
-                        colisionBullet   (EM, entity, entity_colisioned);
                     }
-                    //else if(entity.hasTAG<TEneBullet>()){
-                    //    //proceso Colision EnemyBullet
-                    //    colisionEneBullet(EM, entity, entity_colisioned);
-                    //}
                     else if(entity.hasTAG<TWeapon>()){
                         //proceso Colision Weapon
-                        colisionWeapon   (LM, entity, entity_colisioned, eng);
                     }
-                    //else if(entity.hasTAG<TDoor>()){
-                    //    //proceso Colision Door
-                    //    colisionDoor     (EM, entity, entity_colisioned);
-                    //}
-                    //else if(entity.hasTAG<TKey>()){
-                    //    //proceso Colision Key
-                    //    colisionKey     (EM, entity, entity_colisioned);
-                    //
-                    //resetCollision(state, colisiones_state);
                     resetCollision(colisiones_state);
                 }
                 resetCollision(state);
@@ -65,48 +98,62 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
 }
 
-void LogicSystem::colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt) {
-    if(colisioned.hasTAG<TWall>()){
-        //moverse hacia atras
-        auto& EM = LM.getEM();
-        cancelMove(EM, current, dt);
-    }
-    else if(colisioned.hasTAG<TEnemy>()){
+///*VIEJO*/ void LogicSystem::colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt) {
+//    if(colisioned.hasTAG<TWall>()){
+//        //moverse hacia atras
+//        auto& EM = LM.getEM();
+//        cancelMove(EM, current, dt);
+//    }
+//    else if(colisioned.hasTAG<TEnemy>()){
+//        //jugador recibe daño del enemigo
+//        receiveEntityDamage(LM, eng, current, colisioned);
+//    }
+//    //else if(colisioned.hasTAG<TEneBullet>()) {
+//    //    //jugador recibe daño de la bala enemiga
+//    //    reciveDamge(EM, current, colisioned);
+//    //}
+//    else if(colisioned.hasTAG<TWeapon>()){
+//        //mostrar texto de recoger arma
+//        takeWeapon(current, colisioned, LM, eng);
+//    }
+//    //else if(colisioned.hasTAG<TDoor>()){
+//    //    //mostrar texto de abrir puerta
+//    //    openDoor();
+//    //}
+//    //else if(colisioned.hasTAG<TKey>()) {
+//    //    //mostrar texto de recoger llave
+//    //    takeKey();
+//    //}
+//}
+
+/*NUEVO*/ void LogicSystem::colisionPlayer2(LevelMan &LM, GraphicEngine &GE, Enty& current, Enty& colisioned, double dt) {
+    if(colisioned.hasTAG<TEnemy>()){
         //jugador recibe daño del enemigo
-        receiveEntityDamage(LM, eng, current, colisioned);
+        std::cout<<"Daño\n";
     }
-    //else if(colisioned.hasTAG<TEneBullet>()) {
-    //    //jugador recibe daño de la bala enemiga
-    //    reciveDamge(EM, current, colisioned);
-    //}
-    else if(colisioned.hasTAG<TWeapon>()){
-        //mostrar texto de recoger arma
-        takeWeapon(current, colisioned, LM, eng);
-    }
-    //else if(colisioned.hasTAG<TDoor>()){
-    //    //mostrar texto de abrir puerta
-    //    openDoor();
-    //}
-    //else if(colisioned.hasTAG<TKey>()) {
-    //    //mostrar texto de recoger llave
-    //    takeKey();
-    //}
 }
 
-void LogicSystem::colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt) {
-    if(colisioned.hasTAG<TWall>()){
-        //moverse hacia atras
-        auto& EM = LM.getEM();
-        cancelMove(EM, current, dt);
-    }
-    else if(colisioned.hasTAG<TPlayer>()){
+///*VIEJO*/ void LogicSystem::colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt) {
+//    if(colisioned.hasTAG<TWall>()){
+//        //moverse hacia atras
+//        auto& EM = LM.getEM();
+//        cancelMove(EM, current, dt);
+//    }
+//    else if(colisioned.hasTAG<TPlayer>()){
+//        //enemigo hace daño al jugador
+//        receiveEntityDamage(LM, eng, colisioned, current);
+//    }
+//    else if(colisioned.hasTAG<TBullet>()){
+//        //enemigo recibe daño de la bala
+//        auto& EM = LM.getEM();
+//        reciveDamge(EM, current, colisioned);
+//    }
+//}
+
+/*NUEVO*/ void LogicSystem::colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt) {
+    if(colisioned.hasTAG<TPlayer>()){
         //enemigo hace daño al jugador
-        receiveEntityDamage(LM, eng, colisioned, current);
-    }
-    else if(colisioned.hasTAG<TBullet>()){
-        //enemigo recibe daño de la bala
-        auto& EM = LM.getEM();
-        reciveDamge(EM, current, colisioned);
+        std::cout<<"Daño\n";
     }
 }
 

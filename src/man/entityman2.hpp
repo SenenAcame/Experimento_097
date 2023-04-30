@@ -185,7 +185,8 @@ private:
 
     void removeRender(Entity& e) {
         RenderCmp2& r = getComponent<RenderCmp2>(e);
-        r.n->remove();
+        //r.n->remove();
+        r.node->remove();
     }
 
     void removeEntity(Entity& e, int i) {

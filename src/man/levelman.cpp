@@ -412,13 +412,14 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
         .node = GE.createNode(file_model)
     });
     EM.addComponent<InputCmp2>(player, InputCmp2{});
+    EM.addComponent<EstadoCmp>(player, 1.f, 1.f, 1.f);
     EM.addTag<TPlayer>(player);
+    EM.addTag<TInteract>(player);
+
 
     auto* n_cam = GE.glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
-    
     //n_cam->setFatherNode(r_cmp.node);
     //int a = r_cmp.node->addSon(n_cam);
-
     GE.glEng.setActiveCamera(0);
     auto* cam_node = GE.glEng.getActiveCameraNode();
     auto* cam = GE.glEng.getActiveCamera();
@@ -446,10 +447,12 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     
     Enty& enemy = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
-
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
         .node = GE.createNode(file_model)
     });
+    EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
+    EM.addTag<TInteract>(enemy);
+    EM.addTag<TEnemy>(enemy);
 
     return enemy;
 }

@@ -3,7 +3,6 @@
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
 #include <GLFW/glfw3.h>
-#include <irrlicht/IEventReceiver.h>
 //#include <irrlicht/IEventReceiver.h>
 
 struct TheEngine;

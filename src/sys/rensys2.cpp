@@ -1,23 +1,24 @@
 #include "rensys2.hpp"
 #include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
+#include <GL/gl.h>
 
-/*VIEJO*/ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
-    //ImGUI_Prerender();
-    EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend) {
-            if(ent.hasTAG<TEnemy>()) {
-                float giro = (-phy.orieny)*180/irr::core::PI+360;
-                rend.n->setRotation({rend.n->getRotation().X,giro,rend.n->getRotation().Z});
-            }
-            rend.n->setPosition({static_cast<float>(phy.x), static_cast<float>(phy.y), static_cast<float>(phy.z)});
-        }
-    );
-    drawAll(EM, GFX);
-    //RENDER in Opengl context
-    //ImGUI_renderOpenGlContext();
-    //ImGUI_Postrender();
-};
+///*VIEJO*/ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
+//    //ImGUI_Prerender();
+//    EM.foreach<SYSCMPs, SYSTAGs>(
+//        [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend) {
+//            if(ent.hasTAG<TEnemy>()) {
+//                float giro = (-phy.orieny)*180/irr::core::PI+360;
+//                rend.n->setRotation({rend.n->getRotation().X,giro,rend.n->getRotation().Z});
+//            }
+//            rend.n->setPosition({static_cast<float>(phy.x), static_cast<float>(phy.y), static_cast<float>(phy.z)});
+//        }
+//    );
+//    drawAll(EM, GFX);
+//    //RENDER in Opengl context
+//    //ImGUI_renderOpenGlContext();
+//    //ImGUI_Postrender();
+//};
 
 /*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE) {
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -45,7 +46,7 @@
                 //std::cout<<pitch<<" "<<yaw<<"\n";
             
                 //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
-                GE.getCamera()->setPosition(Vec3 { phy.x, 3+phy.y, phy.z });
+                GE.getCamera()->setPosition(Vec3 { phy.x, 0.6+phy.y, -0.1+phy.z });
                 //rend.node->setRotation(Vec3 {pitch, 0, 0});
             }
         }

@@ -3,6 +3,7 @@
 
 struct TheEngine;
 struct LevelMan;
+struct GraphicEngine;
 
 struct LogicSystem {
     using SYSCMPs       = MP::Typelist<PhysicsCmp2, EstadoCmp>;
@@ -13,10 +14,17 @@ struct LogicSystem {
 
     static constexpr double PI { std::numbers::pi };
 
-    void update(LevelMan& LM, TheEngine& eng, double dt);
+    /*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
+
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
-    void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
-    void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
+
+    /*VIEJO*/ void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
+    /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+
+    /*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
+    /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+
     void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
     //void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned);
     void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
