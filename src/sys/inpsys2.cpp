@@ -19,7 +19,7 @@
             phy.v_lin = phy.v_ang = 0;
             
             //movementMouse(eng, rend, phy);
-            if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
+            //if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
 
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
@@ -47,7 +47,7 @@
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
             phy.vx = 0; phy.vz = 0;
 
-            if(mouse.isLeftPressed()) {  std::cout<<"Left button\n";  }
+            if(mouse.isButtonPressed(LEFT_Button))          { std::cout<<"Left button\n"; }
             if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.vx = -0.1; }
             if(keyboard.isKeyPressed(input.key_left))       { phy.vz = -0.1; }
@@ -122,14 +122,16 @@
 //}
 
 /*NUEVO*/ bool InpSys2::checkKeyboard(GLFWwindow* window) {
-    int GLFW_keys[] 
-        {GLFW_MOUSE_BUTTON_LEFT, GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, 
-         GLFW_KEY_D, GLFW_KEY_ESCAPE, GLFW_KEY_R, GLFW_KEY_1,
-         GLFW_KEY_2, GLFW_KEY_3};
+    int GLFW_keys[] {
+        GLFW_MOUSE_BUTTON_LEFT, GLFW_KEY_W,      GLFW_KEY_S, GLFW_KEY_A, 
+        GLFW_KEY_D,             GLFW_KEY_ESCAPE, GLFW_KEY_R, GLFW_KEY_1,
+        GLFW_KEY_2,             GLFW_KEY_3
+    };
 
-    int keyboar_k[] 
-        {LEFT_Button, XK_W, XK_S, XK_A, XK_D, XK_Escape,
-        XK_R, XK_1, XK_2, XK_3};
+    int keyboar_k[] {
+        LEFT_Button, XK_W, XK_S, XK_A, XK_D,
+        XK_Escape,   XK_R, XK_1, XK_2, XK_3
+    };
 
     int state = glfwGetMouseButton(window, GLFW_keys[0]);
     checkPressed(keyboar_k[0], GLFW_keys[0], state);
@@ -149,34 +151,34 @@
 /*NUEVO*/ void InpSys2::checkPressed(int k, int GL_k, int actual) {
     switch(GL_k) {
         case GLFW_MOUSE_BUTTON_LEFT:
-            prev_Left = previousMouseStatus(actual, prev_Left, lock_Left);
+            prev_Left = previousMouseStatus(k, actual, prev_Left, lock_Left);
             break;
         case GLFW_KEY_W:
-            prev_W = previousKeyStatus(k, actual, prev_W, lock_W);
+            prev_W    = previousKeyStatus(k, actual, prev_W, lock_W);
             break;
         case GLFW_KEY_S:
-            prev_S = previousKeyStatus(k, actual, prev_S, lock_S);
+            prev_S    = previousKeyStatus(k, actual, prev_S, lock_S);
             break;
         case GLFW_KEY_A:
-            prev_A = previousKeyStatus(k, actual, prev_A, lock_A);
+            prev_A    = previousKeyStatus(k, actual, prev_A, lock_A);
             break;
         case GLFW_KEY_D:
-            prev_D = previousKeyStatus(k, actual, prev_D, lock_D);
+            prev_D    = previousKeyStatus(k, actual, prev_D, lock_D);
             break;
         case GLFW_KEY_R:
-            prev_R = previousKeyStatus(k, actual, prev_R, lock_R);
+            prev_R    = previousKeyStatus(k, actual, prev_R, lock_R);
             break;
         case GLFW_KEY_1:
-            prev_1 = previousKeyStatus(k, actual, prev_1, lock_1);
+            prev_1    = previousKeyStatus(k, actual, prev_1, lock_1);
             break;
         case GLFW_KEY_2:
-            prev_2 = previousKeyStatus(k, actual, prev_2, lock_2);
+            prev_2    = previousKeyStatus(k, actual, prev_2, lock_2);
             break;
         case GLFW_KEY_3:
-            prev_3 = previousKeyStatus(k, actual, prev_3, lock_3);
+            prev_3    = previousKeyStatus(k, actual, prev_3, lock_3);
             break;
         case GLFW_KEY_ESCAPE:
-            prev_Esc = previousKeyStatus(k, actual, prev_Esc, lock_Esc);
+            prev_Esc  = previousKeyStatus(k, actual, prev_Esc, lock_Esc);
             break;
     }
 }
@@ -194,13 +196,13 @@
     return actual;
 }
 
-/*NUEVO*/ int InpSys2::previousMouseStatus(int actual, int prev, int lock) {
-    if(!actual)      mouse.releaseLeft();       // Actual   state: Release
-    else {                                      // Actual   state: Press
-        if(!prev)    mouse.pressLeft();         // Previous state: Release
-        else {                                  // Previous state: Press
-            if(lock) mouse.pressLeft();         // Lock          : On
-            else     mouse.releaseLeft();       // Lock          : Off
+/*NUEVO*/ int InpSys2::previousMouseStatus(int k, int actual, int prev, int lock) {
+    if(!actual)      mouse.releaseButton(k);  // Actual   state: Release
+    else {                                       // Actual   state: Press
+        if(!prev)    mouse.pressButton(k);    // Previous state: Release
+        else {                                   // Previous state: Press
+            if(lock) mouse.pressButton(k);    // Lock          : On
+            else     mouse.releaseButton(k);  // Lock          : Off
         }      
     }
 
@@ -255,7 +257,7 @@ void InpSys2::shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& S
     }
     else if(ammo == 0) { reload(LM, eng, equipment); }
 
-    if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
+    //if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
 }
 
 void InpSys2::digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down) {

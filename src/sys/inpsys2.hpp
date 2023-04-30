@@ -30,8 +30,8 @@ struct InpSys2 {
     /*NUEVO*/ void checkPressed(int k, int GL_k, int actual);
 
 private:
-    /*NUEVO*/ int previousKeyStatus(int k, int actual, int prev, int lock);
-    /*NUEVO*/ int previousMouseStatus(int actual, int prev, int lock);
+    /*NUEVO*/ int previousKeyStatus  (int k, int actual, int prev, int lock);
+    /*NUEVO*/ int previousMouseStatus(int k, int actual, int prev, int lock);
     //metodos del input
     void movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy);
     void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment);
