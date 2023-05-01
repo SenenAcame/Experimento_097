@@ -47,7 +47,13 @@
                 Mat4 vMat = GE.getCamera()->GetViewMatrix();
 
                 Vec4 res  = vMat * Vec4(1,1,1,0);
+                /*
+                //este tiene el arma girada pero con buena rotacion
                 Vec3 res2 = Vec3(-pitch + 90, -yaw + 90, 0);
+
+                //este tiene la arma recta pero con la rotacion mal
+                Vec3 res2 = Vec3(-pitch , -yaw + 90, 0);
+                */
 
                 GE.getCamera()->setPosition(Vec3 { phy.x, phy.y, phy.z });
                 rend.node->setRotation(res2);
