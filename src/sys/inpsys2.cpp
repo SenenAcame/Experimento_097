@@ -4,8 +4,13 @@
 #include "../eng/engine2.hpp"
 #include <GL/glut.h>
 #include <GLFW/glfw3.h>
+#include <X11/X.h>
 #include <cstdint>
 #include <glm/fwd.hpp>
+
+void prueba (int a, int b) {
+    std::cout<<"Prueba\n";
+}
 
 /*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
@@ -39,7 +44,7 @@
     );
 } 
 
-/*NUEVO*/ void InpSys2::update2(LevelMan &LM, GraphicEngine &GE) {
+/*NUEVO*/ void InpSys2::update2(LevelMan& LM, GraphicEngine& GE) {
     auto& EM = LM.getEM();
     checkKeyboard(GE.getWindow());
 
@@ -47,7 +52,14 @@
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
             phy.vx = 0; phy.vz = 0;
 
-            if(mouse.isButtonPressed(LEFT_Button))          { std::cout<<"Left button\n"; }
+            auto a = mouse.isButtonPressed(LEFT_Button);
+            std::cout<<(int)a<<"\n";
+
+            if(a) {
+                //prueba(1,2);
+                std::cout<<"Left button\n";
+                LM.createNormalEnemy(Vec3{5, 0, 0});
+            }
             if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.vx = -0.1; }
             if(keyboard.isKeyPressed(input.key_left))       { phy.vz = -0.1; }

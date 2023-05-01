@@ -37,9 +37,9 @@ void GameMan::game() {
     //auto* cam = GE.glEng.getActiveCamera();
     //GE.glEng.setCamera_(cam);
 
-    auto& player = LM.createPlayer2(GE, Vec3{0});
-    LM.createNormalEnemy(GE, Vec3{10, 0, 10});
-    LM.createMap2(GE);
+    auto& player = LM.createPlayer2(Vec3{0});
+    LM.createNormalEnemy(Vec3{10, 0, 10});
+    LM.createMap2();
     
     //GE.createNormalEnemy(EM, Vec3{ 0 });
     //GE.createMap(EM);

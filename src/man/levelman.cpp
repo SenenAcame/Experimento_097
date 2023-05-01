@@ -364,7 +364,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
         createRoom(dev, models[i], textures[i]);
 }
 
-/*NUEVO*/ void LevelMan::createMap2(GraphicEngine& GE) {
+/*NUEVO*/ void LevelMan::createMap2() {
     std::string models [] {
         "assets/models/mapas/Sala_1.obj",
         "assets/models/mapas/Sala_2.obj",
@@ -382,7 +382,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
         Enty& room = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
         EM.addComponent<RenderCmp2> (room, RenderCmp2 {
-            .node = GE.createNode(models[i])
+            .node = GraphicEngine::createNode(models[i])
         });
     }
 }
@@ -403,13 +403,13 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     return player;
 }
 
-/*NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
+/*NUEVO*/ Enty& LevelMan::createPlayer2(Vec3 pos) {
     std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     auto& r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
-        .node = GE.createNode(file_model)
+        .node = GraphicEngine::createNode(file_model)
     });
     EM.addComponent<InputCmp2>(player, InputCmp2{});
     EM.addComponent<EstadoCmp>(player, 1.f, 1.f, 1.f);
@@ -417,17 +417,17 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addTag<TInteract>(player);
 
 
-    auto* n_cam = GE.glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
+    auto* n_cam = GraphicEngine::glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
     //n_cam->setFatherNode(r_cmp.node);
     //int a = r_cmp.node->addSon(n_cam);
-    GE.glEng.setActiveCamera(0);
-    auto* cam_node = GE.glEng.getActiveCameraNode();
-    auto* cam = GE.glEng.getActiveCamera();
+    GraphicEngine::glEng.setActiveCamera(0);
+    auto* cam_node = GraphicEngine::glEng.getActiveCameraNode();
+    auto* cam = GraphicEngine::glEng.getActiveCamera();
     //r_cmp.node->addSon(cam_node);
     //cam_node->setFatherNode(r_cmp.node);
     //cam->Yaw = 0.0f;
     //cam->updateCameraVectors();
-    GE.glEng.setCamera_(cam);
+    GraphicEngine::glEng.setCamera_(cam);
 
     return player;
 }
@@ -442,13 +442,13 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     return enemy;
 }
 
-/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine &GE, Vec3 pos) {
+/*NUEVO*/ Enty& LevelMan::createNormalEnemy(Vec3 pos) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
     
     Enty& enemy = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
-        .node = GE.createNode(file_model)
+        .node = GraphicEngine::createNode(file_model)
     });
     EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
     EM.addTag<TInteract>(enemy);

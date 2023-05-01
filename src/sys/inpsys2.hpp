@@ -56,7 +56,7 @@ private:
     inline static Keyboard keyboard {};
     inline static Mouse mouse {};
 
-    int prev_Left { GLFW_RELEASE }, lock_Left { 1 };
+    int prev_Left { GLFW_RELEASE }, lock_Left { 0 };
 
     int prev_Esc { GLFW_RELEASE }, lock_Esc { 0 };
     int prev_W { GLFW_RELEASE }, lock_W { 1 };

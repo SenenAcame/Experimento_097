@@ -8,14 +8,14 @@
 //struct LevelMan;
 
 struct GraphicEngine {
-    TNodo* createNode(std::string file);
+    static TNodo* createNode(std::string file);
 
     ECamera*    getCamera() { return glEng.getActiveCamera(); }
     GLFWwindow* getWindow() { return glEng.getWindow();       }
 
-    GlEngine glEng;
+    inline static GlEngine glEng {};
 
-    TNodo* loadModel(std::string file);
+    static TNodo* loadModel(std::string file);
 
     void drawHitbox(Vec3 pos, Vec3 hitb);
 

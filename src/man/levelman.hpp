@@ -29,13 +29,13 @@ struct LevelMan {
     void cleanHitsInterface(TheEngine& dev ,double dt);
 
     /*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
-    /*NUEVO*/ void createMap2(GraphicEngine& GE);
+    /*NUEVO*/ void createMap2();
 
     /*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
-    /*NUEVO*/ Enty& createPlayer2(GraphicEngine& GE, Vec3 pos);
+    /*NUEVO*/ Enty& createPlayer2(Vec3 pos);
 
     /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
-    /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos);
+    /*NUEVO*/ Enty& createNormalEnemy(Vec3 pos);
     
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
