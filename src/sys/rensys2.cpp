@@ -45,10 +45,15 @@
                 float yaw   = GE.getCamera()->Yaw;
             
                 //std::cout<<pitch<<" "<<yaw<<"\n";
-            
-                //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
-                GE.getCamera()->setPosition(Vec3 { phy.x, 0.6+phy.y, -0.1+phy.z });
                 Mat4 vMat = GE.getCamera()->GetViewMatrix();
+                Vec4 res = vMat * Vec4(1,1,1,0);
+                Vec3 res2 = Vec3(-pitch + 90, -yaw + 90, 0);
+                //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, phy.y, 0+phy.z });
+                //GE.getCamera()->setPosition(Vec3 { phy.x, 0.6+phy.y, -0.1+phy.z });
+                rend.node->setRotation(res2);
+                phy.orienx = res[0];
+                phy.orieny = res[1];
+
                 //rend.node->setMatrizTransf(vMat);
 
                 //std::cout << "_____________________________________________________\n";
