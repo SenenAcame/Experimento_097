@@ -2,6 +2,7 @@
 #include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
 #include <GL/gl.h>
+#include <iterator>
 
 ///*VIEJO*/ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
 //    //ImGUI_Prerender();
@@ -22,7 +23,7 @@
 
 /*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE) {
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend){
+        [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
 
             auto* cam = GE.getCamera();
             auto* n_cam = GE.glEng.getActiveCameraNode();
@@ -47,7 +48,22 @@
             
                 //GE.getCamera()->setPosition(Vec3 { -0.1+phy.x, 0.5+phy.y, 0+phy.z });
                 GE.getCamera()->setPosition(Vec3 { phy.x, 0.6+phy.y, -0.1+phy.z });
-                //rend.node->setRotation(Vec3 {pitch, 0, 0});
+                Mat4 vMat = GE.getCamera()->GetViewMatrix();
+                //rend.node->setMatrizTransf(vMat);
+
+                //std::cout << "_____________________________________________________\n";
+                //std::cout << vMat[0][0] << ", " << vMat[0][1] << ", " << vMat[0][2] << ", " << vMat[0][3] << std::endl;
+                //std::cout << vMat[1][0] << ", " << vMat[1][1] << ", " << vMat[1][2] << ", " << vMat[1][3] << std::endl;
+                //std::cout << vMat[2][0] << ", " << vMat[2][1] << ", " << vMat[2][2] << ", " << vMat[2][3] << std::endl;
+                //std::cout << vMat[3][0] << ", " << vMat[3][1] << ", " << vMat[3][2] << ", " << vMat[3][3] << std::endl;
+                
+                //Vec4 res = vMat * Vec4(1,1,1,0);
+                //std::cout << "_____________________________________________________\n";
+                //std::cout << res[0] << ", " << res[1] << ", " << res[2] << ", " << res[3] << std::endl;
+                //std::cout << "_____________________________________________________\n";
+                //phy.orienx = res[0] + res[2];
+                //phy.orieny = res[1];
+
             }
         }
     );
