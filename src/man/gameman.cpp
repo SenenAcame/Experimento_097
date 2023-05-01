@@ -24,10 +24,10 @@ void GameMan::game() {
     InpSys2       InpSys;
     AISys         AISys;
     NodeMapSys    MapSys;
-    LogicSystem   LogicSys;
+    LogicSystem   LogSys;
     SoundSystem_t SouSys;
     //SpawnSystem   SpawnSys;
-    SelfDestSys   DestSys;
+    SelfDestSys   DstSys;
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
@@ -58,7 +58,8 @@ void GameMan::game() {
         InpSys.update2(LM, GE);
         PhySys.update (EM, dt);
         ColSys.update (EM);
-        LogicSys.update2(LM, GE, dt);
+        LogSys.update2(LM, GE, dt);
+        DstSys.update (EM, dt);
     }
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);

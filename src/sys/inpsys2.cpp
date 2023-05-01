@@ -8,10 +8,6 @@
 #include <cstdint>
 #include <glm/fwd.hpp>
 
-void prueba (int a, int b) {
-    std::cout<<"Prueba\n";
-}
-
 /*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
     auto& EM = LM.getEM();
     auto& bb = EM.getBoard();
@@ -52,13 +48,8 @@ void prueba (int a, int b) {
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
             phy.vx = 0; phy.vz = 0;
 
-            auto a = mouse.isButtonPressed(LEFT_Button);
-            std::cout<<(int)a<<"\n";
-
-            if(a) {
-                //prueba(1,2);
-                std::cout<<"Left button\n";
-                LM.createNormalEnemy(Vec3{5, 0, 0});
+            if(mouse.isButtonPressed(LEFT_Button)) {
+                LM.createBullet2(Vec3{5, 0, 0}, Vec3{0.1, 0, 0});
             }
             if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.vx = -0.1; }

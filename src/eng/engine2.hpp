@@ -15,10 +15,10 @@ struct GraphicEngine {
 
     inline static GlEngine glEng {};
 
-    static TNodo* loadModel(std::string file);
+    //static TNodo* loadModel(std::string file);
 
     void drawHitbox(Vec3 pos, Vec3 hitb);
 
 private:
-    void   loadTexture(TNodo* node, std::string text);
+    //void   loadTexture(TNodo* node, std::string text);
 };

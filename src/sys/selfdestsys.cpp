@@ -2,10 +2,10 @@
 
 void SelfDestSys::update(EntyMan& EM, double dt) {
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& e, SelfDestCmp& s) {
-            s.time += dt;
-            if(s.time <= s.cooldown) return;
-            e.setDestroy();
+        [&](Enty& ent, SelfDestCmp& self_dest) {
+            self_dest.time += dt;
+            if(self_dest.time <= self_dest.cooldown) return;
+            ent.setDestroy();
         }
     );
 }

@@ -36,6 +36,11 @@ struct LevelMan {
 
     /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
     /*NUEVO*/ Enty& createNormalEnemy(Vec3 pos);
+
+    /*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+        int const dmg, float const spd, float const rad, double const slfD,
+        double const pbx = 0, double const pby = 0);
+    /*NUEVO*/ void createBullet2(Vec3 pos, Vec3 speed);
     
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
@@ -47,9 +52,6 @@ struct LevelMan {
     Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
     void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
-    void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-        int const dmg, float const spd, float const rad, double const slfD,
-        double const pbx = 0, double const pby = 0);
     void resetLevel(TheEngine& dev);
     EntyMan& getEM() { return EM; }
 private:

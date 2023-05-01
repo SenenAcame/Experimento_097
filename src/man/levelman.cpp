@@ -457,6 +457,47 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     return enemy;
 }
 
+/*VIEJO*/ void LevelMan::createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+int const dmg, float const spd, float const rad, double const slfD,
+double const pbx, double const pby) {
+    Enty& bullet = EM.createEntity();
+    EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
+    EM.addComponent<PhysicsCmp2>(
+        bullet, PhysicsCmp2 {
+            .x = phy_player.x,
+            .y = phy_player.y,
+            .z = phy_player.z,
+            .vx=  sin(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd,
+            .vy= -sin(phy_player.orienx + pbx) * spd,
+            .vz=  cos(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd
+        }
+    );
+    EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
+    EM.addComponent<EstadoCmp>  (bullet);
+    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+    EM.addComponent<SelfDestCmp>(bullet, slfD);
+    EM.addTag<TBullet>          (bullet);
+    EM.addTag<TInteract>        (bullet);
+}
+
+/*NUEVO*/ void LevelMan::createBullet2(Vec3 pos, Vec3 speed) {
+    std::string file_model = "assets/models/armas/bala3/bala.obj";
+    
+    Enty& bullet = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
+        .x  = pos.x,   .y  = pos.y,   .z  = pos.z,
+        .vx = speed.x, .vy = speed.y, .vz = speed.z 
+    });
+
+    EM.addComponent<RenderCmp2>(bullet, RenderCmp2 {
+        .node = GraphicEngine::createNode(file_model)
+    });
+    EM.addComponent<SelfDestCmp>(bullet, 1.);
+    //EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
+    //EM.addTag<TInteract>(enemy);
+    //EM.addTag<TEnemy>(enemy);
+}
+
 //Enty& LevelMan::createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
 //    Enty& enemy = createEnemy(SouSys);
 //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
@@ -560,29 +601,6 @@ int const dmg, float const spd, float const rad, double const slfD, uint8_t disp
         double ang_bet = randAng(dispersion);
         createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);
     }
-}
-
-void LevelMan::createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-int const dmg, float const spd, float const rad, double const slfD,
-double const pbx, double const pby) {
-    Enty& bullet = EM.createEntity();
-    EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
-    EM.addComponent<PhysicsCmp2>(
-        bullet, PhysicsCmp2 {
-            .x = phy_player.x,
-            .y = phy_player.y,
-            .z = phy_player.z,
-            .vx=  sin(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd,
-            .vy= -sin(phy_player.orienx + pbx) * spd,
-            .vz=  cos(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd
-        }
-    );
-    EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
-    EM.addComponent<EstadoCmp>  (bullet);
-    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-    EM.addComponent<SelfDestCmp>(bullet, slfD);
-    EM.addTag<TBullet>          (bullet);
-    EM.addTag<TInteract>        (bullet);
 }
 
 void LevelMan::resetLevel(TheEngine& dev) {
