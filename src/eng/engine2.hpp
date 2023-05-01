@@ -10,14 +10,16 @@
 struct GraphicEngine {
     static TNodo* createNode(std::string file);
 
-    ECamera*    getCamera() { return glEng.getActiveCamera(); }
-    GLFWwindow* getWindow() { return glEng.getWindow();       }
+    static ECamera* getCamera() { return glEng.getActiveCamera(); }
+    static Vec3& getFrontCamera() { return getCamera()->Front; }
+    
+    GLFWwindow* getWindow() { return glEng.getWindow(); }
 
     inline static GlEngine glEng {};
 
     //static TNodo* loadModel(std::string file);
 
-    void drawHitbox(Vec3 pos, Vec3 hitb);
+    //void drawHitbox(Vec3 pos, Vec3 hitb);
 
 private:
     //void   loadTexture(TNodo* node, std::string text);

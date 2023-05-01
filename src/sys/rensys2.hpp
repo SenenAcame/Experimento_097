@@ -23,6 +23,7 @@ struct RenSys2 {
 
     /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
     /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE);
+    
     void drawAll (EntyMan& EM, TheEngine& GFX);
     void drawBBox(EntyMan& EM, TheEngine& GFX);
 

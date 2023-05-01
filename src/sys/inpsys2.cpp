@@ -49,12 +49,13 @@
             phy.vx = 0; phy.vz = 0;
 
             if(mouse.isButtonPressed(LEFT_Button)) {
-                LM.createBullet2(Vec3{5, 0, 0}, Vec3{0.1, 0, 0});
+                LM.createShotgunBullets2(phy, GraphicEngine::getFrontCamera());
+                //LM.createBullet2(phy,GraphicEngine::getFrontCamera());
             }
-            if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1; }
+            if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1;  }
             if(keyboard.isKeyPressed(input.key_down))       { phy.vx = -0.1; }
             if(keyboard.isKeyPressed(input.key_left))       { phy.vz = -0.1; }
-            if(keyboard.isKeyPressed(input.key_right))      { phy.vz = 0.1; }
+            if(keyboard.isKeyPressed(input.key_right))      { phy.vz = 0.1;  }
             if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { std::cout<<"R\n"; }
             if(keyboard.isKeyPressed(input.key_weapon1))    { std::cout<<"1\n"; }
             if(keyboard.isKeyPressed(input.key_weapon2))    { std::cout<<"2\n"; }

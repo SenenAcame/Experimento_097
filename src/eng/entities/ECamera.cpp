@@ -47,6 +47,8 @@ void ECamera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean const
  //No hace nada
 void ECamera::draw(Mat4 mat, bool){
     //this->Position = Vec3(mat[3][0], mat[3][1], mat[3][2]);
+    while(Yaw>360) Yaw -= 360;
+    while(Yaw<0)   Yaw += 360;
 }
 
 // actualiza la posicion y la suma a la que tenia
@@ -63,13 +65,16 @@ void ECamera::setPosition(Vec3 pos) {
 
 // actualiza los vectores de front, right y up
 void ECamera::updateCameraVectors() {
-
     glm::vec3 front;
     front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
     front.y = sin(glm::radians(Pitch));
     front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+    
     Front = glm::normalize(front);
-
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up    = glm::normalize(glm::cross(Right, Front));
+}
+
+glm::vec3 ECamera::getAngles() {
+    return glm::vec3{Pitch, Yaw, 0};
 }

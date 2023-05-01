@@ -39,6 +39,8 @@ struct ECamera : public Entity {
     glm::vec3 Right;
     glm::vec3 WorldUp;
 
+    glm::vec3 getAngles();
+
     //euler angles
     float Yaw;
     float Pitch;

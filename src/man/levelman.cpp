@@ -422,7 +422,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     //int a = r_cmp.node->addSon(n_cam);
     GraphicEngine::glEng.setActiveCamera(0);
     auto* cam_node = GraphicEngine::glEng.getActiveCameraNode();
-    auto* cam = GraphicEngine::glEng.getActiveCamera();
+    auto* cam = GraphicEngine::getCamera();
     //r_cmp.node->addSon(cam_node);
     //cam_node->setFatherNode(r_cmp.node);
     //cam->Yaw = 0.0f;
@@ -467,9 +467,9 @@ double const pbx, double const pby) {
             .x = phy_player.x,
             .y = phy_player.y,
             .z = phy_player.z,
-            .vx=  sin(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd,
-            .vy= -sin(phy_player.orienx + pbx) * spd,
-            .vz=  cos(phy_player.orieny + pby) * cos(phy_player.orienx + pbx) * spd
+            .vx= spd *  cos(phy_player.orienx + pbx) * sin(phy_player.orieny + pby),
+            .vy= spd * -sin(phy_player.orienx + pbx),
+            .vz= spd *  cos(phy_player.orienx + pbx) * cos(phy_player.orieny + pby)
         }
     );
     EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
@@ -480,22 +480,40 @@ double const pbx, double const pby) {
     EM.addTag<TInteract>        (bullet);
 }
 
-/*NUEVO*/ void LevelMan::createBullet2(Vec3 pos, Vec3 speed) {
+/*NUEVO*/ void LevelMan::createBullet2(PhysicsCmp2& pos, Vec3 dir, double const pbx, double const pby) {
     std::string file_model = "assets/models/armas/bala3/bala.obj";
-    
+
     Enty& bullet = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
-        .x  = pos.x,   .y  = pos.y,   .z  = pos.z,
-        .vx = speed.x, .vy = speed.y, .vz = speed.z 
+        .x = pos.x, .y = pos.y, .z = pos.z,
+        .vx = 0.1 * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
+        .vy = 0.1 * sin(pos.orienx + pbx), 
+        .vz = 0.1 * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
     });
-
     EM.addComponent<RenderCmp2>(bullet, RenderCmp2 {
         .node = GraphicEngine::createNode(file_model)
     });
     EM.addComponent<SelfDestCmp>(bullet, 1.);
-    //EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
-    //EM.addTag<TInteract>(enemy);
-    //EM.addTag<TEnemy>(enemy);
+    EM.addComponent<EstadoCmp>(bullet);
+    //EM.addTag<TInteract>(bullet);
+    //EM.addTag<TEnemy>(bullet);
+}
+
+/*VIEJO*/ void LevelMan::createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
+    for(uint8_t i = 0; i < 10; i++) {
+        double ang_alp = randAng(dispersion);
+        double ang_bet = randAng(dispersion);
+        createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);
+    }
+}
+
+/*NUEVO*/ void LevelMan::createShotgunBullets2(PhysicsCmp2& pos, Vec3 dir, uint8_t dispersion) {
+    for(uint8_t i = 0; i < 10; i++) {
+        double ang_alp = randAng(dispersion);
+        double ang_bet = randAng(dispersion);
+        createBullet2(pos, dir, ang_alp, ang_bet);
+    }
 }
 
 //Enty& LevelMan::createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
@@ -592,15 +610,6 @@ Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2)
     EM.addTag      <TSpawn>     (spawn);
     //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
     return spawn;
-}
-
-void LevelMan::createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
-    for(uint8_t i = 0; i < 10; i++) {
-        double ang_alp = randAng(dispersion);
-        double ang_bet = randAng(dispersion);
-        createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);
-    }
 }
 
 void LevelMan::resetLevel(TheEngine& dev) {
