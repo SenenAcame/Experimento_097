@@ -5,10 +5,10 @@
 #define RIGHT_Button 0x2222
 
 struct Mouse {
-    //uint8_t isLeftPressed();
-    //uint8_t isRightPressed();
+    //bool isLeftPressed();
+    //bool isRightPressed();
 
-    uint8_t isButtonPressed(int b);
+    bool isButtonPressed(int b);
 
     //void pressLeft();
     //void pressRight();
@@ -20,6 +20,6 @@ struct Mouse {
 
     void releaseButton(int b);
 private: 
-    uint8_t leftButton  { 0 };
-    uint8_t rightButton { 0 };
+    bool leftButton  { false };
+    bool rightButton { false };
 };

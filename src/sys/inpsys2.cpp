@@ -52,8 +52,8 @@
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button)) {
-                LM.createShotgunBullets2(phy, GraphicEngine::getFrontCamera());
-                //LM.createBullet2(phy,GraphicEngine::getFrontCamera());
+                LM.createBullet2(phy, GraphicEngine::getFrontCamera());
+                //LM.createShotgunBullets2(phy, GraphicEngine::getFrontCamera());
             }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
@@ -129,21 +129,23 @@
 //}
 
 /*NUEVO*/ bool InpSys2::checkKeyboard(GLFWwindow* window) {
-    int GLFW_keys[] {
+    unsigned int const size = 10;
+
+    int GLFW_keys[size] {
         GLFW_MOUSE_BUTTON_LEFT, GLFW_KEY_W,      GLFW_KEY_S, GLFW_KEY_A, 
         GLFW_KEY_D,             GLFW_KEY_ESCAPE, GLFW_KEY_R, GLFW_KEY_1,
         GLFW_KEY_2,             GLFW_KEY_3
     };
 
-    int keyboar_k[] {
+    int keyboar_k[size] {
         LEFT_Button, XK_W, XK_S, XK_A, XK_D,
         XK_Escape,   XK_R, XK_1, XK_2, XK_3
     };
 
     int state = glfwGetMouseButton(window, GLFW_keys[0]);
     checkPressed(keyboar_k[0], GLFW_keys[0], state);
-
-    for(unsigned int i = 1; i < sizeof(keyboar_k); i++) {
+    
+    for(unsigned int i = 1; i < size; i++) {
         int actual_state = glfwGetKey(window, GLFW_keys[i]);
         checkPressed(keyboar_k[i], GLFW_keys[i], actual_state);
     }
@@ -204,13 +206,13 @@
 }
 
 /*NUEVO*/ int InpSys2::previousMouseStatus(int k, int actual, int prev, int lock) {
-    if(!actual)      mouse.releaseButton(k);  // Actual   state: Release
-    else {                                       // Actual   state: Press
-        if(!prev)    mouse.pressButton(k);    // Previous state: Release
-        else {                                   // Previous state: Press
-            if(lock) mouse.pressButton(k);    // Lock          : On
-            else     mouse.releaseButton(k);  // Lock          : Off
-        }      
+    if(!actual)      mouse.releaseButton(k);      // Actual   state: Release
+    else {                                           // Actual   state: Press
+        if(!prev)    mouse.pressButton(k);          // Previous state: Release
+        else {                                        // Previous state: Press
+            if(lock) mouse.pressButton(k);          // Lock          : On
+            else     mouse.releaseButton(k);        // Lock          : Off
+        }
     }
 
     return actual;
