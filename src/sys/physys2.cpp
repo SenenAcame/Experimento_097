@@ -3,19 +3,19 @@
 void PhySys2::update(EntyMan& EM, double delta) {
     EM.foreach<prueba, SYSTAGs>(
         [&](Enty& enty, PhysicsCmp2& physic, RenderCmp2& rend) {
-            //bool is_bullet = en.hasTAG<TBullet>() || en.hasTAG<TEneBullet>();
-            //
-            //if(is_bullet) bulletPhysics(physic);
-            //else {
+            bool is_bullet = enty.hasTAG<TBullet>() || enty.hasTAG<TEneBullet>();
+            
+            if(is_bullet) bulletPhysics(physic);
+            else {
             //    bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Diying);
             //    bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Shoot);
             //    
             //    if(enemy_is_diying) physic.y -= 0.1;
             //    else if(player_or_enemy_not_shooting) 
-            //        entityPhysics(en.hasTAG<TEnemy>(), physic, delta);
-            //}
+                    entityPhysics(enty.hasTAG<TEnemy>(), physic, delta);
+            }
 
-            bulletPhysics(physic);
+            //bulletPhysics(physic);
             //Vec3 pos = rend.node->getTranslation();
             //Vec3 pos = rend.node->getTranslation();
             //rend.node->translade(Vec3 {
@@ -65,14 +65,17 @@ void PhySys2::calculatePosition(bool const is_enemy, PhysicsCmp2& p, double cons
     while (p.orieny > 2*PI) p.orieny -= 2*PI;
     while (p.orieny < 0)    p.orieny += 2*PI;
 
-    if(is_enemy) {
-        p.vx =  p.v_lin * std::cos(p.orieny);
-        p.vz =  p.v_lin * std::sin(p.orieny);
-    }
-    else {
-        p.vx =  p.v_lin * std::sin(p.orieny);
-        p.vz =  p.v_lin * std::cos(p.orieny);
-    }
+    p.vx =  p.v_lin * std::cos(p.orieny);
+    p.vz =  p.v_lin * std::sin(p.orieny);
+
+    //if(is_enemy) {
+    //    p.vx =  p.v_lin * std::cos(p.orieny);
+    //    p.vz =  p.v_lin * std::sin(p.orieny);
+    //}
+    //else {
+    //    p.vx =  p.v_lin * std::sin(p.orieny);
+    //    p.vz =  p.v_lin * std::cos(p.orieny);
+    //}
 
     p.x += dt * p.vx;
     p.z += dt * p.vz;

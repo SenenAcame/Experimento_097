@@ -37,12 +37,9 @@ void GameMan::game() {
     //auto* cam = GE.glEng.getActiveCamera();
     //GE.glEng.setCamera_(cam);
 
-    auto& player = LM.createPlayer2(Vec3{0});
-    LM.createNormalEnemy(Vec3{10, 0, 10});
+    auto& player = LM.createPlayer2(Vec3{-37, 3.5, -8});
+    LM.createNormalEnemy(Vec3{-43, 3, -15});
     LM.createMap2();
-    
-    //GE.createNormalEnemy(EM, Vec3{ 0 });
-    //GE.createMap(EM);
 
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {

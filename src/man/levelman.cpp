@@ -446,11 +446,13 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
     
     Enty& enemy = EM.createEntity();
+    //CMPS
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
-        .node = GraphicEngine::createNode(file_model)
+        .node = GraphicEngine::createNode(file_model, Vec3{2})
     });
     EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
+    //TAGS
     EM.addTag<TInteract>(enemy);
     EM.addTag<TEnemy>(enemy);
 
@@ -484,19 +486,21 @@ double const pbx, double const pby) {
     std::string file_model = "assets/models/armas/bala3/bala.obj";
 
     Enty& bullet = EM.createEntity();
+    //CMPS
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
         .x = pos.x, .y = pos.y, .z = pos.z,
-        .vx = 0.1 * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
-        .vy = 0.1 * sin(pos.orienx + pbx), 
-        .vz = 0.1 * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
+        .vx = 0.2 * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
+        .vy = 0.2 * sin(pos.orienx + pbx), 
+        .vz = 0.2 * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
     });
     EM.addComponent<RenderCmp2>(bullet, RenderCmp2 {
         .node = GraphicEngine::createNode(file_model)
     });
     EM.addComponent<SelfDestCmp>(bullet, 1.);
     EM.addComponent<EstadoCmp>(bullet);
-    //EM.addTag<TInteract>(bullet);
-    //EM.addTag<TEnemy>(bullet);
+    //TAGS
+    EM.addTag<TBullet>  (bullet);
+    EM.addTag<TInteract>(bullet);
 }
 
 /*VIEJO*/ void LevelMan::createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
@@ -679,7 +683,7 @@ void LevelMan::createRoom(TheEngine& dev, irr::io::path const model, irr::io::pa
 
 void LevelMan::defineAI(Enty& enemy) {
     int num = rand() % 360;
-    double angle = num * irr::core::PI / 180;
+    double angle = num * PI / 180;
     double radius = 30.0;
     EM.addComponent<AICmp>(
         enemy, 
@@ -699,5 +703,5 @@ void LevelMan::defineAI(Enty& enemy) {
 
 double LevelMan::randAng(uint8_t ang) {
     float alpha = rand() % ang - (ang/2);
-    return alpha * irr::core::PI / 180;
+    return alpha * PI / 180;
 }

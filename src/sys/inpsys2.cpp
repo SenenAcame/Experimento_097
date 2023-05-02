@@ -46,16 +46,19 @@
 
     EM.foreach<EXACMPs, SYSTAGs>(
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
+            bool up = false, down = false;
+
             phy.vx = 0; phy.vz = 0;
+            phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button)) {
                 LM.createShotgunBullets2(phy, GraphicEngine::getFrontCamera());
                 //LM.createBullet2(phy,GraphicEngine::getFrontCamera());
             }
-            if(keyboard.isKeyPressed(input.key_up))         { phy.vx = 0.1;  }
-            if(keyboard.isKeyPressed(input.key_down))       { phy.vx = -0.1; }
-            if(keyboard.isKeyPressed(input.key_left))       { phy.vz = -0.1; }
-            if(keyboard.isKeyPressed(input.key_right))      { phy.vz = 0.1;  }
+            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
+            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
+            if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -10, up, down); }
+            if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, 10, down, up);  }
             if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { std::cout<<"R\n"; }
             if(keyboard.isKeyPressed(input.key_weapon1))    { std::cout<<"1\n"; }
             if(keyboard.isKeyPressed(input.key_weapon2))    { std::cout<<"2\n"; }
@@ -267,8 +270,8 @@ void InpSys2::shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& S
 void InpSys2::digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down) {
     phy.v_lin = speed;
     phy.v_ang = 90;
-    if(up)        phy.v_ang = 45;
-    else if(down) phy.v_ang = 135;
+    if(up)        phy.v_ang = 135;
+    else if(down) phy.v_ang = 45;
 }
 
 void InpSys2::reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {

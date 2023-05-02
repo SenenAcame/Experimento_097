@@ -8,7 +8,7 @@
 //struct LevelMan;
 
 struct GraphicEngine {
-    static TNodo* createNode(std::string file);
+    static TNodo* createNode(std::string file, Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
 
     static ECamera* getCamera() { return glEng.getActiveCamera(); }
     static Vec3& getFrontCamera() { return getCamera()->Front; }

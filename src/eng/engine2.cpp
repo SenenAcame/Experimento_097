@@ -7,14 +7,8 @@
 #include <GL/glext.h>
 #include <vector>
 
-TNodo* GraphicEngine::createNode(std::string file) {
-    return glEng.createModel(
-        NULL,
-        Vec3(0,0,0),
-        Vec3(0.f),
-        Vec3(1.f),
-        file
-    );
+TNodo* GraphicEngine::createNode(std::string file, Vec3 sca, Vec3 rot, Vec3 tras) {
+    return glEng.createModel( NULL, tras, rot, sca, file);
 }
 
 //TNodo* GraphicEngine::loadModel(std::string file) {

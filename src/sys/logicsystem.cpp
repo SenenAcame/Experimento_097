@@ -129,7 +129,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 /*NUEVO*/ void LogicSystem::colisionPlayer2(LevelMan &LM, GraphicEngine &GE, Enty& current, Enty& colisioned, double dt) {
     if(colisioned.hasTAG<TEnemy>()){
         //jugador recibe daño del enemigo
-        std::cout<<"Daño\n";
+        //std::cout<<"Daño\n";
     }
 }
 
@@ -153,7 +153,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 /*NUEVO*/ void LogicSystem::colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt) {
     if(colisioned.hasTAG<TPlayer>()){
         //enemigo hace daño al jugador
-        std::cout<<"Daño\n";
+        //std::cout<<"Daño\n";
     }
 }
 

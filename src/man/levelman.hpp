@@ -1,6 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
+#include <numbers>
 
 struct SoundSystem_t;
 struct GraphicEngine;
@@ -12,6 +13,8 @@ struct LevelMan {
     using EneTAGs2 = MP::Typelist<TSpawn>;
     using voidCMP3 = MP::Typelist<WeaponCmp>;
     using EneTAGs3 = MP::Typelist<TWeapon>;
+
+    static constexpr auto PI { std::numbers::pi };
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
     Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
