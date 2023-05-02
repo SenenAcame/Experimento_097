@@ -75,6 +75,7 @@
                     }
                     else if(entity.hasTAG<TBullet>()){
                         //proceso Colision Bullet
+                        colisionBullet(EM, entity, entity_colisioned);
                     }
                     else if(entity.hasTAG<TWeapon>()){
                         //proceso Colision Weapon
@@ -155,15 +156,22 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
         //enemigo hace daño al jugador
         //std::cout<<"Daño\n";
     }
+    else if(colisioned.hasTAG<TBullet>()){
+        //enemigo recibe daño de la bala
+        std::cout<<"Daño de bala 1\n";
+        auto& EM = LM.getEM();
+        reciveDamge(EM, current, colisioned);
+    }
 }
 
 void LogicSystem::colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
     if(colisioned.hasTAG<TWall>()){
         //bala impacta en muro
-        markDestroy(current);
+        //markDestroy(current);
     }
     else if(colisioned.hasTAG<TEnemy>()){
         //bala hace daño al enemigo
+        std::cout<<"Daño de bala 2\n";
         reciveDamge(EM, colisioned, current);
     }
 }
@@ -217,11 +225,12 @@ void LogicSystem::reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
     recept_stats.hitpoints -= agress_stats.damage;
     
     if(recept_stats.hitpoints <= 0) {
-        if(receptor.hasTAG<TEnemy>()) { 
-            EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
-            EM.removeComponent<EstadoCmp>(receptor);
-        }
-        else { markDestroy(receptor); } 
+        //if(receptor.hasTAG<TEnemy>()) { 
+        //    EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
+        //    EM.removeComponent<EstadoCmp>(receptor);
+        //}
+        //else { markDestroy(receptor); } 
+        markDestroy(receptor);
     }
     
     if(!agressor.hasTAG<TEnemy>()) { markDestroy(agressor); }

@@ -32,22 +32,22 @@ struct LevelMan {
     void cleanHitsInterface(TheEngine& dev ,double dt);
 
     /*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
-    /*NUEVO*/ void createMap2();
+    /*NUEVO*/ void createMap2(GraphicEngine& GE);
 
     /*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
-    /*NUEVO*/ Enty& createPlayer2(Vec3 pos);
+    /*NUEVO*/ Enty& createPlayer2(GraphicEngine& GE, Vec3 pos);
 
     /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
-    /*NUEVO*/ Enty& createNormalEnemy(Vec3 pos);
+    /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos);
 
     /*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD,
         double const pbx = 0, double const pby = 0);
-    /*NUEVO*/ void createBullet2(PhysicsCmp2& pos, Vec3 dir, double const pbx = 0, double const pby = 0);
+    /*NUEVO*/ void createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, Vec3 dir, double const pbx = 0, double const pby = 0);
 
     /*VIEJO*/ void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
-    /*NUEVO*/ void createShotgunBullets2(PhysicsCmp2& pos, Vec3 dir, uint8_t dispersion = 10);
+    /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, Vec3 dir, uint8_t dispersion = 10);
     
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);

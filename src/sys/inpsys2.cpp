@@ -52,8 +52,8 @@
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button)) {
-                LM.createBullet2(phy, GraphicEngine::getFrontCamera());
-                //LM.createShotgunBullets2(phy, GraphicEngine::getFrontCamera());
+                LM.createBullet2(GE, phy, GE.getFrontCamera());
+                //LM.createShotgunBullets2(GE, phy, GE.getFrontCamera());
             }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
@@ -192,6 +192,7 @@
     }
 }
 
+// Pasar funcion por parametro -> unificar metodos
 /*NUEVO*/ int InpSys2::previousKeyStatus(int k, int actual, int prev, int lock) {
     if(!actual)      keyboard.keyReleased(k);   // Actual   state: Release
     else {                                      // Actual   state: Press
@@ -205,13 +206,14 @@
     return actual;
 }
 
+// Pasar funcion por parametro -> unificar metodos
 /*NUEVO*/ int InpSys2::previousMouseStatus(int k, int actual, int prev, int lock) {
     if(!actual)      mouse.releaseButton(k);      // Actual   state: Release
     else {                                           // Actual   state: Press
-        if(!prev)    mouse.pressButton(k);          // Previous state: Release
-        else {                                        // Previous state: Press
-            if(lock) mouse.pressButton(k);          // Lock          : On
-            else     mouse.releaseButton(k);        // Lock          : Off
+        if(!prev)    mouse.pressButton(k);        // Previous state: Release
+        else {                                       // Previous state: Press
+            if(lock) mouse.pressButton(k);        // Lock          : On
+            else     mouse.releaseButton(k);      // Lock          : Off
         }
     }
 

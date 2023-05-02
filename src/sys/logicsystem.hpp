@@ -25,7 +25,9 @@ struct LogicSystem {
     /*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
 
-    void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
+    /*VIEJO*/ void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
+    
+
     //void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned);
     void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
     //void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned);

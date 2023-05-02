@@ -37,9 +37,9 @@ void GameMan::game() {
     //auto* cam = GE.glEng.getActiveCamera();
     //GE.glEng.setCamera_(cam);
 
-    auto& player = LM.createPlayer2(Vec3{-37, 3.5, -8});
-    LM.createNormalEnemy(Vec3{-43, 3, -15});
-    LM.createMap2();
+    auto& player = LM.createPlayer2(GE, Vec3{-37, 3.5, -8});
+    LM.createNormalEnemy(GE, Vec3{-43, 3, -15});
+    LM.createMap2(GE);
 
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -83,13 +83,13 @@ void GameMan::game() {
 //            AISys.   update(EM, dt, dev);
 //   ->       PhySys.  update(EM, dt);
 //   ->       ColSys.  update(EM);
-//            LogicSys.update(LM, dev, dt);
+//   ->       LogicSys.update(LM, dev, dt);
 //            PhySys.  update_after_colision(EM, dt);
 //            SouSys.  update(EM);
 //            //SpawnSys.update(EM, dev, SouSys, player, map);
 //            //LM.      update(dev, SouSys, dt);
 //            LM.      update(dev, SouSys, dt, player);
-//            DestSys. update(EM, dt);
+//   ->       DestSys. update(EM, dt);
 //
 //            dead = EM.getEntityById(player_ID).getDestroy();
 //

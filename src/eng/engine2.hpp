@@ -8,19 +8,17 @@
 //struct LevelMan;
 
 struct GraphicEngine {
-    static TNodo* createNode(std::string file, Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
+    TNodo* createNode(std::string file, Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
 
-    static ECamera* getCamera() { return glEng.getActiveCamera(); }
-    static Vec3& getFrontCamera() { return getCamera()->Front; }
-    
+    ECamera*    getCamera() { return glEng.getActiveCamera(); }
+    Vec3&  getFrontCamera() { return getCamera()->Front; }
     GLFWwindow* getWindow() { return glEng.getWindow(); }
 
-    inline static GlEngine glEng {};
+    GlEngine glEng {};
 
     //static TNodo* loadModel(std::string file);
 
     //void drawHitbox(Vec3 pos, Vec3 hitb);
 
-private:
     //void   loadTexture(TNodo* node, std::string text);
 };

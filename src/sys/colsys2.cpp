@@ -17,10 +17,10 @@ void ColSys2::update(EntyMan& EM) {
                         dz = calculateDist(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
 
                         if(dx<=0 && dy<=0 && dz<=0) {
-                            if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()) {
-                                auto& sound = EM.getComponent<SoundCmp>(main_entity);
-                                EM.changeSound(sound, 0);
-                            }
+                            //if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()) {
+                            //    auto& sound = EM.getComponent<SoundCmp>(main_entity);
+                            //    EM.changeSound(sound, 0);
+                            //}
 
                             collisioned_state.colision  = 1<<1;
                             collisioned_state.entityCol = main_entity.getID();
