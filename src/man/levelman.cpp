@@ -447,6 +447,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     
     Enty& enemy = EM.createEntity();
     //CMPS
+    defineAI(enemy);
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
         .node = GraphicEngine::createNode(file_model, Vec3{2})

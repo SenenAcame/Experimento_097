@@ -51,39 +51,39 @@ constexpr void AISys::arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
     phy.v_ang = capLimits(t_ang_vel, phy.kMxVAng);
 }
 
-constexpr void AISys::shoot(AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheEngine& eng, Enty const& enem) const noexcept {
-    if(ai.shoot){
-        Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
-        auto dM { distanceModule(t_dist) };
-
-        Enty& bullet  = EM.createEntity();
-        auto& stats = EM.addComponent<EstadisticaCmp>(
-            bullet, EstadisticaCmp{
-                .damage    = EM.getComponent<EstadisticaCmp>(enem).damage, 
-                .speed     = 0.8f, 
-                .bulletRad = 0.5f
-            }
-        ); 
-
-        EM.addComponent<PhysicsCmp2>(
-            bullet, PhysicsCmp2{
-                .x  = phy.x,
-                .y  = phy.y,
-                .z  = phy.z,
-                .vx = t_dist.x/dM * stats.speed,
-                .vy = 0,
-                .vz = t_dist.z/dM * stats.speed
-            }
-        );
-        EM.addComponent<RenderCmp2> (bullet, eng.createSphere(stats.bulletRad));
-        EM.addComponent<EstadoCmp>  (bullet);
-        EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=10});
-        EM.addTag<TEneBullet>(bullet);
-        EM.addTag<TInteract> (bullet);
-
-        ai.shoot = false;
-    }
-}
+//constexpr void AISys::shoot(AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheEngine& eng, Enty const& enem) const noexcept {
+//    if(ai.shoot){
+//        Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
+//        auto dM { distanceModule(t_dist) };
+//
+//        Enty& bullet  = EM.createEntity();
+//        auto& stats = EM.addComponent<EstadisticaCmp>(
+//            bullet, EstadisticaCmp{
+//                .damage    = EM.getComponent<EstadisticaCmp>(enem).damage, 
+//                .speed     = 0.8f, 
+//                .bulletRad = 0.5f
+//            }
+//        ); 
+//
+//        EM.addComponent<PhysicsCmp2>(
+//            bullet, PhysicsCmp2{
+//                .x  = phy.x,
+//                .y  = phy.y,
+//                .z  = phy.z,
+//                .vx = t_dist.x/dM * stats.speed,
+//                .vy = 0,
+//                .vz = t_dist.z/dM * stats.speed
+//            }
+//        );
+//        EM.addComponent<RenderCmp2> (bullet, eng.createSphere(stats.bulletRad));
+//        EM.addComponent<EstadoCmp>  (bullet);
+//        EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=10});
+//        EM.addTag<TEneBullet>(bullet);
+//        EM.addTag<TInteract> (bullet);
+//
+//        ai.shoot = false;
+//    }
+//}
 
 void AISys::seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept {
     Point t_dist { target.x - phyEnem.x, target.z - phyEnem.z };
@@ -153,7 +153,40 @@ void AISys::die(Enty& enemy, RenderCmp2& renderEne) const noexcept {
     if(rotEneZ==90) enemy.setDestroy(); 
 }
 
-void AISys::update(EntyMan& EM, double dt, TheEngine& dev) {
+///*VIEJO*/ void AISys::update(EntyMan& EM, double dt, TheEngine& dev) {
+//    auto& bb = EM.getBoard();
+//
+//    EM.foreach<SYSCMPs, SYSTAGs>(
+//        [&](Enty& entity, AICmp& ai, PhysicsCmp2& phy, RenderCmp2& render) {
+//            percept(bb, ai, dt);
+//
+//            if(!ai.enable) return;
+//
+//            switch(ai.behaviour){
+//                case SB::Arrive: arrive(ai, phy); break;
+//                case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+//                case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+//                case SB::Shoot:  shoot (ai, phy, EM, dev, entity); break;
+//                case SB::Two_Steps: {
+//                    auto& player     = EM.getEntityById(bb.entyID);
+//                    auto& phyPlayer  = EM.getComponent<PhysicsCmp2>(player);
+//                    auto& salaPlayer = EM.getComponent<SalaCmp>(player);
+//                    twoSteps(ai, phy, { phyPlayer.vx, phyPlayer.vz }, salaPlayer.sala); 
+//                    break;
+//                }
+//                case SB::Persue: {
+//                    auto& player    = EM.getEntityById(bb.entyID);
+//                    auto& phyPlayer = EM.getComponent<PhysicsCmp2>(player);
+//                    persue({ ai.ox, ai.oz }, phy, { phyPlayer.vx, phyPlayer.vz }, ai.timeArrive); 
+//                    break;
+//                }
+//                case SB::Diying: die(entity, render); break;
+//            }
+//        }
+//    );
+//}
+
+/*NUEVO*/ void AISys::update2(EntyMan& EM, double dt) {
     auto& bb = EM.getBoard();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -166,7 +199,6 @@ void AISys::update(EntyMan& EM, double dt, TheEngine& dev) {
                 case SB::Arrive: arrive(ai, phy); break;
                 case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                 case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                case SB::Shoot:  shoot (ai, phy, EM, dev, entity); break;
                 case SB::Two_Steps: {
                     auto& player     = EM.getEntityById(bb.entyID);
                     auto& phyPlayer  = EM.getComponent<PhysicsCmp2>(player);
