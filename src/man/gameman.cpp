@@ -53,6 +53,7 @@ void GameMan::game() {
         //ge.glEng.drawFocos();
         RenSys.update2(EM, GE);
         InpSys.update2(LM, GE);
+        AISys. update2(EM, dt);
         PhySys.update (EM, dt);
         ColSys.update (EM);
         LogSys.update2(LM, GE, dt);

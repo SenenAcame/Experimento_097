@@ -42,13 +42,12 @@
 
 /*NUEVO*/ void InpSys2::update2(LevelMan& LM, GraphicEngine& GE) {
     auto& EM = LM.getEM();
+    auto& bb = EM.getBoard();
     checkKeyboard(GE.getWindow());
 
     EM.foreach<EXACMPs, SYSTAGs>(
         [&](Enty& player, InputCmp2& input, PhysicsCmp2& phy){
             bool up = false, down = false;
-
-            phy.vx = 0; phy.vz = 0;
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button)) {
@@ -64,6 +63,8 @@
             if(keyboard.isKeyPressed(input.key_weapon2))    { std::cout<<"2\n"; }
             if(keyboard.isKeyPressed(input.key_weapon3))    { std::cout<<"3\n"; }
             if(keyboard.isKeyPressed(XK_Escape))            { std::cout<<"Esc\n"; }
+
+            bb = { phy.x, phy.z, true, true, player.getID()};
         }
     );
 }

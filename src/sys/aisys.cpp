@@ -145,13 +145,13 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
     }
 }
 
-void AISys::die(Enty& enemy, RenderCmp2& renderEne) const noexcept {
-    float rotEneX = renderEne.n->getRotation().X;
-    float rotEneY = renderEne.n->getRotation().Y;
-    float rotEneZ = renderEne.n->getRotation().Z;
-    renderEne.n->setRotation(irr::core::vector3df(rotEneX, rotEneY, rotEneZ+2));
-    if(rotEneZ==90) enemy.setDestroy(); 
-}
+//void AISys::die(Enty& enemy, RenderCmp2& renderEne) const noexcept {
+//    float rotEneX = renderEne.n->getRotation().X;
+//    float rotEneY = renderEne.n->getRotation().Y;
+//    float rotEneZ = renderEne.n->getRotation().Z;
+//    renderEne.n->setRotation(irr::core::vector3df(rotEneX, rotEneY, rotEneZ+2));
+//    if(rotEneZ==90) enemy.setDestroy(); 
+//}
 
 ///*VIEJO*/ void AISys::update(EntyMan& EM, double dt, TheEngine& dev) {
 //    auto& bb = EM.getBoard();
@@ -212,7 +212,7 @@ void AISys::die(Enty& enemy, RenderCmp2& renderEne) const noexcept {
                     persue({ ai.ox, ai.oz }, phy, { phyPlayer.vx, phyPlayer.vz }, ai.timeArrive); 
                     break;
                 }
-                case SB::Diying: die(entity, render); break;
+                //case SB::Diying: die(entity, render); break;
             }
         }
     );

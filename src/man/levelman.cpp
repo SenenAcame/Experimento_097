@@ -442,7 +442,6 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
     EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
-    //EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
     EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
     return enemy;
 }
@@ -704,7 +703,7 @@ void LevelMan::defineAI(Enty& enemy) {
             .timeArrive = 0.1, 
             .cooldown = 0.1, 
             .enable = true, 
-            .behaviour = SB::Two_Steps 
+            .behaviour = SB::Seek 
         }
     );
 }
