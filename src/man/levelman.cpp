@@ -337,31 +337,31 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*VIEJO*/ void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
-    irr::io::path models[6] = {
-        "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
-        "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
-        "assets/models/mapas/mapa_simple_partes/Sala_3.obj",
-        "assets/models/mapas/mapa_simple_partes/Pasillo_1.obj",
-        "assets/models/mapas/mapa_simple_partes/Pasillo_2.obj",
-        "assets/models/mapas/mapa_simple_partes/Pasillo_3.obj",
-    };
-    irr::io::path textures[6] = {
-        "assets/textures/mapa/textura_Sala_1.png",
-        "assets/textures/mapa/textura_sala_2.png",
-        "assets/textures/mapa/textura_sala_3.png",
-        "assets/textures/mapa/textura_pasillo_1.png",
-        "assets/textures/mapa/textura_pasillo_2.png",
-        "assets/textures/mapa/textura_pasillo_3.png",
-    };
-
-    Enty& map = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(map);
-    EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
-    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
-    EM.addTag      <TMap>       (map);
-    
-    for(uint8_t i {0}; i<6; i++) 
-        createRoom(dev, models[i], textures[i]);
+    //irr::io::path models[6] = {
+    //    "assets/models/mapas/mapa_simple_partes/Sala_1.obj",
+    //    "assets/models/mapas/mapa_simple_partes/Sala_2.obj",
+    //    "assets/models/mapas/mapa_simple_partes/Sala_3.obj",
+    //    "assets/models/mapas/mapa_simple_partes/Pasillo_1.obj",
+    //    "assets/models/mapas/mapa_simple_partes/Pasillo_2.obj",
+    //    "assets/models/mapas/mapa_simple_partes/Pasillo_3.obj",
+    //};
+    //irr::io::path textures[6] = {
+    //    "assets/textures/mapa/textura_Sala_1.png",
+    //    "assets/textures/mapa/textura_sala_2.png",
+    //    "assets/textures/mapa/textura_sala_3.png",
+    //    "assets/textures/mapa/textura_pasillo_1.png",
+    //    "assets/textures/mapa/textura_pasillo_2.png",
+    //    "assets/textures/mapa/textura_pasillo_3.png",
+    //};
+    //
+    //Enty& map = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>(map);
+    //EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
+    //EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
+    //EM.addTag      <TMap>       (map);
+    //
+    //for(uint8_t i {0}; i<6; i++) 
+    //    createRoom(dev, models[i], textures[i]);
 }
 
 /*NUEVO*/ void LevelMan::createMap2(GraphicEngine& GE) {
@@ -380,6 +380,12 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
         "assets/models/mapas/Pasillo_5.obj"
     };
 
+    Enty& map = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(map);
+    //EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
+    //EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
+    EM.addTag<TMap>(map);
+
     for(int i = 0; i < size; i++) {
         Enty& room = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
@@ -390,18 +396,18 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*VIEJO*/ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
-    Enty& player = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=20.f});
-    EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
-    EM.addComponent<InputCmp2>     (player, InputCmp2{ });
-    EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
-    EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=5, .speed=40.f});
-    EM.addComponent<InventarioCmp> (player);
-    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
-    EM.addComponent<SalaCmp>       (player);
-    EM.addTag      <TPlayer>       (player);
-    EM.addTag      <TInteract>     (player);
-    return player;
+    //Enty& player = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2{.x=-30.f, .y=5, .z=20.f});
+    //EM.addComponent<RenderCmp2>    (player, dev.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp"));
+    //EM.addComponent<InputCmp2>     (player, InputCmp2{ });
+    //EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
+    //EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=5, .speed=40.f});
+    //EM.addComponent<InventarioCmp> (player);
+    //EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    //EM.addComponent<SalaCmp>       (player);
+    //EM.addTag      <TPlayer>       (player);
+    //EM.addTag      <TInteract>     (player);
+    //return player;
 }
 
 /*NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
@@ -417,6 +423,8 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addComponent<EstadoCmp>(player, 1.5f, 4.f, 1.5f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
     EM.addComponent<InventarioCmp> (player);
+    EM.addComponent<SalaCmp>       (player);
+    //EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
     //TAGS
     EM.addTag<TPlayer>(player);
     EM.addTag<TInteract>(player);
@@ -438,12 +446,12 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*VIEJO*/ Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
-    Enty& enemy = createEnemy(SouSys);
-    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
-    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
-    EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
-    return enemy;
+    //Enty& enemy = createEnemy(SouSys);
+    //auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
+    //EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
+    //EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/portal1.bmp"));
+    //EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
+    //return enemy;
 }
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos) {
@@ -452,12 +460,14 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy);
-    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
-    EM.addComponent<RenderCmp2>(enemy, RenderCmp2 {
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 5.f});
+    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
+    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
         .node = GE.createNode(file_model, Vec3{2})
     });
     EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
-    EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20, .damage=20, .speed=15.f});
+    //EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
+    EM.addComponent<SalaCmp>  (enemy);
     //TAGS
     EM.addTag<TInteract>(enemy);
     EM.addTag<TEnemy>(enemy);
@@ -468,43 +478,45 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 /*VIEJO*/ void LevelMan::createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
 int const dmg, float const spd, float const rad, double const slfD,
 double const pbx, double const pby) {
-    Enty& bullet = EM.createEntity();
-    EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
-    EM.addComponent<PhysicsCmp2>(
-        bullet, PhysicsCmp2 {
-            .x = phy_player.x,
-            .y = phy_player.y,
-            .z = phy_player.z,
-            .vx= spd *  cos(phy_player.orienx + pbx) * sin(phy_player.orieny + pby),
-            .vy= spd * -sin(phy_player.orienx + pbx),
-            .vz= spd *  cos(phy_player.orienx + pbx) * cos(phy_player.orieny + pby)
-        }
-    );
-    EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
-    EM.addComponent<EstadoCmp>  (bullet);
-    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
-    EM.addComponent<SelfDestCmp>(bullet, slfD);
-    EM.addTag<TBullet>          (bullet);
-    EM.addTag<TInteract>        (bullet);
+    //Enty& bullet = EM.createEntity();
+    //EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = dmg, .speed = spd, .bulletRad = rad });
+    //EM.addComponent<PhysicsCmp2>(
+    //    bullet, PhysicsCmp2 {
+    //        .x = phy_player.x,
+    //        .y = phy_player.y,
+    //        .z = phy_player.z,
+    //        .vx= spd *  cos(phy_player.orienx + pbx) * sin(phy_player.orieny + pby),
+    //        .vy= spd * -sin(phy_player.orienx + pbx),
+    //        .vz= spd *  cos(phy_player.orienx + pbx) * cos(phy_player.orieny + pby)
+    //    }
+    //);
+    //EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
+    //EM.addComponent<EstadoCmp>  (bullet);
+    //EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+    //EM.addComponent<SelfDestCmp>(bullet, slfD);
+    //EM.addTag<TBullet>          (bullet);
+    //EM.addTag<TInteract>        (bullet);
 }
 
-/*NUEVO*/ void LevelMan::createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, Vec3 dir, double const pbx, double const pby) {
+/*NUEVO*/ void LevelMan::createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
+Vec3 dir, double const slfD, double const pbx, double const pby) {
     std::string file_model = "assets/models/armas/bala3/bala.obj";
 
     Enty& bullet = EM.createEntity();
     //CMPS
+    EM.addComponent<EstadisticaCmp>(bullet, stats);
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
         .x = pos.x, .y = pos.y, .z = pos.z,
-        .vx = 0.2 * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
-        .vy = 0.2 * sin(pos.orienx + pbx), 
-        .vz = 0.2 * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
+        .vx = stats.speed * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
+        .vy = stats.speed * sin(pos.orienx + pbx), 
+        .vz = stats.speed * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
     });
     EM.addComponent<RenderCmp2>(bullet, RenderCmp2 {
         .node = GE.createNode(file_model)
     });
     EM.addComponent<EstadoCmp>(bullet);
-    EM.addComponent<EstadisticaCmp>(bullet, EstadisticaCmp{ .damage = 5, .speed = 5, .bulletRad = 5 });
-    EM.addComponent<SelfDestCmp>(bullet, 1.);
+    EM.addComponent<SelfDestCmp>(bullet, slfD);
+    //EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
     //TAGS
     EM.addTag<TBullet>  (bullet);
     EM.addTag<TInteract>(bullet);
@@ -512,18 +524,19 @@ double const pbx, double const pby) {
 
 /*VIEJO*/ void LevelMan::createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
 int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion) {
-    for(uint8_t i = 0; i < 10; i++) {
-        double ang_alp = randAng(dispersion);
-        double ang_bet = randAng(dispersion);
-        createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);
-    }
+    //for(uint8_t i = 0; i < 10; i++) {
+    //    double ang_alp = randAng(dispersion);
+    //    double ang_bet = randAng(dispersion);
+    //    createBullet(phy_player, eng, SS, dmg, spd, rad, slfD, ang_alp, ang_bet);
+    //}
 }
 
-/*NUEVO*/ void LevelMan::createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, Vec3 dir, uint8_t dispersion) {
+/*NUEVO*/ void LevelMan::createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
+Vec3 dir, double const slfD, uint8_t dispersion) {
     for(uint8_t i = 0; i < 10; i++) {
         double ang_alp = randAng(dispersion);
         double ang_bet = randAng(dispersion);
-        createBullet2(GE, pos, dir, ang_alp, ang_bet);
+        createBullet2(GE, pos, EstadisticaCmp{stats}, dir, slfD, ang_alp, ang_bet);
     }
 }
 
@@ -703,7 +716,7 @@ void LevelMan::defineAI(Enty& enemy) {
             .timeArrive = 0.1, 
             .cooldown = 0.1, 
             .enable = true, 
-            .behaviour = SB::Seek 
+            .behaviour = SB::Two_Steps 
         }
     );
 }

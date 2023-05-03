@@ -49,8 +49,8 @@ void GameMan::game() {
     constexpr double dt = 1.0 / 60;
 
     while(!glfwWindowShouldClose(GE.getWindow())) {
-        EM.update();
         //ge.glEng.drawFocos();
+        EM.update();
         RenSys.update2(EM, GE);
         InpSys.update2(LM, GE);
         AISys. update2(EM, dt);
@@ -81,7 +81,7 @@ void GameMan::game() {
 //   ->       RenSys.  update(EM, dev);
 //            MapSys.  update(EM);
 //   ->       InpSys.  update(LM, dev, SouSys, dt);
-//            AISys.   update(EM, dt, dev);
+//   ->       AISys.   update(EM, dt, dev);
 //   ->       PhySys.  update(EM, dt);
 //   ->       ColSys.  update(EM);
 //   ->       LogicSys.update(LM, dev, dt);

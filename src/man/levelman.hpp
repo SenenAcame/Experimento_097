@@ -43,11 +43,13 @@ struct LevelMan {
     /*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD,
         double const pbx = 0, double const pby = 0);
-    /*NUEVO*/ void createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, Vec3 dir, double const pbx = 0, double const pby = 0);
+    /*NUEVO*/ void createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
+        Vec3 dir, double const slfD = 2., double const pbx = 0, double const pby = 0);
 
     /*VIEJO*/ void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
-    /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, Vec3 dir, uint8_t dispersion = 10);
+    /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos,  EstadisticaCmp&& stats, 
+        Vec3 dir, double const slfD = 2., uint8_t dispersion = 10);
     
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
