@@ -84,10 +84,10 @@ struct LogicSystem {
             //jugador recibe daño del enemigo
             receiveEntityDamage(LM, eng, current, colisioned);
         }
-        //else if(colisioned.hasTAG<TEneBullet>()) {
+        else if(colisioned.hasTAG<TEneBullet>()) {
         //    //jugador recibe daño de la bala enemiga
-        //    reciveDamge(EM, current, colisioned);
-        //}
+            receiveEntityDamage(LM, eng, current, colisioned);
+        }
         else if(colisioned.hasTAG<TWeapon>()){
             //mostrar texto de recoger arma
             takeWeapon(current, colisioned, LM, eng);

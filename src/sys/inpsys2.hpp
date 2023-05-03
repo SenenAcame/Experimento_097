@@ -463,7 +463,7 @@ private:
         equipment.clockCadence = 0 ;
 
         if(equipment.equipada == 0){ //pistola
-            LM.createBullet(phy_player, eng, SS, 19., 5., 0.1, 9.);
+            LM.createBullet(phy_player, eng, SS, 20., 5., 0.1, 9.);
             equipment.magazine1 -= 1;
             //ammo = equipment.magazine1;
         }

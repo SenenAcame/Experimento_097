@@ -50,7 +50,7 @@ struct LevelMan {
         [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
             spawnCMP.clockSpawn+=dt;
             
-            if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave){
+            if(inRound == true && totalEnemys > 0 && aliveEnemys < maxEnemysWave){
                 
                 if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
                 
@@ -68,9 +68,21 @@ struct LevelMan {
                     spawnCMP.clockSpawn = 0;                 
                     spawnX = f.x;
                     spawnZ = f.z;
-                    createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                    if(numberOfTankEnemys>0){
+                        std::cout << "Patata" << std::endl;
+                        createTankEnemy(spawnX, spawnZ, dev, SouSys);
+                        numberOfTankEnemys--;
+                    }
+                    else if(numberOfDistEnemys>0){
+                        createDistEnemy(spawnX, spawnZ, dev, SouSys);
+                        numberOfDistEnemys--;
+                    }
+                    else{
+                        createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                        numberOfEnemysBasics--;
+                    }
                     aliveEnemys++;
-                    numberOfEnemysBasics--;
+                    totalEnemys--;
                     
                 }
                 
@@ -79,7 +91,7 @@ struct LevelMan {
                 
         }
         );
-        if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
+        if(inRound == true && totalEnemys == 0 && aliveEnemys == 0){
             inRound = false;
 
             
@@ -122,7 +134,7 @@ struct LevelMan {
         createWeapon(-65, 5, 30, dev, SouSys, 0);
         
         createSpawn(35, -30,dev,7);
-        createWeapon(40, 5, -70, dev, SouSys, 2);
+        createWeapon(45, 5, -80, dev, SouSys, 2);
         inRound = true;
     
         
@@ -247,6 +259,14 @@ struct LevelMan {
         }
         numberOfEnemysBasics = 2+extraEnemys*waveNumber;
         waveNumber++;
+
+        if(waveNumber==2){
+            numberOfTankEnemys++;
+        }
+        if(waveNumber==3){
+            numberOfDistEnemys+=2;
+        }
+        totalEnemys=numberOfEnemysBasics+numberOfTankEnemys+numberOfDistEnemys;
         updateInterfaceWave(dev);
         std::string  aux        = std::to_string(100);
         std::wstring convert    = std::wstring(aux.begin(), aux.end());
@@ -427,28 +447,28 @@ struct LevelMan {
     //    return enemy;
     //}
     //
-    //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-    //    Enty& enemy = createEnemy(SouSys);
-    //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
-    //
-    //    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-    //    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
-    //    EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
-    //    EM.addTag      <TDistEnemy> (enemy);
-    //    return enemy;
-    //}
-    //
-    //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-    //    Enty& enemy = createEnemy(SouSys);
-    //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
-    //
-    //    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-    //    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/faerie2.bmp"));
-    //    EM.addComponent<EstadoCmp>  (enemy, 1.525f, 5.725f, 2.105f);
-    //    EM.addTag      <TTankEnemy> (enemy);
-    //    return enemy;
-    //}
-    //
+    Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+        Enty& enemy = createEnemy(SouSys);
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=15.f});
+    
+        EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
+        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
+        EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
+        EM.addTag      <TDistEnemy> (enemy);
+        return enemy;
+    }
+    
+    Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
+        Enty& enemy = createEnemy(SouSys);
+        auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=10.f});
+    
+        EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
+        EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/faerie2.bmp"));
+        EM.addComponent<EstadoCmp>  (enemy, 1.5f, 5.725f, 1.5f);
+        EM.addTag      <TTankEnemy> (enemy);
+        return enemy;
+    }
+    
     Enty& createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo){
         Enty& weapon = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
@@ -533,7 +553,7 @@ struct LevelMan {
             }
         );
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
-        EM.addComponent<EstadoCmp>  (bullet);
+        EM.addComponent<EstadoCmp>  (bullet, 0.2f, 0.2f, 0.2f);
         EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
         EM.addTag<TBullet>          (bullet);
         EM.addTag<TInteract>        (bullet);
@@ -567,6 +587,9 @@ struct LevelMan {
         extraHeal            = 5; //extra EnemyHeal per wave
         extraSpeed           = 0;
         numberOfEnemysBasics = 2; //number of enemys per wave
+        numberOfTankEnemys = 0;
+        numberOfDistEnemys = 0;
+        totalEnemys          = 2;
         aliveEnemys          = 0;
         extraEnemys          = 3; //extra number of enemys per wave
         maxEnemysWave        = 15; //max number of enemy created
@@ -630,7 +653,10 @@ private:
     int    waveNumber           = 1; //actual wave
     double extraHeal            = 5; //extra EnemyHeal per wave
     float  extraSpeed           = 0; //extra speed per round
-    int    numberOfEnemysBasics = 0; //number of enemys per wave
+    int    numberOfEnemysBasics = 2; //number of enemys per wave
+    int    numberOfTankEnemys = 0;
+    int    numberOfDistEnemys = 0;
+    int    totalEnemys          = 2;
     int    aliveEnemys          = 0;
     double extraEnemys          = 3; //extra number of enemys per wave
     int    maxEnemysWave        = 11; //max number of enemy created

@@ -31,7 +31,7 @@ struct GameMan {
         SoundSystem_t SouSys;
         //SpawnSystem   SpawnSys;
         SelfDestSys   DestSys;
-        TheEngine     dev {1000, 720, &InpSys};
+        TheEngine     dev {1080, 640, &InpSys};
 
         init_config(dev);
         init_map(LM, dev, SouSys);
