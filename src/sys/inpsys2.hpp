@@ -402,7 +402,7 @@ private:
                         equip.ammo1 = ammo-needIt;
                     }
                     else {
-                        equip.magazine1 = ammo;
+                        equip.magazine1 += ammo;
                         equip.ammo1 = 0;
                     }
                     LM.updateInterfaceWhenReload(dev, equip.magazine1, equip.ammo1);
@@ -419,7 +419,7 @@ private:
                         equip.ammo2 = ammo-needIt;
                     }
                     else {
-                        equip.magazine2 = ammo;
+                        equip.magazine2 += ammo;
                         equip.ammo2 = 0;
                     }
                     LM.updateInterfaceWhenReload(dev, equip.magazine2, equip.ammo2);
@@ -436,7 +436,7 @@ private:
                         equip.ammo3 = ammo-needIt;
                     }
                     else {
-                        equip.magazine3 = ammo;
+                        equip.magazine3 += ammo;
                         equip.ammo3 = 0;
                     }
                     LM.updateInterfaceWhenReload(dev, equip.magazine3, equip.ammo3);
