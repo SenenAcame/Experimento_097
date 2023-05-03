@@ -69,7 +69,6 @@ struct LevelMan {
                     spawnX = f.x;
                     spawnZ = f.z;
                     if(numberOfTankEnemys>0){
-                        std::cout << "Patata" << std::endl;
                         createTankEnemy(spawnX, spawnZ, dev, SouSys);
                         numberOfTankEnemys--;
                     }
