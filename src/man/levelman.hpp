@@ -1,6 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
+#include <cstddef>
 #include <numbers>
 
 struct SoundSystem_t;
@@ -32,10 +33,10 @@ struct LevelMan {
     void cleanHitsInterface(TheEngine& dev ,double dt);
 
     /*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
-    /*NUEVO*/ void createMap2(GraphicEngine& GE);
+    /*NUEVO*/ std::size_t createMap2(GraphicEngine& GE);
 
     /*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
-    /*NUEVO*/ Enty& createPlayer2(GraphicEngine& GE, Vec3 pos);
+    /*NUEVO*/ std::size_t createPlayer2(GraphicEngine& GE, Vec3 pos);
 
     /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
     /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos);

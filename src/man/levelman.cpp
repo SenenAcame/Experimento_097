@@ -2,6 +2,7 @@
 #include "../eng/engine2.hpp"
 #include "../sys/nodemapsys.hpp"
 #include "../sys/soundsystem.hpp"
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -364,7 +365,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     //    createRoom(dev, models[i], textures[i]);
 }
 
-/*NUEVO*/ void LevelMan::createMap2(GraphicEngine& GE) {
+/*NUEVO*/ std::size_t LevelMan::createMap2(GraphicEngine& GE) {
     unsigned int const size = 10;
 
     std::string models [size] {
@@ -393,6 +394,8 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
             .node = GE.createNode(models[i])
         });
     }
+
+    return map.getID();
 }
 
 /*VIEJO*/ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
@@ -410,7 +413,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     //return player;
 }
 
-/*NUEVO*/ Enty& LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
+/*NUEVO*/ std::size_t LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
     std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();
@@ -442,7 +445,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     //cam->updateCameraVectors();
     GE.glEng.setCamera_(cam);
 
-    return player;
+    return player.getID();
 }
 
 /*VIEJO*/ Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
@@ -685,21 +688,21 @@ void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
     return;
 }
 
-Enty& LevelMan::createEnemy(SoundSystem_t& SouSys){
-    Enty& enemy = EM.createEntity();
-    defineAI(enemy);
-    EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
-    EM.addComponent<SalaCmp>  (enemy);
-    EM.addTag      <TEnemy>   (enemy);
-    EM.addTag      <TInteract>(enemy);
-    return enemy;
-}
+//Enty& LevelMan::createEnemy(SoundSystem_t& SouSys){
+//    Enty& enemy = EM.createEntity();
+//    defineAI(enemy);
+//    EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
+//    EM.addComponent<SalaCmp>  (enemy);
+//    EM.addTag      <TEnemy>   (enemy);
+//    EM.addTag      <TInteract>(enemy);
+//    return enemy;
+//}
 
-void LevelMan::createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture) {
-    Enty& room = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(room);
-    EM.addComponent<RenderCmp2> (room, dev.createModel(model, texture));
-}
+//void LevelMan::createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture) {
+//    Enty& room = EM.createEntity();
+//    EM.addComponent<PhysicsCmp2>(room);
+//    EM.addComponent<RenderCmp2> (room, dev.createModel(model, texture));
+//}
 
 void LevelMan::defineAI(Enty& enemy) {
     int num = rand() % 360;

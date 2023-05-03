@@ -1,4 +1,6 @@
 #include "nodemapsys.hpp"
+#include <cfloat>
+#include <cstddef>
 
 int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     int devol = -1;
@@ -14,26 +16,83 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     return devol;
 }
 
-void NodeMapSys::update(EntyMan& EM){
-    float playerposx, playerposz;
-    Enty player;
-    NodoCmp map;
-    EM.foreach<PlayCMPs, PlayTAGs>(
-        [&](Enty& p, PhysicsCmp2& phy) {
-            playerposx = phy.x;
-            playerposz = phy.z;
-            player = p;
-        }
-    );
-    EM.foreach<NodoCMPs, MapTAGs>(
-        [&](Enty& en, NodoCmp& n) {
-            map = n;
-        }
-    );
-    int salaplayer = getSala(map, playerposx, playerposz);
+/*VIEJO*/ void NodeMapSys::update(EntyMan& EM){
+    //float playerposx, playerposz;
+    //Enty player;
+    //NodoCmp map;
+    //EM.foreach<PlayCMPs, PlayTAGs>(
+    //    [&](Enty& p, PhysicsCmp2& phy) {
+    //        playerposx = phy.x;
+    //        playerposz = phy.z;
+    //        player = p;
+    //    }
+    //);
+    //EM.foreach<NodoCMPs, MapTAGs>(
+    //    [&](Enty& en, NodoCmp& n) {
+    //        map = n;
+    //    }
+    //);
+    //int salaplayer = getSala(map, playerposx, playerposz);
+    //EM.foreach<EneCMPs, EneTAGs>(
+    //    [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
+    //        int salaene = getSala(map, p.x, p.z);
+    //        if(ai.behaviour != SB::Diying) {
+    //            if(salaene == salaplayer || salaene == -1) {
+    //                if(en.hasTAG<TDistEnemy>()) EM.getComponent<SalaCmp>(player).sala = salaplayer; 
+    //
+    //                EM.getComponent<SalaCmp>(en).sala = salaene;
+    //
+    //                bool sameSala = 
+    //                    en.hasTAG<TDistEnemy>() && 
+    //                    sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz)) < 40 && 
+    //                    salaene != -1;
+    //
+    //                if(sameSala) ai.behaviour = SB::Shoot;
+    //                else         ai.behaviour = SB::Two_Steps;
+    //            }
+    //            else {
+    //                EM.getComponent<SalaCmp>(player).sala = salaplayer;
+    //                EM.getComponent<SalaCmp>(en).sala = salaene ;
+    //                ai.behaviour = SB::Patrol;
+    //                puerta nextcoord = { 0, 0 };
+    //                float dist = MAXFLOAT;
+    //                for(unsigned int i = 0; i < map.salas.at(salaene).puertas.size(); i++) {
+    //                    float distx = playerposx-map.salas.at(salaene).puertas.at(i).x;
+    //                    float distz = playerposz-map.salas.at(salaene).puertas.at(i).z;
+    //                    float minDist = sqrt((distx*distx)+(distz*distz));
+    //                    if(dist > minDist) {
+    //                        dist = minDist;
+    //                        nextcoord = map.salas.at(salaene).puertas.at(i);
+    //                    }
+    //                }
+    //                ai.ox = nextcoord.x;
+    //                ai.oz = nextcoord.z;
+    //            }
+    //        }
+    //    }
+    //);
+    ////EM.foreach<MapTAGsSpawns>(
+    ////    //poner temporizador para que no compruebe todo el rato
+    ////    [&](Enty& spawn, PhysicsCmp2& p, SpawnCmp& spawnC) {
+    ////        if( spawnC.sala == salaplayer){
+    ////            spawnC.active = 1;
+    ////        }
+    ////    }
+    ////);
+}
+
+/*NUEVO*/ void NodeMapSys::update2(EntyMan& EM, std::size_t player_ID, std::size_t map_ID){
+    Enty& player = EM.getEntityById(player_ID);
+    Enty& map    = EM.getEntityById(map_ID);
+
+    auto& phy_cmp = EM.getComponent<PhysicsCmp2>(player);
+    auto& map_cmp = EM.getComponent<NodoCmp>(map);
+
+    int salaplayer = getSala(map_cmp, phy_cmp.x, phy_cmp.z);
+
     EM.foreach<EneCMPs, EneTAGs>(
         [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
-            int salaene = getSala(map, p.x, p.z);
+            int salaene = getSala(map_cmp, p.x, p.z);
             if(ai.behaviour != SB::Diying) {
                 if(salaene == salaplayer || salaene == -1) {
                     if(en.hasTAG<TDistEnemy>()) EM.getComponent<SalaCmp>(player).sala = salaplayer; 
@@ -42,25 +101,27 @@ void NodeMapSys::update(EntyMan& EM){
 
                     bool sameSala = 
                         en.hasTAG<TDistEnemy>() && 
-                        sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz)) < 40 && 
+                        sqrt((p.x-phy_cmp.x)*(p.x-phy_cmp.x)+(p.z-phy_cmp.z)*(p.z-phy_cmp.z)) < 40 && 
                         salaene != -1;
 
                     if(sameSala) ai.behaviour = SB::Shoot;
                     else         ai.behaviour = SB::Two_Steps;
                 }
                 else {
+                    puerta nextcoord = { 0, 0 };
+                    float dist = FLT_MAX;
+
                     EM.getComponent<SalaCmp>(player).sala = salaplayer;
                     EM.getComponent<SalaCmp>(en).sala = salaene ;
                     ai.behaviour = SB::Patrol;
-                    puerta nextcoord = { 0, 0 };
-                    float dist = MAXFLOAT;
-                    for(unsigned int i = 0; i < map.salas.at(salaene).puertas.size(); i++) {
-                        float distx = playerposx-map.salas.at(salaene).puertas.at(i).x;
-                        float distz = playerposz-map.salas.at(salaene).puertas.at(i).z;
-                        float minDist = sqrt((distx*distx)+(distz*distz));
+
+                    for(unsigned int i = 0; i < map_cmp.salas.at(salaene).puertas.size(); i++) {
+                        float distx = phy_cmp.x - map_cmp.salas.at(salaene).puertas.at(i).x;
+                        float distz = phy_cmp.z - map_cmp.salas.at(salaene).puertas.at(i).z;
+                        float minDist = sqrt((distx*distx) + (distz*distz));
                         if(dist > minDist) {
                             dist = minDist;
-                            nextcoord = map.salas.at(salaene).puertas.at(i);
+                            nextcoord = map_cmp.salas.at(salaene).puertas.at(i);
                         }
                     }
                     ai.ox = nextcoord.x;
@@ -69,14 +130,6 @@ void NodeMapSys::update(EntyMan& EM){
             }
         }
     );
-    //EM.foreach<MapTAGsSpawns>(
-    //    //poner temporizador para que no compruebe todo el rato
-    //    [&](Enty& spawn, PhysicsCmp2& p, SpawnCmp& spawnC) {
-    //        if( spawnC.sala == salaplayer){
-    //            spawnC.active = 1;
-    //        }
-    //    }
-    //);
 }
 
 std::vector<sala> NodeMapSys::creaSalas() {

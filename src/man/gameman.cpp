@@ -37,10 +37,11 @@ void GameMan::game() {
     //auto* cam = GE.glEng.getActiveCamera();
     //GE.glEng.setCamera_(cam);
 
-    auto& player = LM.createPlayer2(GE, Vec3{-37, 3.5, -8});
-    LM.createNormalEnemy(GE, Vec3{-43, 3, -15});
-    LM.createMap2(GE);
+    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-37, 3.5, -8});
+    std::size_t map_ID    = LM.createMap2(GE);
 
+    LM.createNormalEnemy(GE, Vec3{-43, 3, -15});
+    
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);
@@ -52,6 +53,7 @@ void GameMan::game() {
         //ge.glEng.drawFocos();
         EM.update();
         RenSys.update2(EM, GE);
+        //MapSys.update(EM, player_ID, map_ID);
         InpSys.update2(LM, GE);
         AISys. update2(EM, dt);
         PhySys.update (EM, dt);
@@ -79,7 +81,7 @@ void GameMan::game() {
 //            auto frame_start = std::chrono::high_resolution_clock::now();
 //   ->       EM.      update();
 //   ->       RenSys.  update(EM, dev);
-//            MapSys.  update(EM);
+//   ->       MapSys.  update(EM);
 //   ->       InpSys.  update(LM, dev, SouSys, dt);
 //   ->       AISys.   update(EM, dt, dev);
 //   ->       PhySys.  update(EM, dt);
