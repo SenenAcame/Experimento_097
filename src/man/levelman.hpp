@@ -54,6 +54,10 @@ struct LevelMan {
     
     void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth);
     
+    TNodo* createModelHitbox(GraphicEngine& GE, Vec3 pos, Vec3 scale, TNodo* padre);
+
+    void viewBB(GraphicEngine& GE, Enty& ent);
+
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);

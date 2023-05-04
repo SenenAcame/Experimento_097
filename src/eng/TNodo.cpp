@@ -107,12 +107,15 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
         //    std::cout << acumMat[3][0] << ", " << acumMat[3][1] << ", " << acumMat[3][2] << ", " << acumMat[3][3] << ", " << std::endl;
         //    std::cout << "______________________________________________\n";
         //}
-
-        matTransf_ = glm::scale(Mat4(1.f), scale_);
-        matTransf_ = glm::rotate(matTransf_, glm::radians(rotation_.x), {1, 0, 0});
+        
+        
+        matTransf_ = glm::rotate(Mat4(1.f), glm::radians(rotation_.x), {1, 0, 0});
         matTransf_ = glm::rotate(matTransf_, glm::radians(rotation_.y), {0, 1, 0});
         matTransf_ = glm::rotate(matTransf_, glm::radians(rotation_.z), {0, 0, 1});
+
         matTransf_ = glm::translate(matTransf_, translation_);
+        
+        matTransf_ = glm::scale(matTransf_, scale_);
 
         matTransf_ = acumMat * matTransf_;
 
