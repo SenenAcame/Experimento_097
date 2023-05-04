@@ -11,6 +11,8 @@ struct GraphicEngine {
     TNodo* createNode(std::string file, Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
     TNodo* createPlayer(Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
 
+    void setCameraPlayer(TNodo* camera, std::string file_model);
+
     ECamera*    getCamera() { return glEng.getActiveCamera(); }
     Vec3&  getFrontCamera() { return getCamera()->Front; }
     GLFWwindow* getWindow() { return glEng.getWindow(); }

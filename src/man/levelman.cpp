@@ -432,10 +432,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addTag<TPlayer>(player);
     EM.addTag<TInteract>(player);
 
-    GE.playerModel = GE.glEng.createModel( r_cmp.node, Vec3(0.15,-0.1,0.1), Vec3(0), Vec3(1), file_model);
-    GE.glEng.setActiveCamera(0);
-    auto* cam = GE.getCamera();
-    GE.glEng.setCamera_(cam);
+    GE.setCameraPlayer(r_cmp.node, file_model);
 
     return player.getID();
 }
@@ -450,15 +447,15 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos) {
-    std::string file_model = "assets/models/personajes/monstruo2/enemigo2_escalado.obj";
+    std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
     
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy);
-    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 5.f});
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
-        .node = GE.createNode(file_model, Vec3{2})
+        .node = GE.createNode(file_model)
     });
     EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
     //EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
@@ -711,7 +708,7 @@ void LevelMan::defineAI(Enty& enemy) {
             .timeArrive = 0.1, 
             .cooldown = 0.1, 
             .enable = true, 
-            .behaviour = SB::Two_Steps 
+            .behaviour = SB::Seek 
         }
     );
 }

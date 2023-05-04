@@ -26,6 +26,7 @@
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
+            GE.glEng.drawScene();
         }
     );
 

@@ -37,10 +37,9 @@ void GameMan::game() {
     //auto* cam = GE.glEng.getActiveCamera();
     //GE.glEng.setCamera_(cam);
 
-    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-37, 3.5, -8});
-    //std::size_t player_ID = LM.createPlayer2(GE, Vec3{0, 0, 0});
+    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5});
     std::size_t map_ID    = LM.createMap2(GE);
-    //LM.createNormalEnemy(GE, Vec3{-43, 3, -15});
+    LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15});
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
