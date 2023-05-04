@@ -467,6 +467,26 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     return enemy;
 }
 
+TNodo* LevelMan::createModelHitbox(GraphicEngine& GE, Vec3 pos, Vec3 scale, TNodo* padre) {
+    std::string file_model = "assets/models/otros/untitled.obj";
+    
+    //Enty& enemy = EM.createEntity();
+    //
+    //EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z});
+    //EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
+    //    .node = GE.createNode(file_model, scale, Vec3(0.f), pos)
+    //});
+    return GE.glEng.createModel(padre, pos, Vec3(0.f), scale, file_model);
+}
+
+void LevelMan::viewBB(GraphicEngine& GE, Enty& ent){
+    auto& bb = EM.getComponent<EstadoCmp>(ent);
+    auto& pos_ent = EM.getComponent<PhysicsCmp2>(ent);
+    auto& node_ent = EM.getComponent<RenderCmp2>(ent);
+                        //pos = 0,0,0   //tamaño collider               //nodoPadre
+    createModelHitbox(GE, Vec3(0), Vec3{bb.width, bb.height, bb.depth}, node_ent.node);
+}
+
 /*VIEJO*/ void LevelMan::createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
 int const dmg, float const spd, float const rad, double const slfD,
 double const pbx, double const pby) {

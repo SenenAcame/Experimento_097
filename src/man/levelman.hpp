@@ -52,6 +52,10 @@ struct LevelMan {
     /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos,  EstadisticaCmp&& stats, 
         Vec3 dir, double const slfD = 2., uint8_t dispersion = 10);
     
+    TNodo* createModelHitbox(GraphicEngine& GE, Vec3 pos, Vec3 scale, TNodo* padre);
+
+    void viewBB(GraphicEngine& GE, Enty& ent);
+
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
