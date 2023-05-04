@@ -2,6 +2,7 @@
 #include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
 #include <GL/gl.h>
+#include <cstddef>
 #include <iterator>
 
 ///*VIEJO*/ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
@@ -21,67 +22,31 @@
 //    //ImGUI_Postrender();
 //};
 
-/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE) {
+/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
-
-            auto* cam = GE.getCamera();
-            auto* n_cam = GE.glEng.getActiveCameraNode();
-
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
-            
-            //TNodo* node_cam = GE.glEng.getActiveCameraNode();
-            //auto* cam = GE.getCamera();
-
-            //std::cout << "___________________________________________________________\n";
-            //std::cout << "Translacion nodo :" << node_cam->getTranslation()[0] << ", " << node_cam->getTranslation()[1] << ", " <<  node_cam->getTranslation()[2] << std::endl;
-            //std::cout << "___________________________________________________________\n";
-            ////node_cam->translade(node_cam->translation_ - cam->Position);
-            //std::cout << "___________________________________________________________\n";
-            //std::cout << "Translacion nodo :" << cam->Position[0] << ", " << cam->Position[1] << ", " <<  cam->Position[2] << std::endl;
-            //std::cout << "___________________________________________________________\n";
-            if(ent.hasTAG<TPlayer>()) {
-                float pitch = GE.getCamera()->Pitch;
-                float yaw   = GE.getCamera()->Yaw;
-            
-                Mat4 vMat = GE.getCamera()->GetViewMatrix();
-                //Vec4 res  = vMat * Vec4(1,1,1,0);
-                
-                //este tiene el arma girada pero con buena rotacion
-                Vec3 res2 = Vec3(-pitch + 90, -yaw + 90, 0);
-                /*
-                //este tiene la arma recta pero con la rotacion mal
-                Vec3 res2 = Vec3(-pitch , -yaw + 90, 0);
-                */
-
-                GE.getCamera()->setPosition(Vec3 { phy.x, phy.y, phy.z });
-                rend.node->setRotation(res2);
-                phy.orienx = glm::radians(pitch);
-                phy.orieny = glm::radians(yaw);
-
-                //std::cout<<"Orienx: "<<phy.orienx<<" Orieny: "<<phy.orieny<<"\n";
-
-                //rend.node->setMatrizTransf(vMat);
-
-                //std::cout << "_____________________________________________________\n";
-                //std::cout << vMat[0][0] << ", " << vMat[0][1] << ", " << vMat[0][2] << ", " << vMat[0][3] << std::endl;
-                //std::cout << vMat[1][0] << ", " << vMat[1][1] << ", " << vMat[1][2] << ", " << vMat[1][3] << std::endl;
-                //std::cout << vMat[2][0] << ", " << vMat[2][1] << ", " << vMat[2][2] << ", " << vMat[2][3] << std::endl;
-                //std::cout << vMat[3][0] << ", " << vMat[3][1] << ", " << vMat[3][2] << ", " << vMat[3][3] << std::endl;
-                
-                //Vec4 res = vMat * Vec4(1,1,1,0);
-                //std::cout << "_____________________________________________________\n";
-                //std::cout << res[0] << ", " << res[1] << ", " << res[2] << ", " << res[3] << std::endl;
-                //std::cout << "_____________________________________________________\n";
-                //phy.orienx = res[0] + res[2];
-                //phy.orieny = res[1];
-
-            }
         }
     );
 
+    updateCamera(EM, GE, player_ID);
+
     drawWorld(GE);
 }
+
+void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
+    auto& player = EM.getEntityById(player_ID);
+    auto& phy = EM.getComponent<PhysicsCmp2>(player);
+
+    float pitch = GE.getCamera()->Pitch;
+    float yaw   = GE.getCamera()->Yaw;
+
+    GE.playerModel->setRotation(Vec3(0, -yaw, pitch));
+
+    phy.orienx = glm::radians(pitch);
+    phy.orieny = glm::radians(yaw);
+}
+
 
 void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
     GFX.beginScene();

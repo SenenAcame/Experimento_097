@@ -1,5 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
+#include <cstddef>
 ////IMGUI
 //#include <GL/gl.h>
 //#include <imgui/src/imgui.h>
@@ -22,7 +23,9 @@ struct RenSys2 {
     using SYSTAGs = MP::Typelist<>;
 
     /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
-    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE);
+    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
+
+    void updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
     
     void drawAll (EntyMan& EM, TheEngine& GFX);
     void drawBBox(EntyMan& EM, TheEngine& GFX);

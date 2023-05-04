@@ -11,6 +11,10 @@ TNodo* GraphicEngine::createNode(std::string file, Vec3 sca, Vec3 rot, Vec3 tras
     return glEng.createModel( NULL, tras, rot, sca, file);
 }
 
+TNodo* GraphicEngine::createPlayer(Vec3 sca, Vec3 rot, Vec3 tras) {
+    return glEng.createCamera(NULL, tras, rot, sca);
+}
+
 //TNodo* GraphicEngine::loadModel(std::string file) {
 //    return glEng.createModel(
 //        NULL,

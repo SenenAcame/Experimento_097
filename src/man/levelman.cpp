@@ -414,13 +414,13 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ std::size_t LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
-    std::string file_model = "assets/models/armas/pistola.obj";
+    std::string file_model = "assets/models/armas/pistola_prueba2/pistola_prueba2.obj";
 
     Enty& player = EM.createEntity();
     //CMPS
     EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     auto& r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
-        .node = GE.createNode(file_model)
+        .node = GE.createPlayer()
     });
     EM.addComponent<InputCmp2>(player, InputCmp2{});
     EM.addComponent<EstadoCmp>(player, 1.5f, 4.f, 1.5f);
@@ -432,17 +432,9 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addTag<TPlayer>(player);
     EM.addTag<TInteract>(player);
 
-
-    auto* n_cam = GE.glEng.createCamera(r_cmp.node, Vec3{}, Vec3{0}, Vec3{1});
-    //n_cam->setFatherNode(r_cmp.node);
-    //int a = r_cmp.node->addSon(n_cam);
+    GE.playerModel = GE.glEng.createModel( r_cmp.node, Vec3(0.15,-0.1,0.1), Vec3(0), Vec3(1), file_model);
     GE.glEng.setActiveCamera(0);
-    auto* cam_node = GE.glEng.getActiveCameraNode();
     auto* cam = GE.getCamera();
-    //r_cmp.node->addSon(cam_node);
-    //cam_node->setFatherNode(r_cmp.node);
-    //cam->Yaw = 0.0f;
-    //cam->updateCameraVectors();
     GE.glEng.setCamera_(cam);
 
     return player.getID();
