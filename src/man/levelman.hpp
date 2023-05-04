@@ -52,13 +52,15 @@ struct LevelMan {
     /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos,  EstadisticaCmp&& stats, 
         Vec3 dir, double const slfD = 2., uint8_t dispersion = 10);
     
+    void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth);
+    
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     Enty& createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
     //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
-    void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev);
+    
     Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
     
     void resetLevel(TheEngine& dev);

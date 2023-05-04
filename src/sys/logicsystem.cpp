@@ -64,6 +64,7 @@
                     auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
                     if(entity.hasTAG<TWall>()){
                         //proceso Colision Wall
+                        colisionWall(EM, entity, entity_colisioned, dt);
                     }
                     else if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
@@ -128,6 +129,11 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 //}
 
 /*NUEVO*/ void LogicSystem::colisionPlayer2(LevelMan &LM, GraphicEngine &GE, Enty& current, Enty& colisioned, double dt) {
+    if(colisioned.hasTAG<TWall>()){
+        //moverse hacia atras
+        auto& EM = LM.getEM();
+        cancelMove(EM, current, dt);
+    }
     if(colisioned.hasTAG<TEnemy>()){
         //jugador recibe daño del enemigo
         //std::cout<<"Daño\n";
@@ -152,13 +158,17 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 //}
 
 /*NUEVO*/ void LogicSystem::colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt) {
-    if(colisioned.hasTAG<TPlayer>()){
+    if(colisioned.hasTAG<TWall>()){
+        //moverse hacia atras
+        auto& EM = LM.getEM();
+        cancelMove(EM, current, dt);
+    }
+    else if(colisioned.hasTAG<TPlayer>()){
         //enemigo hace daño al jugador
         //std::cout<<"Daño\n";
     }
     else if(colisioned.hasTAG<TBullet>()){
         //enemigo recibe daño de la bala
-        std::cout<<"Daño de bala 1\n";
         auto& EM = LM.getEM();
         reciveDamge(EM, current, colisioned);
     }
@@ -171,7 +181,6 @@ void LogicSystem::colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
     }
     else if(colisioned.hasTAG<TEnemy>()){
         //bala hace daño al enemigo
-        std::cout<<"Daño de bala 2\n";
         reciveDamge(EM, colisioned, current);
     }
 }

@@ -39,7 +39,8 @@ void GameMan::game() {
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5});
     std::size_t map_ID    = LM.createMap2(GE);
-    LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15});
+    ColSys.init_Hitoxes_Map2(LM);
+    //LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15});
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -58,6 +59,7 @@ void GameMan::game() {
         PhySys.update (EM, dt);
         ColSys.update (EM);
         LogSys.update2(LM, GE, dt);
+        PhySys.update_after_colision(EM, dt);
         DstSys.update (EM, dt);
     }
 //    init_config(dev);
@@ -118,5 +120,5 @@ void GameMan::init_config(TheEngine& dev) {
 
 void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
     LM.createMap(dev, SouSys);
-    ColSys2::init_Hitoxes_Map2(LM, dev);
+    ColSys2::init_Hitoxes_Map2(LM);
 }

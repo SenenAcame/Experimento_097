@@ -532,6 +532,14 @@ Vec3 dir, double const slfD, uint8_t dispersion) {
     }
 }
 
+void LevelMan::createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth) {
+    Enty& wall = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(wall, pos_x, pos_y,  pos_z);
+    EM.addComponent<EstadoCmp>  (wall, width, height, depth);
+    EM.addTag<TInteract>(wall);
+    EM.addTag<TWall>    (wall);
+}
+
 //Enty& LevelMan::createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
 //    Enty& enemy = createEnemy(SouSys);
 //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
@@ -608,15 +616,6 @@ Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& d
 //    EM.addTag<TKey>     (key);
 //    return key;
 //}
-
-void LevelMan::createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth, TheEngine& dev) {
-    Enty& wall = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(wall, pos_x, pos_y,  pos_z);
-    EM.addComponent<EstadoCmp>  (wall, width, height, depth);
-    //EM.addComponent<RenderCmp2> (wall, dev.createModel("assets/models/otros/enemy.obj","assets/textures/fire.bmp"));
-    EM.addTag<TInteract>(wall);
-    EM.addTag<TWall>    (wall);
-}
 
 Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2){
     Enty& spawn = EM.createEntity();
