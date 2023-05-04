@@ -414,7 +414,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 }
 
 /*NUEVO*/ std::size_t LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos) {
-    std::string file_model = "assets/models/armas/pistola_prueba2/pistola_prueba2.obj";
+    std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();
     //CMPS
@@ -492,7 +492,7 @@ double const pbx, double const pby) {
 
 /*NUEVO*/ void LevelMan::createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
 Vec3 dir, double const slfD, double const pbx, double const pby) {
-    std::string file_model = "assets/models/armas/bala3/bala.obj";
+    std::string file_model = "assets/models/armas/bala.obj";
 
     Enty& bullet = EM.createEntity();
     //CMPS
