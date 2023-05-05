@@ -25,6 +25,11 @@
 /*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
+            //if(ent.hasTAG<TEnemy>()) {
+            //    float giro_y = phy.orieny * 180 / PI;
+            //    auto rot = rend.node->getRotation();
+            //    rend.node->setRotation(Vec3 { rot.x, giro_y, rot.z });
+            //}
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();
         }

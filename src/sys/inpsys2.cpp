@@ -40,7 +40,7 @@
 //    );
 //} 
 
-/*NUEVO*/ void InpSys2::update2(LevelMan& LM, GraphicEngine& GE, double const dt) {
+/*NUEVO*/ void InpSys2::update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt) {
     auto& EM = LM.getEM();
     auto& bb = EM.getBoard();
     checkKeyboard(GE.getWindow());
@@ -53,7 +53,7 @@
             equip.clockCadence += dt;
             phy.v_lin = phy.v_ang = 0;
 
-            if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy); }
+            if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
             if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -10, up, down); }
@@ -468,7 +468,7 @@
 //    return;
 //}
 
-/*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy) {
+/*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys) {
     Mag_Tim_Cad values {};
     
     switch (invent.equipada) {
@@ -489,7 +489,7 @@
     notReloading(invent);
     
     if(values.mag > 0) {
-        createBullet2(LM, GE, invent, phy, values.cad);
+        createBullet2(LM, GE, invent, phy, SouSys, values.cad);
 
         //LM.updateInterfaceMag(eng, ammo-1);
     }
@@ -500,7 +500,7 @@
     return { wpn.magazine, wpn.reload_T, wpn.cadence };
 }
 
-/*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, double cadenciaWeapon) {
+/*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon) {
     if(invent.clockCadence <= cadenciaWeapon) return;
 
     invent.clockCadence = 0 ;
@@ -508,17 +508,17 @@
     switch (invent.equipada) {
         case 0:
             lock_Left = 0;
-            LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera());
+            LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
             invent.gun.magazine -= 1;
             break;
         case 1:
             lock_Left = 0;
-            LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera());
+            LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
             invent.shot.magazine -= 1;
             break;
         case 2:
             lock_Left = 1;
-            LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera());
+            LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
             invent.rifle.magazine -= 1;
             break;
     }

@@ -10,10 +10,10 @@
 #include "../sys/selfdestsys.hpp"
 #include "../sys/spawnsys.hpp"
 #include "../sys/rensys2.hpp"
+#include "../eng/engine2.hpp"
 #include <chrono>
 #include <cstddef>
 #include <iostream>
-#include "../eng/engine2.hpp"
 
 void GameMan::game() {
     LevelMan      LM;
@@ -34,10 +34,10 @@ void GameMan::game() {
     
     srand(time(NULL));
 
-    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5});
-    std::size_t map_ID    = LM.createMap2(GE);
-    ColSys.init_Hitoxes_Map2(LM);
-    //Enty& ent_ene = LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15});
+    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+    std::size_t map_ID    = LM.createMap2(GE, SouSys);
+    //ColSys.init_Hitoxes_Map2(LM);
+    LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys);
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -51,12 +51,13 @@ void GameMan::game() {
         EM.update();
         RenSys.update2(EM, GE, player_ID);
         //MapSys.update(EM, player_ID, map_ID);
-        InpSys.update2(LM, GE, dt);
+        InpSys.update2(LM, GE, SouSys, dt);
         AISys. update2(EM, dt);
         PhySys.update (EM, dt);
         ColSys.update (EM);
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
+        SouSys.update (EM);
         DstSys.update (EM, dt);
     }
 //    init_config(dev);
@@ -109,13 +110,13 @@ void GameMan::game() {
 //    //RenSys.EndImgui();
 }
 
-void GameMan::init_config(TheEngine& dev) {
-    srand(time(NULL));
-    dev.getDevice()->getCursorControl()->setVisible(false);
-    dev.SetFont("assets/Interface/Font/chill.xml");
-}
-
-void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
-    LM.createMap(dev, SouSys);
-    ColSys2::init_Hitoxes_Map2(LM);
-}
+//void GameMan::init_config(TheEngine& dev) {
+//    srand(time(NULL));
+//    dev.getDevice()->getCursorControl()->setVisible(false);
+//    dev.SetFont("assets/Interface/Font/chill.xml");
+//}
+//
+//void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
+//    LM.createMap(dev, SouSys);
+//    ColSys2::init_Hitoxes_Map2(LM);
+//}

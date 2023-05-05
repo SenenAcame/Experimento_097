@@ -22,6 +22,8 @@ struct RenSys2 {
     using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
 
+    static constexpr double PI { std::numbers::pi };
+
     /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
     /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
 

@@ -19,9 +19,6 @@ void SoundSystem_t::update(EntyMan& EM) {
                 }
                 else s.isplaying = false;
             }
-            //if(s.release) {
-            //    s.programmerSoundContext.sound->release();
-            //}
         }
     );
     facherita.update();

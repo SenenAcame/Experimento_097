@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 //#include <irrlicht/IEventReceiver.h>
 
-struct TheEngine;
+//struct TheEngine;
 struct LevelMan;
 struct SoundSystem_t;
 struct GraphicEngine;
@@ -29,7 +29,7 @@ struct InpSys2 {
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
     ///*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
-    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double const dt);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
 
     ///*VIEJO*/ virtual bool OnEvent(const irr::SEvent& event);
     /*NUEVO*/ bool checkKeyboard(GLFWwindow* window);
@@ -43,8 +43,7 @@ private:
 
     //metodos del input
     ///*VIEJO*/ void movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy);
-
-    ///*VIEJO*/ void    changeWeapon (LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng);
+    ///*VIEJO*/ void changeWeapon (LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng);
 
     /*NUEVO*/ void    changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip);
     /*NUEVO*/ Mag_Amm changeWeaponProcess(GraphicEngine& GE, InventarioCmp& invent, std::string file, Weapon& wpn);
@@ -58,9 +57,9 @@ private:
     ///*VIEJO*/ void shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment);
     ///*VIEJO*/ void createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, TheEngine& eng, SoundSystem_t& SS);
 
-    /*NUEVO*/ void shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy);
+    /*NUEVO*/ void shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys);
     /*NUEVO*/ Mag_Tim_Cad shootProcess(Weapon& wpn);
-    /*NUEVO*/ void createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, double cadenciaWeapon);
+    /*NUEVO*/ void createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon);
 
     void digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down);
     
