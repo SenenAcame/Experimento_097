@@ -26,11 +26,12 @@ void GameMan::game() {
     SoundSystem_t SouSys;
     //SpawnSystem   SpawnSys;
     SelfDestSys   DestSys;
-    TheEngine     dev {1280, 720, &InpSys};
+    TheEngine     dev {3000, 2000, &InpSys};
 
     init_config(dev);
     init_map(LM, dev, SouSys);
     soundsEffects(EM, SouSys);
+    dev.run();
     LM.createEmptyInterface(dev);
 
     while(dev.run()) {
