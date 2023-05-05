@@ -32,15 +32,12 @@ void GameMan::game() {
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
     
-    //GE.glEng.createCamera(NULL, Vec3{}, Vec3{0}, Vec3{1});
-    //GE.glEng.setActiveCamera(0);
-    //auto* cam = GE.glEng.getActiveCamera();
-    //GE.glEng.setCamera_(cam);
+    srand(time(NULL));
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5});
     std::size_t map_ID    = LM.createMap2(GE);
     ColSys.init_Hitoxes_Map2(LM);
-    Enty& ent_ene = LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15});
+    //Enty& ent_ene = LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15});
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -54,7 +51,7 @@ void GameMan::game() {
         EM.update();
         RenSys.update2(EM, GE, player_ID);
         //MapSys.update(EM, player_ID, map_ID);
-        InpSys.update2(LM, GE);
+        InpSys.update2(LM, GE, dt);
         AISys. update2(EM, dt);
         PhySys.update (EM, dt);
         ColSys.update (EM);

@@ -432,7 +432,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addTag<TPlayer>(player);
     EM.addTag<TInteract>(player);
 
-    GE.setCameraPlayer(r_cmp.node, file_model);
+    GE.setCameraPlayer(file_model);
 
     //viewBB(GE, player);
 
