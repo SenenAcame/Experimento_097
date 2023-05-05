@@ -31,10 +31,11 @@ struct GameMan {
         SoundSystem_t SouSys;
         //SpawnSystem   SpawnSys;
         SelfDestSys   DestSys;
-        TheEngine     dev {1080, 640, &InpSys};
+        TheEngine     dev {2000, 1000, &InpSys};
 
         init_config(dev);
         init_map(LM, dev, SouSys);
+        dev.run();
         LM.createEmptyInterface(dev);
 
         while(dev.run()) {
@@ -50,8 +51,7 @@ struct GameMan {
             //int64_t frames = 0;
             
             while(!dead && dev.run()){
-                //auto frame_start = std::chrono::high_resolution_clock::now();
-                
+                //auto frame_start = std::chrono::high_resolution_clock::now();                
                 EM.      update();
                 RenSys.  update(EM, dev);
                 MapSys.  update(EM);
