@@ -177,7 +177,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 void LogicSystem::colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
     if(colisioned.hasTAG<TWall>()){
         //bala impacta en muro
-        //markDestroy(current);
+        markDestroy(current);
     }
     else if(colisioned.hasTAG<TEnemy>()){
         //bala hace daño al enemigo

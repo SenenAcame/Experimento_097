@@ -423,7 +423,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
         .node = GE.createPlayer()
     });
     EM.addComponent<InputCmp2>(player, InputCmp2{});
-    EM.addComponent<EstadoCmp>(player, 1.5f, 4.f, 1.5f);
+    EM.addComponent<EstadoCmp>(player, 1.f, 3.f, 1.f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
     EM.addComponent<InventarioCmp> (player);
     EM.addComponent<SalaCmp>       (player);
@@ -433,6 +433,8 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addTag<TInteract>(player);
 
     GE.setCameraPlayer(r_cmp.node, file_model);
+
+    //viewBB(GE, player);
 
     return player.getID();
 }
@@ -457,25 +459,20 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
         .node = GE.createNode(file_model)
     });
-    EM.addComponent<EstadoCmp>(enemy, 1.f, 4.f, 1.f);
+    EM.addComponent<EstadoCmp>(enemy, 1.f, 1.5f, 1.f);
     //EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>  (enemy);
     //TAGS
     EM.addTag<TInteract>(enemy);
     EM.addTag<TEnemy>(enemy);
 
+    //viewBB(GE, enemy);
+
     return enemy;
 }
 
 TNodo* LevelMan::createModelHitbox(GraphicEngine& GE, Vec3 pos, Vec3 scale, TNodo* padre) {
     std::string file_model = "assets/models/otros/untitled.obj";
-    
-    //Enty& enemy = EM.createEntity();
-    //
-    //EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z});
-    //EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
-    //    .node = GE.createNode(file_model, scale, Vec3(0.f), pos)
-    //});
     return GE.glEng.createModel(padre, pos, Vec3(0.f), scale, file_model);
 }
 

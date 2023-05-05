@@ -51,9 +51,9 @@
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button)) {
-                //LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera());
-                LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 2, .speed = 0.5f }, 
-                    GE.getFrontCamera());
+                LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera());
+                //LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 2, .speed = 0.5f }, 
+                //    GE.getFrontCamera());
             }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
