@@ -53,7 +53,7 @@ void NodeMapSys::update(EntyMan& EM){
                     EM.getComponent<SalaCmp>(en).sala = salaene ;
                     ai.behaviour = SB::Patrol;
                     puerta nextcoord = { 0, 0 };
-                    float dist = MAXFLOAT;
+                    float dist = FLT_MAX;
                     for(unsigned int i = 0; i < map.salas.at(salaene).puertas.size(); i++) {
                         float distx = playerposx-map.salas.at(salaene).puertas.at(i).x;
                         float distz = playerposz-map.salas.at(salaene).puertas.at(i).z;
