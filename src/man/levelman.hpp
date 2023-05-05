@@ -61,6 +61,9 @@ private:
     double extraHeal            = 5; //extra EnemyHeal per wave
     float  extraSpeed           = 0; //extra speed per round
     int    numberOfEnemysBasics = 2; //number of enemys per wave
+    int    numberOfTankEnemys = 0;
+    int    numberOfDistEnemys = 0;
+    int    totalEnemys          = 2;
     int    aliveEnemys          = 0;
     double extraEnemys          = 3; //extra number of enemys per wave
     int    maxEnemysWave        = 11; //max number of enemy created
@@ -82,6 +85,9 @@ private:
 
     TheEngine::IGUIText*  wave {};
     TheEngine::IGUIText*  waveText {};
+
+    TheEngine::IGUIText*  wave2 {};
+    TheEngine::IGUIText*  waveText2 {};
 
     TheEngine::IGUIText*  pointsUI {};
     TheEngine::IGUIText*  pointsText {};
