@@ -1,5 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
+#include <vector>
+#include <algorithm>
 
 struct NodeMapSys {
     using EneCMPs       = MP::Typelist<PhysicsCmp2, AICmp>;

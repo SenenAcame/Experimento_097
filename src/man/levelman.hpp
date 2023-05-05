@@ -1,6 +1,14 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../eng/engine.hpp"
+#include "../util/types.hpp"
+#include "../sys/nodemapsys.hpp"
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <iostream>
+#include <irrlicht/IGUIImage.h>
+#include <string>
 
 struct SoundSystem_t;
 
@@ -17,21 +25,26 @@ struct LevelMan {
 
     void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
     Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
+
     void initInterface (TheEngine& dev, Enty& player);
     //void createInterface (TheEngine& dev, Enty& player);
     void createEmptyInterface (TheEngine& dev);
-
     void updateInterfaceMag(TheEngine& dev, int maga);
     void updateInterfacePoints(TheEngine& dev);
     void updateInterfaceWave(TheEngine& dev);
     void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm);
     void updateInterfaceHP(TheEngine& dev, Enty&player);
     void updateInterfaceHit(TheEngine& dev, Enty& player);
-
     void cleanHitsInterface(TheEngine& dev ,double dt);
+    void notificationNewRound(TheEngine& dev);
+
+    void passRound(TheEngine& dev, Enty& player);
+
     void createMap(TheEngine& dev, SoundSystem_t& SouSys);
     Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
     Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
+    Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
+    Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
@@ -54,7 +67,7 @@ private:
     void defineAI(Enty& enemy);
     double randAng(uint8_t ang);
 
-    EntyMan EM;
+   EntyMan EM;
 
     //Waves
     int    waveNumber           = 1; //actual wave
@@ -71,6 +84,8 @@ private:
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;
     int    points               = 0;
+
+
 
     //INTERFACE
     TheEngine::IGUIText*  mag  {};
@@ -93,7 +108,9 @@ private:
     TheEngine::IGUIText*  pointsText {};
 
     //Hits
+
     int activateHit {0};
+
     double cd1 {0}, cd2 {0}, cd3 {0};
     double clockHit1 {}, clockHit2 {}, clockHit3 {};
     TheEngine::IGUIImage* hit1 {};
