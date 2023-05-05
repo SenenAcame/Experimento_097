@@ -1,5 +1,5 @@
 #include "fachada.hpp"
-//#include <iostream>
+#include <iostream>
 //
 ////void ERRCHECK_FMOD (FMOD_RESULT result, const char * file, int line) {
 //void ERRCHECK_FMOD (FMOD_RESULT result) {
@@ -222,18 +222,18 @@ void TheFachada::startsound(SoundCmp& s) {
 
 void TheFachada::set3DAttributes(SoundCmp& s, PhysicsCmp2& enty, PhysicsCmp2& player) {
     FMOD_3D_ATTRIBUTES att;
-    att.position = FMOD_VECTOR{static_cast<float>((enty.x-player.x)/10), 0, static_cast<float>((enty.z-player.z)/10)};
+    att.position = FMOD_VECTOR{static_cast<float>(enty.x/10), 0, static_cast<float>(enty.z/10)};
     att.velocity = FMOD_VECTOR{0, 0, 0};
-    att.forward  = FMOD_VECTOR{1, 0, 1};
+    att.forward  = FMOD_VECTOR{1, 0, 0};
     att.up       = FMOD_VECTOR{0, 1, 0};
     FMOD_Studio_EventInstance_Set3DAttributes(s.programmerSoundContext.sound, &att);
 }
 
 void TheFachada::setListener(PhysicsCmp2& player) {
     FMOD_3D_ATTRIBUTES att;
-    att.position = FMOD_VECTOR{static_cast<float>(player.x), 0, static_cast<float>(player.z)};
+    att.position = FMOD_VECTOR{static_cast<float>(player.x/10), 0, static_cast<float>(player.z/10)};
     att.velocity = FMOD_VECTOR{0, 0, 0};
-    att.forward  = FMOD_VECTOR{1, 0, 1};
+    att.forward  = FMOD_VECTOR{static_cast<float>(sin(player.orieny*180/std::numbers::pi)), 0, static_cast<float>(cos(player.orieny*180/std::numbers::pi))};
     att.up       = FMOD_VECTOR{0, 1, 0};
     FMOD_Studio_System_SetListenerAttributes(system, 0, &att, NULL);
 }

@@ -239,7 +239,7 @@ void InpSys2::reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
 
     auto& EM = LM.getEM();
     iAmReloading(equipment);
-    soundWeapon(EM);
+    soundWeapon(EM, equipment);
     
 }
 
@@ -345,7 +345,7 @@ void InpSys2::reloadAll(EntyMan& EM, InventarioCmp& equip) {
     equip.ammo1 = 20;
     equip.ammo2 = 10;
     equip.ammo3 = 100;
-    soundWeapon(EM);
+    soundWeapon(EM, equip);
 }
 
 //metodos auxiliares
@@ -461,11 +461,16 @@ void InpSys2::createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, Th
     return;
 }
 
-void InpSys2::soundWeapon(EntyMan& EM) {
+void InpSys2::soundWeapon(EntyMan& EM, InventarioCmp& equip) {
     for(auto& a : EM.getEntities()){
         if(a.hasTAG<TWeapon>()){
             auto& sound = EM.getComponent<SoundCmp>(a);
-            EM.changeSound(sound, 1);
+            if(equip.equipada==1){
+                EM.changeSound(sound, 2);
+            }
+            else{
+                EM.changeSound(sound, 1);
+            }
         }
     }
 }

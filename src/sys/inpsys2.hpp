@@ -42,7 +42,7 @@ private:
     void iAmReloading(InventarioCmp& equipment) { equipment.reloading = 1; }
     void notReloading(LevelMan& LM, TheEngine& dev, InventarioCmp& equip);
     void createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, TheEngine& eng, SoundSystem_t& SS);
-    void soundWeapon(EntyMan& EM);
+    void soundWeapon(EntyMan& EM, InventarioCmp& equip);
 
     static void onkeypressed(KeySym k)  { keyboard.keyPressed(k);  }
     static void onkeyreleased(KeySym k) { keyboard.keyReleased(k); }

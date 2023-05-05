@@ -1,4 +1,5 @@
 #include "soundsystem.hpp"
+#include "iostream"
 
 SoundSystem_t::SoundSystem_t() {
     facherita.init();

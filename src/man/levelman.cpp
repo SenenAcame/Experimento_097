@@ -78,6 +78,11 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
     }
     );
     if(inRound == true && totalEnemys == 0 && aliveEnemys == 0){
+        EM.foreach<SYSCMP_Sound, SYSTAG_Ronda>(
+            [&](Enty&, SoundCmp& voice){
+                EM.changeSound(voice, 0);
+            }
+        );
         inRound = false;
         //std::cout<<"NOT In round: "<<inRound<<"\n";
 
@@ -377,7 +382,7 @@ void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
     EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
-    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
+    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true, .loop = true});
     EM.addTag      <TMap>       (map);
     
     for(uint8_t i {0}; i<6; i++) 
@@ -393,7 +398,7 @@ Enty& LevelMan::createPlayer(TheEngine& dev, SoundSystem_t& SouSys) {
     EM.addComponent<EstadoCmp>     (player, 1.5f, 4.f, 1.5f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{.hitpoints=100, .damage=5, .speed=40.f});
     EM.addComponent<InventarioCmp> (player);
-    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(9));
     EM.addComponent<SalaCmp>       (player);
     EM.addTag      <TPlayer>       (player);
     EM.addTag      <TInteract>     (player);
@@ -538,7 +543,7 @@ double const pbx, double const pby) {
     );
     EM.addComponent<RenderCmp2> (bullet, eng.createSphere(rad));
     EM.addComponent<EstadoCmp>  (bullet, 0.2f, 0.2f, 0.2f);
-    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=2, .play=true, .cambia=true});
+    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SS.createinstance(1), .parametro=0, .play=true, .cambia=true});
     EM.addTag<TBullet>          (bullet);
     EM.addTag<TInteract>        (bullet);
 }
