@@ -15,6 +15,10 @@
 #include <cstddef>
 #include <iostream>
 
+//#include <imgui/src/imgui.h>
+//#include <imgui/src/imgui_impl_glfw.h>
+//#include <imgui/src/imgui_impl_opengl3.h>
+
 void GameMan::game() {
     LevelMan      LM;
     EntyMan&      EM = LM.getEM();
@@ -31,8 +35,17 @@ void GameMan::game() {
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
-    
+    RenSys.initIMGUI(GE);
+
     srand(time(NULL));
+
+    //RenSys.initIMGUI(GE);
+
+    //ImGui::CreateContext();
+    //ImGui_ImplGlfw_InitForOpenGL(GE.getWindow(), true);
+
+    //ImGui::Begin("Hello, world!");
+    //ImGui::Text("This is some useful text."); 
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     std::size_t map_ID    = LM.createMap2(GE, SouSys);
@@ -49,6 +62,8 @@ void GameMan::game() {
     while(!glfwWindowShouldClose(GE.getWindow())) {
         //ge.glEng.drawFocos();
         EM.update();
+        //ImGui::Text("This is some useful text.");
+
         RenSys.update2(EM, GE, player_ID);
         //MapSys.update(EM, player_ID, map_ID);
         InpSys.update2(LM, GE, SouSys, dt);
@@ -60,6 +75,7 @@ void GameMan::game() {
         SouSys.update (EM);
         DstSys.update (EM, dt);
     }
+    RenSys.EndImgui(GE);
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);
 //    LM.createEmptyInterface(dev);

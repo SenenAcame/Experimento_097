@@ -1,17 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
 #include <cstddef>
-////IMGUI
-//#include <GL/gl.h>
-//#include <imgui/src/imgui.h>
-//#include <imgui/src/imgui_impl_glfw.h>
-//#include <imgui/src/imgui_impl_opengl3.h>
-//#include <stdio.h>
-//#define GL_SILENCE_DEPRECATION
-//#if defined(IMGUI_IMPL_OPENGL_ES2)
-//#include <GLES2/gl2.h>
-//#endif
-//#include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
 struct TheEngine;
 struct GraphicEngine;
@@ -29,17 +18,18 @@ struct RenSys2 {
 
     void updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
     
-    void drawAll (EntyMan& EM, TheEngine& GFX);
-    void drawBBox(EntyMan& EM, TheEngine& GFX);
+    /*VIEJO*/ void drawAll (EntyMan& EM, TheEngine& GFX);
+    /*VIEJO*/ void drawBBox(EntyMan& EM, TheEngine& GFX);
 
     void drawWorld(GraphicEngine& GE);
 
     //IMGUI
-    //void ImGUI_renderOpenGlContext() const noexcept;
-    //void ImGUI_Prerender() const noexcept;
-    //void ImGUI_Postrender() const noexcept;
-    //void initIMGUI();
-    //void EndImgui();
+    void initIMGUI(GraphicEngine& GE);
+    void ImGUI_Prerender() const noexcept;
+    void ImGUI_RenderUI();
+    void ImGUI_renderOpenGlContext() const noexcept;
+    void ImGUI_Postrender(GraphicEngine& GE) const noexcept;
+    void EndImgui(GraphicEngine& GE);
 
 //private:
     //GLFWwindow* m_window {nullptr};
