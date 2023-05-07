@@ -471,6 +471,30 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     return enemy;
 }
 
+/*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+    std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
+    std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_pose_caminar", "mostruo2_prueba_rojo"};
+    std::vector<int> framesAnim = {110,2};
+    Enty& enemy = EM.createEntity();
+    //CMPS
+    defineAI(enemy);
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
+    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
+    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
+        .node = GE.createNodeAnim(file_model, anim, framesAnim)
+    });
+    EM.addComponent<EstadoCmp>(enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
+    EM.addComponent<SalaCmp>  (enemy);
+    //TAGS
+    EM.addTag<TInteract>(enemy);
+    EM.addTag<TEnemy>(enemy);
+
+    //viewBB(GE, enemy);
+
+    return enemy;
+}
+
 TNodo* LevelMan::createModelHitbox(GraphicEngine& GE, Vec3 pos, Vec3 scale, TNodo* padre) {
     std::string file_model = "assets/models/otros/untitled.obj";
     return GE.glEng.createModel(padre, pos, Vec3(0.f), scale, file_model);

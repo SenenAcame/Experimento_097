@@ -41,6 +41,8 @@ struct LevelMan {
     /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
     /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
+    /*NUEVO*/ Enty& createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
+
     /*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
         int const dmg, float const spd, float const rad, double const slfD,
         double const pbx = 0, double const pby = 0);

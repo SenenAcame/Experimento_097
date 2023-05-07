@@ -9,6 +9,8 @@
 
 struct GraphicEngine {
     TNodo* createNode  (std::string file, Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
+
+    TNodo* createNodeAnim  (std::string file, std::vector<std::string> anim, std::vector<int> framesAnim, Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
     TNodo* createPlayer(Vec3 sca = Vec3(1), Vec3 rot = Vec3(0), Vec3 tras = Vec3(0));
     void createPlayerModel(std::string file_model);
 
