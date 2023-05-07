@@ -33,7 +33,7 @@
 //};
 
 /*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
-    ImGUI_Prerender();
+    //ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
@@ -50,8 +50,8 @@
 
     drawWorld(GE);
 
-    ImGUI_RenderUI();
-    ImGUI_Postrender(GE);
+    //ImGUI_RenderUI();
+    //ImGUI_Postrender(GE);
 }
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
@@ -68,14 +68,14 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID
 }
 
 
-void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
+/*VIEJO*/ void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
     GFX.beginScene();
     GFX.drawAll();
     //drawBBox(EM, GFX);
     GFX.endScene();
 }
 
-void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
+/*VIEJO*/ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
     auto vd = GFX.getDevice()->getVideoDriver();
     vd->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
     EM.foreach<BOXCMPs, SYSTAGs>(
@@ -94,7 +94,7 @@ void RenSys2::drawWorld(GraphicEngine &GE) {
     //GE.glEng.drawParticles();
     //GE.glEng.drawBorder();
     GE.glEng.drawSkybox(0);
-    //GE.glEng.endScene();
+    GE.glEng.endScene();
 }
 
 //IMGUI

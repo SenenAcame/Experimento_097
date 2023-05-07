@@ -32,9 +32,14 @@ struct ColSys2 {
     void static hitboxesMapaSimpleSala1(LevelMan& LM) noexcept;
     void static hitboxesMapaSimpleSala2(LevelMan& LM) noexcept;
     void static hitboxesMapaSimpleSala3(LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala4(LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala5(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo1(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo2(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo3(LevelMan& LM) noexcept;
+    void static hitboxesMapaSimplePasillo4(LevelMan& LM) noexcept;
+    void static hitboxesMapaSimplePasillo5(LevelMan& LM) noexcept;
+
 
     void static create_HitBoxes(uint8_t const num, LevelMan& LM, float const pos_x[], float const pos_z[], float const widht[], float const depth[]);
 };
