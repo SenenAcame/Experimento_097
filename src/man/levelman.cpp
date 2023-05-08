@@ -712,7 +712,7 @@ void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
 void LevelMan::defineAI(Enty& enemy) {
     int num = rand() % 360;
     double angle = num * PI / 180;
-    double radius = 30.0;
+    double radius = 0.1;
     EM.addComponent<AICmp>(
         enemy, 
         AICmp {
@@ -720,11 +720,11 @@ void LevelMan::defineAI(Enty& enemy) {
             .ang = angle,
             .flock_x = cos(angle) * radius, 
             .flock_z = sin(angle) * radius, 
-            .arrivalRadius = 1., 
+            .arrivalRadius = 0.5, 
             .timeArrive = 0.1, 
             .cooldown = 0.1, 
             .enable = true, 
-            .behaviour = SB::Seek 
+            .behaviour = SB::Two_Steps
         }
     );
 }

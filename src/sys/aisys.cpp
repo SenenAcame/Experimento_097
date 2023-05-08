@@ -110,7 +110,7 @@ void AISys::persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlay
 void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int const sala) const noexcept {
     Point target { ai.ox, ai.oz };
     auto t_lin_dist { distance(target, { phyEnem.x, phyEnem.z }) };
-
+    std::cout<<t_lin_dist<<" / "<<ai.rad<<"\n";
     if(t_lin_dist <= ai.rad) {
         seek(target, phyEnem, ai.timeArrive);
         //persue(target, phyEnem, velPlayer,ai.timeArrive); 
@@ -119,12 +119,12 @@ void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int
         bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
         bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
 
-        if(inRoom)     { ai.rad = 15.; }
-        else if(inCorr){ ai.rad = 3.;  }
+        if(inRoom)      ai.rad = 5.;
+        else if(inCorr) ai.rad = 1.;
 
         ai.flock_x = cos(ai.ang) * ai.rad;
         ai.flock_z = sin(ai.ang) * ai.rad;
-
+        
         Point flock_targ {ai.flock_x + ai.ox, ai.flock_z + ai.oz};
         seek(flock_targ, phyEnem, ai.timeArrive);
         //persue(flock_targ, phyEnem, velPlayer,ai.timeArrive);
