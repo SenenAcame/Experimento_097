@@ -33,7 +33,7 @@
 //};
 
 /*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
-    //ImGUI_Prerender();
+    ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
@@ -50,8 +50,8 @@
 
     drawWorld(GE);
 
-    //ImGUI_RenderUI();
-    //ImGUI_Postrender(GE);
+    ImGUI_RenderUI(GE);
+    ImGUI_Postrender(GE);
 }
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
@@ -94,7 +94,7 @@ void RenSys2::drawWorld(GraphicEngine &GE) {
     //GE.glEng.drawParticles();
     //GE.glEng.drawBorder();
     GE.glEng.drawSkybox(0);
-    GE.glEng.endScene();
+    //GE.glEng.endScene();
 }
 
 //IMGUI
@@ -138,6 +138,7 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
+    //ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chill.xml", 128.0f);
 }
 
 void RenSys2::ImGUI_Prerender() const noexcept {
@@ -165,10 +166,19 @@ void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
     ////glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenSys2::ImGUI_RenderUI() {
-    ImGui::Text("This is some useful text");
-    //ImGui::Begin("Hola mundo");
-    //ImGui::End();
+void RenSys2::ImGUI_RenderUI(GraphicEngine& GE) {
+    //ImGui::Text("This is some useful text");
+    auto* m_window = GE.getWindow();
+
+    ImGui::SetNextWindowSize(ImVec2(m_window.getHeight(),m_window.getWidth()));
+    ImGui::Begin(
+        "UI", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Text("Wave:");
+    ImGui::End();
 }
 
 void RenSys2::ImGUI_Postrender(GraphicEngine& GE) const noexcept {

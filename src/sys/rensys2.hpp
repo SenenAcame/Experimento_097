@@ -26,7 +26,7 @@ struct RenSys2 {
     //IMGUI
     void initIMGUI(GraphicEngine& GE);
     void ImGUI_Prerender() const noexcept;
-    void ImGUI_RenderUI();
+    void ImGUI_RenderUI(GraphicEngine& GE) const noexcept;
     void ImGUI_renderOpenGlContext() const noexcept;
     void ImGUI_Postrender(GraphicEngine& GE) const noexcept;
     void EndImgui(GraphicEngine& GE);
