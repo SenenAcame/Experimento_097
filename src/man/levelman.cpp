@@ -549,6 +549,56 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
     }
 }
 
+/*VIEJO*/ Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo) {
+    Enty& weapon = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
+    switch (tipo) {
+        case 0:
+            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));
+            break;
+        case 1:
+            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));
+            break;
+        case 2:
+            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));
+            break;
+        default: break;
+    }
+    EM.addComponent<WeaponCmp>(weapon, tipo);
+    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
+    EM.addComponent<EstadoCmp>(weapon, 1.f, 1.f, 3.f); 
+    EM.addTag      <TWeapon> (weapon);
+    EM.addTag      <TInteract>(weapon);
+    return weapon;
+}
+
+/*NUEVO*/ Enty& LevelMan::createWeapon2(GraphicEngine& GE, Vec3 pos, W_Type tipo, SoundSystem_t& SouSys) {
+    TNodo* model = nullptr;
+
+    Enty& weapon = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{ .x = pos.x, .y = pos.y, .z = pos.z });
+    switch (tipo) {
+        case W_Type::Pistol:
+            model = GE.createNode("assets/models/armas/pistola.obj");
+            EM.addComponent<WeaponCmp> (weapon, 1);
+            break;
+        case W_Type::Shotgun:
+            model = GE.createNode("assets/models/armas/escopeta.obj");
+            EM.addComponent<WeaponCmp> (weapon, 2);
+            break;
+        case W_Type::Fusil:
+            model = GE.createNode("assets/models/armas/subfusil.obj");
+            EM.addComponent<WeaponCmp> (weapon, 3);
+            break;
+    }
+    EM.addComponent<RenderCmp2>(weapon, RenderCmp2 { .node = model });
+    EM.addComponent<SoundCmp>  (weapon, SouSys.createinstance(1));
+    EM.addComponent<EstadoCmp> (weapon, 1.f, 1.f, 1.f); 
+    EM.addTag      <TWeapon>   (weapon);
+    EM.addTag      <TInteract> (weapon);
+    return weapon;
+}
+
 void LevelMan::createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth) {
     Enty& wall = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(wall, pos_x, pos_y,  pos_z);
@@ -589,29 +639,6 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    EM.addTag      <TTankEnemy> (enemy);
 //    return enemy;
 //}
-
-Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo) {
-    Enty& weapon = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
-    switch (tipo) {
-        case 0:
-            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));
-            break;
-        case 1:
-            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));
-            break;
-        case 2:
-            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));
-            break;
-        default: break;
-    }
-    EM.addComponent<WeaponCmp>(weapon, tipo);
-    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
-    EM.addComponent<EstadoCmp>(weapon, 1.f, 1.f, 3.f); 
-    EM.addTag      <TWeapon> (weapon);
-    EM.addTag      <TInteract>(weapon);
-    return weapon;
-}
 
 //Enty& LevelMan::createDoor(float x_pos, float z_pos, TheEngine& dev) {
 //    Enty& door = EM.createEntity();
