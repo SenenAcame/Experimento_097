@@ -77,9 +77,9 @@ private:
     int    numberOfDistEnemys = 0;
     int    totalEnemys          = 2;
     int    aliveEnemys          = 0;
-    double extraEnemys          = 3; //extra number of enemys per wave
+    double extraEnemys          = 1; //extra number of enemys per wave
     int    maxEnemysWave        = 11; //max number of enemy created
-    double timeBtwWaves         = 4;
+    double timeBtwWaves         = 3.5;
     double clockToNextWave      = 0; //clock unter next wave
     bool   inRound              = false;
     int    points               = 0;

@@ -77,7 +77,6 @@ constexpr void AISys::shoot(AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheE
         );
         EM.addComponent<RenderCmp2> (bullet, eng.createSphere(stats.bulletRad));
         EM.addComponent<EstadoCmp>  (bullet);
-        EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{.cooldown=10});
         EM.addTag<TEneBullet>(bullet);
         EM.addTag<TInteract> (bullet);
 

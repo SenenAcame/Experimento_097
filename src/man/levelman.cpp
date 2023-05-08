@@ -441,7 +441,7 @@ Enty& LevelMan::createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundS
     auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=15.f});
 
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
+    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo1.obj","assets/textures/fire.bmp"));
     EM.addComponent<EstadoCmp>  (enemy, 1.01f, 4.005f, 1.01f);
     EM.addTag      <TDistEnemy> (enemy);
     return enemy;
@@ -622,7 +622,7 @@ void LevelMan::defineAI(Enty& enemy) {
             .flock_z = sin(angle) * radius, 
             .arrivalRadius = 1., 
             .timeArrive = 0.1, 
-            .cooldown = 0.1, 
+            .cooldown = 0.5, 
             .enable = true, 
             .behaviour = SB::Two_Steps 
         }
