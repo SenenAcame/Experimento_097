@@ -1,5 +1,5 @@
 #include "rensys2.hpp"
-#include "../eng/engine.hpp"
+//#include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
 #include <cstddef>
 #include <iterator>
@@ -68,25 +68,25 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID
 }
 
 
-/*VIEJO*/ void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
-    GFX.beginScene();
-    GFX.drawAll();
-    //drawBBox(EM, GFX);
-    GFX.endScene();
-}
+///*VIEJO*/ void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
+//    GFX.beginScene();
+//    GFX.drawAll();
+//    //drawBBox(EM, GFX);
+//    GFX.endScene();
+//}
 
-/*VIEJO*/ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
-    auto vd = GFX.getDevice()->getVideoDriver();
-    vd->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
-    EM.foreach<BOXCMPs, SYSTAGs>(
-        [&](Enty& ent, PhysicsCmp2 const& phy, EstadoCmp const& state){
-            vd->draw3DBox({
-                { (float)phy.x-state.width, (float)phy.y-state.height, (float)phy.z-state.depth }, 
-                { (float)phy.x+state.width, (float)phy.y+state.height, (float)phy.z+state.depth }
-            });
-        }
-    );
-}
+///*VIEJO*/ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
+//    auto vd = GFX.getDevice()->getVideoDriver();
+//    vd->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
+//    EM.foreach<BOXCMPs, SYSTAGs>(
+//        [&](Enty& ent, PhysicsCmp2 const& phy, EstadoCmp const& state){
+//            vd->draw3DBox({
+//                { (float)phy.x-state.width, (float)phy.y-state.height, (float)phy.z-state.depth }, 
+//                { (float)phy.x+state.width, (float)phy.y+state.height, (float)phy.z+state.depth }
+//            });
+//        }
+//    );
+//}
 
 void RenSys2::drawWorld(GraphicEngine &GE) {
     GE.glEng.beginScene();

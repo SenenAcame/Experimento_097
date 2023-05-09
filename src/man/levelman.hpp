@@ -1,6 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
-#include "../eng/engine.hpp"
+//#include "../eng/engine.hpp"
 #include <cstddef>
 #include <numbers>
 
@@ -17,42 +17,42 @@ struct LevelMan {
 
     static constexpr auto PI { std::numbers::pi };
 
-    void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
-    Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
-    void initInterface (TheEngine& dev, Enty& player);
-    //void createInterface (TheEngine& dev, Enty& player);
-    void createEmptyInterface (TheEngine& dev);
+    //void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
+    //Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
+    //void initInterface (TheEngine& dev, Enty& player);
+    ////void createInterface (TheEngine& dev, Enty& player);
+    //void createEmptyInterface (TheEngine& dev);
 
-    void updateInterfaceMag(TheEngine& dev, int maga);
-    void updateInterfacePoints(TheEngine& dev);
-    void updateInterfaceWave(TheEngine& dev);
-    void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm);
-    void updateInterfaceHP(TheEngine& dev, Enty&player);
-    void updateInterfaceHit(TheEngine& dev, Enty& player);
+    //void updateInterfaceMag(TheEngine& dev, int maga);
+    //void updateInterfacePoints(TheEngine& dev);
+    //void updateInterfaceWave(TheEngine& dev);
+    //void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm);
+    //void updateInterfaceHP(TheEngine& dev, Enty&player);
+    //void updateInterfaceHit(TheEngine& dev, Enty& player);
 
-    void cleanHitsInterface(TheEngine& dev ,double dt);
+    //void cleanHitsInterface(TheEngine& dev ,double dt);
 
-    /*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
+    ///*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
     /*NUEVO*/ std::size_t createMap2(GraphicEngine& GE, SoundSystem_t& SouSys);
 
-    /*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
+    ///*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
     /*NUEVO*/ std::size_t createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
-    /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
+    ///*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
     /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
-    /*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-        int const dmg, float const spd, float const rad, double const slfD,
-        double const pbx = 0, double const pby = 0);
+    ///*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+    //    int const dmg, float const spd, float const rad, double const slfD,
+    //    double const pbx = 0, double const pby = 0);
     /*NUEVO*/ void createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
         Vec3 dir, SoundSystem_t& SouSys, double const slfD = 2., double const pbx = 0, double const pby = 0);
 
-    /*VIEJO*/ void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-        int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
+    ///*VIEJO*/ void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
+    //    int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
     /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos,  EstadisticaCmp&& stats, 
         Vec3 dir, SoundSystem_t& SouSys, double const slfD = 2., uint8_t dispersion = 10);
 
-    /*VIEJO*/ Enty& createWeapon (float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
+    ///*VIEJO*/ Enty& createWeapon (float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
     /*NUEVO*/ Enty& createWeapon2(GraphicEngine& GE, Vec3 pos, W_Type tipo, SoundSystem_t& SouSys);
     
     void createHitBox(double const pos_x, double const pos_y, double const pos_z, float const width, float const height, float const depth);
@@ -68,14 +68,14 @@ struct LevelMan {
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
     //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
     
-    Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
+    //Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
     
-    void resetLevel(TheEngine& dev);
+    //void resetLevel(TheEngine& dev);
     EntyMan& getEM() { return EM; }
 private:
     void createSoundEffect(SoundSystem_t& SouSys);
     Enty& createEnemy(SoundSystem_t& SouSys);
-    void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
+    //void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
     void defineAI(Enty& enemy);
     double randAng(uint8_t ang);
 
@@ -95,27 +95,25 @@ private:
     int    points               = 0;
 
     //INTERFACE
-    TheEngine::IGUIText*  mag  {};
-    //wchar_t*        magText{};
-    TheEngine::IGUIText*  h1   {};
-    TheEngine::IGUIText*  hp   {};
-    //wchar_t*        HPText{};
-    TheEngine::IGUIText*  amm1 {};
-    TheEngine::IGUIText*  separacion {};
-    //wchar_t*        ammText{};
-    TheEngine::IGUIImage* mir  {};
-
-    TheEngine::IGUIText*  wave {};
-    TheEngine::IGUIText*  waveText {};
-
-    TheEngine::IGUIText*  pointsUI {};
-    TheEngine::IGUIText*  pointsText {};
+    //TheEngine::IGUIText*  mag  {};
+    ////wchar_t*        magText{};
+    //TheEngine::IGUIText*  h1   {};
+    //TheEngine::IGUIText*  hp   {};
+    ////wchar_t*        HPText{};
+    //TheEngine::IGUIText*  amm1 {};
+    //TheEngine::IGUIText*  separacion {};
+    ////wchar_t*        ammText{};
+    //TheEngine::IGUIImage* mir  {};
+    //TheEngine::IGUIText*  wave {};
+    //TheEngine::IGUIText*  waveText {};
+    //TheEngine::IGUIText*  pointsUI {};
+    //TheEngine::IGUIText*  pointsText {};
 
     //Hits
     int activateHit {0};
     double cd1 {0}, cd2 {0}, cd3 {0};
     double clockHit1 {}, clockHit2 {}, clockHit3 {};
-    TheEngine::IGUIImage* hit1 {};
-    TheEngine::IGUIImage* hit2 {};
-    TheEngine::IGUIImage* hit3 {};
+    //TheEngine::IGUIImage* hit1 {};
+    //TheEngine::IGUIImage* hit2 {};
+    //TheEngine::IGUIImage* hit3 {};
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
 
-struct TheEngine;
+//struct TheEngine;
 
 struct AISys {
     using SYSCMPs = MP::Typelist<AICmp, PhysicsCmp2, RenderCmp2>;
@@ -24,6 +24,6 @@ struct AISys {
     constexpr void percept(BlackBoardCmp const& board, AICmp& ai, double const delta) const noexcept;
     void die(Enty& enemy, RenderCmp2& renderEne) const noexcept;
 
-    /*VIEJO*/ void update(EntyMan& EM, double dt, TheEngine& dev);
+    ///*VIEJO*/ void update(EntyMan& EM, double dt, TheEngine& dev);
     /*NUEVO*/ void update2(EntyMan& EM, double dt);
 };

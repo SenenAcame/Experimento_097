@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) {
+//void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) {
 //    //EM.foreach<voidCMP, EneTAGs>(
 //    //    [&](Enty& en, PhysicsCmp2&) {
 //    //        if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
@@ -98,7 +98,7 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
 //    //}
 //    
 //    cleanHitsInterface(dev, dt);
-}
+//}
 
 //Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
 //    //Enty& player = createPlayer(dev, SouSys);
@@ -129,36 +129,36 @@ void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, En
 //    return player;
 //}
 
-void LevelMan::initInterface (TheEngine& dev, Enty& player) {
-    //Magazine
-    auto equipment = EM.getComponent<InventarioCmp> (player);
-    auto stats = EM.getComponent<EstadisticaCmp> (player);
-    int magazine = 0;
-    int ammo     = 0;
-    switch (equipment.equipada) {
-        case 0: magazine = equipment.magazine1; 
-                ammo = equipment.ammo1;        
-                
-        break;
-        case 1: magazine = equipment.magazine2;
-                ammo = equipment.ammo2;
-                
-        break;
-        case 2: magazine = equipment.magazine3;
-                ammo = equipment.ammo3;
-                
-        break;
-        default: break;
-    }
-    //amos
-    updateInterfaceWhenReload(dev, magazine, ammo);
-    //HP
-    updateInterfaceHP(dev, player);
-    //wave
-    updateInterfaceWave(dev);
-    //points
-    updateInterfacePoints(dev);
-}
+//void LevelMan::initInterface (TheEngine& dev, Enty& player) {
+//    //Magazine
+//    auto equipment = EM.getComponent<InventarioCmp> (player);
+//    auto stats = EM.getComponent<EstadisticaCmp> (player);
+//    int magazine = 0;
+//    int ammo     = 0;
+//    switch (equipment.equipada) {
+//        case 0: magazine = equipment.magazine1; 
+//                ammo = equipment.ammo1;        
+//                
+//        break;
+//        case 1: magazine = equipment.magazine2;
+//                ammo = equipment.ammo2;
+//                
+//        break;
+//        case 2: magazine = equipment.magazine3;
+//                ammo = equipment.ammo3;
+//                
+//        break;
+//        default: break;
+//    }
+//    //amos
+//    updateInterfaceWhenReload(dev, magazine, ammo);
+//    //HP
+//    updateInterfaceHP(dev, player);
+//    //wave
+//    updateInterfaceWave(dev);
+//    //points
+//    updateInterfacePoints(dev);
+//}
 
 //void LevelMan::createInterface (TheEngine& dev, Enty& player) {
 //    auto heightScreen  = dev.getHeight();
@@ -211,131 +211,131 @@ void LevelMan::initInterface (TheEngine& dev, Enty& player) {
 //    mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira.png", widthScreen/2, heightScreen/2);
 //}
 
-void LevelMan::createEmptyInterface (TheEngine& dev) {
-    auto heightScreen   = dev.getHeight();
-    auto widthScreen    = dev.getWidth();
-    auto widthNumbers   = heightScreen-100;
-    auto widthNumbers2  = heightScreen-20;
+//void LevelMan::createEmptyInterface (TheEngine& dev) {
+//    auto heightScreen   = dev.getHeight();
+//    auto widthScreen    = dev.getWidth();
+//    auto widthNumbers   = heightScreen-100;
+//    auto widthNumbers2  = heightScreen-20;
+//
+//    //hits
+//    hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
+//    dev.setInvisibleImage(hit1);
+//    hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
+//    dev.setInvisibleImage(hit2);
+//    hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
+//    dev.setInvisibleImage(hit3);
+//
+//    mag = dev.addTextToPositionInScreen(L"", widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
+//    //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
+//    //std::cout<< "MAG ES " << mag <<"\n";
+//    //total ammo
+//    
+//    amm1 = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
+//    separacion = dev.addTextToPositionInScreen(L"/",widthScreen/10*8.5,widthNumbers,widthScreen,widthNumbers2);
+//    //HP
+//    
+//    hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
+//    h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10*1.2,widthNumbers,widthScreen/10*2.5,widthNumbers2);
+//    //wave
+//    waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
+//    wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
+//    //points
+//    pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
+//    pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
+//    //mira
+//    mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira_2.png", widthScreen/2, heightScreen/2+29);
+//
+//}
 
-    //hits
-    hit1 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2-200,heightScreen/2-100);
-    dev.setInvisibleImage(hit1);
-    hit2 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2+200,heightScreen/2);
-    dev.setInvisibleImage(hit2);
-    hit3 = dev.addImageToPositionInScreen("assets/Interface/1280x720/zarpazo.png",widthScreen/2,heightScreen/2+100);
-    dev.setInvisibleImage(hit3);
+//void LevelMan::updateInterfaceMag(TheEngine& dev, int maga) {
+//    std::string aux = std::to_string(maga);
+//    std::wstring convert = std::wstring(aux.begin(), aux.end());
+//    const wchar_t* magText= convert.c_str();
+//    dev.changeTextFromPointer(mag, magText);
+//}
 
-    mag = dev.addTextToPositionInScreen(L"", widthScreen/10*8,widthNumbers,widthScreen/10*9,widthNumbers2);
-    //mag  = dev.addImageToPositionInScreen("assets/Interface/1280x720/cinco.png", 200,460);
-    //std::cout<< "MAG ES " << mag <<"\n";
-    //total ammo
-    
-    amm1 = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers,widthScreen,widthNumbers2);
-    separacion = dev.addTextToPositionInScreen(L"/",widthScreen/10*8.5,widthNumbers,widthScreen,widthNumbers2);
-    //HP
-    
-    hp =  dev.addTextToPositionInScreen(L"VIDA:",0,widthNumbers,widthScreen/10*2,widthNumbers2);
-    h1 =  dev.addTextToPositionInScreen(L"",widthScreen/10*1.2,widthNumbers,widthScreen/10*2.5,widthNumbers2);
-    //wave
-    waveText =  dev.addTextToPositionInScreen(L"Wave:",0,widthNumbers-100,widthScreen/10*2,widthNumbers2);
-    wave =  dev.addTextToPositionInScreen(L"",widthScreen/10,widthNumbers-100,widthScreen/10*2,widthNumbers2);
-    //points
-    pointsUI = dev.addTextToPositionInScreen(L"",widthScreen/10*9,widthNumbers-100,widthScreen,widthNumbers2);
-    pointsText = dev.addTextToPositionInScreen(L"Points:", widthScreen/10*7.85,widthNumbers-100,widthScreen/10*9,widthNumbers2);
-    //mira
-    mir = dev.addImageToPositionInScreen("assets/Interface/1280x720/mira_2.png", widthScreen/2, heightScreen/2+29);
+//void LevelMan::updateInterfacePoints(TheEngine& dev) {
+//    std::string aux = std::to_string(points);
+//    std::wstring convert = std::wstring(aux.begin(), aux.end());
+//    const wchar_t* points2= convert.c_str();
+//    dev.changeTextFromPointer(pointsUI, points2);
+//}
 
-}
+//void LevelMan::updateInterfaceWave(TheEngine& dev) {
+//    std::string aux = std::to_string(waveNumber);
+//    std::wstring convert = std::wstring(aux.begin(), aux.end());
+//    const wchar_t* wave2= convert.c_str();
+//    dev.changeTextFromPointer(wave, wave2);
+//}
 
-void LevelMan::updateInterfaceMag(TheEngine& dev, int maga) {
-    std::string aux = std::to_string(maga);
-    std::wstring convert = std::wstring(aux.begin(), aux.end());
-    const wchar_t* magText= convert.c_str();
-    dev.changeTextFromPointer(mag, magText);
-}
+//void LevelMan::updateInterfaceWhenReload(TheEngine& dev, int maga, int amm) {
+//    std::string aux = std::to_string(maga);
+//    std::wstring convert = std::wstring(aux.begin(), aux.end());
+//    const wchar_t* magText = convert.c_str();
+//    dev.changeTextFromPointer(mag, magText);
+//
+//    aux = std::to_string(amm);
+//    convert = std::wstring(aux.begin(), aux.end());
+//    const wchar_t* ammText = convert.c_str();
+//    dev.changeTextFromPointer(amm1, ammText);
+//}
 
-void LevelMan::updateInterfacePoints(TheEngine& dev) {
-    std::string aux = std::to_string(points);
-    std::wstring convert = std::wstring(aux.begin(), aux.end());
-    const wchar_t* points2= convert.c_str();
-    dev.changeTextFromPointer(pointsUI, points2);
-}
+//void LevelMan::updateInterfaceHP(TheEngine& dev, Enty&player){
+//    auto stats        = EM.getComponent<EstadisticaCmp>(player);
+//    std::string  aux        = std::to_string(stats.hitpoints);
+//    std::wstring convert    = std::wstring(aux.begin(), aux.end());
+//    const wchar_t* HPText   = convert.c_str();
+//    dev.changeTextFromPointer(h1, HPText);
+//}
 
-void LevelMan::updateInterfaceWave(TheEngine& dev) {
-    std::string aux = std::to_string(waveNumber);
-    std::wstring convert = std::wstring(aux.begin(), aux.end());
-    const wchar_t* wave2= convert.c_str();
-    dev.changeTextFromPointer(wave, wave2);
-}
+//void LevelMan::updateInterfaceHit(TheEngine& dev, Enty& player) {
+//    updateInterfaceHP(dev, player);
+//    
+//    int random = activateHit;
+//    while(activateHit==random)
+//        random = rand()%3+1;
+//
+//    activateHit = random;
+//    
+//    switch (activateHit) {
+//        case 1: cd1 = 1;
+//            dev.setVisibleImage(hit1);
+//        break;
+//        case 2: cd2 = 1;
+//            dev.setVisibleImage(hit2);
+//        break;
+//        case 3: cd3 = 1;
+//            dev.setVisibleImage(hit3);
+//        break;
+//    }
+//}
 
-void LevelMan::updateInterfaceWhenReload(TheEngine& dev, int maga, int amm) {
-    std::string aux = std::to_string(maga);
-    std::wstring convert = std::wstring(aux.begin(), aux.end());
-    const wchar_t* magText = convert.c_str();
-    dev.changeTextFromPointer(mag, magText);
-
-    aux = std::to_string(amm);
-    convert = std::wstring(aux.begin(), aux.end());
-    const wchar_t* ammText = convert.c_str();
-    dev.changeTextFromPointer(amm1, ammText);
-}
-
-void LevelMan::updateInterfaceHP(TheEngine& dev, Enty&player){
-    auto stats        = EM.getComponent<EstadisticaCmp>(player);
-    std::string  aux        = std::to_string(stats.hitpoints);
-    std::wstring convert    = std::wstring(aux.begin(), aux.end());
-    const wchar_t* HPText   = convert.c_str();
-    dev.changeTextFromPointer(h1, HPText);
-}
-
-void LevelMan::updateInterfaceHit(TheEngine& dev, Enty& player) {
-    updateInterfaceHP(dev, player);
-    
-    int random = activateHit;
-    while(activateHit==random)
-        random = rand()%3+1;
-
-    activateHit = random;
-    
-    switch (activateHit) {
-        case 1: cd1 = 1;
-            dev.setVisibleImage(hit1);
-        break;
-        case 2: cd2 = 1;
-            dev.setVisibleImage(hit2);
-        break;
-        case 3: cd3 = 1;
-            dev.setVisibleImage(hit3);
-        break;
-    }
-}
-
-void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
-    if(cd1 == 1) {
-        clockHit1 += dt;
-        if(clockHit1 >= cd1) {
-            dev.setInvisibleImage(hit1);
-            clockHit1 = 0;
-            cd1 = 0;
-        }
-    }
-    if(cd2 ==1) {
-        clockHit2 += dt;
-        if(clockHit2 >= cd2) {
-            dev.setInvisibleImage(hit2);
-            clockHit2 = 0;
-            cd2 = 0;
-        }
-    }
-    if(cd3 ==1) {
-        clockHit3 += dt;
-        if(clockHit3 >= cd3) {
-            dev.setInvisibleImage(hit3);
-            clockHit3 = 0;
-            cd3 = 0;
-        }
-    }
-}
+//void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
+//    if(cd1 == 1) {
+//        clockHit1 += dt;
+//        if(clockHit1 >= cd1) {
+//            dev.setInvisibleImage(hit1);
+//            clockHit1 = 0;
+//            cd1 = 0;
+//        }
+//    }
+//    if(cd2 ==1) {
+//        clockHit2 += dt;
+//        if(clockHit2 >= cd2) {
+//            dev.setInvisibleImage(hit2);
+//            clockHit2 = 0;
+//            cd2 = 0;
+//        }
+//    }
+//    if(cd3 ==1) {
+//        clockHit3 += dt;
+//        if(clockHit3 >= cd3) {
+//            dev.setInvisibleImage(hit3);
+//            clockHit3 = 0;
+//            cd3 = 0;
+//        }
+//    }
+//}
 
 ///*VIEJO*/ void LevelMan::createMap(TheEngine& dev, SoundSystem_t& SouSys) {
 //    irr::io::path models[6] = {
@@ -549,28 +549,28 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
     }
 }
 
-/*VIEJO*/ Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo) {
-    Enty& weapon = EM.createEntity();
-    EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
-    switch (tipo) {
-        case 0:
-            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));
-            break;
-        case 1:
-            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));
-            break;
-        case 2:
-            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));
-            break;
-        default: break;
-    }
-    EM.addComponent<WeaponCmp>(weapon, tipo);
-    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
-    EM.addComponent<EstadoCmp>(weapon, 1.f, 1.f, 3.f); 
-    EM.addTag      <TWeapon> (weapon);
-    EM.addTag      <TInteract>(weapon);
-    return weapon;
-}
+///*VIEJO*/ Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo) {
+//    Enty& weapon = EM.createEntity();
+//    EM.addComponent<PhysicsCmp2>(weapon, PhysicsCmp2{.x=x_pos, .y=y_pos, .z=z_pos});
+//    switch (tipo) {
+//        case 0:
+//            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/pistola.obj","assets/textures/faerie2.bmp"));
+//            break;
+//        case 1:
+//            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/escopeta.obj","assets/textures/faerie2.bmp"));
+//            break;
+//        case 2:
+//            EM.addComponent<RenderCmp2>(weapon, dev.createModel("assets/models/armas/subfusil.obj","assets/textures/faerie2.bmp"));
+//            break;
+//        default: break;
+//    }
+//    EM.addComponent<WeaponCmp>(weapon, tipo);
+//    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
+//    EM.addComponent<EstadoCmp>(weapon, 1.f, 1.f, 3.f); 
+//    EM.addTag      <TWeapon> (weapon);
+//    EM.addTag      <TInteract>(weapon);
+//    return weapon;
+//}
 
 /*NUEVO*/ Enty& LevelMan::createWeapon2(GraphicEngine& GE, Vec3 pos, W_Type tipo, SoundSystem_t& SouSys) {
     TNodo* model = nullptr;
@@ -661,57 +661,57 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    return key;
 //}
 
-Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2){
-    Enty& spawn = EM.createEntity();
-    EM.addComponent<SalaCmp>    (spawn, SalaCmp{.sala = sala2});
-    EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{.x=x_pos, .z=z_pos});
-    EM.addComponent<SpawnCmp>   (spawn);
-    EM.addTag      <TSpawn>     (spawn);
-    //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
-    return spawn;
-}
+//Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2){
+//    Enty& spawn = EM.createEntity();
+//    EM.addComponent<SalaCmp>    (spawn, SalaCmp{.sala = sala2});
+//    EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2{.x=x_pos, .z=z_pos});
+//    EM.addComponent<SpawnCmp>   (spawn);
+//    EM.addTag      <TSpawn>     (spawn);
+//    //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
+//    return spawn;
+//}
 
-void LevelMan::resetLevel(TheEngine& dev) {
-    const wchar_t* empty = L"";
-    dev.changeTextFromPointer(amm1, empty);
-    dev.changeTextFromPointer(mag, empty);
-    dev.changeTextFromPointer(h1, empty);
-    dev.changeTextFromPointer(pointsUI, empty);
-    dev.changeTextFromPointer(wave, empty);
-
-    EM.forall(
-        [](Enty& ent) {
-            bool is_enemy_bullet_or_player = 
-                ent.hasTAG<TEnemy>()  ||
-                ent.hasTAG<TBullet>() ||
-                ent.hasTAG<TWeapon>() ||
-                ent.hasTAG<TSpawn>()  ||
-                ent.hasTAG<TPlayer>();
-            if(is_enemy_bullet_or_player) ent.setDestroy();
-        }
-    );
-
-    dev.setInvisibleImage(hit1);
-    dev.setInvisibleImage(hit2);
-    dev.setInvisibleImage(hit3);
-
-    waveNumber           = 1; //actual wave
-    extraHeal            = 5; //extra EnemyHeal per wave
-    extraSpeed           = 0;
-    numberOfEnemysBasics = 2; //number of enemys per wave
-    aliveEnemys          = 0;
-    extraEnemys          = 3; //extra number of enemys per wave
-    maxEnemysWave        = 15; //max number of enemy created
-    timeBtwWaves         = 2;
-    clockToNextWave      = 0; //clock unter next wave
-    inRound              = false;
-    points               = 0;
-
-    updateInterfacePoints(dev);
-    updateInterfaceWave(dev);   
-
-    EM.callDestroy();
-}
+//void LevelMan::resetLevel(TheEngine& dev) {
+//    const wchar_t* empty = L"";
+//    dev.changeTextFromPointer(amm1, empty);
+//    dev.changeTextFromPointer(mag, empty);
+//    dev.changeTextFromPointer(h1, empty);
+//    dev.changeTextFromPointer(pointsUI, empty);
+//    dev.changeTextFromPointer(wave, empty);
+//
+//    EM.forall(
+//        [](Enty& ent) {
+//            bool is_enemy_bullet_or_player = 
+//                ent.hasTAG<TEnemy>()  ||
+//                ent.hasTAG<TBullet>() ||
+//                ent.hasTAG<TWeapon>() ||
+//                ent.hasTAG<TSpawn>()  ||
+//                ent.hasTAG<TPlayer>();
+//            if(is_enemy_bullet_or_player) ent.setDestroy();
+//        }
+//    );
+//
+//    dev.setInvisibleImage(hit1);
+//    dev.setInvisibleImage(hit2);
+//    dev.setInvisibleImage(hit3);
+//
+//    waveNumber           = 1; //actual wave
+//    extraHeal            = 5; //extra EnemyHeal per wave
+//    extraSpeed           = 0;
+//    numberOfEnemysBasics = 2; //number of enemys per wave
+//    aliveEnemys          = 0;
+//    extraEnemys          = 3; //extra number of enemys per wave
+//    maxEnemysWave        = 15; //max number of enemy created
+//    timeBtwWaves         = 2;
+//    clockToNextWave      = 0; //clock unter next wave
+//    inRound              = false;
+//    points               = 0;
+//
+//    updateInterfacePoints(dev);
+//    updateInterfaceWave(dev);   
+//
+//    EM.callDestroy();
+//}
 
 void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
     Enty& weapon = EM.createEntity();

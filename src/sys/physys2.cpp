@@ -51,8 +51,8 @@ void PhySys2::entityPhysics(bool const is_enemy, PhysicsCmp2& phy, double const 
     phy.v_lin += dt * phy.a_lin;
     phy.v_ang += dt * phy.a_ang;
 
-    phy.v_lin = irr::core::clamp(phy.v_lin, -phy.kMxVLin, phy.kMxVLin);
-    phy.v_ang = irr::core::clamp(phy.v_ang, -phy.kMxVAng, phy.kMxVAng);
+    phy.v_lin = std::clamp(phy.v_lin, -phy.kMxVLin, phy.kMxVLin);
+    phy.v_ang = std::clamp(phy.v_ang, -phy.kMxVAng, phy.kMxVAng);
 
     auto roz = dt * std::fabs(phy.v_lin) * (phy.kRoz);
     if(phy.v_lin > 0) phy.v_lin -= roz;

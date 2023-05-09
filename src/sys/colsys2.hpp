@@ -2,7 +2,7 @@
 #include "../util/types.hpp"
 
 struct LevelMan;
-struct TheEngine;
+//struct TheEngine;
 
 struct ColSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;

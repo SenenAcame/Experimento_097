@@ -1,7 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
 
-struct TheEngine;
+//struct TheEngine;
 struct LevelMan;
 struct GraphicEngine;
 
@@ -14,31 +14,34 @@ struct LogicSystem {
 
     static constexpr double PI { std::numbers::pi };
 
-    /*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
+    ///*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
 
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
 
-    /*VIEJO*/ void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
+    ///*VIEJO*/ void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
 
-    /*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
+    ///*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
 
     void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
 
-    /*VIEJO*/ void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
+    ///*VIEJO*/ void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
     /*NUEVO*/ void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
 
     //void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned);
     //void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned);
     //void colisionKey(EntyMan& EM, Enty& current, Enty& colisioned);
-    void receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor);
+
+    ///*VIEJO*/ void receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor);
+    /*NUEVO*/ void receiveEntityDamage2(LevelMan& LM, GraphicEngine& eng, Enty& receptor, Enty& agressor);
+
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor);
     void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt);
 
-    /*VIEJO*/ void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng);
+    ///*VIEJO*/ void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng);
     /*NUEVO*/ void takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon);
 
     //void openDoor();

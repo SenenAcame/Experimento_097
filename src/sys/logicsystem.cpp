@@ -233,13 +233,22 @@ void LogicSystem::colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
 //    }
 //}
 
-void LogicSystem::receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor) {
+///*VIEJO*/ void LogicSystem::receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor) {
+//    auto& EM = LM.getEM();
+//    auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
+//    if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
+//    enemyStats.ClockAttackEnemy = 0;
+//    reciveDamge(EM, receptor, agressor);
+//    LM.updateInterfaceHit(eng, receptor);
+//}
+
+/*VIEJO*/ void LogicSystem::receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor) {
     auto& EM = LM.getEM();
     auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
     if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
     enemyStats.ClockAttackEnemy = 0;
     reciveDamge(EM, receptor, agressor);
-    LM.updateInterfaceHit(eng, receptor);
+    //LM.updateInterfaceHit(eng, receptor);
 }
 
 void LogicSystem::reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {

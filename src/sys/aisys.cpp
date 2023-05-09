@@ -1,5 +1,5 @@
 #include "aisys.hpp"
-#include "../eng/engine.hpp"
+//#include "../eng/engine.hpp"
 
 [[nodiscard]] constexpr double AISys::arcTan(Point const point) const noexcept {
     double arctan = std::atan2(point.z, point.x);
@@ -8,7 +8,7 @@
 }
 
 [[nodiscard]] double AISys::capLimits(double const value, double const limit) const noexcept {
-    return irr::core::clamp(value, -limit, limit);
+    return std::clamp(value, -limit, limit);
 }
 
 [[nodiscard]] constexpr double AISys::distanceModule(Point const dist) const noexcept {
