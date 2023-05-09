@@ -295,9 +295,7 @@
 //}
 
 /*NUEVO*/ void InpSys2::changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip) {
-    Mag_Amm bullets {};
-
-    GE.playerModel->remove();
+    //Mag_Amm bullets {};
 
     if(invent.reloading == 1) {
         switch (invent.equipada) {
@@ -312,10 +310,18 @@
                 break;
         }
     }
+
+    changeWeaponMethod(GE, invent, equip, invent.equipada);
+}
+
+/*NUEVO*/ void InpSys2::changeWeaponMethod(GraphicEngine& GE, InventarioCmp& invent, size_t new_, size_t old_) {
+    Mag_Amm bullets {};
+
+    GE.playerModel->remove();
     
-    invent.inventary[invent.equipada] = 1;
-    invent.equipada = equip;
-    invent.inventary[equip] = 2;
+    invent.inventary[new_] = 2;
+    invent.inventary[old_] = 1;
+    invent.equipada        = new_;
 
     switch (invent.equipada) {
         case 0:
@@ -335,10 +341,10 @@
 /*NUEVO*/ Mag_Amm InpSys2::changeWeaponProcess(GraphicEngine& GE, InventarioCmp& invent, std::string file, Weapon& wpn) {
     GE.createPlayerModel(file);
     invent.clockReload = wpn.clock_R;
-    if(invent.clockReload >= wpn.reload_T) { notReloading(invent); }
-    else                                   { iAmReloading(invent); }
+    if(invent.clockReload >= wpn.reload_T) invent.reloading = 0;
+    else                                   invent.reloading = 1;
 
-    return { wpn.magazine, wpn.ammo};
+    return { wpn.magazine, wpn.ammo };
 }
 
 ///*VIEJO*/ void InpSys2::reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
@@ -403,7 +409,8 @@
         wpn.ammo = 0;
     }
 
-    iAmReloading(invent);
+    //iAmReloading(invent);
+    invent.reloading = 1;
 
     //LM.updateInterfaceWhenReload(GE, wpn.magazine, wpn.ammo);
 }
@@ -486,7 +493,7 @@
     if(invent.reloading == 1 && invent.clockReload <= values.tim) return;
 
     invent.clockReload = 0;
-    notReloading(invent);
+    invent.reloading = 0;
     
     if(values.mag > 0) {
         createBullet2(LM, GE, invent, phy, SouSys, values.cad);

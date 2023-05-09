@@ -25,18 +25,22 @@ struct LogicSystem {
     /*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
 
-    /*VIEJO*/ void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
-    
+    void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
+
+    /*VIEJO*/ void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
+    /*NUEVO*/ void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
 
     //void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned);
-    void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
     //void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned);
     //void colisionKey(EntyMan& EM, Enty& current, Enty& colisioned);
     void receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor);
     void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor);
     void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt);
-    void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng);
+
+    /*VIEJO*/ void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng);
+    /*NUEVO*/ void takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon);
+
     //void openDoor();
     //void takeKey();
     //void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state);

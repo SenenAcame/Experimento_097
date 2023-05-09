@@ -580,15 +580,15 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
     switch (tipo) {
         case W_Type::Pistol:
             model = GE.createNode("assets/models/armas/pistola.obj");
-            EM.addComponent<WeaponCmp> (weapon, 1);
+            EM.addComponent<WeaponCmp> (weapon, 0);
             break;
         case W_Type::Shotgun:
             model = GE.createNode("assets/models/armas/escopeta.obj");
-            EM.addComponent<WeaponCmp> (weapon, 2);
+            EM.addComponent<WeaponCmp> (weapon, 1);
             break;
         case W_Type::Fusil:
             model = GE.createNode("assets/models/armas/subfusil.obj");
-            EM.addComponent<WeaponCmp> (weapon, 3);
+            EM.addComponent<WeaponCmp> (weapon, 2);
             break;
     }
     EM.addComponent<RenderCmp2>(weapon, RenderCmp2 { .node = model });

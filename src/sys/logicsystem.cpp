@@ -1,7 +1,10 @@
 #include "logicsystem.hpp"
 #include "colsys2.hpp"
+#include "inpsys2.hpp"
 #include "physys2.hpp"
 #include "../man/levelman.hpp"
+#include "../eng/engine2.hpp"
+#include "../util/munition_aux.hpp"
 
 ///*VIEJO*/ void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
 //    auto& EM = LM.getEM();
@@ -80,6 +83,7 @@
                     }
                     else if(entity.hasTAG<TWeapon>()){
                         //proceso Colision Weapon
+                        colisionWeapon2(LM, GE, entity, entity_colisioned);
                     }
                     resetCollision(colisiones_state);
                 }
@@ -134,9 +138,13 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
         auto& EM = LM.getEM();
         cancelMove(EM, current, dt);
     }
-    if(colisioned.hasTAG<TEnemy>()){
+    else if(colisioned.hasTAG<TEnemy>()){
         //jugador recibe daño del enemigo
         //std::cout<<"Daño\n";
+    }
+    else if(colisioned.hasTAG<TWeapon>()){
+        //mostrar texto de recoger arma
+        takeWeapon2(LM, GE, current, colisioned);
     }
 }
 
@@ -196,11 +204,18 @@ void LogicSystem::colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
 //    }
 //}
 
-void LogicSystem::colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng){
+///*VIEJO*/ void LogicSystem::colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng){
+//    if(colisioned.hasTAG<TPlayer>()){
+//        //mostrar texto de recoger arma
+//        //borrar entidad arma
+//        takeWeapon(colisioned, current, LM, eng);
+//    }
+//}
+
+/*NUEVO*/ void LogicSystem::colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned){
     if(colisioned.hasTAG<TPlayer>()){
         //mostrar texto de recoger arma
-        //borrar entidad arma
-        takeWeapon(colisioned, current, LM, eng);
+        takeWeapon2(LM, GE, colisioned, current);
     }
 }
 
@@ -251,62 +266,60 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
     if(state.entityCol != 0) partialVelocities(EM, ent_move, dt);
 }
 
-void LogicSystem::takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng) {
-    //unificarlo en el level manager para que no este el codigo en input y aqui
+///*VIEJO*/ void LogicSystem::takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng) {
+//    //unificarlo en el level manager para que no este el codigo en input y aqui
+//    auto& EM = LM.getEM();
+//    auto& equipment = EM.getComponent<InventarioCmp>(player);
+//    auto& playerRender = EM.getComponent<RenderCmp2>(player);
+//    int ammo {}, magazine {};
+//    size_t aux = 0;
+//
+//    for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
+//        if(i == 2){
+//            auto& wpn = EM.getComponent<WeaponCmp>(weapon);
+//            equipment.inventary[aux] = 1;
+//            equipment.inventary[wpn.typeWe] = 2;
+//            equipment.equipada = wpn.typeWe;
+//            break;
+//        }
+//        aux++;
+//    }
+//    
+//    playerRender.n->remove();
+//
+//    switch (equipment.equipada) {
+//        case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
+//            ammo = equipment.ammo1;
+//            magazine = equipment.magazine1;
+//            break;
+//        case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
+//            ammo = equipment.ammo2;
+//            magazine = equipment.magazine2;
+//            break;
+//        case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
+//            ammo = equipment.ammo3;
+//            magazine = equipment.magazine3;
+//            break;
+//        default: break;
+//    }
+//    LM.updateInterfaceWhenReload(eng, magazine, ammo);
+//    weapon.setDestroy();
+//}
+
+/*NUEVO*/ void LogicSystem::takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon) {
     auto& EM = LM.getEM();
-    auto& equipment = EM.getComponent<InventarioCmp>(player);
-    auto& playerRender = EM.getComponent<RenderCmp2>(player);
-    int ammo {}, magazine {};
-    size_t aux = 0;
+    auto& invent  = EM.getComponent<InventarioCmp>(player);
+    auto& new_wpn = EM.getComponent<WeaponCmp>(weapon);
+    size_t old_wpn {};
 
-    for(auto i: equipment.inventary){ //Desequipo el arma actual y equipo la nueva
-        if(i == 2){
-            auto& wpn = EM.getComponent<WeaponCmp>(weapon);
-            equipment.inventary[aux] = 1;
-            equipment.inventary[wpn.typeWe] = 2;
-            equipment.equipada = wpn.typeWe;
-            break;
-        }
-        aux++;
-    }
+    //Busco el arma catual para desequiparla
+    for(old_wpn = 0; old_wpn < invent.numWeapons - 1; old_wpn++)
+        if(invent.inventary[old_wpn] == 2) break;
+
+    InpSys2::changeWeaponMethod(GE, invent, new_wpn.typeWe, old_wpn);
     
-    playerRender.n->remove();
-
-    switch (equipment.equipada) {
-        case 0: playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
-            ammo = equipment.ammo1;
-            magazine = equipment.magazine1;
-            break;
-        case 1: playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
-            ammo = equipment.ammo2;
-            magazine = equipment.magazine2;
-            break;
-        case 2: playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
-            ammo = equipment.ammo3;
-            magazine = equipment.magazine3;
-            break;
-        default: break;
-    }
-    LM.updateInterfaceWhenReload(eng, magazine, ammo);
     weapon.setDestroy();
 }
-
-//void LogicSystem::openDoor() {
-//    //mostrar texto de abrir puerta
-//    //std::cout<<"Abrir puerta con la E\n";
-//}
-
-//void LogicSystem::takeKey() {
-//    //mostrar texto de recoger llave
-//    //std::cout<<"Recoge la llave\n";
-//}
-
-//void LogicSystem::resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state) {
-//    recept_state.colision  = 0;
-//    recept_state.entityCol = 0;
-//    agress_state.colision  = 0;
-//    agress_state.entityCol = 0;
-//}
 
 void LogicSystem::resetCollision(EstadoCmp& state) {
     state.colision  = 0;

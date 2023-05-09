@@ -2,23 +2,14 @@
 #include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
+#include "../util/munition_aux.hpp"
 #include <GLFW/glfw3.h>
-//#include <irrlicht/IEventReceiver.h>
 
 //struct TheEngine;
 struct LevelMan;
 struct SoundSystem_t;
 struct GraphicEngine;
 struct GLFWwindow;
-
-struct Mag_Amm {
-    int mag {}, amm {};
-};
-
-struct Mag_Tim_Cad {
-    int mag {};
-    double tim {}, cad {};
-};
 
 struct InpSys2 {
     using EXACMPs = MP::Typelist<InputCmp2, PhysicsCmp2>;
@@ -37,6 +28,10 @@ struct InpSys2 {
     ///*VIEJO*/ void checkPressed(const irr::SEvent& event, KeySym k);
     /*NUEVO*/ void checkPressed(int k, int GL_k, int actual);
 
+    /*NUEVO*/ void    static changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip);
+    /*NUEVO*/ void    static changeWeaponMethod(GraphicEngine& GE, InventarioCmp& invent, size_t new_, size_t old_);
+    /*NUEVO*/ Mag_Amm static changeWeaponProcess(GraphicEngine& GE, InventarioCmp& invent, std::string file, Weapon& wpn);
+
 private:
     /*NUEVO*/ int previousKeyStatus  (int k, int actual, int prev, int lock);
     /*NUEVO*/ int previousMouseStatus(int k, int actual, int prev, int lock);
@@ -44,9 +39,6 @@ private:
     //metodos del input
     ///*VIEJO*/ void movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy);
     ///*VIEJO*/ void changeWeapon (LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng);
-
-    /*NUEVO*/ void    changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip);
-    /*NUEVO*/ Mag_Amm changeWeaponProcess(GraphicEngine& GE, InventarioCmp& invent, std::string file, Weapon& wpn);
 
     ///*VIEJO*/ void reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment);
     ///*VIEJO*/ void reloadProcess(LevelMan& LM, TheEngine& dev, InventarioCmp& p_invent, int currentAmmo, int& ammo, int& magazine, int maxAmmo);
@@ -70,8 +62,8 @@ private:
     //metodos auxiliares
     //void addKeyToInventary(EntyMan& EM, Enty& player);
     //void openDoor(EntyMan& EM, Enty& player, Enty& door);
-    void iAmReloading(InventarioCmp& equipment) { equipment.reloading = 1; }
-    void notReloading(InventarioCmp& equipment) { equipment.reloading = 0; }
+    //void iAmReloading(InventarioCmp& equipment) { equipment.reloading = 1; }
+    //void notReloading(InventarioCmp& equipment) { equipment.reloading = 0; }
     void soundWeapon(EntyMan& EM);
 
     static void onkeypressed(KeySym k)  { keyboard.keyPressed(k);  }
