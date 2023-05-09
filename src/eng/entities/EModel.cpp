@@ -51,7 +51,7 @@ void EModel::draw(Mat4 mat, bool border) {
     }
     else {
         mesh_->draw(mat);
-        std::cout << "Entro en modelo\n";
+        //std::cout << "Entro en modelo\n";
     }
 }
 
@@ -109,7 +109,7 @@ void EModel::loadAnimation(std::vector<std::string> animations, ResourceGestor &
             int i = 1;
             while(i < totalFrames[y]) {
                                     //cambiar paths
-                std::string route = "assets/animations" + animations[y] + std::to_string(i) + ".obj";
+                std::string route = "assets/animations/" + animations[y] + std::to_string(i) + ".obj";
                 mesh_ = rg.getResource<RMesh>(animations[y] + std::to_string(i));
 
                 Assimp::Importer importer;

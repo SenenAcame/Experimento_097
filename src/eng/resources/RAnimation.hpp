@@ -5,9 +5,9 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "RMaterial.hpp"
+#include "../utils/timer.hpp"
+
 #include "RMesh.hpp"
-#include "Resource.hpp"
 #include <sys/types.h>
 #include <vector>
 
@@ -26,7 +26,7 @@ struct RAnimation : public Resource {
 
     constexpr inline static uint8_t id_{4};
 
-    //GameTimer animTimer{};
+    Timer animTimer{};
 
     int currentFrame = 0;
     int lastAnim = 0;

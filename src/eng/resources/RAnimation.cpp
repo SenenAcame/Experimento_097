@@ -29,14 +29,15 @@ void RAnimation::draw(Mat4 mat, int *currentAnim) {
             currentFrame = 0;
             lastAnim = tmpCAnim;
         }
-        //if(animTimer.ellapsed_seconds() >= 1.0f/24.0f) {
+        if(animTimer.ellapsed_secs() >= 1.0f/24.0f) {
             currentFrame++;
-            //animTimer.start();
+            animTimer.start();
             if(currentFrame >= animations_.at(tmpCAnim).size()) {
+                std::cout << "entro en el fin\n";
                 *currentAnim = -1;
                 currentFrame = 0;
             }
-        //}
+        }
         animations_.at(tmpCAnim).at(currentFrame).draw(mat);
     }
 }
