@@ -512,12 +512,14 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
     std::string file_model = "assets/models/armas/bala.obj";
 
     auto* model = GE.playerModel;
+    std::cout<<model->translation_.x<<" "<<model->translation_.y<<" "<<model->translation_.z<<"\n";
+    std::cout<<model->rotation_.x<<" "<<model->rotation_.y<<" "<<model->rotation_.z<<"\n";
 
     Enty& bullet = EM.createEntity();
     //CMPS
     EM.addComponent<EstadisticaCmp>(bullet, stats);
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
-        .x = pos.x, .y = pos.y, .z = pos.z,
+        .x = pos.x, .y = pos.y-.5, .z = pos.z,
         .vx = stats.speed * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
         .vy = stats.speed * sin(pos.orienx + pbx), 
         .vz = stats.speed * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 

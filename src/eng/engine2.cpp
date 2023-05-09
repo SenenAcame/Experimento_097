@@ -17,7 +17,7 @@ TNodo* GraphicEngine::createPlayer(Vec3 sca, Vec3 rot, Vec3 tras) {
 
 void GraphicEngine::createPlayerModel(std::string file_model) {
     auto* n_cam = getNodeCamera();
-    playerModel = glEng.createModel(n_cam, Vec3{ 0.15, -0.1, 0.1 }, Vec3{ 0 }, Vec3{ 1 }, file_model);
+    playerModel = glEng.createModel(n_cam, Vec3{ 0.15, -0.12, 0.05 }, Vec3{ 0 }, Vec3{ 1 }, file_model);
 }
 
 void GraphicEngine::setCameraPlayer(std::string file_model) {
