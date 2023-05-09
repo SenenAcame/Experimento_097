@@ -15,6 +15,8 @@ struct ColSys2 {
 
     [[nodiscard]] static constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept;
 
+    /*NUEVO*/ void shotSound(EntyMan& EM, Enty& main, Enty& collied);
+
     /*VIEJO*/ void static init_Hitoxes_Map(LevelMan& LM) noexcept;
     /*VIEJO*/ void static init_Hitoxes_Map2(LevelMan& LM) noexcept;
 

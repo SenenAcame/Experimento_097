@@ -394,7 +394,7 @@
         default: break;
     }
 
-    //soundWeapon(EM);
+    soundWeapon(EM);
 }
 
 /*NUEVO*/ void InpSys2::reloadProcess2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, Weapon& wpn) {

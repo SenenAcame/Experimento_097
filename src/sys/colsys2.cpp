@@ -3,24 +3,20 @@
 
 void ColSys2::update(EntyMan& EM) {
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty const& main_entity, PhysicsCmp2 const& main_phy, EstadoCmp& main_state) {
+        [&](Enty& main_entity, PhysicsCmp2 const& main_phy, EstadoCmp& main_state) {
             EM.foreach<SYSCMPs, SYSTAGs>(
-                [&](Enty const& collisioned_entity, PhysicsCmp2 const& collisioned_phy, EstadoCmp& collisioned_state) {
+                [&](Enty& collisioned_entity, PhysicsCmp2 const& collisioned_phy, EstadoCmp& collisioned_state) {
                     bool distint_entities  = main_entity.getID() != collisioned_entity.getID();
                     bool without_prev_coll = collisioned_state.colision == 0;
                     bool no_wall_with_wall = !(main_entity.hasTAG<TWall>() && collisioned_entity.hasTAG<TWall>());
 
                     if(distint_entities && without_prev_coll && no_wall_with_wall) {
-                        float dx, dy, dz;
-                        dx = calculateDist(main_phy.x, collisioned_phy.x, main_state.width,  collisioned_state.width);
-                        dy = calculateDist(main_phy.y, collisioned_phy.y, main_state.height, collisioned_state.height);
-                        dz = calculateDist(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
+                        float dx = calculateDist(main_phy.x, collisioned_phy.x, main_state.width,  collisioned_state.width);
+                        float dy = calculateDist(main_phy.y, collisioned_phy.y, main_state.height, collisioned_state.height);
+                        float dz = calculateDist(main_phy.z, collisioned_phy.z, main_state.depth,  collisioned_state.depth);
 
-                        if(dx<=0 && dy<=0 && dz<=0) {
-                            //if(collisioned_entity.hasTAG<TBullet>() && main_entity.hasTAG<TEnemy>()) {
-                            //    auto& sound = EM.getComponent<SoundCmp>(main_entity);
-                            //    EM.changeSound(sound, 0);
-                            //}
+                        if(dx <= 0 && dy <= 0 && dz <= 0) {
+                            shotSound(EM, main_entity, collisioned_entity);
 
                             collisioned_state.colision  = 1<<1;
                             collisioned_state.entityCol = main_entity.getID();
@@ -40,6 +36,13 @@ void ColSys2::update(EntyMan& EM) {
     d = abs(main_pos - coll_pos);
     d -= main_dim + coll_dim;
     return d;
+}
+
+void ColSys2::shotSound(EntyMan& EM, Enty& main, Enty& collied) {
+    if(collied.hasTAG<TBullet>() && main.hasTAG<TEnemy>()) {
+        auto& sound = EM.getComponent<SoundCmp>(main);
+        EM.changeSound(sound, 0);
+    }
 }
 
 /*VIEJO*/ void  ColSys2::init_Hitoxes_Map2(LevelMan& LM) noexcept {
