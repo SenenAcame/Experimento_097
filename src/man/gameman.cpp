@@ -49,8 +49,12 @@ void GameMan::game() {
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     std::size_t map_ID    = LM.createMap2(GE, SouSys);
+
     ColSys.init_Hitoxes_Map2(LM);
-    LM.createWeapon2(GE, Vec3 {-42, 2.8, -15}, W_Type::Fusil, SouSys);
+
+    LM.createWeapon2(GE, Vec3 { -77, 2.8,   4 }, W_Type::Shotgun, SouSys);
+    LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
+
     //LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys);
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);

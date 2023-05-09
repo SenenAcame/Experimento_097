@@ -58,6 +58,8 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID
     auto& player = EM.getEntityById(player_ID);
     auto& phy = EM.getComponent<PhysicsCmp2>(player);
 
+    //std::cout<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";`
+
     float pitch = GE.getCamera()->Pitch;
     float yaw   = GE.getCamera()->Yaw;
 

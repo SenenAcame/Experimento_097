@@ -511,6 +511,8 @@ void LevelMan::viewBB(GraphicEngine& GE, Enty& ent){
 Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double const pby) {
     std::string file_model = "assets/models/armas/bala.obj";
 
+    auto* model = GE.playerModel;
+
     Enty& bullet = EM.createEntity();
     //CMPS
     EM.addComponent<EstadisticaCmp>(bullet, stats);
