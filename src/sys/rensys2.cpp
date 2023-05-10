@@ -138,7 +138,7 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
-    //ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chill.xml", 128.0f);
+    ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chiller.ttf", 80.0f);
 }
 
 void RenSys2::ImGUI_Prerender() const noexcept {
@@ -198,13 +198,13 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
             break;
     }
 
-    ImGui::SetNextWindowPos(ImVec2(10,600));
-    ImGui::SetNextWindowSize(ImVec2(100,200));
+    ImGui::SetNextWindowPos(ImVec2(10,450));
+    ImGui::SetNextWindowSize(ImVec2(200,200));
     ImGui::Begin(
         "UI", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
-        | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
-         | ImGuiWindowFlags_NoNavFocus
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
     ImGui::Text("Wave: %d", wave);
     //ImGui::Text("Kills: %d", kills);
@@ -212,13 +212,13 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     //ImGui::Text("%d/%d", magazine, ammo );
     
     ImGui::End();
-    ImGui::SetNextWindowPos(ImVec2(10,650));
+    ImGui::SetNextWindowPos(ImVec2(10,550));
     ImGui::SetNextWindowSize(ImVec2(200,200));
     ImGui::Begin(
         "UI2", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
-        | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
-         | ImGuiWindowFlags_NoNavFocus
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
     //ImGui::Text("Wave: %d", wave);
     ImGui::Text("Kills: %d", kills);
@@ -226,13 +226,13 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     //ImGui::Text("%d/%d", magazine, ammo );
     
     ImGui::End();
-    ImGui::SetNextWindowPos(ImVec2(900,550));
+    ImGui::SetNextWindowPos(ImVec2(870,550));
     ImGui::SetNextWindowSize(ImVec2(200,200));
     ImGui::Begin(
         "UI3", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
-        | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
-         | ImGuiWindowFlags_NoNavFocus
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
     //ImGui::Text("Wave: %d", wave);
     //ImGui::Text("Kills: %d", kills);
