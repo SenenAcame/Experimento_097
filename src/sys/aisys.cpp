@@ -1,4 +1,6 @@
 #include "aisys.hpp"
+#include "../man/levelman.hpp"
+#include "../eng/engine2.hpp"
 //#include "../eng/engine.hpp"
 
 [[nodiscard]] constexpr double AISys::arcTan(Point const point) const noexcept {
@@ -85,6 +87,24 @@ constexpr void AISys::arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
 //    }
 //}
 
+constexpr void AISys::shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2 const& phy) const noexcept {
+    if(!ai.shoot) return;
+
+    Point t_dist    { ai.ox - phy.x, ai.oz - phy.z };
+    auto dM { distanceModule(t_dist) };
+
+    auto& EM = LM.getEM();
+    auto& eneStats = EM.getComponent<EstadisticaCmp>(enem);
+
+    LM.createEneBullet(
+        GE, 
+        { .x = phy.x, .y = phy.y, .z = phy.z, .vx = t_dist.x/dM, .vz = t_dist.z/dM },
+        eneStats.damage
+    );
+
+    ai.shoot = false;
+}
+
 void AISys::seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept {
     Point t_dist { target.x - phyEnem.x, target.z - phyEnem.z };
     auto t_ang_vel { angularVelocity(t_dist, phyEnem.orieny, timeArrive) };
@@ -110,24 +130,23 @@ void AISys::persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlay
 void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int const sala) const noexcept {
     Point target { ai.ox, ai.oz };
     auto t_lin_dist { distance(target, { phyEnem.x, phyEnem.z }) };
-    std::cout<<t_lin_dist<<" / "<<ai.rad<<"\n";
-    if(t_lin_dist <= ai.rad) {
-        seek(target, phyEnem, ai.timeArrive);
-        //persue(target, phyEnem, velPlayer,ai.timeArrive); 
-    }
+    
+    if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive);
     else {
-        bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
+        //bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
         bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
 
-        if(inRoom)      ai.rad = 5.;
-        else if(inCorr) ai.rad = 1.;
+        //if(inRoom)      ai.rad = 5.;
+        //else if(inCorr) ai.rad = 1.;
+
+        if(inCorr) ai.rad = 1.;
+        else       ai.rad = 5.;
 
         ai.flock_x = cos(ai.ang) * ai.rad;
         ai.flock_z = sin(ai.ang) * ai.rad;
         
-        Point flock_targ {ai.flock_x + ai.ox, ai.flock_z + ai.oz};
+        Point flock_targ { ai.flock_x + ai.ox, ai.flock_z + ai.oz };
         seek(flock_targ, phyEnem, ai.timeArrive);
-        //persue(flock_targ, phyEnem, velPlayer,ai.timeArrive);
     }
 }
 
@@ -137,7 +156,7 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
 
     ai.time -= ai.cooldown;
 
-    if(ai.behaviour!=SB::Patrol){
+    if(ai.behaviour != SB::Patrol){
         ai.ox = board.tx;
         ai.oz = board.tz;
         ai.entyID = board.entyID;
@@ -186,7 +205,8 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
 //    );
 //}
 
-/*NUEVO*/ void AISys::update2(EntyMan& EM, double dt) {
+/*NUEVO*/ void AISys::update2(LevelMan& LM, GraphicEngine& GE, double dt) {
+    auto& EM = LM.getEM();
     auto& bb = EM.getBoard();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -199,6 +219,7 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
                 case SB::Arrive: arrive(ai, phy); break;
                 case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                 case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                case SB::Shoot:  shoot2(LM, GE, entity, ai, phy);
                 case SB::Two_Steps: {
                     auto& player     = EM.getEntityById(bb.entyID);
                     auto& phyPlayer  = EM.getComponent<PhysicsCmp2>(player);

@@ -390,9 +390,7 @@
     for(int i = 0; i < size; i++) {
         Enty& room = EM.createEntity();
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
-        EM.addComponent<RenderCmp2> (room, RenderCmp2 {
-            .node = GE.createNode(models[i])
-        });
+        EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
 
     return map.getID();
@@ -418,18 +416,16 @@
 
     Enty& player = EM.createEntity();
     //CMPS
-    EM.addComponent<PhysicsCmp2>(player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
-    auto& r_cmp = EM.addComponent<RenderCmp2>(player, RenderCmp2 {
-        .node = GE.createPlayer()
-    });
-    EM.addComponent<InputCmp2>(player, InputCmp2{});
-    EM.addComponent<EstadoCmp>(player, 1.f, 3.f, 1.f);
+    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
+    EM.addComponent<RenderCmp2>    (player, RenderCmp2 { .node = GE.createPlayer() });
+    EM.addComponent<InputCmp2>     (player, InputCmp2 {});
+    EM.addComponent<EstadoCmp>     (player, 1.f, 3.f, 1.f);
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
     EM.addComponent<InventarioCmp> (player);
     EM.addComponent<SalaCmp>       (player);
     EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
     //TAGS
-    EM.addTag<TPlayer>(player);
+    EM.addTag<TPlayer>  (player);
     EM.addTag<TInteract>(player);
 
     GE.setCameraPlayer(file_model);
@@ -452,19 +448,39 @@
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
     
     Enty& enemy = EM.createEntity();
-    //CMPS
-    defineAI(enemy);
+    //CMPS 
+    defineAI(enemy, SB::Two_Steps, 0.1);
     auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
-    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
-        .node = GE.createNode(file_model)
-    });
-    EM.addComponent<EstadoCmp>(enemy, 1.f, 1.5f, 1.f);
-    EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
-    EM.addComponent<SalaCmp>  (enemy);
+    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
+    EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
+    EM.addComponent<SalaCmp>    (enemy);
     //TAGS
     EM.addTag<TInteract>(enemy);
-    EM.addTag<TEnemy>(enemy);
+    EM.addTag<TEnemy>   (enemy);
+
+    //viewBB(GE, enemy);
+
+    return enemy;
+}
+
+/*NUEVO*/ Enty& LevelMan::createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+    std::string file_model = "assets/models/personajes/monstruo1/enemigo1.obj";
+    
+    Enty& enemy = EM.createEntity();
+    //CMPS
+    defineAI(enemy, SB::Shoot, 1.);
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
+    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
+    EM.addComponent<RenderCmp2> (enemy, RenderCmp2  { .node = GE.createNode(file_model) });
+    EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
+    EM.addComponent<SalaCmp>    (enemy);
+    //TAGS
+    EM.addTag<TInteract> (enemy);
+    EM.addTag<TEnemy>    (enemy);
+    EM.addTag<TDistEnemy>(enemy);
 
     //viewBB(GE, enemy);
 
@@ -512,24 +528,43 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
     std::string file_model = "assets/models/armas/bala.obj";
 
     auto* model = GE.playerModel;
-    std::cout<<model->translation_.x<<" "<<model->translation_.y<<" "<<model->translation_.z<<"\n";
-    std::cout<<model->rotation_.x<<" "<<model->rotation_.y<<" "<<model->rotation_.z<<"\n";
+    auto tras = model->translation_;
+    auto rots = model->rotation_;
+
+    //std::cout<<model->translation_.x<<" "<<model->translation_.y<<" "<<model->translation_.z<<"\n";
+    //std::cout<<rots.x<<" "<<rots.y<<" "<<rots.z<<"\n";
+
+    //sin(glm::radians(rots.y))
+
+    Vec3 pos_b = {
+        /*X*/ tras.x * cos(pos.orieny) + tras.y * 0 + tras.z * (-sin(pos.orieny)),
+        /*Y*/ tras.x * 0                  + tras.y * 0 + tras.z * 0,
+        /*Z*/ tras.x * sin(pos.orieny) + tras.y * 0 + tras.z * cos(pos.orieny)
+        ///*X*/ tras.x * cos(pos.orieny) * cos(pos.orienx) + tras.y * sin(pos.orienx) + tras.z * (-sin(pos.orieny)),
+        ///*Y*/ tras.x * (-sin(pos.orienx))                   + tras.y * cos(pos.orienx) + tras.z * (-sin(pos.orienx)),
+        ///*Z*/ tras.x * sin(pos.orieny)                      + tras.y * 0                  + tras.z * cos(pos.orieny) * cos(pos.orienx)
+    };
+
+    //std::cout<<"Posicion jugador: "<<pos.x<<" "<<pos.y<<" "<<pos.z<<"\n";
+    //std::cout<<"Posicion bala:    "<<pos_b.x<<" "<<pos_b.y<<" "<<pos_b.z<<"\n\n";
+    //std::cout<<""<<pos.orienx<<" "<<pos.orieny<<"\n\n";
 
     Enty& bullet = EM.createEntity();
     //CMPS
     EM.addComponent<EstadisticaCmp>(bullet, stats);
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
-        .x = pos.x, .y = pos.y-.5, .z = pos.z,
+        .x = pos.x + pos_b.x, 
+        .y = pos.y + pos_b.y, 
+        .z = pos.z + pos_b.z,
+
         .vx = stats.speed * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
         .vy = stats.speed * sin(pos.orienx + pbx), 
         .vz = stats.speed * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
     });
-    EM.addComponent<RenderCmp2>(bullet, RenderCmp2 {
-        .node = GE.createNode(file_model)
-    });
-    EM.addComponent<EstadoCmp>(bullet);
+    EM.addComponent<RenderCmp2> (bullet, RenderCmp2 { .node = GE.createNode(file_model) });
+    EM.addComponent<EstadoCmp>  (bullet);
     EM.addComponent<SelfDestCmp>(bullet, slfD);
-    EM.addComponent<SoundCmp>   (bullet, SoundCmp{.programmerSoundContext=SouSys.createinstance(1), .parametro=2, .play=true, .cambia=true});
+    EM.addComponent<SoundCmp>   (bullet, SoundCmp{ .programmerSoundContext=SouSys.createinstance(1), .parametro=2, .play=true, .cambia=true });
     //TAGS
     EM.addTag<TBullet>  (bullet);
     EM.addTag<TInteract>(bullet);
@@ -551,6 +586,27 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
         double ang_bet = randAng(dispersion);
         createBullet2(GE, pos, EstadisticaCmp{stats}, dir, SouSys, slfD, ang_alp, ang_bet);
     }
+}
+
+/*NUEVO*/ void LevelMan::createEneBullet(GraphicEngine& GE, PhysicsCmp2&& phy, int dmg) {
+    std::string file_model = "assets/models/armas/bala.obj";
+
+    Enty& bullet = EM.createEntity();
+    auto& stats = EM.addComponent<EstadisticaCmp>(
+        bullet, EstadisticaCmp{ .damage = dmg, .speed = 0.2f }
+    ); 
+    EM.addComponent<PhysicsCmp2>(
+        bullet, PhysicsCmp2{
+            .x  = phy.x, .y = phy.y, .z = phy.z,
+            .vx = phy.vx * stats.speed,
+            .vz = phy.vz * stats.speed
+        }
+    );
+    EM.addComponent<RenderCmp2> (bullet, RenderCmp2 { .node = GE.createNode(file_model) });
+    EM.addComponent<EstadoCmp>  (bullet);
+    EM.addComponent<SelfDestCmp>(bullet, SelfDestCmp{ .cooldown = 5. });
+    EM.addTag<TEneBullet>(bullet);
+    EM.addTag<TInteract> (bullet);
 }
 
 ///*VIEJO*/ Enty& LevelMan::createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo) {
@@ -717,12 +773,12 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    EM.callDestroy();
 //}
 
-void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
-    Enty& weapon = EM.createEntity();
-    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
-    EM.addTag<TWeapon>(weapon);
-    return;
-}
+//void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
+//    Enty& weapon = EM.createEntity();
+//    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
+//    EM.addTag<TWeapon>(weapon);
+//    return;
+//}
 
 //Enty& LevelMan::createEnemy(SoundSystem_t& SouSys){
 //    Enty& enemy = EM.createEntity();
@@ -740,27 +796,28 @@ void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
 //    EM.addComponent<RenderCmp2> (room, dev.createModel(model, texture));
 //}
 
-void LevelMan::defineAI(Enty& enemy) {
-    int num = rand() % 360;
-    double angle = num * PI / 180;
-    double radius = 0.1;
+void LevelMan::defineAI(Enty& enemy, SB patron, double cd) {
+    int    num    = rand() % 360;
+    double angle  = num * PI / 180;
+    double radius = 5.;
+
     EM.addComponent<AICmp>(
         enemy, 
         AICmp {
-            .rad = radius,
-            .ang = angle,
-            .flock_x = cos(angle) * radius, 
-            .flock_z = sin(angle) * radius, 
+            .rad           = radius,
+            .ang           = angle,
+            .flock_x       = cos(angle) * radius, 
+            .flock_z       = sin(angle) * radius, 
             .arrivalRadius = 0.5, 
-            .timeArrive = 0.1, 
-            .cooldown = 0.1, 
-            .enable = true, 
-            .behaviour = SB::Two_Steps
+            .timeArrive    = 0.1, 
+            .cooldown      = cd, 
+            .enable        = true, 
+            .behaviour     = patron
         }
     );
 }
 
 double LevelMan::randAng(uint8_t ang) {
-    float alpha = rand() % ang - (ang/2);
+    float  alpha = rand() % ang - (ang/2);
     return alpha * PI / 180;
 }

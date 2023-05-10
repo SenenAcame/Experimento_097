@@ -39,7 +39,8 @@ struct LevelMan {
     /*NUEVO*/ std::size_t createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
     ///*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
-    /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
+    /*NUEVO*/ Enty& createNormalEnemy (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
+    /*NUEVO*/ Enty& createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
     ///*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
     //    int const dmg, float const spd, float const rad, double const slfD,
@@ -49,8 +50,10 @@ struct LevelMan {
 
     ///*VIEJO*/ void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
     //    int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
-    /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos,  EstadisticaCmp&& stats, 
+    /*NUEVO*/ void createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
         Vec3 dir, SoundSystem_t& SouSys, double const slfD = 2., uint8_t dispersion = 10);
+        
+    /*NUEVO*/ void createEneBullet(GraphicEngine& GE, PhysicsCmp2&& phy, int dmg);
 
     ///*VIEJO*/ Enty& createWeapon (float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
     /*NUEVO*/ Enty& createWeapon2(GraphicEngine& GE, Vec3 pos, W_Type tipo, SoundSystem_t& SouSys);
@@ -62,7 +65,7 @@ struct LevelMan {
     void viewBB(GraphicEngine& GE, Enty& ent);
 
     //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
-    //Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
+    ///*VIEJO*/ Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
     //Enty& createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
@@ -73,10 +76,10 @@ struct LevelMan {
     //void resetLevel(TheEngine& dev);
     EntyMan& getEM() { return EM; }
 private:
-    void createSoundEffect(SoundSystem_t& SouSys);
-    Enty& createEnemy(SoundSystem_t& SouSys);
+    //void createSoundEffect(SoundSystem_t& SouSys);
+    //Enty& createEnemy(SoundSystem_t& SouSys);
     //void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
-    void defineAI(Enty& enemy);
+    void defineAI(Enty& enemy, SB patron, double cd);
     double randAng(uint8_t ang);
 
     EntyMan EM;

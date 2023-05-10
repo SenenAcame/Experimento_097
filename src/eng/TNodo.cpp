@@ -6,6 +6,7 @@
 #include "entities/EModel.hpp"
 #include <GL/gl.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/matrix.hpp>
 
 
 // init by default a Node
@@ -108,15 +109,14 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
         //    std::cout << "______________________________________________\n";
         //}
         
-        
-        matTransf_ = glm::rotate(Mat4(1.f), glm::radians(rotation_.x), {1, 0, 0});
+        matTransf_ = glm::translate(Mat4(1.f), translation_);
+
+        matTransf_ = glm::rotate(matTransf_, glm::radians(rotation_.x), {1, 0, 0});
         matTransf_ = glm::rotate(matTransf_, glm::radians(rotation_.y), {0, 1, 0});
         matTransf_ = glm::rotate(matTransf_, glm::radians(rotation_.z), {0, 0, 1});
 
-        matTransf_ = glm::translate(matTransf_, translation_);
-        
         matTransf_ = glm::scale(matTransf_, scale_);
-
+        
         matTransf_ = acumMat * matTransf_;
 
         //std::cout << "Matriz Transformada :\n";
@@ -129,29 +129,28 @@ void TNodo::run(Mat4 acumMat, bool fatherChange, bool border) {
     }
 
     if(border && floor_) {
-        Mat4 matTmp = glm::translate(Mat4(1.0f), translation_);
-
-        matTmp = glm::rotate(matTmp, glm::radians(rotation_.y), {0, 1, 0});
-        matTmp = glm::rotate(matTmp, glm::radians(rotation_.z), {0, 0, 1});
-        matTmp = glm::rotate(matTmp, glm::radians(rotation_.x), {1, 0, 0});
-
-        matTmp = glm::scale(matTmp, scale_ + (scale_ * 0.025f));
-
-        matTmp = matTmp * acumMat;
-
-        for(TNodo *son : nodeSons_) 
-            son->run(matTmp, actualChange, border);
-        
-        if(entity_){
-            entity_->draw(matTmp, border);
-        }
+//        Mat4 matTmp = glm::translate(Mat4(1.0f), translation_);
+//
+//        matTmp = glm::rotate(matTmp, glm::radians(rotation_.y), {0, 1, 0});
+//        matTmp = glm::rotate(matTmp, glm::radians(rotation_.z), {0, 0, 1});
+//        matTmp = glm::rotate(matTmp, glm::radians(rotation_.x), {1, 0, 0});
+//
+//        matTmp = glm::scale(matTmp, scale_ + (scale_ * 0.025f));
+//
+//        matTmp = matTmp * acumMat;
+//
+//        for(TNodo *son : nodeSons_) 
+//            son->run(matTmp, actualChange, border);
+//        
+//        if(entity_){
+//            entity_->draw(matTmp, border);
+//        }
     } else if (!border) {
-        if(entity_)
-            entity_->draw(matTransf_, border);
-            
         for(TNodo *son : nodeSons_) {
             son->run(matTransf_, actualChange, border);
         }
+        if(entity_)
+            entity_->draw(matTransf_, border);
     }
 
     updateMat_ = false;

@@ -37,11 +37,14 @@
 
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
-            //if(ent.hasTAG<TEnemy>()) {
-            //    float giro_y = phy.orieny * 180 / PI;
-            //    auto rot = rend.node->getRotation();
-            //    rend.node->setRotation(Vec3 { rot.x, giro_y, rot.z });
-            //}
+            if(ent.hasTAG<TEnemy>()) {
+                //float giro_y = phy.orieny * 180 / PI;
+                auto* nod = rend.node;
+
+                auto rot = rend.node->getRotation();
+                
+                rend.node->rotate(Vec3 { 0, 0.1, 0 });
+            }
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();
         }
@@ -56,14 +59,13 @@
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);
-    auto& phy = EM.getComponent<PhysicsCmp2>(player);
-
-    //std::cout<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";`
+    auto& phy    = EM.getComponent<PhysicsCmp2>(player);
+    auto& ren    = EM.getComponent<RenderCmp2>(player);
 
     float pitch = GE.getCamera()->Pitch;
     float yaw   = GE.getCamera()->Yaw;
 
-    GE.playerModel->setRotation(Vec3(0, -yaw, pitch));
+    ren.node->setRotation(Vec3(0, -yaw, pitch));
 
     phy.orienx = glm::radians(pitch);
     phy.orieny = glm::radians(yaw);

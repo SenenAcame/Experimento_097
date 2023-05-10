@@ -7,11 +7,11 @@ void PhySys2::update(EntyMan& EM, double delta) {
             
             if(is_bullet) bulletPhysics(physic);
             else {
-            //    bool enemy_is_diying              =  (en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Diying);
-            //    bool player_or_enemy_not_shooting = !(en.hasCMP<AICmp>() && EM.getComponent<AICmp>(en).behaviour == SB::Shoot);
-            //    
-            //    if(enemy_is_diying) physic.y -= 0.1;
-            //    else if(player_or_enemy_not_shooting) 
+                bool enemy_is_diying              =  (enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Diying);
+                bool player_or_enemy_not_shooting = !(enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Shoot);
+                
+                if(enemy_is_diying) physic.y -= 0.1;
+                else if(player_or_enemy_not_shooting) 
                     entityPhysics(enty.hasTAG<TEnemy>(), physic, delta);
             }
 
