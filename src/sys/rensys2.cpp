@@ -50,7 +50,7 @@
 
     drawWorld(GE);
 
-    ImGUI_RenderUI(GE);
+    ImGUI_RenderUI(EM, GE, player_ID);
     ImGUI_Postrender(GE);
 }
 
@@ -166,19 +166,81 @@ void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
     ////glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenSys2::ImGUI_RenderUI(GraphicEngine& GE) {
+void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) const noexcept{
     //ImGui::Text("This is some useful text");
     auto* m_window = GE.getWindow();
+    auto& player = EM.getEntityById(player_ID);
+    auto& invent = EM.getComponent<InventarioCmp>(player);
+    auto stats     = EM.getComponent<EstadisticaCmp>(player);
+   
+    int magazine = 0;
+    int ammo = 0;
+    int hp = stats.hitpoints;
+    int wave = 0;
+    int kills = 0;
 
-    ImGui::SetNextWindowSize(ImVec2(m_window.getHeight(),m_window.getWidth()));
+
+    switch (invent.equipada) {
+        case 0:
+            magazine = invent.gun.magazine;
+            ammo = invent.gun.ammo;
+            
+            break;
+        case 1: 
+            magazine = invent.shot.magazine;
+            ammo = invent.shot.ammo;
+            
+            break;
+        case 2: 
+            magazine = invent.rifle.magazine;
+            ammo = invent.rifle.ammo;
+            
+            break;
+    }
+
+    ImGui::SetNextWindowPos(ImVec2(10,600));
+    ImGui::SetNextWindowSize(ImVec2(100,200));
     ImGui::Begin(
         "UI", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
-        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
-        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
+        | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+         | ImGuiWindowFlags_NoNavFocus
     );
-    ImGui::Text("Wave:");
+    ImGui::Text("Wave: %d", wave);
+    //ImGui::Text("Kills: %d", kills);
+    //ImGui::Text("HP: %d", hp);
+    //ImGui::Text("%d/%d", magazine, ammo );
+    
     ImGui::End();
+    ImGui::SetNextWindowPos(ImVec2(10,650));
+    ImGui::SetNextWindowSize(ImVec2(200,200));
+    ImGui::Begin(
+        "UI2", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
+        | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+         | ImGuiWindowFlags_NoNavFocus
+    );
+    //ImGui::Text("Wave: %d", wave);
+    ImGui::Text("Kills: %d", kills);
+    //ImGui::Text("HP: %d", hp);
+    //ImGui::Text("%d/%d", magazine, ammo );
+    
+    ImGui::End();
+    ImGui::SetNextWindowPos(ImVec2(900,550));
+    ImGui::SetNextWindowSize(ImVec2(200,200));
+    ImGui::Begin(
+        "UI3", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
+        | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+         | ImGuiWindowFlags_NoNavFocus
+    );
+    //ImGui::Text("Wave: %d", wave);
+    //ImGui::Text("Kills: %d", kills);
+    //ImGui::Text("HP: %d", hp);
+    ImGui::Text("%d/%d", magazine, ammo );
+    
+    ImGui::End();
+    
 }
 
 void RenSys2::ImGUI_Postrender(GraphicEngine& GE) const noexcept {
