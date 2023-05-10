@@ -87,7 +87,9 @@ constexpr void AISys::arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
 //    }
 //}
 
-constexpr void AISys::shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2 const& phy) const noexcept {
+constexpr void AISys::shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2& phy) const noexcept {
+    phy.a_lin = phy.v_lin = 0;
+
     if(!ai.shoot) return;
 
     Point t_dist    { ai.ox - phy.x, ai.oz - phy.z };

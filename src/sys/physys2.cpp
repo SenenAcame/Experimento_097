@@ -10,21 +10,11 @@ void PhySys2::update(EntyMan& EM, double delta) {
                 bool enemy_is_diying              =  (enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Diying);
                 bool player_or_enemy_not_shooting = !(enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Shoot);
                 
-                if(enemy_is_diying) physic.y -= 0.1;
-                else if(player_or_enemy_not_shooting) 
+                if(enemy_is_diying) 
+                    physic.y -= 0.1;
+                else //if(player_or_enemy_not_shooting) 
                     entityPhysics(enty.hasTAG<TEnemy>(), physic, delta);
             }
-
-            //bulletPhysics(physic);
-            //Vec3 pos = rend.node->getTranslation();
-            //Vec3 pos = rend.node->getTranslation();
-            //rend.node->translade(Vec3 {
-            //    pos.x += physic.vx, 
-            //    pos.y += physic.vy, 
-            //    pos.z += physic.vz, 
-            //});
-            //std::cout<<pos.x<<" "<<pos.y<<" "<<pos.z<<"\n";
-            //rend.node->translade(Vec3 trans)
         }
     );
 }

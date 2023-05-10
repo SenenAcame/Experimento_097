@@ -38,12 +38,8 @@
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
             if(ent.hasTAG<TEnemy>()) {
-                //float giro_y = phy.orieny * 180 / PI;
-                auto* nod = rend.node;
-
-                auto rot = rend.node->getRotation();
-                
-                rend.node->rotate(Vec3 { 0, 0.1, 0 });
+                float giro_y = (-phy.orieny) * 180 / PI + 90;
+                rend.node->setRotation(Vec3 { 0, giro_y, 0});
             }
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();

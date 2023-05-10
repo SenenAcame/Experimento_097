@@ -21,7 +21,7 @@ struct AISys {
     constexpr void arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept;
 
     ///*VIEJO*/ constexpr void shoot (AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheEngine& eng, Enty const& enem) const noexcept;
-    /*NUEVO*/ constexpr void shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2 const& phy) const noexcept;
+    /*NUEVO*/ constexpr void shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2& phy) const noexcept;
 
     void seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept;
     void persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlayer, double const timeArrive) const noexcept;
