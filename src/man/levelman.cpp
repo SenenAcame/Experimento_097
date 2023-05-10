@@ -474,7 +474,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 /*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
     std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_pose_caminar", "monstruo2/caminar/monstruo2_pose_caminar"};
-    std::vector<int> framesAnim = {86,0};
+    std::vector<int> framesAnim = {111,111};
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy);

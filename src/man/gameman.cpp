@@ -48,8 +48,8 @@ void GameMan::game() {
     //ImGui::Text("This is some useful text."); 
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
-    std::size_t map_ID    = LM.createMap2(GE, SouSys);
-    ColSys.init_Hitoxes_Map2(LM);
+    //std::size_t map_ID    = LM.createMap2(GE, SouSys);
+    //ColSys.init_Hitoxes_Map2(LM);
     //LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys);
     LM.createNormalEnemyAnim(GE, Vec3{-42, 2.8, -15}, SouSys);
     
