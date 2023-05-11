@@ -3,7 +3,6 @@
 //#include <string>
 #include <FMOD/src/fmod.hpp>
 #include <FMOD/src/fmod_studio.hpp>
-#include <FMOD/src/common.hpp>
 extern "C" { 
     #include <FMOD/src/fmod_errors.h> 
 }
@@ -16,6 +15,8 @@ struct TheFachada {
     ProgrammerSoundContext createinstance(int);
     void close();
     void startsound(SoundCmp&);
+    void set3DAttributes(SoundCmp&, PhysicsCmp2&, PhysicsCmp2&);
+    void setListener(PhysicsCmp2&);
     void stopsound(SoundCmp&);
     bool isPlaying(SoundCmp&);
     void changesound(SoundCmp&);
@@ -23,18 +24,19 @@ struct TheFachada {
     void createdescriptions();
 
 private:
-    FMOD::System* coreSystem;
-    FMOD::Studio::System* soundSystem;
+    FMOD_SYSTEM *coreSystem;
+    FMOD_STUDIO_SYSTEM *system;
 
-    FMOD::Studio::EventDescription* ambienteDescription;
-    FMOD::Studio::EventDescription* armaDescription;
-    FMOD::Studio::EventDescription* mejoraDescription;
-    FMOD::Studio::EventDescription* danyoDescription;
-    FMOD::Studio::EventDescription* moverseDescription;
-    FMOD::Studio::EventDescription* menuDescription;
-    FMOD::Studio::EventDescription* musicaDescription;
-    FMOD::Studio::EventDescription* enemigoDescription;
-    FMOD::Studio::EventDescription* personajeDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *ambienteDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *armaDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *mejoraDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *danyoDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *moverseDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *menuDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *musicaDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *enemigoDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *personajeDescription;
+    FMOD_STUDIO_EVENTDESCRIPTION *rondaDescription;
 
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramAmbiente;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramArma;
@@ -45,7 +47,8 @@ private:
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramMusica;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramEnemigo;
     FMOD_STUDIO_PARAMETER_DESCRIPTION paramPersonaje;
+    FMOD_STUDIO_PARAMETER_DESCRIPTION paramRonda;
 
-    FMOD::Studio::Bank * masterBank;
-    FMOD::Studio::Bank* stringsBank;
+    FMOD_STUDIO_BANK *masterBank;
+    FMOD_STUDIO_BANK *stringsBank;
 };
