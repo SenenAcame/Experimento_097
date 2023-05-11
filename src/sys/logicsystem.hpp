@@ -16,6 +16,7 @@ struct LogicSystem {
 
     ///*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
+    /*NUEVO*/ void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, double dt);
 
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
 

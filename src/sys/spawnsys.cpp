@@ -11,7 +11,7 @@ void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys,
 void SpawnSystem::updateAliveEnem(EntyMan& EM) {
     EM.foreach<ENECMPs, ENETAGs>(
         [&](Enty& enemy) {
-            if(enemy.getDestroy()) waves.aliveEnem--;
+            if(enemy.getDestroy()) wave.aliveEnem--;
         }
     );
 }
@@ -23,15 +23,15 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
         [&](Enty& entity, SpawnCmp& spawn, PhysicsCmp2& phy){
             spawn.clock += dt;
             bool posible_spawn {
-                spawn.clock     >= spawn.timer && 
-                waves.numEnem   >  0           && 
-                waves.aliveEnem <  waves.maxEnem
+                spawn.clock    >= spawn.timer && 
+                wave.resrvEnem >  0           && 
+                wave.aliveEnem <  wave.maximEnem
             };
             
             if(posible_spawn) {
                 spawn.clock = 0;
-                waves.numEnem--;
-                waves.aliveEnem++;
+                wave.resrvEnem--;
+                wave.aliveEnem++;
                 LM.createNormalEnemy(GE, Vec3{ phy.x, 2.8, phy.z }, SouSys);
             }
         }

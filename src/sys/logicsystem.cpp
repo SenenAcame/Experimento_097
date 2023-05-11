@@ -10,12 +10,17 @@
 //    auto& EM = LM.getEM();
 //    EM.foreach<SYSCMPs, SYSTAGs >(
 //        [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
+
 //            if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
 //
 //            if(state.colision != 0) {
+
 //                auto& entity_colisioned = EM.getEntityById(state.entityCol);
+
 //                if(entity_colisioned.hasCMP<EstadoCmp>()) {
+
 //                    auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
+
 //                    if(entity.hasTAG<TWall>()){
 //                        //proceso Colision Wall
 //                        colisionWall     (EM, entity, entity_colisioned, dt);
@@ -59,42 +64,51 @@
 
 /*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt) {
     auto& EM = LM.getEM();
-    EM.foreach<SYSCMPs, SYSTAGs >(
+    EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
-            if(state.colision != 0) {
-                auto& entity_colisioned = EM.getEntityById(state.entityCol);
-                if(entity_colisioned.hasCMP<EstadoCmp>()) {
-                    auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
-                    if(entity.hasTAG<TWall>()){
-                        //proceso Colision Wall
-                        colisionWall(EM, entity, entity_colisioned, dt);
-                    }
-                    else if(entity.hasTAG<TPlayer>()){
-                        //proceso Colision Jugador
-                        colisionPlayer2(LM, GE, entity, entity_colisioned, dt);
-                    }
-                    else if(entity.hasTAG<TEnemy>()){
-                        //proceso Colision Enemy
-                        colisionEnemy2(LM, GE, entity, entity_colisioned, dt);
-                    }
-                    else if(entity.hasTAG<TBullet>()){
-                        //proceso Colision Bullet
-                        colisionBullet(EM, entity, entity_colisioned);
-                    }
-                    else if(entity.hasTAG<TWeapon>()){
-                        //proceso Colision Weapon
-                        colisionWeapon2(LM, GE, entity, entity_colisioned);
-                    }
-                    resetCollision(colisiones_state);
-                }
-                resetCollision(state);
+            if(entity.hasTAG<TEnemy>()) {
+                auto& stats = EM.getComponent<EstadisticaCmp>(entity);
+                stats.ClockAttackEnemy += dt;
             }
+
+            if(state.colision != 0) checkColision(LM, GE, entity, state, dt);
         }
     );
 }
 
+/*NUEVO*/ void LogicSystem::checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, double dt) {
+    auto& EM = LM.getEM();
+    auto& entity_colisioned = EM.getEntityById(state.entityCol);
+
+    if(entity_colisioned.hasCMP<EstadoCmp>()) {
+        auto& colisiones_state = EM.getComponent<EstadoCmp>(entity_colisioned);
+        if(entity.hasTAG<TWall>()){
+            //proceso Colision Wall
+            colisionWall(EM, entity, entity_colisioned, dt);
+        }
+        else if(entity.hasTAG<TPlayer>()){
+            //proceso Colision Jugador
+            colisionPlayer2(LM, GE, entity, entity_colisioned, dt);
+        }
+        else if(entity.hasTAG<TEnemy>()){
+            //proceso Colision Enemy
+            colisionEnemy2(LM, GE, entity, entity_colisioned, dt);
+        }
+        else if(entity.hasTAG<TBullet>()){
+            //proceso Colision Bullet
+            colisionBullet(EM, entity, entity_colisioned);
+        }
+        else if(entity.hasTAG<TWeapon>()){
+            //proceso Colision Weapon
+            colisionWeapon2(LM, GE, entity, entity_colisioned);
+        }
+        resetCollision(colisiones_state);
+    }
+    resetCollision(state);
+}
+
 void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt) {
-    if(colisioned.hasTAG<TPlayer>() || colisioned.hasTAG<TEnemy>()){
+    if(colisioned.hasTAG<TPlayer>() || colisioned.hasTAG<TEnemy>()) {
         //mover el jugador hacia atras
         cancelMove(EM, colisioned, dt);
     }

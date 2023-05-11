@@ -34,32 +34,34 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     //    }
     //);
 
-    double spawnX{ 0 }, spawnZ{ 0 };
-    EM.foreach<voidCMP2, EneTAGs2>(
-        [&](Enty& en, PhysicsCmp2& phy, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
-            spawnCMP.clock += dt;
+    // Actualiza spawn de enemigos (update spawnsys)
+    //double spawnX{ 0 }, spawnZ{ 0 };
+    //EM.foreach<voidCMP2, EneTAGs2>(
+    //    [&](Enty& en, PhysicsCmp2& phy, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
+    //        spawnCMP.clock += dt;
+    //
+    //        if(inRound && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
+    //            if(spawnCMP.clock <= spawnCMP.timer) return; 
+    //
+    //            auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
+    //            auto nextSalaPlayer = salaPlayer % 9 + 1;
+    //            auto prevSalaPlayer = salaPlayer - 1;
+    //
+    //            if(prevSalaPlayer < 1) prevSalaPlayer = 9;
+    //
+    //            if(salaPlayer != salaSpawn.sala && nextSalaPlayer != salaSpawn.sala && prevSalaPlayer != salaSpawn.sala) {
+    //                spawnCMP.clock = 0;                 
+    //                spawnX = phy.x;
+    //                spawnZ = phy.z;
+    //                //createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+    //                aliveEnemys++;
+    //                numberOfEnemysBasics--;
+    //
+    //            }
+    //        }  
+    //    }
+    //);
 
-            if(inRound && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
-                if(spawnCMP.clock <= spawnCMP.timer) return; 
-
-                auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
-                auto nextSalaPlayer = salaPlayer % 9 + 1;
-                auto prevSalaPlayer = salaPlayer - 1;
-
-                if(prevSalaPlayer < 1) prevSalaPlayer = 9;
-
-                if(salaPlayer != salaSpawn.sala && nextSalaPlayer != salaSpawn.sala && prevSalaPlayer != salaSpawn.sala) {
-                    spawnCMP.clock = 0;                 
-                    spawnX = phy.x;
-                    spawnZ = phy.z;
-                    //createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
-                    aliveEnemys++;
-                    numberOfEnemysBasics--;
-
-                }
-            }  
-        }
-    );
     bool finish_wave = inRound && numberOfEnemysBasics == 0 && aliveEnemys == 0;
 
     if(finish_wave) inRound = false;

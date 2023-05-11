@@ -21,5 +21,5 @@ private:
     void updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
     
     ExtraStats difficult {};
-    WaveInfo   waves {};
+    WaveInfo   wave {};
 };

@@ -2,7 +2,7 @@
 #include <cstdint>
 
 struct EstadisticaCmp {
-    int hitpoints {},  damage {};
+    int hitpoints {}, damage {};
     float speed {}; 
 
     double attackSpeedEnemy { 1 };
