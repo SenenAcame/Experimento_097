@@ -7,6 +7,10 @@
 struct SoundSystem_t;
 struct GraphicEngine;
 
+struct TwoAngles {
+    double alfa { 0 }, beta { 0 };
+};
+
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
     using EneTAGs = MP::Typelist<TEnemy>;
@@ -79,6 +83,8 @@ private:
     //void createSoundEffect(SoundSystem_t& SouSys);
     //Enty& createEnemy(SoundSystem_t& SouSys);
     //void createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture);
+    TwoAngles disperShotgun(uint8_t disp);
+    TwoAngles normalize(TwoAngles angs);
     void defineAI(Enty& enemy, SB patron, double cd);
     double randAng(uint8_t ang);
 

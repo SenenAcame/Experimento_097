@@ -2,6 +2,7 @@
 #include "../eng/engine2.hpp"
 #include "../sys/nodemapsys.hpp"
 #include "../sys/soundsystem.hpp"
+#include <cmath>
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -529,34 +530,31 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
 
     auto* model = GE.playerModel;
     auto tras = model->translation_;
-    auto rots = model->rotation_;
+    auto mat  = model->matTransf_;
 
-    //std::cout<<model->translation_.x<<" "<<model->translation_.y<<" "<<model->translation_.z<<"\n";
-    //std::cout<<rots.x<<" "<<rots.y<<" "<<rots.z<<"\n";
-
-    //sin(glm::radians(rots.y))
+    //std::cout<<mat[3][0]<<" "<<mat[3][1]<<" "<<mat[3][2]<<"\n";
 
     Vec3 pos_b = {
-        /*X*/ tras.x * cos(pos.orieny) + tras.y * 0 + tras.z * (-sin(pos.orieny)),
-        /*Y*/ tras.x * 0                  + tras.y * 0 + tras.z * 0,
-        /*Z*/ tras.x * sin(pos.orieny) + tras.y * 0 + tras.z * cos(pos.orieny)
+        mat[3][0],
+        mat[3][1],
+        mat[3][2]
+
+        ///*X*/ tras.x * cos(pos.orieny) + tras.y * 0 + tras.z * (-sin(pos.orieny)),
+        ///*Y*/ tras.x * 0                  + tras.y * 0 + tras.z * 0,
+        ///*Z*/ tras.x * sin(pos.orieny) + tras.y * 0 + tras.z * cos(pos.orieny)
+
         ///*X*/ tras.x * cos(pos.orieny) * cos(pos.orienx) + tras.y * sin(pos.orienx) + tras.z * (-sin(pos.orieny)),
         ///*Y*/ tras.x * (-sin(pos.orienx))                   + tras.y * cos(pos.orienx) + tras.z * (-sin(pos.orienx)),
         ///*Z*/ tras.x * sin(pos.orieny)                      + tras.y * 0                  + tras.z * cos(pos.orieny) * cos(pos.orienx)
     };
 
-    //std::cout<<"Posicion jugador: "<<pos.x<<" "<<pos.y<<" "<<pos.z<<"\n";
-    //std::cout<<"Posicion bala:    "<<pos_b.x<<" "<<pos_b.y<<" "<<pos_b.z<<"\n\n";
-    //std::cout<<""<<pos.orienx<<" "<<pos.orieny<<"\n\n";
-
     Enty& bullet = EM.createEntity();
     //CMPS
     EM.addComponent<EstadisticaCmp>(bullet, stats);
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
-        .x = pos.x + pos_b.x, 
-        .y = pos.y + pos_b.y, 
-        .z = pos.z + pos_b.z,
-
+        .x = pos_b.x, 
+        .y = pos_b.y, 
+        .z = pos_b.z,
         .vx = stats.speed * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
         .vy = stats.speed * sin(pos.orienx + pbx), 
         .vz = stats.speed * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 
@@ -582,10 +580,16 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
 /*NUEVO*/ void LevelMan::createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
 Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
     for(uint8_t i = 0; i < 10; i++) {
+        //TwoAngles disp_angs = disperShotgun(dispersion);
+        //std::cout<<"Normalizado: "<<disp_angs.alfa<<" "<<disp_angs.beta<<"\n";
+        //createBullet2(GE, pos, EstadisticaCmp{stats}, dir, SouSys, slfD, disp_angs.alfa, disp_angs.beta);
+
         double ang_alp = randAng(dispersion);
         double ang_bet = randAng(dispersion);
+        //std::cout<<"Sin normalizar: "<<ang_alp<<" "<<ang_bet<<"\n";
         createBullet2(GE, pos, EstadisticaCmp{stats}, dir, SouSys, slfD, ang_alp, ang_bet);
     }
+    std::cout<<"\n";
 }
 
 /*NUEVO*/ void LevelMan::createEneBullet(GraphicEngine& GE, PhysicsCmp2&& phy, int dmg) {
@@ -796,6 +800,30 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    EM.addComponent<RenderCmp2> (room, dev.createModel(model, texture));
 //}
 
+TwoAngles LevelMan::disperShotgun(uint8_t disp) {
+    double mod = (rand() % 2 - 1) / 10;
+    std::cout<<mod<<"\n";
+
+    TwoAngles angs {};
+
+    angs.alfa = randAng(disp);
+    angs.beta = randAng(disp);
+
+    angs = normalize(angs);
+
+    angs.alfa *= mod;
+    angs.beta *= mod;
+
+    return angs;
+}
+
+TwoAngles LevelMan::normalize(TwoAngles angs) {
+    double module = std::sqrt(angs.alfa*angs.alfa + angs.beta*angs.beta);
+    angs.alfa /= module;
+    angs.beta /= module;
+    return angs;
+}
+
 void LevelMan::defineAI(Enty& enemy, SB patron, double cd) {
     int    num    = rand() % 360;
     double angle  = num * PI / 180;
@@ -818,6 +846,6 @@ void LevelMan::defineAI(Enty& enemy, SB patron, double cd) {
 }
 
 double LevelMan::randAng(uint8_t ang) {
-    float  alpha = rand() % ang - (ang/2);
+    float  alpha = rand() % ang - (ang / 2);
     return alpha * PI / 180;
 }
