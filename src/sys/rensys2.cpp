@@ -172,12 +172,19 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     auto& player = EM.getEntityById(player_ID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
    
     int magazine = 0;
     int ammo = 0;
     int hp = stats.hitpoints;
     int wave = 0;
     int kills = 0;
+
+    
+    
+    RTexture prueba("assets/Interface/1280x720/zarpazo.png");
+    
 
 
     switch (invent.equipada) {
@@ -197,11 +204,21 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
             
             break;
     }
-
-    ImGui::SetNextWindowPos(ImVec2(10,450));
-    ImGui::SetNextWindowSize(ImVec2(200,200));
+    ImGui::SetNextWindowPos(ImVec2(width/10,height/10));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "UI", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(400, 350));
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(10,450));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UI2", NULL,
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
@@ -212,10 +229,11 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     //ImGui::Text("%d/%d", magazine, ammo );
     
     ImGui::End();
+
     ImGui::SetNextWindowPos(ImVec2(10,550));
-    ImGui::SetNextWindowSize(ImVec2(200,200));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
-        "UI2", NULL,
+        "UI3", NULL,
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
@@ -227,9 +245,9 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     
     ImGui::End();
     ImGui::SetNextWindowPos(ImVec2(870,550));
-    ImGui::SetNextWindowSize(ImVec2(200,200));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
-        "UI3", NULL,
+        "UI4", NULL,
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
