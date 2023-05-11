@@ -11,8 +11,9 @@ struct ExtraStats {
 };
 
 struct WaveInfo {
-    int numBasicEnem  = 2;
-    int aliveEnemys   = 0;
-    int extraEnemys   = 1;
-    int maxEnemysWave = 10; 
+    int actualWave = 1;
+    int numEnem    = 20;
+    int aliveEnem  = 0;
+    int maxEnem    = 10; 
+    //int extraEnemys  = 1;
 };

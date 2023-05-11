@@ -22,7 +22,7 @@ struct LevelMan {
 
     static constexpr auto PI { std::numbers::pi };
 
-    //void update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) ;
+    void update(SoundSystem_t& SouSys, double const dt, Enty& player) ;
     //Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
     //void initInterface (TheEngine& dev, Enty& player);
     ////void createInterface (TheEngine& dev, Enty& player);

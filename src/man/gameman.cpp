@@ -52,11 +52,11 @@ void GameMan::game() {
     //std::size_t map_ID    = LM.createMap2(GE, SouSys);
     //ColSys.init_Hitoxes_Map2(LM);
 
-    //LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
-    //LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
-    //LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
+    LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
+    LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
+    LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
 
-    LM.createNormalEnemy(GE, Vec3{-30, 2.8, -3 }, SouSys);
+    //LM.createNormalEnemy(GE, Vec3{-30, 2.8, -3 }, SouSys);
     //LM.createNormalEnemy(GE, Vec3{-84, 2.8, -6 }, SouSys);
     //LM.createNormalEnemy(GE, Vec3{-59, 2.8, -30}, SouSys);
 
@@ -85,7 +85,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        SpwSys.update (LM, GE, SouSys, player_ID, 0);
+        SpwSys.update (LM, GE, SouSys, player_ID, 0, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);

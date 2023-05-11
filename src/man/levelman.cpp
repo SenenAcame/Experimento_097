@@ -7,99 +7,85 @@
 #include <string>
 #include <vector>
 
-//void LevelMan::update(TheEngine& dev, SoundSystem_t& SouSys, double const dt, Enty& player) {
-//    //EM.foreach<voidCMP, EneTAGs>(
-//    //    [&](Enty& en, PhysicsCmp2&) {
-//    //        if(en.getDestroy()) createBasicEnemy(-30, 30, dev, SouSys);
-//    //    }
-//    //);
-//    //cleanHitsInterface(dev, dt);
-//    EM.foreach<voidCMP, EneTAGs>(
-//            [&](Enty& en, PhysicsCmp2&) {
-//                if(en.getDestroy()) {
-//                    points+=5;
-//                    updateInterfacePoints(dev);
-//                    aliveEnemys--;
-//                }
-//                //createBasicEnemy(-30, 30, dev, SouSys)
-//            }
-//        );
-//    //for weapons only
-//    EM.foreach<voidCMP3, EneTAGs3>(
-//        [&](Enty& en, WeaponCmp& weaponCM) {
-//            auto& weaponRender = EM.getComponent<RenderCmp2>(en);
-//            if(weaponRender.n->isVisible() == true){return;}
-//            weaponCM.clockForAmmo+=dt;
-//            if(weaponCM.clockForAmmo <= weaponCM.AmmoSpawn){return;} 
-//            weaponCM.clockForAmmo = 0;
-//            weaponRender.n->setVisible(true);
-//        }
-//    );
-//
-//    double spawnX{0}, spawnZ{0};
-//    EM.foreach<voidCMP2, EneTAGs2>(
-//    [&](Enty& en, PhysicsCmp2& f, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
-//        spawnCMP.clockSpawn+=dt;
-//        
-//        if(inRound == true && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
-//            if(spawnCMP.clockSpawn <= spawnCMP.SpawnTimer){return;} 
-//            
-//            auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
-//            
-//            auto nextSalaPlayer = (salaPlayer)%9+1;
-//            auto prevSalaPlayer = salaPlayer-1;
-//            if( prevSalaPlayer < 1){
-//                prevSalaPlayer = 9;
-//            }
-//            
-//            if(salaPlayer!= salaSpawn.sala && nextSalaPlayer!=salaSpawn.sala && prevSalaPlayer != salaSpawn.sala){
-//                spawnCMP.clockSpawn = 0;                 
-//                spawnX = f.x;
-//                spawnZ = f.z;
-//                createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
-//                aliveEnemys++;
-//                numberOfEnemysBasics--;
-//                
-//            }
-//        }  
-//    }
-//    );
-//    if(inRound == true && numberOfEnemysBasics == 0 && aliveEnemys == 0){
-//        inRound = false;
-//        //std::cout<<"NOT In round: "<<inRound<<"\n";
-//    }
-//    else if(inRound == false){
-//        clockToNextWave += dt;
-//        //std::cout<<"Clock To next wave: "<<clockToNextWave<<"\n";
-//        if(clockToNextWave >= timeBtwWaves){
-//            inRound = true;
-//            clockToNextWave = 0;
-//            if(extraSpeed<31){
-//                
-//                extraSpeed+=4.5;
-//            }
-//            numberOfEnemysBasics = 2+extraEnemys*waveNumber;
-//            waveNumber++;
-//            updateInterfaceWave(dev);
-//            std::string  aux        = std::to_string(100);
-//            std::wstring convert    = std::wstring(aux.begin(), aux.end());
-//            const wchar_t* HPText   = convert.c_str();
-//            dev.changeTextFromPointer(h1, HPText);
-//            
-//            //std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
-//            //std::cout<<"In round: "<<inRound<<"\n";
-//        }
-//    }
-//    
-//    //else if(inRound == true){ //only to debug without interface
-//    //    std::cout<<"Max Enemys Wave: "<<maxEnemysWave<<"\n";
-//    //    std::cout<<"Alive enemys: "<<aliveEnemys<<"\n";
-//    //    std::cout<<"Enemys this round: "<<numberOfEnemysBasics<<"\n";
-//    //    std::cout<<"Wave: "<<waveNumber<<"\n";
-//    //}
-//    
-//    cleanHitsInterface(dev, dt);
-//}
+void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
+    // Actualiza puntos conseguidos
+    //EM.foreach<voidCMP, EneTAGs>(
+    //    [&](Enty& en, PhysicsCmp2&) {
+    //        if(en.getDestroy()) {
+    //            points+=5;
+    //            //updateInterfacePoints(dev);
+    //            aliveEnemys--;
+    //        }
+    //    }
+    //);
+
+    // Actulaiza spawn de armas    
+    //EM.foreach<voidCMP3, EneTAGs3>(
+    //    [&](Enty& en, WeaponCmp& weaponCM) {
+    //        auto& weaponRender = EM.getComponent<RenderCmp2>(en);
+    //        if(weaponRender.n->isVisible() == true) return;
+    //
+    //        weaponCM.clockForAmmo += dt;
+    //
+    //        if(weaponCM.clockForAmmo <= weaponCM.AmmoSpawn) return;
+    //        
+    //        weaponCM.clockForAmmo = 0;
+    //        weaponRender.n->setVisible(true);
+    //    }
+    //);
+
+    double spawnX{ 0 }, spawnZ{ 0 };
+    EM.foreach<voidCMP2, EneTAGs2>(
+        [&](Enty& en, PhysicsCmp2& phy, SalaCmp& salaSpawn, SpawnCmp& spawnCMP) {
+            spawnCMP.clock += dt;
+
+            if(inRound && numberOfEnemysBasics > 0 && aliveEnemys < maxEnemysWave) {
+                if(spawnCMP.clock <= spawnCMP.timer) return; 
+
+                auto salaPlayer = EM.getComponent<SalaCmp>(player).sala;
+                auto nextSalaPlayer = salaPlayer % 9 + 1;
+                auto prevSalaPlayer = salaPlayer - 1;
+
+                if(prevSalaPlayer < 1) prevSalaPlayer = 9;
+
+                if(salaPlayer != salaSpawn.sala && nextSalaPlayer != salaSpawn.sala && prevSalaPlayer != salaSpawn.sala) {
+                    spawnCMP.clock = 0;                 
+                    spawnX = phy.x;
+                    spawnZ = phy.z;
+                    //createBasicEnemy(spawnX, spawnZ, dev, SouSys, extraHeal, waveNumber);
+                    aliveEnemys++;
+                    numberOfEnemysBasics--;
+
+                }
+            }  
+        }
+    );
+    bool finish_wave = inRound && numberOfEnemysBasics == 0 && aliveEnemys == 0;
+
+    if(finish_wave) inRound = false;
+        
+    else if(!inRound) {
+        clockToNextWave += dt;
+
+        if(clockToNextWave >= timeBtwWaves) {
+            inRound = true;
+            clockToNextWave = 0;
+
+            if(extraSpeed < 31) extraSpeed += 4.5;
+            
+            numberOfEnemysBasics = 2 + extraEnemys * waveNumber;
+            waveNumber++;
+
+            //updateInterfaceWave(dev);
+            //std::string  aux      = std::to_string(100);
+            //std::wstring convert  = std::wstring(aux.begin(), aux.end());
+            //const wchar_t* HPText = convert.c_str();
+            //dev.changeTextFromPointer(h1, HPText);
+        }
+    }
+    
+    //cleanHitsInterface(dev, dt);
+}
 
 //Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
 //    //Enty& player = createPlayer(dev, SouSys);
