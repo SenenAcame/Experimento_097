@@ -15,7 +15,7 @@ struct TheFachada {
     ProgrammerSoundContext createinstance(int);
     void close();
     void startsound(SoundCmp&);
-    void set3DAttributes(SoundCmp&, PhysicsCmp2&, PhysicsCmp2&);
+    void set3DAttributes(SoundCmp&, PhysicsCmp2&);
     void setListener(PhysicsCmp2&);
     void stopsound(SoundCmp&);
     bool isPlaying(SoundCmp&);

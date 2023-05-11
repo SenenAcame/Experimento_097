@@ -9,7 +9,7 @@ struct SoundSystem_t {
     using ENETAGs = MP::Typelist<TEnemy>;
 
     explicit SoundSystem_t();
-    void update(EntyMan&, Enty&);
+    void update(EntyMan&, std::size_t);
     ProgrammerSoundContext createinstance(int);
     void close();
     void startsound(SoundCmp&);
