@@ -23,7 +23,7 @@ struct InventarioCmp {
 
     W_Type actual = W_Type::Pistol;
     //1 =  desbloqueada, 0 = no, 2 = arma actual
-    std::size_t inventary [3] = { 2, 1, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
+    std::size_t inventary [3] = { 2, 1, 1 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
     
     Weapon gun {
         W_Type::Pistol,

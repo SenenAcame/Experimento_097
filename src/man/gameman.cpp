@@ -30,7 +30,7 @@ void GameMan::game() {
     NodeMapSys    MapSys;
     LogicSystem   LogSys;
     SoundSystem_t SouSys;
-    //SpawnSystem   SpawnSys;
+    SpawnSystem   SpwSys;
     SelfDestSys   DstSys;
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
@@ -48,8 +48,17 @@ void GameMan::game() {
     //ImGui::Text("This is some useful text."); 
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
-    std::size_t map_ID    = LM.createMap2(GE, SouSys);
-    ColSys.init_Hitoxes_Map2(LM);
+    
+    //std::size_t map_ID    = LM.createMap2(GE, SouSys);
+    //ColSys.init_Hitoxes_Map2(LM);
+
+    //LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
+    //LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
+    //LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
+
+    LM.createNormalEnemy(GE, Vec3{-30, 2.8, -3 }, SouSys);
+    //LM.createNormalEnemy(GE, Vec3{-84, 2.8, -6 }, SouSys);
+    //LM.createNormalEnemy(GE, Vec3{-59, 2.8, -30}, SouSys);
 
     //LM.createWeapon2(GE, Vec3 { -77, 2.8,   4 }, W_Type::Shotgun, SouSys);
     //LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
@@ -67,8 +76,6 @@ void GameMan::game() {
     while(!glfwWindowShouldClose(GE.getWindow())) {
         //ge.glEng.drawFocos();
         EM.update();
-        //ImGui::Text("This is some useful text.");
-
         RenSys.update2(EM, GE, player_ID);
         //MapSys.update(EM, player_ID, map_ID);
         InpSys.update2(LM, GE, SouSys, dt);
@@ -78,6 +85,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
+        SpwSys.update (LM, GE, SouSys, player_ID, 0);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);

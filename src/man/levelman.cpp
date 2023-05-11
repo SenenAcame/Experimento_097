@@ -445,13 +445,23 @@
 //    return enemy;
 //}
 
-/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
     
     Enty& enemy = EM.createEntity();
     //CMPS 
     defineAI(enemy, SB::Two_Steps, 0.1);
-    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
+    auto& stats = EM.addComponent<EstadisticaCmp>(
+        enemy, 
+        EstadisticaCmp { 
+            .hitpoints = static_cast<int>(20 * plus.life.extra), 
+            .damage    = static_cast<int>(20 * plus.damg.extra), 
+            .speed     = 4.f * plus.sped.extra 
+        }
+    );
+
+    std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
+
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
     EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
@@ -472,7 +482,7 @@
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy, SB::Shoot, 1.);
-    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f });
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2  { .node = GE.createNode(file_model) });
     EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
@@ -734,6 +744,15 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    //EM.addComponent<EstadoCmp>  (spawn, EstadoCmp{.width = 2, .height = 9, .depth = 2});
 //    return spawn;
 //}
+
+Enty& LevelMan::createSpawn2(Vec3 pos, GraphicEngine& GE, int room){
+    Enty& spawn = EM.createEntity();
+    EM.addComponent<SalaCmp>    (spawn, SalaCmp { .sala = room });
+    EM.addComponent<PhysicsCmp2>(spawn, PhysicsCmp2 { .x = pos.x, .z = pos.z });
+    EM.addComponent<SpawnCmp>   (spawn);
+    EM.addTag      <TSpawn>     (spawn);
+    return spawn;
+}
 
 //void LevelMan::resetLevel(TheEngine& dev) {
 //    const wchar_t* empty = L"";

@@ -1,5 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
+#include "../util/waves_aux.hpp"
 //#include "../eng/engine.hpp"
 #include <cstddef>
 #include <numbers>
@@ -43,7 +44,7 @@ struct LevelMan {
     /*NUEVO*/ std::size_t createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
     ///*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
-    /*NUEVO*/ Enty& createNormalEnemy (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
+    /*NUEVO*/ Enty& createNormalEnemy (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
     /*NUEVO*/ Enty& createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
     ///*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
@@ -75,7 +76,8 @@ struct LevelMan {
     //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
     //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
     
-    //Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
+    ///*VIEJO*/ Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
+    /*NUEVO*/ Enty& createSpawn2(Vec3 pos, GraphicEngine& GE, int room);
     
     //void resetLevel(TheEngine& dev);
     EntyMan& getEM() { return EM; }
@@ -91,16 +93,21 @@ private:
     EntyMan EM;
 
     //Waves
-    int    waveNumber           = 1; //actual wave
     double extraHeal            = 5; //extra EnemyHeal per wave
     float  extraSpeed           = 0; //extra speed per round
+
+    int    waveNumber           = 1; //actual wave
+
     int    numberOfEnemysBasics = 2; //number of enemys per wave
     int    aliveEnemys          = 0;
     double extraEnemys          = 3; //extra number of enemys per wave
     int    maxEnemysWave        = 11; //max number of enemy created
+    
     double timeBtwWaves         = 4;
     double clockToNextWave      = 0; //clock unter next wave
+
     bool   inRound              = false;
+    
     int    points               = 0;
 
     //INTERFACE

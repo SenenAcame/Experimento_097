@@ -3,7 +3,7 @@
 
 struct EstadisticaCmp {
     int hitpoints {},  damage {};
-    float speed {}, bulletRad {}; 
+    float speed {}; 
 
     double attackSpeedEnemy { 1 };
     double ClockAttackEnemy { 1 };

@@ -1,15 +1,29 @@
 #include "spawnsys.hpp"
+#include "../eng/engine2.hpp"
+#include "../man/levelman.hpp"
 
-//void SpawnSystem::update(EntyMan& EM, TheEngine& eng, SoundSystem_t& ss, Enty& player, Enty& map) {
-//    EM.foreach<SYSCMPs, SYSTAGs>(
-//        [&](Enty& spwEnty, SpawnCmp& spwCMP){
-//            if(spwCMP.active == 1 && spwCMP.numEnem != 0 /*numEnemysPerRound >0*/) {
-//                //size_t type = 0;
-//                //createEnemy(type, EM, eng, ss, spwCMP, spwEnty);
-//            }
-//        }
-//    );
-//}
+void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, std::size_t player_ID, std::size_t map_ID) {
+    auto& EM = LM.getEM();
+    
+    EM.foreach<ENECMPs, ENETAGs>(
+        [&](Enty& enemy){
+            if(enemy.getDestroy()) {
+                LM.createNormalEnemy(GE, Vec3{ -30, 2.8, -3 }, SouSys, difficult);
+                aumentDifficult();
+            }
+            //if(spwCMP.active == 1 && spwCMP.numEnem != 0 /*numEnemysPerRound >0*/) {
+            //    //size_t type = 0;
+            //    //createEnemy(type, EM, eng, ss, spwCMP, spwEnty);
+            //}
+        }
+    );
+}
+
+void SpawnSystem::aumentDifficult() {
+    difficult.life.extra += difficult.life.aument_extra;
+    difficult.damg.extra += difficult.damg.aument_extra;
+    difficult.sped.extra += difficult.sped.aument_extra;
+}
 
 //void SpawnSystem::activeRespawn(Enty& player, Enty& spawn, Enty& map, EntyMan& EM){
 //
