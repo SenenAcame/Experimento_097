@@ -48,15 +48,15 @@ void GameMan::game() {
     //ImGui::Text("This is some useful text."); 
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
-    
-    //std::size_t map_ID    = LM.createMap2(GE, SouSys);
-    //ColSys.init_Hitoxes_Map2(LM);
+    std::size_t map_ID    = LM.createMap2(GE, SouSys);
+    std::cout << "Mapa GM: " << map_ID<< std::endl;
+    ColSys.init_Hitoxes_Map2(LM);
 
     LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
     LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
     LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
 
-    //LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Distance);
+    LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Normal);
 
     //LM.createWeapon2(GE, Vec3 { -77, 2.8,   4 }, W_Type::Shotgun, SouSys);
     //LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
@@ -72,7 +72,7 @@ void GameMan::game() {
         //ge.glEng.drawFocos();
         EM.update();
         RenSys.update2(EM, GE, player_ID);
-        //MapSys.update(EM, player_ID, map_ID);
+        MapSys.update2(EM, player_ID, map_ID);
         InpSys.update2(LM, GE, SouSys, dt);
         AISys. update2(LM, GE, dt);
         PhySys.update (EM, dt);

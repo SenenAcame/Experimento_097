@@ -371,7 +371,7 @@
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
-    //EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
     EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
     EM.addTag<TMap>(map);
 
@@ -380,7 +380,7 @@
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
         EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
-
+    std::cout << "Mapa LM: " << map.getID() << std::endl;
     return map.getID();
 }
 
