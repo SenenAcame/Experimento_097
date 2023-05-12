@@ -2,6 +2,7 @@
 #include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
+#include "UIsys.hpp"
 #include <GLFW/glfw3.h>
 //#include <irrlicht/IEventReceiver.h>
 
@@ -29,7 +30,7 @@ struct InpSys2 {
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
     ///*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt);
-    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt, UIsys& UI);
 
     ///*VIEJO*/ virtual bool OnEvent(const irr::SEvent& event);
     /*NUEVO*/ bool checkKeyboard(GLFWwindow* window);

@@ -94,8 +94,11 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_I
 
 }
 
-void UIsys::hitInterface(GraphicEngine& GE, Enty& player){
+void UIsys::hitInterface(GraphicEngine& GE){
 
+    auto* m_window = GE.getWindow();
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
     int random = activateHit;
     while(activateHit==random)
         random = rand()%3+1;
@@ -105,12 +108,18 @@ void UIsys::hitInterface(GraphicEngine& GE, Enty& player){
     switch (activateHit) {
         case 1: 
             hit1 = true;
+            randWidth1 = rand()%width;
+            randHeight2 = rand()%height;
         break;
         case 2: 
             hit2 = true;
+            randWidth2 = rand()%width;
+            randHeight2 = rand()%height;
         break;
         case 3: 
             hit3 = true;
+            randWidth3 = rand()%width;
+            randHeight3 = rand()%height;
         break;
     }
    
@@ -122,11 +131,9 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
-    int randWidth = rand()%width;
-    int randHeight = rand()%height;
 
     RTexture prueba("assets/Interface/1280x720/zarpazo.png");
-    ImGui::SetNextWindowPos(ImVec2(randWidth,randHeight));
+    ImGui::SetNextWindowPos(ImVec2(randWidth1,randHeight2));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit1", NULL,
@@ -136,7 +143,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit1 == true){
         clockHit1 += dt;
-        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(400, 350));
+        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(600, 450));
         if(clockHit1 >= cd) {
             hit1 = false;
             clockHit1 = 0;
@@ -144,9 +151,8 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     }
     ImGui::End();
 
-    randWidth = rand()%width;
-    randHeight = rand()%height;
-    ImGui::SetNextWindowPos(ImVec2(randWidth,randHeight));
+  
+    ImGui::SetNextWindowPos(ImVec2(randWidth2,randHeight2));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit2", NULL,
@@ -156,7 +162,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit2 == true){
         clockHit2 += dt;
-        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(400, 350));
+        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(800, 750));
         if(clockHit2 >= cd) {
             hit2 = false;
             clockHit2 = 0;
@@ -164,9 +170,8 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     }
     ImGui::End();
 
-    randWidth = rand()%width;
-    randHeight = rand()%height;
-    ImGui::SetNextWindowPos(ImVec2(randWidth,randHeight));
+    
+    ImGui::SetNextWindowPos(ImVec2(randWidth3,randHeight3));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit3", NULL,
@@ -176,7 +181,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit3 == true){
         clockHit3 += dt;
-        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(400, 350));
+        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(850, 800));
         if(clockHit3 >= cd) {
             hit3 = false;
             clockHit3 = 0;

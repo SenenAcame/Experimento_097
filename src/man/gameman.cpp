@@ -70,11 +70,11 @@ void GameMan::game() {
 
         RenSys.update2(EM, GE, player_ID, UISys, dt);
         //MapSys.update(EM, player_ID, map_ID);
-        InpSys.update2(LM, GE, SouSys, dt);
+        InpSys.update2(LM, GE, SouSys, dt, UISys);
         AISys. update2(EM, dt);
         PhySys.update (EM, dt);
         ColSys.update (EM);
-        LogSys.update2(LM, GE, dt);
+        LogSys.update2(LM, GE, dt, UISys);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
         DstSys.update (EM, dt);

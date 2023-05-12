@@ -1,4 +1,5 @@
 #include "logicsystem.hpp"
+#include "UIsys.hpp"
 #include "colsys2.hpp"
 #include "physys2.hpp"
 #include "../man/levelman.hpp"
@@ -54,7 +55,7 @@
 //    );
 //}
 
-/*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt) {
+/*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys) {
     auto& EM = LM.getEM();
     EM.foreach<SYSCMPs, SYSTAGs >(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
@@ -68,7 +69,7 @@
                     }
                     else if(entity.hasTAG<TPlayer>()){
                         //proceso Colision Jugador
-                        colisionPlayer2(LM, GE, entity, entity_colisioned, dt);
+                        colisionPlayer2(LM, GE, entity, entity_colisioned, dt, UISys);
                     }
                     else if(entity.hasTAG<TEnemy>()){
                         //proceso Colision Enemy
@@ -128,15 +129,17 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 //    //}
 //}
 
-/*NUEVO*/ void LogicSystem::colisionPlayer2(LevelMan &LM, GraphicEngine &GE, Enty& current, Enty& colisioned, double dt) {
+/*NUEVO*/ void LogicSystem::colisionPlayer2(LevelMan &LM, GraphicEngine &GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys) {
     if(colisioned.hasTAG<TWall>()){
         //moverse hacia atras
         auto& EM = LM.getEM();
         cancelMove(EM, current, dt);
     }
     if(colisioned.hasTAG<TEnemy>()){
+        
         //jugador recibe daño del enemigo
         //std::cout<<"Daño\n";
+        
     }
 }
 

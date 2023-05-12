@@ -25,14 +25,16 @@ struct UIsys {
     //hits
     int activateHit {0};
     bool hit1{false}, hit2{false}, hit3{false};
-    double cd {1};
+    double cd {2};
     double clockHit1 {}, clockHit2 {}, clockHit3 {};
+    int randWidth1 {}, randWidth2 {}, randWidth3 {};
+    int randHeight1{}, randHeight2{}, randHeight3{};
 
     //weapons
     int equipada{0};
 
     void renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, double dt);
-    void hitInterface(GraphicEngine& GE, Enty& player);
+    void hitInterface(GraphicEngine& GE);
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
     
 };
