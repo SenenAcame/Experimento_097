@@ -56,15 +56,10 @@ void GameMan::game() {
     LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
     LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
 
-    //LM.createNormalEnemy(GE, Vec3{-30, 2.8, -3 }, SouSys);
-    //LM.createNormalEnemy(GE, Vec3{-84, 2.8, -6 }, SouSys);
-    //LM.createNormalEnemy(GE, Vec3{-59, 2.8, -30}, SouSys);
+    //LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Distance);
 
     //LM.createWeapon2(GE, Vec3 { -77, 2.8,   4 }, W_Type::Shotgun, SouSys);
     //LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
-
-    //LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys);
-    //LM.createDistanceEnemy(GE, Vec3{-42, 2.5, -15}, SouSys);
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -85,7 +80,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        SpwSys.update (LM, GE, SouSys, player_ID, 0, dt);
+        //SpwSys.update (LM, GE, SouSys, player_ID, 0, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);

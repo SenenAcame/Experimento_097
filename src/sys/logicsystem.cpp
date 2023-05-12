@@ -6,6 +6,8 @@
 #include "../eng/engine2.hpp"
 #include "../util/munition_aux.hpp"
 
+//int aux = 0;
+
 ///*VIEJO*/ void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
 //    auto& EM = LM.getEM();
 //    EM.foreach<SYSCMPs, SYSTAGs >(
@@ -270,7 +272,9 @@ void LogicSystem::reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor) {
     auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
     
     recept_stats.hitpoints -= agress_stats.damage;
-    
+
+    //std::cout<<"Impacto "<<aux++<<"\n";
+
     if(recept_stats.hitpoints <= 0) {
         //if(receptor.hasTAG<TEnemy>()) { 
         //    EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;

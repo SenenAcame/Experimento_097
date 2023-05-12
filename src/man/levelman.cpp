@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
+//void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     // Actualiza puntos conseguidos
     //EM.foreach<voidCMP, EneTAGs>(
     //    [&](Enty& en, PhysicsCmp2&) {
@@ -86,7 +86,7 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     //}
     
     //cleanHitsInterface(dev, dt);
-}
+//}
 
 //Enty& LevelMan::init_level(TheEngine& dev, SoundSystem_t& SouSys) {
 //    //Enty& player = createPlayer(dev, SouSys);
@@ -429,6 +429,7 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
             createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
             break;
         case Type_Enemy::Tank:
+            //createTankEnemy2(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
             createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
             break;
         case Type_Enemy::Distance:
@@ -448,6 +449,7 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
+    Vec3 base_stats = { 20, 20, 4 };
     
     Enty& enemy = EM.createEntity();
     //CMPS 
@@ -455,13 +457,45 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     auto& stats = EM.addComponent<EstadisticaCmp>(
         enemy, 
         EstadisticaCmp { 
-            .hitpoints = static_cast<int>(20 * plus.life.extra), 
-            .damage    = static_cast<int>(20 * plus.damg.extra), 
-            .speed     = 4.f * plus.sped.extra 
+            .hitpoints = static_cast<int>(base_stats.x * plus.life.extra), 
+            .damage    = static_cast<int>(base_stats.y * plus.damg.extra), 
+            .speed     = base_stats.z * plus.sped.extra 
         }
     );
 
-    std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
+    //std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
+
+    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
+    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
+    EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
+    EM.addComponent<SalaCmp>    (enemy);
+    //TAGS
+    EM.addTag<TInteract>(enemy);
+    EM.addTag<TEnemy>   (enemy);
+
+    //viewBB(GE, enemy);
+
+    return enemy;
+}
+
+/*NUEVO*/ Enty& LevelMan::createTankEnemy2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
+    std::string file_model = "assets/models/personajes/monstruo3/monstruo_3_grande_caminar.fbx";
+    Vec3 base_stats = { 20, 20, 4 };
+    
+    Enty& enemy = EM.createEntity();
+    //CMPS 
+    defineAI(enemy, SB::Two_Steps, 0.1);
+    auto& stats = EM.addComponent<EstadisticaCmp>(
+        enemy, 
+        EstadisticaCmp { 
+            .hitpoints = static_cast<int>(base_stats.x * plus.life.extra), 
+            .damage    = static_cast<int>(base_stats.y * plus.damg.extra), 
+            .speed     = base_stats.z * plus.sped.extra 
+        }
+    );
+
+    //std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
 
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
@@ -479,6 +513,7 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
 
 /*NUEVO*/ Enty& LevelMan::createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
     std::string file_model = "assets/models/personajes/monstruo1/enemigo1.obj";
+    Vec3 base_stats = { 10, 30, 5 };
     
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -486,17 +521,17 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     auto& stats = EM.addComponent<EstadisticaCmp>(
         enemy, 
         EstadisticaCmp{ 
-            .hitpoints = static_cast<int>(10 * plus.life.extra), 
-            .damage    = static_cast<int>(30 * plus.damg.extra), 
-            .speed     = 5.f * plus.sped.extra 
+            .hitpoints = static_cast<int>(base_stats.x * plus.life.extra), 
+            .damage    = static_cast<int>(base_stats.y * plus.damg.extra), 
+            .speed     = base_stats.z * plus.sped.extra 
         }
     );
 
-    std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
+    //std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
 
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2  { .node = GE.createNode(file_model) });
-    EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<EstadoCmp>  (enemy, .7f, 1.2f, .7f);
     EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>    (enemy);
     //TAGS
@@ -612,7 +647,7 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
 }
 
 /*NUEVO*/ void LevelMan::createEneBullet(GraphicEngine& GE, PhysicsCmp2&& phy, int dmg) {
-    std::string file_model = "assets/models/armas/bala.obj";
+    std::string file_model = "assets/models/personajes/monstruo1/bala_ene.obj";
 
     Enty& bullet = EM.createEntity();
     auto& stats = EM.addComponent<EstadisticaCmp>(
