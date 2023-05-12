@@ -62,29 +62,28 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     //    }
     //);
 
-    bool finish_wave = inRound && numberOfEnemysBasics == 0 && aliveEnemys == 0;
-
-    if(finish_wave) inRound = false;
-        
-    else if(!inRound) {
-        clockToNextWave += dt;
-
-        if(clockToNextWave >= timeBtwWaves) {
-            inRound = true;
-            clockToNextWave = 0;
-
-            if(extraSpeed < 31) extraSpeed += 4.5;
-            
-            numberOfEnemysBasics = 2 + extraEnemys * waveNumber;
-            waveNumber++;
-
-            //updateInterfaceWave(dev);
-            //std::string  aux      = std::to_string(100);
-            //std::wstring convert  = std::wstring(aux.begin(), aux.end());
-            //const wchar_t* HPText = convert.c_str();
-            //dev.changeTextFromPointer(h1, HPText);
-        }
-    }
+    //bool finish_wave = inRound && numberOfEnemysBasics == 0 && aliveEnemys == 0;
+    //
+    //if(finish_wave) inRound = false;
+    //    
+    //else if(!inRound) {
+    //    clockToNextWave += dt;
+    //
+    //    if(clockToNextWave >= timeBtwWaves) {
+    //        inRound = true;
+    //        clockToNextWave = 0;
+    //  
+    //        if(extraSpeed < 31) extraSpeed += 4.5;
+    //        numberOfEnemysBasics = 2 + extraEnemys * waveNumber;
+    //        waveNumber++;
+    //
+    //        //updateInterfaceWave(dev);
+    //        //std::string  aux      = std::to_string(100);
+    //        //std::wstring convert  = std::wstring(aux.begin(), aux.end());
+    //        //const wchar_t* HPText = convert.c_str();
+    //        //dev.changeTextFromPointer(h1, HPText);
+    //    }
+    //}
     
     //cleanHitsInterface(dev, dt);
 }
@@ -424,6 +423,20 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     return player.getID();
 }
 
+/*NUEVO*/ Enty& LevelMan::createEnemy(GraphicEngine &GE, Vec3 pos, SoundSystem_t &SouSys, Type_Enemy type, ExtraStats plus) {
+    switch (type) {
+        case Type_Enemy::Normal:
+            createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
+            break;
+        case Type_Enemy::Tank:
+            createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
+            break;
+        case Type_Enemy::Distance:
+            createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
+            break;
+    }
+}
+
 ///*VIEJO*/ Enty& LevelMan::createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber) {
 //    Enty& enemy = createEnemy(SouSys);
 //    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=20+extraHeal*waveNumber, .damage=20, .speed=15.f+extraSpeed});
@@ -464,13 +477,23 @@ void LevelMan::update(SoundSystem_t& SouSys, double const dt, Enty& player) {
     return enemy;
 }
 
-/*NUEVO*/ Enty& LevelMan::createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+/*NUEVO*/ Enty& LevelMan::createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
     std::string file_model = "assets/models/personajes/monstruo1/enemigo1.obj";
     
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy, SB::Shoot, 1.);
-    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f });
+    auto& stats = EM.addComponent<EstadisticaCmp>(
+        enemy, 
+        EstadisticaCmp{ 
+            .hitpoints = static_cast<int>(10 * plus.life.extra), 
+            .damage    = static_cast<int>(30 * plus.damg.extra), 
+            .speed     = 5.f * plus.sped.extra 
+        }
+    );
+
+    std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
+
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2  { .node = GE.createNode(file_model) });
     EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
@@ -527,10 +550,10 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
     std::string file_model = "assets/models/armas/bala.obj";
 
     auto* model = GE.playerModel;
-    auto tras = model->translation_;
+    //auto tras = model->translation_;
     auto mat  = model->matTransf_;
 
-    //std::cout<<mat[3][0]<<" "<<mat[3][1]<<" "<<mat[3][2]<<"\n";
+    //std::cout<<"Origen de bala: "<<mat[3][0]<<" "<<mat[3][1]<<" "<<mat[3][2]<<"\n";
 
     Vec3 pos_b = {
         mat[3][0],
@@ -538,21 +561,19 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
         mat[3][2]
 
         ///*X*/ tras.x * cos(pos.orieny) + tras.y * 0 + tras.z * (-sin(pos.orieny)),
-        ///*Y*/ tras.x * 0                  + tras.y * 0 + tras.z * 0,
+        ///*Y*/ tras.x * 0               + tras.y * 0 + tras.z * 0,
         ///*Z*/ tras.x * sin(pos.orieny) + tras.y * 0 + tras.z * cos(pos.orieny)
 
         ///*X*/ tras.x * cos(pos.orieny) * cos(pos.orienx) + tras.y * sin(pos.orienx) + tras.z * (-sin(pos.orieny)),
-        ///*Y*/ tras.x * (-sin(pos.orienx))                   + tras.y * cos(pos.orienx) + tras.z * (-sin(pos.orienx)),
-        ///*Z*/ tras.x * sin(pos.orieny)                      + tras.y * 0                  + tras.z * cos(pos.orieny) * cos(pos.orienx)
+        ///*Y*/ tras.x * (-sin(pos.orienx))                + tras.y * cos(pos.orienx) + tras.z * (-sin(pos.orienx)),
+        ///*Z*/ tras.x * sin(pos.orieny)                   + tras.y * 0               + tras.z * cos(pos.orieny) * cos(pos.orienx)
     };
 
     Enty& bullet = EM.createEntity();
     //CMPS
     EM.addComponent<EstadisticaCmp>(bullet, stats);
     EM.addComponent<PhysicsCmp2>(bullet, PhysicsCmp2 { 
-        .x = pos_b.x, 
-        .y = pos_b.y, 
-        .z = pos_b.z,
+        .x = pos_b.x, .y = pos_b.y, .z = pos_b.z,
         .vx = stats.speed * cos(pos.orienx + pbx) * cos(pos.orieny + pby),
         .vy = stats.speed * sin(pos.orienx + pbx), 
         .vz = stats.speed * cos(pos.orienx + pbx) * sin(pos.orieny + pby) 

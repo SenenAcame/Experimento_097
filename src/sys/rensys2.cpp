@@ -39,7 +39,7 @@
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
             if(ent.hasTAG<TEnemy>()) {
                 float giro_y = (-phy.orieny) * 180 / PI + 90;
-                rend.node->setRotation(Vec3 { 0, giro_y, 0});
+                rend.node->setRotation(Vec3 { 0, giro_y, 0 });
             }
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();
@@ -58,7 +58,7 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& ren    = EM.getComponent<RenderCmp2>(player);
 
-    //std::cout<<phy.x<<" "<<phy.z<<"\n";
+    //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
 
     float pitch = GE.getCamera()->Pitch;
     float yaw   = GE.getCamera()->Yaw;

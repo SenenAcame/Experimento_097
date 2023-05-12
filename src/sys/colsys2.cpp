@@ -45,7 +45,7 @@ void ColSys2::shotSound(EntyMan& EM, Enty& main, Enty& collied) {
     }
 }
 
-/*VIEJO*/ void  ColSys2::init_Hitoxes_Map2(LevelMan& LM) noexcept {
+void  ColSys2::init_Hitoxes_Map2(LevelMan& LM) noexcept {
     hitboxesMapaSimpleSala1   (LM);
     hitboxesMapaSimpleSala2   (LM);
     hitboxesMapaSimpleSala3   (LM);
