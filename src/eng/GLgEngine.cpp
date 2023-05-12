@@ -162,6 +162,12 @@ void GlEngine::initOpenGL() {
     window = glfwCreateWindow(width_, height_, "Experimento 097", NULL, NULL);
     if(window == NULL) throw std::runtime_error("GLFW Error creating Window");
     
+    //pantalla grande
+    glfwMaximizeWindow(window);
+
+    //elimina la pantalla grande
+    glfwRestoreWindow(window);
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);

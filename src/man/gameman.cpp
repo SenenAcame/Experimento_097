@@ -11,6 +11,7 @@
 #include "../sys/spawnsys.hpp"
 #include "../sys/rensys2.hpp"
 #include "../eng/engine2.hpp"
+#include "animationman.hpp"
 #include <chrono>
 #include <cstddef>
 #include <iostream>
@@ -39,6 +40,8 @@ void GameMan::game() {
 
     srand(time(NULL));
 
+    AnimMan AM(GE.glEng);
+
     //RenSys.initIMGUI(GE);
 
     //ImGui::CreateContext();
@@ -52,7 +55,7 @@ void GameMan::game() {
     //ColSys.init_Hitoxes_Map2(LM);
     //LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys);
     LM.createNormalEnemyAnim(GE, Vec3{-42, 2.8, -15}, SouSys);
-    
+    //LM.createNormalEnemyAnim(GE, Vec3{-40, 2.8, -10}, SouSys);
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);

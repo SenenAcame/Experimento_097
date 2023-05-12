@@ -46,7 +46,7 @@ void EModel::draw(Mat4 mat, bool border) {
     mesh_->meshes_[0].shader_->use();
     mesh_->meshes_[0].shader_->setFloat("material.transparecy", transparency_);
     if(animation_ != nullptr && currentAnim >= 0) {
-        std::cout << "Entro en animacion\n";
+        //std::cout << "Entro en animacion\n";
         animation_->draw(mat, &currentAnim);
     }
     else {
