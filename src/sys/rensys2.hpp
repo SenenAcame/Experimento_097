@@ -1,5 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
+#include "UIsys.hpp"
 #include <cstddef>
 
 struct TheEngine;
@@ -14,7 +15,7 @@ struct RenSys2 {
     static constexpr double PI { std::numbers::pi };
 
     /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
-    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
+    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UIsys, double dt);
 
     void updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
     

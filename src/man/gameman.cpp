@@ -1,3 +1,4 @@
+#pragma once
 #include "gameman.hpp"
 #include "../sys/soundsystem.hpp"
 #include "../sys/aisys.hpp"
@@ -10,6 +11,7 @@
 #include "../sys/selfdestsys.hpp"
 #include "../sys/spawnsys.hpp"
 #include "../sys/rensys2.hpp"
+#include "../sys/UIsys.hpp"
 #include "../eng/engine2.hpp"
 #include <chrono>
 #include <cstddef>
@@ -30,6 +32,7 @@ void GameMan::game() {
     NodeMapSys    MapSys;
     LogicSystem   LogSys;
     SoundSystem_t SouSys;
+    UIsys         UISys;
     //SpawnSystem   SpawnSys;
     SelfDestSys   DstSys;
     //TheEngine     dev {1280, 720, &InpSys};
@@ -65,7 +68,7 @@ void GameMan::game() {
         EM.update();
         //ImGui::Text("This is some useful text.");
 
-        RenSys.update2(EM, GE, player_ID);
+        RenSys.update2(EM, GE, player_ID, UISys, dt);
         //MapSys.update(EM, player_ID, map_ID);
         InpSys.update2(LM, GE, SouSys, dt);
         AISys. update2(EM, dt);

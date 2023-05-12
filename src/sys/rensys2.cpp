@@ -1,6 +1,7 @@
 #include "rensys2.hpp"
 #include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
+#include "UIsys.hpp"
 #include <cstddef>
 #include <iterator>
 //IMGUI
@@ -32,7 +33,7 @@
 //    //ImGUI_Postrender();
 //};
 
-/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
+/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UISys, double dt) {
     ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -49,8 +50,9 @@
     updateCamera(EM, GE, player_ID);
 
     drawWorld(GE);
+    UISys.renderInterface(EM, GE, player_ID, dt);
 
-    ImGUI_RenderUI(EM, GE, player_ID);
+    //ImGUI_RenderUI(EM, GE, player_ID);
     ImGUI_Postrender(GE);
 }
 
@@ -139,6 +141,9 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
     ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chiller.ttf", 80.0f);
+    ImGuiStyle& style = ImGui::GetStyle();
+    //Color negro
+    style.Colors[ImGuiCol_Text] = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
 }
 
 void RenSys2::ImGUI_Prerender() const noexcept {
@@ -166,6 +171,7 @@ void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
     ////glClear(GL_COLOR_BUFFER_BIT);
 }
 
+
 void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) const noexcept{
     //ImGui::Text("This is some useful text");
     auto* m_window = GE.getWindow();
@@ -177,16 +183,13 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
    
     int magazine = 0;
     int ammo = 0;
-    int hp = stats.hitpoints;
+    double hp = stats.hitpoints/100;
     int wave = 0;
     int kills = 0;
-
     
     
     RTexture prueba("assets/Interface/1280x720/zarpazo.png");
     
-
-
     switch (invent.equipada) {
         case 0:
             magazine = invent.gun.magazine;
@@ -204,7 +207,7 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
             
             break;
     }
-    ImGui::SetNextWindowPos(ImVec2(width/10,height/10));
+    ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "UI", NULL,
@@ -223,11 +226,14 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    ImGui::Text("Wave: %d", wave);
-    //ImGui::Text("Kills: %d", kills);
-    //ImGui::Text("HP: %d", hp);
-    //ImGui::Text("%d/%d", magazine, ammo );
     
+    ImGui::Text("Wave: %d", wave);
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, IM_COL32(255,0,0,255));
+    //ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0,0,0,0));
+    ImGui::ProgressBar(hp,ImVec2(300,40), "");
+
+    //ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
     ImGui::End();
 
     ImGui::SetNextWindowPos(ImVec2(10,550));
@@ -258,6 +264,8 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     ImGui::Text("%d/%d", magazine, ammo );
     
     ImGui::End();
+
+
     
 }
 
