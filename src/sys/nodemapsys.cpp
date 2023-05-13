@@ -205,7 +205,7 @@ std::vector<sala> NodeMapSys::creaSalas() {
         puertass11, puertass12, puertass13, puertass14
     };
 
-    for(unsigned int i = 0; i < 14; i++)
+    for(unsigned int i = 0; i < std::size(todaspuertas); i++)
         sala.push_back({ salasx[i], salasz[i], tamx[i], tamz[i], todaspuertas[i] });
 
     return sala;
