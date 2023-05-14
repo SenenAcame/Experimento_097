@@ -9,7 +9,7 @@ enum class W_Type {
 
 struct Weapon {
     W_Type type {};
-    int maxMagazine {};
+    int maxMagazine {}, maxAmmo {};
     int magazine {}, ammo {};
     
     double reload_T {}, clock_R {};
@@ -28,6 +28,7 @@ struct InventarioCmp {
     Weapon gun {
         W_Type::Pistol,
         5,
+        100,
         5,
         100,
         0.8,
@@ -38,6 +39,7 @@ struct InventarioCmp {
     Weapon shot {
         W_Type::Shotgun,
         2,
+        20,
         2,
         20,
         3,
@@ -48,6 +50,7 @@ struct InventarioCmp {
     Weapon rifle {
         W_Type::Fusil,
         25,
+        200,
         25,
         200,
         1.1,

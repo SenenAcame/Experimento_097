@@ -37,27 +37,13 @@ void GameMan::game() {
     //GE.glEng.setResolution(1920, 1080);
 
     RenSys.initIMGUI(GE);
+
     init_config(GE);
-    //size_t map_ID = init_map(LM, GE, SouSys);
-
-    //ImGui::CreateContext();
-    //ImGui_ImplGlfw_InitForOpenGL(GE.getWindow(), true);
-
-    //ImGui::Begin("Hello, world!");
-    //ImGui::Text("This is some useful text."); 
     
-    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
- 
-    LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
-    LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
-    LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
-
-    LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Normal);
-
-    LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys);
-    LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys);
-    LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
+    size_t map_ID = init_map(LM, GE, SouSys);
     
+    size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);
@@ -77,7 +63,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        SpwSys.update (LM, GE, SouSys, player_ID, 0, dt);
+        SpwSys.update (LM, GE, SouSys, player_ID, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);
@@ -87,7 +73,7 @@ void GameMan::game() {
 //
 //    while(dev.run()) {
 //        auto player = LM.init_level(dev, SouSys);
-//        std::size_t player_ID = player.getID();
+//        size_t player_ID = player.getID();
 //        bool dead { false };
 //
 //        //actual moment ini
@@ -139,5 +125,12 @@ void GameMan::init_config(GraphicEngine& GE) {
 
 size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
     ColSys2::init_Hitoxes_Map2(LM);
+
+    LM.createSpawn2(Vec3{ -30,  0, -3  }, GE, 0);
+    LM.createSpawn2(Vec3{ -59,  0, -30 }, GE, 3);
+    LM.createSpawn2(Vec3{ -84,  0, -6  }, GE, 6);
+    LM.createSpawn2(Vec3{ -103, 0, -32 }, GE, 11);
+    LM.createSpawn2(Vec3{ -53,  0, -77 }, GE, 13);
+
     return LM.createMap2(GE, SouSys);
 }

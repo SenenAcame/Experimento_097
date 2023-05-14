@@ -493,7 +493,7 @@
     if(invent.reloading == 1 && invent.clockReload <= values.tim) return;
 
     invent.clockReload = 0;
-    invent.reloading = 0;
+    invent.reloading   = 0;
     
     if(values.mag > 0) {
         createBullet2(LM, GE, invent, phy, SouSys, values.cad);
@@ -517,16 +517,19 @@
             lock_Left = 0;
             LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
             invent.gun.magazine -= 1;
+            std::cout<<"Municion: "<<invent.gun.magazine<<" / "<<invent.gun.ammo<<"\n";
             break;
         case 1:
             lock_Left = 0;
             LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
             invent.shot.magazine -= 1;
+            std::cout<<"Municion: "<<invent.shot.magazine<<" / "<<invent.shot.ammo<<"\n";
             break;
         case 2:
             lock_Left = 1;
             LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
             invent.rifle.magazine -= 1;
+            std::cout<<"Municion: "<<invent.rifle.magazine<<" / "<<invent.rifle.ammo<<"\n";
             break;
     }
 

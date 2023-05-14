@@ -4,7 +4,7 @@
 
 int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     int devol = -1;
-    for(std::size_t i = 0; i < map.salas.size(); i++) {
+    for(size_t i = 0; i < map.salas.size(); i++) {
         bool salaLocation = 
             (map.salas.at(i).x + map.salas.at(i).tamx) >= x && 
             (map.salas.at(i).x - map.salas.at(i).tamx) <= x && 
@@ -16,7 +16,7 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     return devol;
 }
 
-/*VIEJO*/ void NodeMapSys::update(EntyMan& EM){
+///*VIEJO*/ void NodeMapSys::update(EntyMan& EM){
     //float playerposx, playerposz;
     //Enty player;
     //NodoCmp map;
@@ -79,9 +79,9 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     ////        }
     ////    }
     ////);
-}
+//}
 
-/*NUEVO*/ void NodeMapSys::update2(EntyMan& EM, std::size_t player_ID, std::size_t map_ID){
+/*NUEVO*/ void NodeMapSys::update2(EntyMan& EM, size_t player_ID, size_t map_ID){
     Enty& player = EM.getEntityById(player_ID);
     Enty& map    = EM.getEntityById(map_ID);
 
@@ -125,8 +125,8 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
                         EM.getComponent<SalaCmp>(en).sala = salaene ;
                         ai.behaviour = SB::Patrol;
 
-                        std::cout << salaplayer << std::endl;
-                        std::cout << salaene << std::endl;
+                        //std::cout << salaplayer << std::endl;
+                        //std::cout << salaene << std::endl;
 
                         for(unsigned int i = 0; i < map_cmp.salas.at(salaene).puertas.size(); i++) {
                             float distx = phy_cmp.x - map_cmp.salas.at(salaene).puertas.at(i).x;

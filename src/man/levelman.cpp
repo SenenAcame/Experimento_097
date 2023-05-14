@@ -353,7 +353,7 @@
 //        createRoom(dev, models[i], textures[i]);
 //}
 
-/*NUEVO*/ std::size_t LevelMan::createMap2(GraphicEngine& GE, SoundSystem_t& SouSys) {
+/*NUEVO*/ size_t LevelMan::createMap2(GraphicEngine& GE, SoundSystem_t& SouSys) {
     unsigned int const size = 10;
 
     std::string models [size] {
@@ -380,6 +380,7 @@
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
         EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
+
     return map.getID();
 }
 
@@ -398,7 +399,7 @@
 //    return player;
 //}
 
-/*NUEVO*/ std::size_t LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+/*NUEVO*/ size_t LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
     std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();

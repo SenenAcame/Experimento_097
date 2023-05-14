@@ -3,7 +3,7 @@
 #include "cmpstorage2.hpp"
 #include "../util/cmps.hpp"
 
-template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=1000>
+template<typename CMPLIST, typename TAGLIST, size_t Capacity=1000>
 struct EntityMan2 {
     using cmp_storage = CmpStorage2<CMPLIST, TAGLIST, Capacity>;
 
@@ -57,15 +57,15 @@ struct EntityMan2 {
         [[nodiscard]] size_t constexpr getID() const noexcept{ return id; }
 
         private:
-        std::size_t id { nextID++ };
+        size_t id { nextID++ };
         smallest_mask_type<CMPLIST> cmpmask;
         smallest_mask_type<TAGLIST> tagmask;
         key_storage st_key {};
         bool destroy { false };
-        static inline std::size_t nextID { 1 };
+        static inline size_t nextID { 1 };
     };
 
-    EntityMan2(std::size_t defaultsize = Capacity) { entities_.reserve(defaultsize); new_entities_.reserve(20); }
+    EntityMan2(size_t defaultsize = Capacity) { entities_.reserve(defaultsize); new_entities_.reserve(20); }
 
     template<typename CMP, typename... InitParam>
     CMP& addComponent(Entity& e, InitParam&&... initVal) {
@@ -131,7 +131,7 @@ struct EntityMan2 {
         transfer_entities();
     }
 
-    auto& getEntityById(std::size_t id) { 
+    auto& getEntityById(size_t id) { 
         for(auto& cont : entities_){
             if(cont.getID()== id) return cont; 
         }

@@ -32,7 +32,7 @@
 //    //ImGUI_Postrender();
 //};
 
-/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
+/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     //ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -53,12 +53,14 @@
     //ImGUI_Postrender(GE);
 }
 
-void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
+void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& ren    = EM.getComponent<RenderCmp2>(player);
+    auto& sala    = EM.getComponent<SalaCmp>(player);
 
     //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
+    //std::cout<<"Sala jugador: "<<sala.sala<<"\n";
 
     float pitch = GE.getCamera()->Pitch;
     float yaw   = GE.getCamera()->Yaw;

@@ -13,7 +13,7 @@ struct Key {
     gen_type   gen{};
 };
 
-template <typename DataType, std::size_t Capacity>
+template <typename DataType, size_t Capacity>
 struct Slotmap {
     using value_type = DataType;
     using index_type = std::uint64_t;
@@ -25,11 +25,11 @@ struct Slotmap {
 
     constexpr explicit Slotmap() { clear(); }
 
-    [[nodiscard]] constexpr std::size_t capacity()   const noexcept { return Capacity; }
-    [[nodiscard]] constexpr std::size_t size()       const noexcept { return size_; }
-    [[nodiscard]] constexpr std::size_t freelist()   const noexcept { return freelist_; }
-    [[nodiscard]] constexpr std::size_t generation() const noexcept { return generation_; }
-    [[nodiscard]] constexpr key_type    push_back(value_type&& value) {
+    [[nodiscard]] constexpr size_t   capacity()   const noexcept { return Capacity; }
+    [[nodiscard]] constexpr size_t   size()       const noexcept { return size_; }
+    [[nodiscard]] constexpr size_t   freelist()   const noexcept { return freelist_; }
+    [[nodiscard]] constexpr size_t   generation() const noexcept { return generation_; }
+    [[nodiscard]] constexpr key_type push_back(value_type&& value) {
         auto reservedid = allocate();
         auto& slot = indices_[reservedid];
 

@@ -23,24 +23,24 @@ namespace MP {
     constexpr bool is_same_v = is_same<T, U>::value;
 
     // NTH_TYPE
-    template <std::size_t N, typename... Ts>
+    template <size_t N, typename... Ts>
     struct nth_type { static_assert(sizeof... (Ts) != 0, "Error: No hay elemento"); };
-    template <std::size_t N, typename... Ts>
+    template <size_t N, typename... Ts>
     using nth_type_t = typename nth_type<N, Ts...>::type;
     template <typename T, typename... Ts>
     struct nth_type<0, T, Ts...> : type_id<T> {};
-    template<std::size_t N, typename T, typename... Ts>
+    template<size_t N, typename T, typename... Ts>
     struct nth_type<N, T, Ts...> : type_id<nth_type_t<N-1, Ts...>> {};
 
     // POS_TYPE
     template<typename T, typename... Ts>
     struct pos_type { static_assert(sizeof... (Ts) != 0, "Error: No hay elemento"); };
     template<typename T, typename... Ts>
-    constexpr std::size_t pos_type_v = pos_type<T, Ts...>::value;
+    constexpr size_t pos_type_v = pos_type<T, Ts...>::value;
     template<typename T, typename... Ts>
-    struct pos_type<T, T, Ts...> : constant<std::size_t, 0>{};
+    struct pos_type<T, T, Ts...> : constant<size_t, 0>{};
     template<typename T, typename U, typename... Ts>
-    struct pos_type<T, U, Ts...> : constant<std::size_t, 1+pos_type_v<T, Ts...>> {};
+    struct pos_type<T, U, Ts...> : constant<size_t, 1+pos_type_v<T, Ts...>> {};
 
     //IFT
     template<bool COND, typename TRUE, typename FALSE>
@@ -54,13 +54,13 @@ namespace MP {
     template<typename... Ts>
     struct Typelist{
         //or consteval
-        constexpr static std::size_t size() noexcept { return (sizeof...(Ts)); }
+        constexpr static size_t size() noexcept { return (sizeof...(Ts)); }
         template<typename T>
         //or consteval
         constexpr static bool contains() noexcept { return (false || ... || is_same_v<T, Ts>); }
         template<typename T>
         //or consteval
-        constexpr static std::size_t pos() noexcept {
+        constexpr static size_t pos() noexcept {
             static_assert(contains<T>());
             return pos_type_v<T, Ts...>;
         }

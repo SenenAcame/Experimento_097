@@ -10,16 +10,16 @@ struct SpawnSystem {
     using VOICMPs = MP::Typelist<>;
     using ENETAGs = MP::Typelist<TEnemy>;
 
-    using SYSCMPs = MP::Typelist<SpawnCmp, PhysicsCmp2>;
+    using SYSCMPs = MP::Typelist<SpawnCmp, PhysicsCmp2, SalaCmp>;
     using SYSTAGs = MP::Typelist<TSpawn>;
 
     using WPNTAGs = MP::Typelist<TWeapon>;
 
-    void update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, std::size_t player_ID, std::size_t map_ID, double const dt);
+    void update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
     
 private:
     void updateAliveEnem(EntyMan& EM);
-    void updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
+    void updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
     void updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
     
     CuantityEnemies refill(CuantityEnemies type);

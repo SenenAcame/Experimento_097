@@ -3,7 +3,7 @@
 #include "../util/slotmap.hpp"
 #include "../util/gameengine.hpp"
 
-template<typename CMPLIST, typename TAGLIST, std::size_t Capacity=100>
+template<typename CMPLIST, typename TAGLIST, size_t Capacity = 100>
 struct CmpStorage2 {
     using cmp_info = cmps_traits<CMPLIST>;
     using tag_info = tags_traits<TAGLIST>;

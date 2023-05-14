@@ -344,6 +344,15 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
         if(invent.inventary[old_wpn] == 2) break;
 
     InpSys2::changeWeaponMethod(GE, invent, new_wpn.typeWe, old_wpn);
+
+    switch(new_wpn.typeWe) {
+        case 0: invent.gun.ammo += invent.gun.maxAmmo/10;
+            break;
+        case 1: invent.shot.ammo += invent.shot.maxAmmo/10;
+            break;
+        case 2: invent.rifle.ammo += invent.rifle.maxAmmo/10;
+            break;
+    }
     
     weapon.setDestroy();
 }

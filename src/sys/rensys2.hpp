@@ -14,9 +14,9 @@ struct RenSys2 {
     static constexpr double PI { std::numbers::pi };
 
     ///*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
-    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
+    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, size_t player_ID);
 
-    void updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
+    void updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID);
     
     ///*VIEJO*/ void drawAll (EntyMan& EM, TheEngine& GFX);
     ///*VIEJO*/ void drawBBox(EntyMan& EM, TheEngine& GFX);

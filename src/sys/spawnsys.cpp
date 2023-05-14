@@ -2,12 +2,12 @@
 #include "../eng/engine2.hpp"
 #include "../man/levelman.hpp"
 
-void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, std::size_t player_ID, std::size_t map_ID, double const dt) {
+void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
     auto& EM = LM.getEM();
 
     updateAliveEnem(EM);
 
-    updateSpawnEnem(LM, GE, SouSys, dt);
+    updateSpawnEnem(LM, GE, SouSys, player_ID, dt);
 
     updateWave(LM, GE, SouSys, dt);    
 }
@@ -20,16 +20,21 @@ void SpawnSystem::updateAliveEnem(EntyMan& EM) {
     );
 }
 
-void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt) {
+void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
     auto& EM = LM.getEM();
 
+    Enty& player = EM.getEntityById(player_ID);
+    auto& room_ply = EM.getComponent<SalaCmp>(player);
+
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& entity, SpawnCmp& spawn, PhysicsCmp2& phy) {
+        [&](Enty& entity, SpawnCmp& spawn, PhysicsCmp2& phy, SalaCmp& room) {
             spawn.clock += dt;
+
             bool posible_spawn {
-                spawn.clock        >= spawn.timer && 
-                wave.total.reserve >  0           && 
-                wave.aliveEnem     <  wave.maximEnem
+                spawn.clock        >= spawn.timer    && 
+                wave.total.reserve >  0              && 
+                wave.aliveEnem     <  wave.maximEnem &&
+                room_ply.sala      != room.sala
             };
             
             if(posible_spawn) spawnProcess(LM, GE, SouSys, spawn, phy);
