@@ -9,7 +9,7 @@ struct ColSys2 {
     using SYSTAGs = MP::Typelist<TInteract>;
     static constexpr double pos_y = 9;
     static constexpr float height = 10;
-    static constexpr float thick  = 0.1f;
+    static constexpr float thick  = 0.01f;
 
     void update(EntyMan& EM);
     [[nodiscard]] static constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept;

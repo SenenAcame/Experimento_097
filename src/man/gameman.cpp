@@ -49,7 +49,6 @@ void GameMan::game() {
 
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     std::size_t map_ID    = LM.createMap2(GE, SouSys);
-    std::cout << "Mapa GM: " << map_ID<< std::endl;
     ColSys.init_Hitoxes_Map2(LM);
 
     LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
