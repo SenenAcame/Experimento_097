@@ -222,3 +222,97 @@ void UIsys::menuIni (GraphicEngine& GE){
     //ImGui::PopStyleVar();
     
 }
+
+void UIsys::menuMuerto (GraphicEngine& GE){
+    int counter =0;
+
+    auto* m_window = GE.getWindow();
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
+
+    RTexture inicio("assets/Interface/1280x720/pantalla_muerto.png");
+
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    //ImGui::PushStyleVar(ImGuiCol_WindowBg);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::Begin(
+        "MenuMuerto", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
+    );
+    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Jugar", ImVec2(200,100))){
+
+    }
+    ImGui::PopStyleColor();
+ 
+ 
+    ImGui::End();
+ 
+}
+
+void UIsys::menuControles (GraphicEngine& GE){
+    int counter =0;
+
+    auto* m_window = GE.getWindow();
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
+
+    RTexture inicio("assets/Interface/1280x720/pantalla_controles.png");
+
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    //ImGui::PushStyleVar(ImGuiCol_WindowBg);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::Begin(
+        "MenuIni", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
+    );
+    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Jugar", ImVec2(200,100))){
+
+    }
+    ImGui::PopStyleColor();
+ 
+ 
+    ImGui::End();
+
+    
+}
+
+void UIsys::menuPausa (GraphicEngine& GE){
+    int counter =0;
+
+    auto* m_window = GE.getWindow();
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
+
+    RTexture inicio("assets/Interface/1280x720/pantalla_pausa.png");
+
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    //ImGui::PushStyleVar(ImGuiCol_WindowBg);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::Begin(
+        "MenuIni", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
+    );
+    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Jugar", ImVec2(200,100))){
+
+    }
+    ImGui::PopStyleColor();
+ 
+ 
+    ImGui::End();
+ 
+}
