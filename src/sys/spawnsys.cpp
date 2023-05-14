@@ -9,11 +9,11 @@ void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys,
 
     updateSpawnEnem(LM, GE, SouSys, dt);
 
-    updateWave(dt);    
+    updateWave(LM, GE, SouSys, dt);    
 }
 
 void SpawnSystem::updateAliveEnem(EntyMan& EM) {
-    EM.foreach<ENECMPs, ENETAGs>(
+    EM.foreach<VOICMPs, ENETAGs>(
         [&](Enty& enemy) {
             if(enemy.getDestroy()) wave.aliveEnem--;
         }
@@ -37,7 +37,7 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
     );
 }
 
-void SpawnSystem::updateWave(double const dt) {
+void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt) {
     bool finished_wave { 
         progres.inRound         && 
         wave.total.reserve == 0 && 
@@ -52,7 +52,10 @@ void SpawnSystem::updateWave(double const dt) {
 
         bool toNextWave = progres.clockNextWave >= progres.timeBtwWaves;
 
-        if(toNextWave) nextWave();
+        if(toNextWave) { 
+            nextWave();
+            spawnWeapons(LM, GE, SouSys);
+        }
     }
 }
 
@@ -101,4 +104,16 @@ void SpawnSystem::nextWave() {
     wave.total = refill(wave.total);
 
     aumentDifficult();
+}
+
+void SpawnSystem::spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
+    auto& EM = LM.getEM();
+    EM.foreach<VOICMPs, WPNTAGs>(
+        [&](Enty& weapon) {
+            weapon.setDestroy();
+        }
+    );
+    LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys);
+    LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys);
+    LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
 }

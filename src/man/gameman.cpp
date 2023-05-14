@@ -35,31 +35,28 @@ void GameMan::game() {
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
+
     RenSys.initIMGUI(GE);
-
-    srand(time(NULL));
-
-    //RenSys.initIMGUI(GE);
+    init_config(GE);
+    //size_t map_ID = init_map(LM, GE, SouSys);
 
     //ImGui::CreateContext();
     //ImGui_ImplGlfw_InitForOpenGL(GE.getWindow(), true);
 
     //ImGui::Begin("Hello, world!");
     //ImGui::Text("This is some useful text."); 
-
-    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     
-    //std::size_t map_ID    = LM.createMap2(GE, SouSys);
-    //ColSys.init_Hitoxes_Map2(LM);
-
+    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+ 
     LM.createSpawn2(Vec3{ -30, 0, -3  }, GE, 1);
     LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
     LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
 
     //LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Distance);
 
-    //LM.createWeapon2(GE, Vec3 { -77, 2.8,   4 }, W_Type::Shotgun, SouSys);
-    //LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
+    LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys);
+    LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys);
+    LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
     
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -80,7 +77,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        //SpwSys.update (LM, GE, SouSys, player_ID, 0, dt);
+        SpwSys.update (LM, GE, SouSys, player_ID, 0, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);
@@ -134,13 +131,13 @@ void GameMan::game() {
 //    //RenSys.EndImgui();
 }
 
-//void GameMan::init_config(TheEngine& dev) {
-//    srand(time(NULL));
-//    dev.getDevice()->getCursorControl()->setVisible(false);
-//    dev.SetFont("assets/Interface/Font/chill.xml");
-//}
-//
-//void GameMan::init_map(LevelMan& LM, TheEngine& dev, SoundSystem_t& SouSys) {
-//    LM.createMap(dev, SouSys);
-//    ColSys2::init_Hitoxes_Map2(LM);
-//}
+void GameMan::init_config(GraphicEngine& GE) {
+    srand(time(NULL));
+    //dev.getDevice()->getCursorControl()->setVisible(false);
+    //dev.SetFont("assets/Interface/Font/chill.xml");
+}
+
+size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
+    ColSys2::init_Hitoxes_Map2(LM);
+    return LM.createMap2(GE, SouSys);
+}

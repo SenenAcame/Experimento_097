@@ -643,7 +643,7 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
         //std::cout<<"Sin normalizar: "<<ang_alp<<" "<<ang_bet<<"\n";
         createBullet2(GE, pos, EstadisticaCmp{stats}, dir, SouSys, slfD, ang_alp, ang_bet);
     }
-    std::cout<<"\n";
+    //std::cout<<"\n";
 }
 
 /*NUEVO*/ void LevelMan::createEneBullet(GraphicEngine& GE, PhysicsCmp2&& phy, int dmg) {
