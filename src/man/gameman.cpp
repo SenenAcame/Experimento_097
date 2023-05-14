@@ -52,7 +52,7 @@ void GameMan::game() {
     LM.createSpawn2(Vec3{ -84, 0, -6  }, GE, 2);
     LM.createSpawn2(Vec3{ -59, 0, -30 }, GE, 3);
 
-    //LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Distance);
+    LM.createEnemy(GE, Vec3{ -30, 2.5, -3  }, SouSys, Type_Enemy::Normal);
 
     LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys);
     LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys);
@@ -69,7 +69,7 @@ void GameMan::game() {
         //ge.glEng.drawFocos();
         EM.update();
         RenSys.update2(EM, GE, player_ID);
-        //MapSys.update(EM, player_ID, map_ID);
+        MapSys.update2(EM, player_ID, map_ID);
         InpSys.update2(LM, GE, SouSys, dt);
         AISys. update2(LM, GE, dt);
         PhySys.update (EM, dt);

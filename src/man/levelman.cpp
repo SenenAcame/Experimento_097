@@ -371,7 +371,7 @@
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
-    //EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas()});
     EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
     EM.addTag<TMap>(map);
 
@@ -380,7 +380,6 @@
         EM.addComponent<PhysicsCmp2>(room, PhysicsCmp2 {});
         EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
-
     return map.getID();
 }
 
@@ -467,7 +466,7 @@
 
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
-    EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<EstadoCmp>  (enemy, 0.7f, 1.5f, 0.7f);
     EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>    (enemy);
     //TAGS
@@ -723,6 +722,7 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
     EM.addComponent<EstadoCmp>  (wall, width, height, depth);
     EM.addTag<TInteract>(wall);
     EM.addTag<TWall>    (wall);
+    
 }
 
 //Enty& LevelMan::createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
