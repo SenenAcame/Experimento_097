@@ -137,7 +137,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit1", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -188,4 +188,37 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
         }
     }
     ImGui::End();
+}
+
+void UIsys::menuIni (GraphicEngine& GE){
+    int counter =0;
+
+    auto* m_window = GE.getWindow();
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
+
+    RTexture inicio("assets/Interface/1280x720/pantalla_inicio_fondo.png");
+
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    //ImGui::PushStyleVar(ImGuiCol_WindowBg);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::Begin(
+        "MenuIni", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
+    );
+    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Jugar", ImVec2(200,100))){
+
+    }
+    ImGui::PopStyleColor();
+    //ImGui::Text("Hola");
+    //ImGui::Image((void*)(intptr_t)inicio.ID_, ImVec2(width, height));
+ 
+    ImGui::End();
+    //ImGui::PopStyleVar();
+    
 }

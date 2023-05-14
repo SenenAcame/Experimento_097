@@ -50,7 +50,11 @@
     updateCamera(EM, GE, player_ID);
 
     drawWorld(GE);
-    UISys.renderInterface(EM, GE, player_ID, dt);
+    UISys.menuIni(GE);
+    //UISys.renderInterface(EM, GE, player_ID, dt); 
+    
+    
+    
 
     //ImGUI_RenderUI(EM, GE, player_ID);
     ImGUI_Postrender(GE);

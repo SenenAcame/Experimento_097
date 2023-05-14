@@ -29,12 +29,18 @@ struct UIsys {
     double clockHit1 {}, clockHit2 {}, clockHit3 {};
     int randWidth1 {}, randWidth2 {}, randWidth3 {};
     int randHeight1{}, randHeight2{}, randHeight3{};
+    bool jugar{false};
 
     //weapons
     int equipada{0};
 
+    //UI game
     void renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, double dt);
     void hitInterface(GraphicEngine& GE);
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
+
+    //menus
+    void menuIni(GraphicEngine& GE);
+
     
 };
