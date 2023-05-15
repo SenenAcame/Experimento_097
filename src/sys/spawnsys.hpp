@@ -27,6 +27,8 @@ private:
     void spawnProcess(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, SpawnCmp& spawn, PhysicsCmp2& phy);
     void nextWave();
     void spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
+    void deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
+    void createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
     
     ExtraStats   difficult {};
     WaveInfo     wave      {};

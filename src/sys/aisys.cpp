@@ -219,14 +219,8 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
 
             switch(ai.behaviour){
                 //case SB::Arrive: arrive(ai, phy); break;
-
                 case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-
-                case SB::Patrol: 
-                    //seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive);
-                    arrive(ai, phy);
-                    break;
-
+                case SB::Patrol: arrive(ai, phy); break;
                 case SB::Shoot:  shoot2(LM, GE, entity, ai, phy);
                 case SB::Two_Steps: {
                     auto& player     = EM.getEntityById(bb.entyID);

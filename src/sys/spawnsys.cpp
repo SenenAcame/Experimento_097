@@ -112,13 +112,43 @@ void SpawnSystem::nextWave() {
 }
 
 void SpawnSystem::spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
+    deleteWeapons(LM, GE, SouSys);
+
+    createWeapons(LM, GE, SouSys);
+}
+
+void SpawnSystem::deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
     auto& EM = LM.getEM();
     EM.foreach<VOICMPs, WPNTAGs>(
         [&](Enty& weapon) {
             weapon.setDestroy();
         }
     );
-    LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys);
-    LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys);
-    LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys);
+}
+
+void SpawnSystem::createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
+    int pos {};
+    W_Type weapons[] = {W_Type::Pistol, W_Type::Shotgun, W_Type::Fusil};
+
+    std::vector<Vec3> positions;
+    //positions.push_back(Vec3 { -30,  2.8, -13 }); // Sala 0
+    positions.push_back(Vec3 { -58,  2.8, -31 }); // Sala 3
+    positions.push_back(Vec3 { -77,  2.8, 4   }); // Sala 6
+    positions.push_back(Vec3 { -100, 2.8, -35 }); // Sala 11
+    positions.push_back(Vec3 { -57,  2.8, -78 }); // Sala 13
+    positions.push_back(Vec3 { -60,  2.8, 32  }); // Sala X (patio)
+
+    for(int i = 0; i < 3; i++) {
+        pos = rand() % positions.size();
+        LM.createWeapon2(GE, positions.at(pos),weapons[i],  SouSys);
+        positions.erase(positions.begin() + pos);
+    }
+
+    // MANUAL
+    //LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys); // Sala 0
+    //LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys); // Sala 6
+    //LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys); // Sala 3
+    // (-100, 2.8, -35) Sala 11
+    // ( -57, 2.8, -78) Sala 13
+    // ( -60, 2.8,  32) Sala X (patio)
 }

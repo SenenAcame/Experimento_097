@@ -15,10 +15,6 @@
 #include <cstddef>
 #include <iostream>
 
-//#include <imgui/src/imgui.h>
-//#include <imgui/src/imgui_impl_glfw.h>
-//#include <imgui/src/imgui_impl_opengl3.h>
-
 void GameMan::game() {
     LevelMan      LM;
     EntyMan&      EM = LM.getEM();
@@ -63,7 +59,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        //SpwSys.update (LM, GE, SouSys, player_ID, dt);
+        SpwSys.update (LM, GE, SouSys, player_ID, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);
@@ -124,7 +120,7 @@ void GameMan::init_config(GraphicEngine& GE) {
 }
 
 size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
-    ColSys2::init_Hitoxes_Map2(LM);
+    //ColSys2::init_Hitoxes_Map2(LM);
 
     LM.createSpawn2(Vec3{ -30,  0, -3  }, GE, 0);
     LM.createSpawn2(Vec3{ -59,  0, -30 }, GE, 3);
