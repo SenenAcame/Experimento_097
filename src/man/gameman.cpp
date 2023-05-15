@@ -63,7 +63,7 @@ void GameMan::game() {
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        SpwSys.update (LM, GE, SouSys, player_ID, dt);
+        //SpwSys.update (LM, GE, SouSys, player_ID, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);

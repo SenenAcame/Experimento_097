@@ -109,20 +109,21 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
                 }
                 else {
                     puerta nextcoord = { 0, 0 };
-                    if((salaplayer==10 || salaplayer==11) && salaene==6){
+                    if((salaplayer == 10 || salaplayer == 11) && salaene == 6) {
                         nextcoord = { -89.95, -0.6 };
                     }
-                    else if(salaene==10 && salaplayer!=11){
+                    else if(salaene == 10 && salaplayer != 11) {
                         nextcoord = { -100.74, -4.22 };
                     }
-                    else if(salaene==9 && salaplayer!=11 && salaplayer!=10){
+                    else if(salaene == 9 && salaplayer != 11 && salaplayer != 10) {
                         nextcoord = { -88.95, -1.61 };
                     }
-                    else{
+                    else {
                         float dist = FLT_MAX;
 
                         EM.getComponent<SalaCmp>(player).sala = salaplayer;
                         EM.getComponent<SalaCmp>(en).sala = salaene ;
+
                         ai.behaviour = SB::Patrol;
 
                         //std::cout << salaplayer << std::endl;

@@ -354,9 +354,10 @@
 //}
 
 /*NUEVO*/ size_t LevelMan::createMap2(GraphicEngine& GE, SoundSystem_t& SouSys) {
-    unsigned int const size = 10;
+    unsigned int const size = 13;
 
     std::string models [size] {
+        "assets/models/mapas/Patio.obj",
         "assets/models/mapas/Sala_1.obj",
         "assets/models/mapas/Sala_2.obj",
         "assets/models/mapas/Sala_3.obj",
@@ -366,7 +367,9 @@
         "assets/models/mapas/Pasillo_2.obj",
         "assets/models/mapas/Pasillo_3.obj",
         "assets/models/mapas/Pasillo_4.obj",
-        "assets/models/mapas/Pasillo_5.obj"
+        "assets/models/mapas/Pasillo_5.obj",
+        "assets/models/mapas/Pasillo_6.obj",
+        "assets/models/mapas/Pasillo_7.obj"
     };
 
     Enty& map = EM.createEntity();
