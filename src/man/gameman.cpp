@@ -122,11 +122,20 @@ void GameMan::init_config(GraphicEngine& GE) {
 size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
     //ColSys2::init_Hitoxes_Map2(LM);
 
-    LM.createSpawn2(Vec3{ -30,  0, -3  }, GE, 0);
-    LM.createSpawn2(Vec3{ -59,  0, -30 }, GE, 3);
-    LM.createSpawn2(Vec3{ -84,  0, -6  }, GE, 6);
-    LM.createSpawn2(Vec3{ -103, 0, -32 }, GE, 11);
-    LM.createSpawn2(Vec3{ -53,  0, -77 }, GE, 13);
+    // SPAWN ENEMIGOS
+    LM.createEneSpawn(Vec3{ -30,  0, -3  }, GE, 0);
+    LM.createEneSpawn(Vec3{ -59,  0, -30 }, GE, 3);
+    LM.createEneSpawn(Vec3{ -84,  0, -6  }, GE, 6);
+    LM.createEneSpawn(Vec3{ -103, 0, -32 }, GE, 11);
+    LM.createEneSpawn(Vec3{ -53,  0, -77 }, GE, 13);
+
+    // SPAWN ARMAS
+    LM.createWpnSpawn(Vec3 { -30,  2.8, -13 }, GE, 0);
+    LM.createWpnSpawn(Vec3 { -58,  2.8, -31 }, GE, 3);
+    LM.createWpnSpawn(Vec3 { -77,  2.8, 4   }, GE, 6);
+    LM.createWpnSpawn(Vec3 { -100, 2.8, -35 }, GE, 11);
+    LM.createWpnSpawn(Vec3 { -57,  2.8, -78 }, GE, 13);
+    // LM.createWpnSpawn(Vec3 { -60,  2.8, 32  }, GE, X); Sala X (patio)
 
     return LM.createMap2(GE, SouSys);
 }

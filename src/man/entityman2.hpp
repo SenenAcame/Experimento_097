@@ -65,7 +65,10 @@ struct EntityMan2 {
         static inline size_t nextID { 1 };
     };
 
-    EntityMan2(size_t defaultsize = Capacity) { entities_.reserve(defaultsize); new_entities_.reserve(20); }
+    EntityMan2(size_t defaultsize = Capacity) { 
+        entities_.reserve(defaultsize); 
+        new_entities_.reserve(50); 
+    }
 
     template<typename CMP, typename... InitParam>
     CMP& addComponent(Entity& e, InitParam&&... initVal) {

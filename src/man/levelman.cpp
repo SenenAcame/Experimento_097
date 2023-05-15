@@ -793,6 +793,18 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    return spawn;
 //}
 
+Enty& LevelMan::createEneSpawn(Vec3 pos, GraphicEngine& GE, int room){
+    Enty& spawn = createSpawn2(pos, GE, room);
+    EM.addTag<TSpwEnemy>(spawn);
+    return spawn;
+}
+
+Enty& LevelMan::createWpnSpawn(Vec3 pos, GraphicEngine& GE, int room){
+    Enty& spawn = createSpawn2(pos, GE, room);
+    EM.addTag<TSpwWeapon>(spawn);
+    return spawn;
+}
+
 Enty& LevelMan::createSpawn2(Vec3 pos, GraphicEngine& GE, int room){
     Enty& spawn = EM.createEntity();
     EM.addComponent<SalaCmp>    (spawn, SalaCmp { .sala = room });

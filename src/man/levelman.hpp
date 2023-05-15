@@ -45,6 +45,9 @@ struct LevelMan {
     /*NUEVO*/ TNodo* createModelHitbox(GraphicEngine& GE, Vec3 pos, Vec3 scale, TNodo* padre);
 
     /*NUEVO*/ void   viewBB(GraphicEngine& GE, Enty& ent);
+
+    /*NUEVO*/ Enty&  createEneSpawn(Vec3 pos, GraphicEngine& GE, int room);
+    /*NUEVO*/ Enty&  createWpnSpawn(Vec3 pos, GraphicEngine& GE, int room);
     /*NUEVO*/ Enty&  createSpawn2(Vec3 pos, GraphicEngine& GE, int room);
 
     EntyMan&         getEM() { return EM; }

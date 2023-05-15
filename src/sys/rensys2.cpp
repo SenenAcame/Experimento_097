@@ -59,8 +59,8 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     auto& ren    = EM.getComponent<RenderCmp2>(player);
     auto& sala    = EM.getComponent<SalaCmp>(player);
 
-    std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
-    std::cout<<"Sala jugador: "<<sala.sala<<"\n";
+    //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
+    //std::cout<<"Sala jugador: "<<sala.sala<<"\n";
 
     float pitch = GE.getCamera()->Pitch;
     float yaw   = GE.getCamera()->Yaw;
