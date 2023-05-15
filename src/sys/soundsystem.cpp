@@ -62,3 +62,7 @@ bool SoundSystem_t::isPlaying(SoundCmp& s) {
 void SoundSystem_t::close() {
     facherita.close();
 }
+
+void SoundSystem_t::changeVCA(int tipo, float volumen){
+    facherita.changeVCAVolume(tipo, volumen);
+}

@@ -185,3 +185,22 @@ void TheFachada::chargeparameters() {
     FMOD_Studio_EventDescription_GetParameterDescriptionByName(rondaDescription, "ronda",&paramRonda);
     FMOD_Studio_EventDescription_GetParameterDescriptionByName(personajeDescription, "vozpersonaje",&paramPersonaje);
 }
+
+void TheFachada::changeVCAVolume(int tipo, float volumen){
+    FMOD_STUDIO_VCA *vca;
+    switch(tipo){
+        case 0:
+            FMOD_Studio_System_GetVCA(system, "vca:/Ambientes", &vca);
+            break;
+        case 1:
+            FMOD_Studio_System_GetVCA(system, "vca:/Musica", &vca);
+            break;
+        case 2:
+            FMOD_Studio_System_GetVCA(system, "vca:/SFX", &vca);
+            break;
+        case 3:
+            FMOD_Studio_System_GetVCA(system, "vca:/Voces", &vca);
+            break;
+    }
+    FMOD_Studio_VCA_SetVolume(vca, FMOD_Studio_VCA_GetVolume(vca,0,0)+volumen);
+}

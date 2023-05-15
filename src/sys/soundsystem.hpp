@@ -17,6 +17,7 @@ struct SoundSystem_t {
     void stopsound(SoundCmp&);
     bool isPlaying(SoundCmp&);
     void changesound(SoundCmp&);
+    void changeVCA(int, float);
 
 private:
     TheFachada facherita;

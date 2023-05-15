@@ -22,6 +22,7 @@ struct TheFachada {
     void changesound(SoundCmp&);
     void chargeparameters();
     void createdescriptions();
+    void changeVCAVolume(int, float);
 
 private:
     FMOD_SYSTEM *coreSystem;
