@@ -42,12 +42,12 @@
                 rend.node->setRotation(Vec3 { 0, giro_y, 0 });
             }
             if(ent.hasTAG<TWeapon>()) {
-                rend.node->rotate(Vec3 { 0, .5, 0 });
-                //if(phy.y < 5)
-                //    phy.y += 0.1;
-                //else {
-                //    phy.y -= 0.1;
-                //}
+                rend.node->rotate(Vec3 { 0, 1, 0 });
+
+                phy.y += rend.elev;
+
+                if(phy.y >= 3.5) rend.elev = -0.01;
+                if(phy.y <= 2.5) rend.elev = 0.01;
             }
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();

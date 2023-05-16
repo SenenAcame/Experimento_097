@@ -33,7 +33,7 @@ void RAnimation::draw(Mat4 mat, int *currentAnim) {
             currentFrame++;
             animTimer.start();
             if(currentFrame >= animations_.at(tmpCAnim).size()) {
-                std::cout << "entro en el fin\n";
+                //std::cout << "entro en el fin\n";
                 //*currentAnim = -1;
                 *currentAnim = 0;
                 currentFrame = 0;

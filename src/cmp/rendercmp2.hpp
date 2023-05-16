@@ -8,5 +8,7 @@ struct RenderCmp2 {
 
     TNodo* node;
 
+    float elev = 0.01;
+
     static constexpr uint8_t id { 1 }; //0000000010
 };
