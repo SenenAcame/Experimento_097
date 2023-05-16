@@ -148,16 +148,17 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
 
 std::vector<sala> NodeMapSys::creaSalas() {
 
-    float salasx[]={-36.8f, -36.8f, -40.4f, -57.95f, -75.5f, -79.1f, -79.1f, -61.55f, -54.35f, -96.65f, -100.25f, -100.25f, -57.95f, -57.95f};
-    float salasz[]={-8.81f, -26.35f, -37.15f, -37.15f, -37.16f, -22.76f, -1.61f, -1.61f, -8.81f, -1.61f, -12.42f, -29.96f, -54.7f, -72.24f};
-    float tamx[]=  {20.7/2, 7.2/2, 14.4/2, 20.7/2, 14.57/2, 7.2/2, 20.7/2, 14.4/2, 14.4/2, 14.4/2, 7.2/2, 20.7/2, 7.2/2, 20.7/2};
-    float tamz[]=  {20.7/2, 14.39/2, 7.21/2, 20.7/2, 7.2/2, 21.6/2, 20.7/2, 7.2/2, 7.2/2, 7.2/2, 14.39/2, 20.7/2, 14.39/2, 20.7/2};
+    float salasx[]={-36.8f, -36.8f, -40.4f, -57.95f, -75.5f, -79.1f, -79.1f, -61.55f, -54.35f, -96.65f, -100.25f, -100.25f, -57.95f, -57.95f, -79.1f, -36.8f, -71.9f, -40.4f};
+    float salasz[]={-8.81f, -26.35f, -37.15f, -37.15f, -37.16f, -22.76f, -1.61f, -1.61f, -8.81f, -1.61f, -12.42f, -29.96f, -54.7f, -72.24f, 15.93f, 12.34f, 33.48f, 33.48f};
+    float tamx[]=  {20.7/2, 7.2/2, 14.4/2, 20.7/2, 14.57/2, 7.2/2, 20.7/2, 14.4/2, 14.4/2, 14.4/2, 7.2/2, 20.7/2, 7.2/2, 20.7/2, 7.2/2, 7.2/2, 35.1/2, 27.9/2};
+    float tamz[]=  {20.7/2, 14.39/2, 7.21/2, 20.7/2, 7.2/2, 21.6/2, 20.7/2, 7.2/2, 7.2/2, 7.2/2, 14.39/2, 20.7/2, 14.39/2, 20.7/2, 14.39/2, 21.59/2, 20.7/2, 20.7/2};
 
     std::vector<sala> sala;
     std::vector<std::vector<puerta>> todaspuertas;
     std::vector<puerta> puertass1;
     puertass1.push_back({-36.8, -19.66});
     puertass1.push_back({-47.65, -8.81});
+    puertass1.push_back({-36.8, 2.5});
 
     std::vector<puerta> puertass2;
     puertass2.push_back({-36.8, -18.66});
@@ -184,6 +185,7 @@ std::vector<sala> NodeMapSys::creaSalas() {
     puertass7.push_back({-79.1, -12.46});
     puertass7.push_back({-68.25, -1.6});
     puertass7.push_back({-89.95, -0.6});
+    puertass7.push_back({-79.1, 9.74});
 
     std::vector<puerta> puertass8;
     puertass8.push_back({-69.25, -1.6});
@@ -211,6 +213,21 @@ std::vector<sala> NodeMapSys::creaSalas() {
     std::vector<puerta> puertass14;
     puertass14.push_back({-57.97, -60.89});
 
+    std::vector<puerta> puertass15;
+    puertass15.push_back({-79.1, 7.74});
+    puertass15.push_back({-79.1, 24.13});
+
+    std::vector<puerta> puertass16;
+    puertass16.push_back({-36.8, 0.5});
+    puertass16.push_back({-36.8, 24.13});
+
+    std::vector<puerta> puertass17;
+    puertass17.push_back({-36.8, 22.13});
+    puertass17.push_back({-53.35, 33.47});
+
+    std::vector<puerta> puertass18;
+    puertass18.push_back({-79.1, 22.13});
+    puertass17.push_back({-55.35, 33.47});
 
     todaspuertas.push_back(puertass1);
     todaspuertas.push_back(puertass2);
@@ -226,6 +243,10 @@ std::vector<sala> NodeMapSys::creaSalas() {
     todaspuertas.push_back(puertass12);
     todaspuertas.push_back(puertass13);
     todaspuertas.push_back(puertass14);
+    todaspuertas.push_back(puertass15);
+    todaspuertas.push_back(puertass16);
+    todaspuertas.push_back(puertass17);
+    todaspuertas.push_back(puertass18);
 
     for(unsigned int i = 0; i < todaspuertas.size(); i++)
         sala.push_back({ salasx[i], salasz[i], tamx[i], tamz[i], todaspuertas.at(i) });
