@@ -3,6 +3,7 @@
 #include "../sys/nodemapsys.hpp"
 #include "../sys/soundsystem.hpp"
 #include <cmath>
+#include "../sys/partsys.hpp"
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -450,7 +451,7 @@
 //    return enemy;
 //}
 
-/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
+/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, PartSys& PartSys, ExtraStats plus) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
     Vec3 base_stats = { 20, 20, 4 };
     
@@ -473,9 +474,38 @@
     EM.addComponent<EstadoCmp>  (enemy, 0.7f, 1.5f, 0.7f);
     EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>    (enemy);
+    //auto &part = EM.addComponent<ParticleCMP> (enemy);
+    
+    //PartSys.setParticle(part, "assets/textures/partExplosion.png", 100, 0, 0.f, 1.0f, {.5f, 1.f, .5f}, 3.f, 0.f, 0.1f, -8.f);
+
     //TAGS
     EM.addTag<TInteract>(enemy);
     EM.addTag<TEnemy>   (enemy);
+
+    //viewBB(GE, enemy);
+
+    return enemy;
+}
+
+/*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+    std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
+    std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_caminar", "monstruo2/caminar/monstruo2_caminar"};
+    std::vector<int> framesAnim = {111,111};
+    Enty& enemy = EM.createEntity();
+    //CMPS
+    defineAI(enemy);
+    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{ .hitpoints = 20, .damage = 20, .speed = 4.f});
+    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
+    auto& rend = EM.addComponent<RenderCmp2> (enemy, RenderCmp2 {
+        .node = GE.createNodeAnim(file_model, anim, framesAnim)
+    });
+    rend.node->getEntity<EModel>()->currentAnim = 0;
+    EM.addComponent<EstadoCmp>(enemy, 1.f, 1.5f, 1.f);
+    EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
+    EM.addComponent<SalaCmp>  (enemy);
+    //TAGS
+    EM.addTag<TInteract>(enemy);
+    EM.addTag<TEnemy>(enemy);
 
     //viewBB(GE, enemy);
 

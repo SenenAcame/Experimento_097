@@ -6,7 +6,7 @@
 using ComponentList = MP::Typelist<
     PhysicsCmp2, RenderCmp2, InputCmp2, EstadoCmp, EstadisticaCmp, 
     InventarioCmp, AICmp, NodoCmp, SoundCmp, SelfDestCmp,
-    SpawnCmp, InteractCMP, WeaponCmp, SalaCmp>;
+    SpawnCmp, InteractCMP, WeaponCmp, SalaCmp, ParticleCMP>;
 
 using TagList = MP::Typelist<
     TPlayer, TEnemy, TBullet, TMap, TWeapon, 

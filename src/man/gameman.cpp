@@ -11,9 +11,15 @@
 #include "../sys/spawnsys.hpp"
 #include "../sys/rensys2.hpp"
 #include "../eng/engine2.hpp"
+#include "animationman.hpp"
 #include <chrono>
 #include <cstddef>
 #include <iostream>
+#include "../sys/partsys.hpp"
+
+//#include <imgui/src/imgui.h>
+//#include <imgui/src/imgui_impl_glfw.h>
+//#include <imgui/src/imgui_impl_opengl3.h>
 
 void GameMan::game() {
     LevelMan      LM;
@@ -30,16 +36,17 @@ void GameMan::game() {
     SelfDestSys   DstSys;
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
+    PartSys       PartSys;
     //GE.glEng.setResolution(1920, 1080);
 
     RenSys.initIMGUI(GE);
-
+    AnimMan AM(GE.glEng);
     init_config(GE);
     
     size_t map_ID = init_map(LM, GE, SouSys);
     
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
-
+    LM.createNormalEnemyAnim(GE, Vec3{-42, 2.8, -15}, SouSys);
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);

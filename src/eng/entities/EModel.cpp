@@ -45,10 +45,14 @@ void EModel::draw(Mat4 mat, bool border) {
     
     mesh_->meshes_[0].shader_->use();
     mesh_->meshes_[0].shader_->setFloat("material.transparecy", transparency_);
-    if(animation_ != nullptr && currentAnim >= 0)
+    if(animation_ != nullptr && currentAnim >= 0) {
+        //std::cout << "Entro en animacion\n";
         animation_->draw(mat, &currentAnim);
-    else 
+    }
+    else {
         mesh_->draw(mat);
+        //std::cout << "Entro en modelo\n";
+    }
 }
 
 void EModel::loadModel(std::string path, ResourceGestor &rg) {
@@ -105,8 +109,8 @@ void EModel::loadAnimation(std::vector<std::string> animations, ResourceGestor &
             int i = 1;
             while(i < totalFrames[y]) {
                                     //cambiar paths
-                std::string route = "assets/animations" + animations[y] + '_' + std::to_string(i) + ".obj";
-                mesh_ = rg.getResource<RMesh>(animations[y] + '_' + std::to_string(i));
+                std::string route = "assets/animations/" + animations[y] + std::to_string(i) + ".obj";
+                mesh_ = rg.getResource<RMesh>(animations[y] + std::to_string(i));
 
                 Assimp::Importer importer;
                 const aiScene *scene = importer.ReadFile(route, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);

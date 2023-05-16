@@ -27,7 +27,7 @@ GlEngine::GlEngine() {
     registryModels_.reserve(1000);
 
     cameraEntities_.reserve(2);
-    genParticleEntities_.reserve(50);
+    genParticleEntities_.reserve(100);
     focoEntities_.reserve(6);
     modelEntities_.reserve(1000);
 
@@ -37,7 +37,7 @@ GlEngine::GlEngine() {
 
     scolor->setShader("assets/shaders/vertex/vcolor.vs", "assets/shaders/fragment/fcolor.fs", "");
     shaderLine->setShader("assets/shaders/vertex/vline.vs", "assets/shaders/fragment/fline.fs", "");
-    shaderParticle->setShader("assets/shaders/vertex/shader_particle.vs", "assets/shaders/fragment/shader_particle.fs", "");
+    shaderParticle->setShader("assets/shaders/vertex/vparticle.vs", "assets/shaders/fragment/fparticle.fs", "");
 
     scolor->loadShaders();
     shaderLine->loadShaders();
@@ -129,6 +129,9 @@ GlEngine::GlEngine() {
 
     pointSize = 0;
 
+    //RTexture *textule = resourceGestor_.getResource<RTexture>("assets/textures/partExplosion.png");
+    //EGenParticle partGen (shaderParticle, textule, 50);
+
     // Skybox
     std::vector<std::string> faces {
         "assets/skybox/right.jpg",
@@ -162,6 +165,12 @@ void GlEngine::initOpenGL() {
     window = glfwCreateWindow(width_, height_, "Experimento 097", NULL, NULL);
     if(window == NULL) throw std::runtime_error("GLFW Error creating Window");
     
+    //pantalla grande
+    glfwMaximizeWindow(window);
+
+    //elimina la pantalla grande
+    glfwRestoreWindow(window);
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -283,12 +292,17 @@ TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std:
     return &son;
 }
 
+int partCont = 0;
 EGenParticle &GlEngine::createGenParticle(std::string textureFileName /* = assets/wall.jpg */, unsigned int maxParticles) {
-    for(uint16_t i = 0; i < genParticleEntities_.size(); i++) {
-        if(strcmp(genParticleEntities_[i].texture->getName().c_str(), textureFileName.c_str())) //if his maxparticles is less -> rescale
-            return genParticleEntities_[i];
-    }
 
+    if(partCont != 0) {
+        for(uint16_t i = 0; i < genParticleEntities_.size(); i++) {
+            if(strcmp(genParticleEntities_[i].texture->getName().c_str(), textureFileName.c_str())) //if his maxparticles is less -> rescale
+                return genParticleEntities_[i];
+        }
+    }
+    partCont++;
+    
     RShader *shaderParticle = resourceGestor_.getResource<RShader>("SHADER_PARTICLE");
     RTexture *texture = resourceGestor_.getResource<RTexture>(textureFileName);
 
@@ -493,6 +507,12 @@ TNodo *GlEngine::getActiveCameraNode() {
 Mat4 GlEngine::getPerspective() {
     auto *camera = getActiveCamera();
     return glm::perspective(glm::radians(camera->Zoom), (float)width_ / (float)height_, 0.01f, 100.0f);
+}
+
+void GlEngine::updateAllParticles(float dt) {
+    for(uint16_t i=0; i < genParticleEntities_.size(); i++) {
+        genParticleEntities_[i].update(dt);
+    }
 }
 
 void GlEngine::setCamera_(ECamera* cam) {
