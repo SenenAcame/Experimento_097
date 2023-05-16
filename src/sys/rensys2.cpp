@@ -41,6 +41,14 @@
                 float giro_y = (-phy.orieny) * 180 / PI + 90;
                 rend.node->setRotation(Vec3 { 0, giro_y, 0 });
             }
+            if(ent.hasTAG<TWeapon>()) {
+                rend.node->rotate(Vec3 { 0, .5, 0 });
+                //if(phy.y < 5)
+                //    phy.y += 0.1;
+                //else {
+                //    phy.y -= 0.1;
+                //}
+            }
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();
         }
@@ -57,7 +65,7 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& ren    = EM.getComponent<RenderCmp2>(player);
-    auto& sala    = EM.getComponent<SalaCmp>(player);
+    auto& sala   = EM.getComponent<SalaCmp>(player);
 
     //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
     //std::cout<<"Sala jugador: "<<sala.sala<<"\n";
