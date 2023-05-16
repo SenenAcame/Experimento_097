@@ -6,5 +6,5 @@ struct BlackBoardCmp {
     bool tactive  { false };
     bool shoot    { false };
     std::size_t entyID { 0 };
-    SB  behaviour { SB::Seek };
+    SB  behaviour { SB::Two_Steps };
 };

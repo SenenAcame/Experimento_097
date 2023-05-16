@@ -6,6 +6,10 @@ struct SoundSystem_t;
 struct LevelMan;
 struct GraphicEngine;
 
+struct Clock {
+    double cooldwn {}, time {};
+};
+
 struct SpawnSystem {
     using VOICMPs = MP::Typelist<>;
     using ENETAGs = MP::Typelist<TEnemy>;
@@ -15,7 +19,7 @@ struct SpawnSystem {
 
     using WPNTAGs = MP::Typelist<TWeapon>;
 
-    using SALCMPs = MP::Typelist<SalaCmp>;
+    using SALCMPs = MP::Typelist<SalaCmp, SpawnCmp>;
     using W_STAGs = MP::Typelist<TSpawn, TSpwWeapon>;
 
     void update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
@@ -36,4 +40,5 @@ private:
     ExtraStats   difficult {};
     WaveInfo     wave      {};
     WavesProgres progres   {};
+    Clock restart_weapons { 0, 20 };
 };

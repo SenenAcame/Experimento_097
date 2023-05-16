@@ -36,22 +36,22 @@
     return ang_vel;
 }
 
-constexpr void AISys::arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
-    phy.v_ang = phy.a_lin = 0;
-
-    Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
-    auto t_lin_dist { distanceModule(t_dist) };
-
-    if  (t_lin_dist < ai.arrivalRadius) { ai.enable = false; return; }
-
-    auto t_ang_vel  { angularVelocity(t_dist, phy.orieny, ai.timeArrive) };
-
-    auto t_lin_vel  { capLimits(t_lin_dist/ai.timeArrive, phy.kMxVLin) };
-    auto t_lin_acc  { (t_lin_vel - phy.v_lin)/ai.timeArrive };
-
-    phy.a_lin = capLimits(t_lin_acc, phy.kMxALin);
-    phy.v_ang = capLimits(t_ang_vel, phy.kMxVAng);
-}
+//constexpr void AISys::arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
+//    phy.v_ang = phy.a_lin = 0;
+//
+//    Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
+//    auto t_lin_dist { distanceModule(t_dist) };
+//
+//    if  (t_lin_dist < ai.arrivalRadius) { ai.enable = false; return; }
+//
+//    auto t_ang_vel  { angularVelocity(t_dist, phy.orieny, ai.timeArrive) };
+//
+//    auto t_lin_vel  { capLimits(t_lin_dist/ai.timeArrive, phy.kMxVLin) };
+//    auto t_lin_acc  { (t_lin_vel - phy.v_lin)/ai.timeArrive };
+//
+//    phy.a_lin = capLimits(t_lin_acc, phy.kMxALin);
+//    phy.v_ang = capLimits(t_ang_vel, phy.kMxVAng);
+//}
 
 //constexpr void AISys::shoot(AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheEngine& eng, Enty const& enem) const noexcept {
 //    if(ai.shoot){
@@ -135,14 +135,10 @@ void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int
     
     if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive);
     else {
-        //bool inRoom { sala == 0 ||sala == 1 ||sala == 3 ||sala == 5 ||sala == 6 };
-        bool inCorr { sala == 2 ||sala == 4 ||sala == 7 };
+        bool inRoom { sala == 0 ||sala == 3 ||sala == 6 ||sala == 11 ||sala == 13 };
 
-        //if(inRoom)      ai.rad = 5.;
-        //else if(inCorr) ai.rad = 1.;
-
-        if(inCorr) ai.rad = 1.;
-        else       ai.rad = 5.;
+        if(inRoom) ai.rad = 5.;
+        else       ai.rad = 1.;
 
         ai.flock_x = cos(ai.ang) * ai.rad;
         ai.flock_z = sin(ai.ang) * ai.rad;
@@ -219,8 +215,8 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
 
             switch(ai.behaviour){
                 //case SB::Arrive: arrive(ai, phy); break;
-                case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                case SB::Patrol: arrive(ai, phy); break;
+                //case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                 case SB::Shoot:  shoot2(LM, GE, entity, ai, phy);
                 case SB::Two_Steps: {
                     auto& player     = EM.getEntityById(bb.entyID);

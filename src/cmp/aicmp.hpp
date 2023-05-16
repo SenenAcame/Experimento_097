@@ -2,8 +2,8 @@
 #include <cstdint>
 
 enum class SB{
-    Arrive,
-    Seek,
+    //Arrive,
+    //Seek,
     Shoot,
     Patrol,
     Persue,
@@ -21,7 +21,7 @@ struct AICmp {
     double time          { 0.0 };
     bool   enable        { true };
     bool   shoot         { false };
-    SB     behaviour     { SB::Arrive };
+    SB     behaviour     { SB::Two_Steps };
 
     std::size_t entyID { 0 };
 

@@ -46,9 +46,9 @@ struct LevelMan {
 
     /*NUEVO*/ void   viewBB(GraphicEngine& GE, Enty& ent);
 
-    /*NUEVO*/ Enty&  createEneSpawn(Vec3 pos, GraphicEngine& GE, int room);
-    /*NUEVO*/ Enty&  createWpnSpawn(Vec3 pos, GraphicEngine& GE, int room);
-    /*NUEVO*/ Enty&  createSpawn2(Vec3 pos, GraphicEngine& GE, int room);
+    /*NUEVO*/ Enty&  createEneSpawn(Vec3 pos, GraphicEngine& GE, int room, double timer = 1);
+    /*NUEVO*/ Enty&  createWpnSpawn(Vec3 pos, GraphicEngine& GE, int room, double timer = 1);
+    /*NUEVO*/ Enty&  createSpawn2  (Vec3 pos, GraphicEngine& GE, int room, double timer = 1);
 
     EntyMan&         getEM() { return EM; }
 

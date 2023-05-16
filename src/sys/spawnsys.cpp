@@ -40,6 +40,11 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
             if(posible_spawn) spawnProcess(LM, GE, SouSys, spawn, phy);
         }
     );
+
+    restart_weapons.cooldwn += dt;
+
+    if(restart_weapons.cooldwn >= restart_weapons.time)
+        spawnWeapons(LM, GE, SouSys, player_ID);
 }
 
 void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
@@ -134,31 +139,26 @@ void SpawnSystem::createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& 
 
     W_Type weapons[] = {W_Type::Pistol, W_Type::Shotgun, W_Type::Fusil};
     std::vector<size_t> spawns;
-    int pos {};
 
     EM.foreach<SALCMPs, W_STAGs>(
-        [&](Enty& spw, SalaCmp& room) {
-            if(room_ply.sala != room.sala) 
+        [&](Enty& spw, SalaCmp& room, SpawnCmp& spw_cmp) {
+            if(room_ply.sala != room.sala)  
                 spawns.push_back(spw.getID());
         }
     );
 
     for(int i = 0; i < 3; i++) {
-        pos = rand() % spawns.size();
+        int pos = rand() % spawns.size();
 
         auto& spw = EM.getEntityById(spawns.at(pos));
-        auto& room = EM.getComponent<SalaCmp>(spw);
+        auto& phy = EM.getComponent<PhysicsCmp2>(spw);
 
-        if(room_ply.sala != room.sala) {
-            std::cout<<"Spawneada \n";
-
-            auto& phy = EM.getComponent<PhysicsCmp2>(spw);
-
-            LM.createWeapon2(GE, { phy.x, 2.8, phy.z }, weapons[i], SouSys);
+        LM.createWeapon2(GE, { phy.x, 2.8, phy.z }, weapons[i], SouSys);
             
-            spawns.erase(spawns.begin() + pos);
-        }
+        spawns.erase(spawns.begin() + pos);
     }
+    
+    restart_weapons.cooldwn = 0;
 
     // MANUAL
     //LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys); // Sala 0
