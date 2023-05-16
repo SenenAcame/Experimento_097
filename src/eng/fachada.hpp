@@ -23,6 +23,7 @@ struct TheFachada {
     void chargeparameters();
     void createdescriptions();
     void changeVCAVolume(int, float);
+    void changeVCAMaster(float);
 
 private:
     FMOD_SYSTEM *coreSystem;

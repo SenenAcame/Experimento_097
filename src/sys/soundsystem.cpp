@@ -66,3 +66,7 @@ void SoundSystem_t::close() {
 void SoundSystem_t::changeVCA(int tipo, float volumen){
     facherita.changeVCAVolume(tipo, volumen);
 }
+
+void SoundSystem_t::changeMasterVCA(float volumen){
+    facherita.changeVCAMaster(volumen);
+}
