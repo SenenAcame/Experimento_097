@@ -101,7 +101,7 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
 
                     bool sameSala = 
                         en.hasTAG<TDistEnemy>() && 
-                        sqrt((p.x-phy_cmp.x)*(p.x-phy_cmp.x)+(p.z-phy_cmp.z)*(p.z-phy_cmp.z)) < 40 && 
+                        sqrt((p.x-phy_cmp.x)*(p.x-phy_cmp.x)+(p.z-phy_cmp.z)*(p.z-phy_cmp.z)) < 10 && 
                         salaene != -1;
 
                     if(sameSala) ai.behaviour = SB::Shoot;
