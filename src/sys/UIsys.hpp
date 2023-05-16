@@ -40,7 +40,10 @@ struct UIsys {
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
 
     //menus
-    void menuIni(GraphicEngine& GE);
+    bool menuIni(GraphicEngine& GE, bool next);
+    bool menuMuerto (GraphicEngine& GE, bool next);
+    void menuControles (GraphicEngine& GE);
+    bool menuPausa (GraphicEngine& GE, bool next);
 
     
 };

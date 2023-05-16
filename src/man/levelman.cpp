@@ -642,13 +642,8 @@ Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2)
     return spawn;
 }
 
-void LevelMan::resetLevel(TheEngine& dev) {
-    const wchar_t* empty = L"";
-    dev.changeTextFromPointer(amm1, empty);
-    dev.changeTextFromPointer(mag, empty);
-    dev.changeTextFromPointer(h1, empty);
-    dev.changeTextFromPointer(pointsUI, empty);
-    dev.changeTextFromPointer(wave, empty);
+void LevelMan::resetLevel() {
+    
 
     EM.forall(
         [](Enty& ent) {
@@ -662,24 +657,7 @@ void LevelMan::resetLevel(TheEngine& dev) {
         }
     );
 
-    dev.setInvisibleImage(hit1);
-    dev.setInvisibleImage(hit2);
-    dev.setInvisibleImage(hit3);
-
-    waveNumber           = 1; //actual wave
-    extraHeal            = 5; //extra EnemyHeal per wave
-    extraSpeed           = 0;
-    numberOfEnemysBasics = 2; //number of enemys per wave
-    aliveEnemys          = 0;
-    extraEnemys          = 3; //extra number of enemys per wave
-    maxEnemysWave        = 15; //max number of enemy created
-    timeBtwWaves         = 2;
-    clockToNextWave      = 0; //clock unter next wave
-    inRound              = false;
-    points               = 0;
-
-    updateInterfacePoints(dev);
-    updateInterfaceWave(dev);   
+  
 
     EM.callDestroy();
 }

@@ -70,7 +70,7 @@ struct LevelMan {
     
     Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
     
-    void resetLevel(TheEngine& dev);
+    void resetLevel();
     EntyMan& getEM() { return EM; }
 private:
     void createSoundEffect(SoundSystem_t& SouSys);

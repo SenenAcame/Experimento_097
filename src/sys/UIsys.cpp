@@ -190,7 +190,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::End();
 }
 
-void UIsys::menuIni (GraphicEngine& GE){
+bool UIsys::menuIni (GraphicEngine& GE, bool next){
     int counter =0;
 
     auto* m_window = GE.getWindow();
@@ -212,7 +212,8 @@ void UIsys::menuIni (GraphicEngine& GE){
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
-
+        
+        next = false;
     }
     ImGui::PopStyleColor();
     //ImGui::Text("Hola");
@@ -220,10 +221,10 @@ void UIsys::menuIni (GraphicEngine& GE){
  
     ImGui::End();
     //ImGui::PopStyleVar();
-    
+    return next;
 }
 
-void UIsys::menuMuerto (GraphicEngine& GE){
+bool UIsys::menuMuerto (GraphicEngine& GE, bool next){
     int counter =0;
 
     auto* m_window = GE.getWindow();
@@ -246,11 +247,14 @@ void UIsys::menuMuerto (GraphicEngine& GE){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
 
+        next = false;
     }
     ImGui::PopStyleColor();
  
  
     ImGui::End();
+
+    return next;
  
 }
 
@@ -286,7 +290,7 @@ void UIsys::menuControles (GraphicEngine& GE){
     
 }
 
-void UIsys::menuPausa (GraphicEngine& GE){
+bool UIsys::menuPausa (GraphicEngine& GE, bool next){
     int counter =0;
 
     auto* m_window = GE.getWindow();
@@ -308,11 +312,14 @@ void UIsys::menuPausa (GraphicEngine& GE){
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
-
+        
+        next = false;
     }
     ImGui::PopStyleColor();
  
  
     ImGui::End();
+
+    return next;
  
 }

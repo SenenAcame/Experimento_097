@@ -13,6 +13,7 @@
 #include "../sys/rensys2.hpp"
 #include "../sys/UIsys.hpp"
 #include "../eng/engine2.hpp"
+#include <GLFW/glfw3.h>
 #include <chrono>
 #include <cstddef>
 #include <iostream>
@@ -21,20 +22,14 @@
 //#include <imgui/src/imgui_impl_glfw.h>
 //#include <imgui/src/imgui_impl_opengl3.h>
 
+
+
 void GameMan::game() {
     LevelMan      LM;
-    EntyMan&      EM = LM.getEM();
-    PhySys2       PhySys;
     RenSys2       RenSys;
-    ColSys2       ColSys;
     InpSys2       InpSys;
-    AISys         AISys;
-    NodeMapSys    MapSys;
-    LogicSystem   LogSys;
     SoundSystem_t SouSys;
     UIsys         UISys;
-    //SpawnSystem   SpawnSys;
-    SelfDestSys   DstSys;
     //TheEngine     dev {1280, 720, &InpSys};
     GraphicEngine GE;
     //GE.glEng.setResolution(1920, 1080);
@@ -42,7 +37,54 @@ void GameMan::game() {
 
     srand(time(NULL));
 
+    bool abandon {false};
+    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+    auto window = GE.getWindow();
+
+    while(!glfwWindowShouldClose(window)){
+
+        bucleInicio(RenSys, GE, UISys);
+
+        while(!glfwWindowShouldClose(window) && !abandon){
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            abandon = bucleJuego(LM, GE, RenSys, InpSys, SouSys, abandon, player_ID, UISys) ;
+            
+        }
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if(!abandon) abandon = bucleDead(LM, GE, RenSys, UISys, abandon);
+
+        abandon = false;
+          
+    }
+    RenSys.EndImgui(GE);
+
+    
+}
+
+void GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
+    bool menu{true};
+
+    while(menu && !glfwWindowShouldClose(GE.getWindow())) {
+        menu = RenSys.updateMenuInicio(GE, UISys, menu);
+        
+    }
+    
+}
+
+bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, bool abandon, std::size_t player_ID, UIsys &UISys){
+    
+    EntyMan&      EM = LM.getEM();
+    ColSys2       ColSys;
+    PhySys2       PhySys; 
+    AISys         AISys;
+    NodeMapSys    MapSys;
+    LogicSystem   LogSys;
+
+    //SpawnSystem   SpawnSys;
+    SelfDestSys   DstSys;
     //RenSys.initIMGUI(GE);
+
+    bool dead { false }, pause { false };
 
     //ImGui::CreateContext();
     //ImGui_ImplGlfw_InitForOpenGL(GE.getWindow(), true);
@@ -50,7 +92,7 @@ void GameMan::game() {
     //ImGui::Begin("Hello, world!");
     //ImGui::Text("This is some useful text."); 
 
-    std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+    
     std::size_t map_ID    = LM.createMap2(GE, SouSys);
     ColSys.init_Hitoxes_Map2(LM);
     LM.createWeapon2(GE, Vec3 {-42, 2.8, -15}, W_Type::Fusil, SouSys);
@@ -63,23 +105,34 @@ void GameMan::game() {
 
     constexpr double dt = 1.0 / 60;
 
-    while(!glfwWindowShouldClose(GE.getWindow())) {
-        //ge.glEng.drawFocos();
-        EM.update();
-        //ImGui::Text("This is some useful text.");
+    while(!glfwWindowShouldClose(GE.getWindow()) && !dead && !abandon) {
+        
+        if(pause) {
+            pause = RenSys.updateMenuPausa( GE, UISys, abandon);
+            abandon = pause;
+        }
+        else{
 
-        RenSys.update2(EM, GE, player_ID, UISys, dt);
-        //MapSys.update(EM, player_ID, map_ID);
-        InpSys.update2(LM, GE, SouSys, dt, UISys);
-        AISys. update2(EM, dt);
-        PhySys.update (EM, dt);
-        ColSys.update (EM);
-        LogSys.update2(LM, GE, dt, UISys);
-        PhySys.update_after_colision(EM, dt);
-        SouSys.update (EM);
-        DstSys.update (EM, dt);
+            EM.update();
+            //ImGui::Text("This is some useful text.");
+            RenSys.update2(EM, GE, player_ID, UISys, dt);
+            //MapSys.update(EM, player_ID, map_ID);
+            InpSys.update2(LM, GE, SouSys, dt, UISys);
+            AISys. update2(EM, dt);
+            PhySys.update (EM, dt);
+            ColSys.update (EM);
+            LogSys.update2(LM, GE, dt, UISys);
+            PhySys.update_after_colision(EM, dt);
+            SouSys.update (EM);
+            DstSys.update (EM, dt);
+            dead  = EM.getEntityById(player_ID).getDestroy();  
+        }
+        
+        //ge.glEng.drawFocos();
+        
     }
-    RenSys.EndImgui(GE);
+    LM.resetLevel();
+    //RenSys.EndImgui(GE);
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);
 //    LM.createEmptyInterface(dev);
@@ -140,3 +193,19 @@ void GameMan::game() {
 //    LM.createMap(dev, SouSys);
 //    ColSys2::init_Hitoxes_Map2(LM);
 //}
+
+bool GameMan::bucleDead(LevelMan& LM, GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys, bool abandon){
+
+    EntyMan&  EM = LM.getEM();
+
+    bool restart { !abandon };
+        
+    while(restart && !abandon && !glfwWindowShouldClose(GE.getWindow())) {
+        restart = RenSys.updateMenuDead(GE, UISys, restart);
+        abandon = restart;
+    }
+
+
+    return abandon;
+
+}

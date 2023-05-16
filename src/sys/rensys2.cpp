@@ -50,15 +50,43 @@
     updateCamera(EM, GE, player_ID);
 
     drawWorld(GE);
-    UISys.menuIni(GE);
     //UISys.renderInterface(EM, GE, player_ID, dt); 
     
-    
-    
-
     //ImGUI_RenderUI(EM, GE, player_ID);
     ImGUI_Postrender(GE);
 }
+
+bool RenSys2::updateMenuInicio(GraphicEngine& GE, UIsys& UISys, bool next) {
+    ImGUI_Prerender();
+    
+    next = UISys.menuIni(GE, next);
+    
+    ImGUI_Postrender(GE);
+
+    return next;
+}
+
+ bool RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next){
+
+    ImGUI_Prerender();
+    
+    next = UISys.menuMuerto(GE, next);
+    
+    ImGUI_Postrender(GE);
+
+    return next;
+ }
+
+ bool RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, bool next){
+
+    ImGUI_Prerender();
+    
+    next = UISys.menuPausa(GE, next);
+    
+    ImGUI_Postrender(GE);
+
+    return next;
+ }
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);

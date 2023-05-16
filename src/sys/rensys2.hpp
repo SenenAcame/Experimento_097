@@ -16,6 +16,9 @@ struct RenSys2 {
 
     /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
     /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UIsys, double dt);
+    bool updateMenuInicio(GraphicEngine& GE, UIsys& UISys, bool next);
+    bool updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next);
+    bool updateMenuPausa(GraphicEngine& GE, UIsys& UISys, bool next);
 
     void updateCamera(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID);
     

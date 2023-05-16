@@ -59,6 +59,11 @@
     auto& EM = LM.getEM();
     EM.foreach<SYSCMPs, SYSTAGs >(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
+            if(entity.hasTAG<TPlayer>()){
+                if(EM.getComponent<EstadisticaCmp>(entity).hitpoints == 0){
+                    markDestroy(entity);
+                }
+            }
             if(state.colision != 0) {
                 auto& entity_colisioned = EM.getEntityById(state.entityCol);
                 if(entity_colisioned.hasCMP<EstadoCmp>()) {
