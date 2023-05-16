@@ -22,6 +22,8 @@ struct RenSys2 {
     ///*VIEJO*/ void drawBBox(EntyMan& EM, TheEngine& GFX);
 
     void drawWorld(GraphicEngine& GE);
+    void rotateWeapon(RenderCmp2& rend, PhysicsCmp2& phy);
+    void rotateEnemy(RenderCmp2& rend, PhysicsCmp2& phy);
 
     //IMGUI
     void initIMGUI(GraphicEngine& GE);

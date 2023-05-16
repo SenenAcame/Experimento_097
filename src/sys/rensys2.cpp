@@ -37,18 +37,9 @@
 
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
-            if(ent.hasTAG<TEnemy>()) {
-                float giro_y = (-phy.orieny) * 180 / PI + 90;
-                rend.node->setRotation(Vec3 { 0, giro_y, 0 });
-            }
-            if(ent.hasTAG<TWeapon>()) {
-                rend.node->rotate(Vec3 { 0, 1, 0 });
-
-                phy.y += rend.elev;
-
-                if(phy.y >= 3.5) rend.elev = -0.01;
-                if(phy.y <= 2.5) rend.elev = 0.01;
-            }
+            if(ent.hasTAG<TEnemy>())  rotateEnemy(rend, phy); 
+            if(ent.hasTAG<TWeapon>()) rotateWeapon(rend, phy); 
+            
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();
         }
@@ -107,6 +98,20 @@ void RenSys2::drawWorld(GraphicEngine &GE) {
     //GE.glEng.drawBorder();
     GE.glEng.drawSkybox(0);
     GE.glEng.endScene();
+}
+
+void RenSys2::rotateWeapon(RenderCmp2 &rend, PhysicsCmp2 &phy) {
+    rend.node->rotate(Vec3 { 0, 1, 0 });
+
+    phy.y += rend.elev;
+
+    if(phy.y >= 3.5) rend.elev = -0.01;
+    if(phy.y <= 2.5) rend.elev = 0.01;
+}
+
+void RenSys2::rotateEnemy(RenderCmp2 &rend, PhysicsCmp2 &phy) {
+    float giro_y = (-phy.orieny) * 180 / PI + 90;
+    rend.node->setRotation(Vec3 { 0, giro_y, 0 });
 }
 
 //IMGUI
