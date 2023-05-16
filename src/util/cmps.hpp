@@ -13,3 +13,4 @@
 #include "../cmp/interactcmp.hpp"
 #include "../cmp/weaponcmp.hpp"
 #include "../cmp/salacmp.hpp"
+#include "../cmp/particlecmp.hpp"

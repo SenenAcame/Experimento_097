@@ -6,6 +6,7 @@
 
 struct SoundSystem_t;
 struct GraphicEngine;
+struct PartSys;
 
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
@@ -39,7 +40,7 @@ struct LevelMan {
     /*NUEVO*/ std::size_t createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
     /*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
-    /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
+    /*NUEVO*/ Enty& createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, PartSys& PartSys);
 
     /*NUEVO*/ Enty& createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 

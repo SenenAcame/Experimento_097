@@ -71,6 +71,8 @@ struct GlEngine {
     void setCallbackScroll(void (*function)(GLFWwindow *, double , double));
     //void processInput(GLFWwindow *window);
     
+    void updateAllParticles(float dt);
+
     void updateCameraRotation();
 
     //|___________________|

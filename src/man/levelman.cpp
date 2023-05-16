@@ -2,6 +2,7 @@
 #include "../eng/engine2.hpp"
 #include "../sys/nodemapsys.hpp"
 #include "../sys/soundsystem.hpp"
+#include "../sys/partsys.hpp"
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -448,7 +449,7 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 //    return enemy;
 //}
 
-/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
+/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, PartSys& PartSys) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
     
     Enty& enemy = EM.createEntity();
@@ -462,6 +463,10 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addComponent<EstadoCmp>(enemy, 1.f, 1.5f, 1.f);
     EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>  (enemy);
+    //auto &part = EM.addComponent<ParticleCMP> (enemy);
+    
+    //PartSys.setParticle(part, "assets/textures/partExplosion.png", 100, 0, 0.f, 1.0f, {.5f, 1.f, .5f}, 3.f, 0.f, 0.1f, -8.f);
+
     //TAGS
     EM.addTag<TInteract>(enemy);
     EM.addTag<TEnemy>(enemy);
