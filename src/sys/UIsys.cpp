@@ -7,33 +7,31 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_I
     auto& player = EM.getEntityById(player_ID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width     = GE.glEng.getWidth();
+    auto height    = GE.glEng.getHeight();
    
     int magazine = 0;
-    int ammo = 0;
-    double hp = stats.hitpoints/100;
-    int wave = 0;
-    int kills = 0;
+    int ammo     = 0;
+    double hp    = stats.hitpoints/100;
+    int wave     = 0;
+    int kills    = 0;
     
     switch (invent.equipada) {
         case 0:
             magazine = invent.gun.magazine;
             ammo = invent.gun.ammo;
-            
             break;
         case 1: 
             magazine = invent.shot.magazine;
             ammo = invent.shot.ammo;
-            
             break;
         case 2: 
             magazine = invent.rifle.magazine;
             ammo = invent.rifle.ammo;
-            
             break;
     }
-    renderInterfaceHits(GE, dt);
+
+    //renderInterfaceHits(GE, dt);
 
     ImGui::SetNextWindowPos(ImVec2(10,610));
     ImGui::SetNextWindowSize(ImVec2(width,height));
@@ -91,7 +89,6 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_I
     ImGui::Text("%d/%d", magazine, ammo );
     
     ImGui::End();
-
 }
 
 void UIsys::hitInterface(GraphicEngine& GE){
@@ -100,7 +97,7 @@ void UIsys::hitInterface(GraphicEngine& GE){
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
     int random = activateHit;
-    while(activateHit==random)
+    while(activateHit == random)
         random = rand()%3+1;
 
     activateHit = random;
@@ -122,13 +119,11 @@ void UIsys::hitInterface(GraphicEngine& GE){
             randHeight3 = rand()%height;
         break;
     }
-   
 }
 
 void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
-
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
+    auto width  = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
     RTexture prueba("assets/Interface/1280x720/zarpazo.png");
@@ -140,7 +135,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    if(hit1 == true){
+    if(hit1 == true) {
         clockHit1 += dt;
         ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(600, 450));
         if(clockHit1 >= cd) {
@@ -150,7 +145,6 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     }
     ImGui::End();
 
-  
     ImGui::SetNextWindowPos(ImVec2(randWidth2,randHeight2));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
@@ -159,7 +153,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    if(hit2 == true){
+    if(hit2 == true) {
         clockHit2 += dt;
         ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(800, 750));
         if(clockHit2 >= cd) {
@@ -177,7 +171,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    if(hit3 == true){
+    if(hit3 == true) {
         clockHit3 += dt;
         ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(850, 800));
         if(clockHit3 >= cd) {
@@ -211,7 +205,6 @@ bool UIsys::menuIni (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
-        
         next = false;
     }
     ImGui::PopStyleColor();
@@ -220,7 +213,6 @@ bool UIsys::menuIni (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
-        
         next = false;
     }
     ImGui::PopStyleColor();
@@ -255,20 +247,17 @@ bool UIsys::menuMuerto (GraphicEngine& GE, bool next){
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
-
         next = false;
     }
     ImGui::PopStyleColor();
  
- 
     ImGui::End();
 
     return next;
- 
 }
 
 void UIsys::menuControles (GraphicEngine& GE){
-    int counter =0;
+    int counter = 0;
 
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
@@ -292,11 +281,7 @@ void UIsys::menuControles (GraphicEngine& GE){
 
     }
     ImGui::PopStyleColor();
- 
- 
     ImGui::End();
-
-    
 }
 
 bool UIsys::menuPausa (GraphicEngine& GE, bool next){
@@ -354,5 +339,4 @@ bool UIsys::menuPausa (GraphicEngine& GE, bool next){
     ImGui::End();
 
     return next;
- 
 }

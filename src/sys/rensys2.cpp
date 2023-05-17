@@ -48,7 +48,8 @@
     updateCamera(EM, GE, player_ID);
 
     drawWorld(GE);
-    //UISys.renderInterface(EM, GE, player_ID, dt); 
+    
+    UISys.renderInterface(EM, GE, player_ID, dt); 
     
     //ImGUI_RenderUI(EM, GE, player_ID);
     ImGUI_Postrender(GE);
@@ -56,33 +57,22 @@
 
 bool RenSys2::updateMenuInicio(GraphicEngine& GE, UIsys& UISys, bool next) {
     ImGUI_Prerender();
-
     next = UISys.menuIni(GE, next);
-
     ImGUI_Postrender(GE);
-
     return next;
 }
 
  bool RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next){
-
     ImGUI_Prerender();
-    
     next = UISys.menuMuerto(GE, next);
-    
     ImGUI_Postrender(GE);
-
     return next;
  }
 
  bool RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, bool next){
-
     ImGUI_Prerender();
-    
     next = UISys.menuPausa(GE, next);
-    
     ImGUI_Postrender(GE);
-
     return next;
  }
 
@@ -131,7 +121,7 @@ void RenSys2::drawWorld(GraphicEngine &GE) {
     //GE.glEng.drawParticles();
     //GE.glEng.drawBorder();
     GE.glEng.drawSkybox(0);
-    GE.glEng.endScene();
+    //GE.glEng.endScene();
 }
 
 void RenSys2::rotateWeapon(RenderCmp2 &rend, PhysicsCmp2 &phy) {
@@ -321,7 +311,6 @@ void RenSys2::ImGUI_Postrender(GraphicEngine& GE) const noexcept {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(m_window);
-
 }
 
 void RenSys2::EndImgui(GraphicEngine& GE) {
