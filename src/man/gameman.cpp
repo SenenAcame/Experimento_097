@@ -46,7 +46,9 @@ void GameMan::game() {
     size_t map_ID = init_map(LM, GE, SouSys);
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
 
-    //LM.createNormalEnemyAnim(GE, Vec3{-42, 2.8, -15}, SouSys);
+    LM.createNormalEnemy(GE, Vec3{-35, 2.8, -5}, SouSys);
+    LM.createNormalEnemyAnim(GE, Vec3{-35, 2.4, -5}, SouSys);
+    
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);
@@ -60,13 +62,13 @@ void GameMan::game() {
         RenSys.update2(EM, GE, player_ID);
         MapSys.update2(EM, player_ID, map_ID);
         InpSys.update2(LM, GE, SouSys, dt);
-        AISys. update2(LM, GE, dt);
+        //AISys. update2(LM, GE, dt);
         PhySys.update (EM, dt);
         ColSys.update (EM);
         LogSys.update2(LM, GE, dt);
         PhySys.update_after_colision(EM, dt);
         SouSys.update (EM);
-        SpwSys.update (LM, GE, SouSys, player_ID, dt);
+        //SpwSys.update (LM, GE, SouSys, player_ID, dt);
         DstSys.update (EM, dt);
     }
     RenSys.EndImgui(GE);
@@ -127,7 +129,7 @@ void GameMan::init_config(GraphicEngine& GE) {
 }
 
 size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
-    //ColSys2::init_Hitoxes_Map2(LM);
+    ColSys2::init_Hitoxes_Map2(LM);
 
     // SPAWN ENEMIGOS
     LM.createEneSpawn(Vec3{ -30,  0, -3  }, GE, 0);
