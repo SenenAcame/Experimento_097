@@ -19,12 +19,14 @@
 struct RTexture : public Resource {
     RTexture(std::string path);
     RTexture(std::vector<std::string> faces);
+    RTexture();
 
     ~RTexture();
     void loadTexture();
     void loadCubeMap();
 
     std::string getTexImage();
+    void setImage(std::string path);
 
     std::vector<std::string> cubemaps_;
     std::string texImage_;

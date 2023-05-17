@@ -23,6 +23,8 @@ struct UIsys {
     using SYSTAGs      = MP::Typelist<>;
 
     //hits
+    RTexture zarpazo;
+    
     int activateHit {0};
     bool hit1{false}, hit2{false}, hit3{false};
     double cd {2};

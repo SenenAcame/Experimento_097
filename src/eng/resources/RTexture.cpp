@@ -2,10 +2,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+
 RTexture::RTexture(std::string path){
     texImage_ = path;
     loadTexture();
 }
+
+RTexture::RTexture(){}
 
 RTexture::RTexture(std::vector<std::string> faces) {
     cubemaps_ = faces;
@@ -86,4 +89,10 @@ void RTexture::loadCubeMap(){
 
 std::string RTexture::getTexImage(){
     return texImage_;
+}
+
+void RTexture::setImage(std::string path){
+
+    this->texImage_ = path;
+    loadTexture();
 }

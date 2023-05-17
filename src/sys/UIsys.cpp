@@ -31,7 +31,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_I
             break;
     }
 
-    //renderInterfaceHits(GE, dt);
+    renderInterfaceHits(GE, dt);
 
     ImGui::SetNextWindowPos(ImVec2(10,610));
     ImGui::SetNextWindowSize(ImVec2(width,height));
@@ -126,7 +126,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     auto width  = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
-    RTexture prueba("assets/Interface/1280x720/zarpazo.png");
+    
     ImGui::SetNextWindowPos(ImVec2(randWidth1,randHeight2));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
@@ -137,7 +137,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit1 == true) {
         clockHit1 += dt;
-        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(600, 450));
+        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(600, 450));
         if(clockHit1 >= cd) {
             hit1 = false;
             clockHit1 = 0;
@@ -155,7 +155,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit2 == true) {
         clockHit2 += dt;
-        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(800, 750));
+        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(800, 750));
         if(clockHit2 >= cd) {
             hit2 = false;
             clockHit2 = 0;
@@ -173,7 +173,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit3 == true) {
         clockHit3 += dt;
-        ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(850, 800));
+        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(850, 800));
         if(clockHit3 >= cd) {
             hit3 = false;
             clockHit3 = 0;
