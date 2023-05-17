@@ -85,6 +85,8 @@ struct LevelMan {
     ///*VIEJO*/ Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
     //void resetLevel(TheEngine& dev);
     
+    void resetLevel();
+    EntyMan& getEM() { return EM; }
 private:
     TwoAngles disperShotgun(uint8_t disp);
     TwoAngles normalize(TwoAngles angs);

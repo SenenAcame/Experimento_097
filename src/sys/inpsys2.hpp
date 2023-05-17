@@ -2,6 +2,7 @@
 #include "../util/types.hpp"
 #include "../util/keyboard.hpp"
 #include "../util/mouse.hpp"
+#include "UIsys.hpp"
 #include "../util/munition_aux.hpp"
 #include <GLFW/glfw3.h>
 
@@ -19,7 +20,7 @@ struct InpSys2 {
     using SYSCMP_Weapon = MP::Typelist<SoundCmp>;
     using SYSTAG_Weapon = MP::Typelist<TWeapon>;
 
-    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt, UIsys& UI);
     /*NUEVO*/ bool checkKeyboard(GLFWwindow* window);
     /*NUEVO*/ void checkPressed(int k, int GL_k, int actual);
     /*NUEVO*/ void    static changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip);

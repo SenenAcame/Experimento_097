@@ -1,5 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
+#include "UIsys.hpp"
 
 //struct TheEngine;
 struct LevelMan;
@@ -14,10 +15,10 @@ struct LogicSystem {
 
     static constexpr double PI { std::numbers::pi };
 
-    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
     /*NUEVO*/ void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, double dt);
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
-    /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+    /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
     /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
     void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
     /*NUEVO*/ void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);

@@ -1,6 +1,7 @@
 #include "rensys2.hpp"
 //#include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
+#include "UIsys.hpp"
 #include <cstddef>
 #include <iterator>
 //IMGUI
@@ -32,8 +33,8 @@
 //    //ImGUI_Postrender();
 //};
 
-/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
-    //ImGUI_Prerender();
+/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UISys, double dt) {
+    ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
@@ -47,10 +48,33 @@
     updateCamera(EM, GE, player_ID);
 
     drawWorld(GE);
-
-    //ImGUI_RenderUI();
-    //ImGUI_Postrender(GE);
+    //UISys.renderInterface(EM, GE, player_ID, dt); 
+    
+    //ImGUI_RenderUI(EM, GE, player_ID);
+    ImGUI_Postrender(GE);
 }
+
+ bool RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next){
+
+    ImGUI_Prerender();
+    
+    next = UISys.menuMuerto(GE, next);
+    
+    ImGUI_Postrender(GE);
+
+    return next;
+ }
+
+ bool RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, bool next){
+
+    ImGUI_Prerender();
+    
+    next = UISys.menuPausa(GE, next);
+    
+    ImGUI_Postrender(GE);
+
+    return next;
+ }
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);
@@ -155,6 +179,10 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
+    ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chiller.ttf", 80.0f);
+    ImGuiStyle& style = ImGui::GetStyle();
+    //Color negro
+    style.Colors[ImGuiCol_Text] = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
 }
 
 void RenSys2::ImGUI_Prerender() const noexcept {
@@ -182,10 +210,102 @@ void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
     ////glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenSys2::ImGUI_RenderUI() {
-    ImGui::Text("This is some useful text");
-    //ImGui::Begin("Hola mundo");
-    //ImGui::End();
+
+void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) const noexcept{
+    //ImGui::Text("This is some useful text");
+    auto* m_window = GE.getWindow();
+    auto& player = EM.getEntityById(player_ID);
+    auto& invent = EM.getComponent<InventarioCmp>(player);
+    auto stats     = EM.getComponent<EstadisticaCmp>(player);
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
+   
+    int magazine = 0;
+    int ammo = 0;
+    double hp = stats.hitpoints/100;
+    int wave = 0;
+    int kills = 0;
+    
+    
+    RTexture prueba("assets/Interface/1280x720/zarpazo.png");
+    
+    switch (invent.equipada) {
+        case 0:
+            magazine = invent.gun.magazine;
+            ammo = invent.gun.ammo;
+            
+            break;
+        case 1: 
+            magazine = invent.shot.magazine;
+            ammo = invent.shot.ammo;
+            
+            break;
+        case 2: 
+            magazine = invent.rifle.magazine;
+            ammo = invent.rifle.ammo;
+            
+            break;
+    }
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::Begin(
+        "UI", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)prueba.ID_, ImVec2(400, 350));
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(10,450));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UI2", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    
+    ImGui::Text("Wave: %d", wave);
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, IM_COL32(255,0,0,255));
+    //ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0,0,0,0));
+    ImGui::ProgressBar(hp,ImVec2(300,40), "");
+
+    //ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(10,550));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UI3", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    //ImGui::Text("Wave: %d", wave);
+    ImGui::Text("Kills: %d", kills);
+    //ImGui::Text("HP: %d", hp);
+    //ImGui::Text("%d/%d", magazine, ammo );
+    
+    ImGui::End();
+    ImGui::SetNextWindowPos(ImVec2(870,550));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UI4", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    //ImGui::Text("Wave: %d", wave);
+    //ImGui::Text("Kills: %d", kills);
+    //ImGui::Text("HP: %d", hp);
+    ImGui::Text("%d/%d", magazine, ammo );
+    
+    ImGui::End();
+
+
+    
 }
 
 void RenSys2::ImGUI_Postrender(GraphicEngine& GE) const noexcept {

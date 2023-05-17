@@ -166,10 +166,10 @@ void GlEngine::initOpenGL() {
     if(window == NULL) throw std::runtime_error("GLFW Error creating Window");
     
     //pantalla grande
-    glfwMaximizeWindow(window);
+    //glfwMaximizeWindow(window);
 
     //elimina la pantalla grande
-    glfwRestoreWindow(window);
+    //glfwRestoreWindow(window);
 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -178,7 +178,7 @@ void GlEngine::initOpenGL() {
 
    
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // IMAGEN DE LA  VENTANA
 
