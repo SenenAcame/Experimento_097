@@ -181,21 +181,19 @@ void LogicSystem::colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current,
 //    }
 //}
 
+void LogicSystem::colisionPowerUp(LevelMan &LM, GraphicEngine &GE, Enty &current, Enty &colisioned) {
+    if(colisioned.hasTAG<TPlayer>()){
+        //powerup recogido por jugador
+        markDestroy(current);
+    }
+}
+
 /*NUEVO*/ void LogicSystem::colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned) {
     if(colisioned.hasTAG<TPlayer>()) {
         //mostrar texto de recoger arma
         takeWeapon2(LM, GE, colisioned, current);
     }
 }
-
-///*VIEJO*/ void LogicSystem::receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor) {
-//    auto& EM = LM.getEM();
-//    auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
-//    if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
-//    enemyStats.ClockAttackEnemy = 0;
-//    reciveDamge(EM, receptor, agressor);
-//    LM.updateInterfaceHit(eng, receptor);
-//}
 
 /*NUEVO*/ void LogicSystem::receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor) {
     auto& EM = LM.getEM();

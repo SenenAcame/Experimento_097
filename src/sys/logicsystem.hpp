@@ -15,20 +15,24 @@ struct LogicSystem {
 
     static constexpr double PI { std::numbers::pi };
 
-    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
-    /*NUEVO*/ void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, UIsys& UISys, double dt);
+    void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
+    void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, UIsys& UISys, double dt);
+
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
-    /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
-    /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+    void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
+    void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
     void colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
-    /*NUEVO*/ void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
-    /*NUEVO*/ void receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
+    void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
+    void colisionPowerUp(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
+
+    void receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
     void reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
     void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt);
-    /*NUEVO*/ void takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon);
+    void takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon);
     void resetCollision(EstadoCmp& state);
     void soundMonster(EntyMan& EM, Enty& e);
+
     void partialVelocities(EntyMan& EM, Enty& player, double dt);
     void preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt);
     void secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt);
