@@ -24,6 +24,11 @@ struct UIsys {
 
     //hits
     RTexture zarpazo;
+    RTexture inicio;
+    RTexture muerte;
+    RTexture controles;
+    RTexture pausa;
+    //RTexture sonido;
     
     int activateHit {0};
     bool hit1{false}, hit2{false}, hit3{false};
@@ -42,10 +47,14 @@ struct UIsys {
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
 
     //menus
-    bool menuIni(GraphicEngine& GE, bool next);
-    bool menuMuerto (GraphicEngine& GE, bool next);
-    void menuControles (GraphicEngine& GE);
-    bool menuPausa (GraphicEngine& GE, bool next);
+    size_t menuIni(GraphicEngine& GE, size_t next);
+    size_t menuMuerto (GraphicEngine& GE, size_t next);
+    size_t menuControles (GraphicEngine& GE, size_t next);
+    size_t menuPausa (GraphicEngine& GE, size_t next);
+    size_t menuSonido (GraphicEngine& GE, size_t next);
+    bool inGame{false};
+
+    void iniText();
 
     
 };

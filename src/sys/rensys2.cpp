@@ -54,37 +54,60 @@
     ImGUI_Postrender(GE);
 }
 
-bool RenSys2::updateMenuInicio(GraphicEngine& GE, UIsys& UISys, bool next) {
+size_t RenSys2::updateMenuInicio(GraphicEngine& GE, UIsys& UISys) {
+    size_t abandon = 0;
     ImGUI_Prerender();
 
-    next = UISys.menuIni(GE, next);
+    abandon = UISys.menuIni(GE, abandon);
 
     ImGUI_Postrender(GE);
 
-    return next;
+    return abandon;
 }
 
- bool RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next){
-
+ size_t RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys){
+    size_t abandon = 2;
     ImGUI_Prerender();
     
-    next = UISys.menuMuerto(GE, next);
+    abandon = UISys.menuMuerto(GE, abandon);
     
     ImGUI_Postrender(GE);
 
-    return next;
+    return abandon;
  }
 
- bool RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, bool next){
-
+ size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys){
+    size_t abandon = 3;
     ImGUI_Prerender();
     
-    next = UISys.menuPausa(GE, next);
+    abandon = UISys.menuPausa(GE, abandon);
     
     ImGUI_Postrender(GE);
 
-    return next;
+    return abandon;
  }
+
+ size_t RenSys2::updateMenuControles(GraphicEngine& GE, UIsys& UISys) {
+    size_t abandon = 4;
+    ImGUI_Prerender();
+
+    abandon = UISys.menuControles(GE, abandon);
+
+    ImGUI_Postrender(GE);
+
+    return abandon;
+}
+
+size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys) {
+    size_t abandon = 5;
+    ImGUI_Prerender();
+
+    abandon = UISys.menuSonido(GE, abandon);
+
+    ImGUI_Postrender(GE);
+
+    return abandon;
+}
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);

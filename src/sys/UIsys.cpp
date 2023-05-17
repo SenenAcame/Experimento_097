@@ -1,5 +1,15 @@
 #pragma once
 #include "UIsys.hpp"
+#include <cstddef>
+
+void UIsys::iniText(){
+
+    zarpazo.setImage("assets/Interface/1280x720/zarpazo.png");
+    inicio.setImage("assets/Interface/1280x720/pantalla_inicio_fondo.png");
+    muerte.setImage("assets/Interface/1280x720/pantalla_muerto.png");
+    controles.setImage("assets/Interface/1280x720/pantalla_controles.png");
+    pausa.setImage("assets/Interface/1280x720/pantalla_pausa.png");
+}
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, double dt) {
     //ImGui::Text("This is some useful text");
@@ -182,14 +192,12 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::End();
 }
 
-bool UIsys::menuIni (GraphicEngine& GE, bool next){
-    int counter =0;
+size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
 
+    
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
-
-    RTexture inicio("assets/Interface/1280x720/pantalla_inicio_fondo.png");
 
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
     
@@ -205,7 +213,7 @@ bool UIsys::menuIni (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
-        next = false;
+        next = 1;
     }
     ImGui::PopStyleColor();
 
@@ -213,7 +221,7 @@ bool UIsys::menuIni (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
-        next = false;
+        next = 4;
     }
     ImGui::PopStyleColor();
     //ImGui::PopStyleColor();
@@ -225,16 +233,13 @@ bool UIsys::menuIni (GraphicEngine& GE, bool next){
     return next;
 }
 
-bool UIsys::menuMuerto (GraphicEngine& GE, bool next){
-    int counter =0;
-
+size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
+    
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
-    RTexture inicio("assets/Interface/1280x720/pantalla_muerto.png");
-
-    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)muerte.ID_, ImVec2(0, 0), ImVec2(width, height));
     
     //ImGui::PushStyleVar(ImGuiCol_WindowBg);
     ImGui::SetNextWindowPos(ImVec2(0,0));
@@ -247,7 +252,7 @@ bool UIsys::menuMuerto (GraphicEngine& GE, bool next){
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
-        next = false;
+        next = 0;
     }
     ImGui::PopStyleColor();
  
@@ -256,16 +261,13 @@ bool UIsys::menuMuerto (GraphicEngine& GE, bool next){
     return next;
 }
 
-void UIsys::menuControles (GraphicEngine& GE){
-    int counter = 0;
+size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
 
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
-    RTexture inicio("assets/Interface/1280x720/pantalla_controles.png");
-
-    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)controles.ID_, ImVec2(0, 0), ImVec2(width, height));
     
     //ImGui::PushStyleVar(ImGuiCol_WindowBg);
     ImGui::SetNextWindowPos(ImVec2(0,0));
@@ -277,23 +279,62 @@ void UIsys::menuControles (GraphicEngine& GE){
     );
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
-    if(ImGui::Button("Jugar", ImVec2(200,100))){
-
+    if(ImGui::Button("Volver", ImVec2(200,100))){
+        if(inGame == true){
+            next = 1;
+        }
+        else{
+            next = 0;
+        }
+        
     }
     ImGui::PopStyleColor();
     ImGui::End();
+
+    return next;
 }
 
-bool UIsys::menuPausa (GraphicEngine& GE, bool next){
-    int counter =0;
+size_t UIsys::menuSonido (GraphicEngine& GE, size_t next){
 
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
-    RTexture inicio("assets/Interface/1280x720/pantalla_pausa.png");
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)controles.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    //ImGui::PushStyleVar(ImGuiCol_WindowBg);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::Begin(
+        "MenuSonido", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
+    );
+    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Volver", ImVec2(200,100))){
+        if(inGame == true){
+            next = 1;
+        }
+        else{
+            next = 0;
+        }
+        
+    }
+    ImGui::PopStyleColor();
+    ImGui::End();
 
-    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
+    return next;
+}
+
+size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
+    
+    //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
+    auto* m_window = GE.getWindow();
+    auto width = GE.glEng.getWidth();
+    auto height = GE.glEng.getHeight();
+
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)pausa.ID_, ImVec2(0, 0), ImVec2(width, height));
     
     //ImGui::PushStyleVar(ImGuiCol_WindowBg);
     ImGui::SetNextWindowPos(ImVec2(0,0));
@@ -305,9 +346,9 @@ bool UIsys::menuPausa (GraphicEngine& GE, bool next){
     );
     ImGui::SetCursorPos(ImVec2(height/1.7,width/6.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
-    if(ImGui::Button("Jugar", ImVec2(200,100))){
+    if(ImGui::Button("Reanudar", ImVec2(200,100))){
         
-        next = false;
+        next = 1;
     }
     ImGui::PopStyleColor();
 
@@ -315,7 +356,7 @@ bool UIsys::menuPausa (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Sonido", ImVec2(200,100))){
         
-        next = false;
+        next = 5;
     }
     ImGui::PopStyleColor();
 
@@ -323,7 +364,7 @@ bool UIsys::menuPausa (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
         
-        next = false;
+        next = 4;
     }
     ImGui::PopStyleColor();
 
@@ -331,7 +372,7 @@ bool UIsys::menuPausa (GraphicEngine& GE, bool next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Salir", ImVec2(200,100))){
         
-        next = false;
+        next = 0;
     }
     ImGui::PopStyleColor();
  

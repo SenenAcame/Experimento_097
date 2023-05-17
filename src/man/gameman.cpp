@@ -29,56 +29,89 @@ void GameMan::game() {
     GraphicEngine GE;
     
     //GE.glEng.setResolution(1920, 1080);
-
+    
     RenSys.initIMGUI(GE);
     init_config(GE);
-    UISys.zarpazo.setImage("assets/Interface/1280x720/zarpazo.png");
+    UISys.iniText();
     
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
-
-    bool abandon { false };
+    size_t menu = 0; //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
+    
     auto window = GE.getWindow();
 
-    while(!glfwWindowShouldClose(window)) {
+    while(!glfwWindowShouldClose(window) && menu == 0) {
 
-        bucleInicio(RenSys, GE, UISys);
+        switch (menu) {
 
-        while(!glfwWindowShouldClose(window) && !abandon){
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            abandon = bucleJuego(LM, GE, RenSys, InpSys, SouSys, abandon, player_ID, UISys) ;
+            case 0:{
+                menu = bucleInicio(RenSys, GE, UISys);
+                //std::cout<<"menu = " << menu<<"\n";
+            }
+
+            case 1:{
+                while(!glfwWindowShouldClose(window) && menu == 1){
+                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                    UISys.inGame = 1;
+                    menu = bucleJuego(LM, GE, RenSys, InpSys, SouSys, menu, player_ID, UISys) ;
+                    UISys.inGame = 0;
+                }
+            }
+
+            case 4:{
+                while(!glfwWindowShouldClose(window) && menu == 4){
+                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                    menu = bucleControles( GE, RenSys, UISys);
+                }
+            }
+
+            case 5:{
+                while(!glfwWindowShouldClose(window) && menu == 5){
+                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                    menu = bucleSonido( GE, RenSys, UISys) ;
+                }
+            }
+
+            
+
         }
 
-        abandon = false;
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        if(!abandon) abandon = bucleDead(LM, GE, RenSys, UISys);
-        abandon = false;
+        while(!glfwWindowShouldClose(window) && menu == 2){
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            menu = bucleDead(GE, RenSys, UISys);
+        }
+        
     }
     RenSys.EndImgui(GE);
 }
 
-void GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
-    bool menu { true };
+size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
+    size_t abandon{0};
 
-    while(menu && !glfwWindowShouldClose(GE.getWindow())) {
-        menu = RenSys.updateMenuInicio(GE, UISys, menu);
+    while(abandon == 0 && !glfwWindowShouldClose(GE.getWindow())) {
+        abandon = RenSys.updateMenuInicio(GE, UISys);
     }
+    return abandon;
 }
 
-bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, bool abandon, std::size_t player_ID, UIsys &UISys){
-    EntyMan&    EM = LM.getEM();
-    ColSys2     ColSys;
-    PhySys2     PhySys; 
-    AISys       AISys;
-    NodeMapSys  MapSys;
-    LogicSystem LogSys;
-    SpawnSystem SpawnSys;
-    SelfDestSys DstSys;
-    PartSys     PartSys;
-    AnimMan     AM(GE.glEng);
+
+size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, size_t abandon, std::size_t player_ID, UIsys &UISys){
+    EntyMan&      EM = LM.getEM();
+    ColSys2       ColSys;
+    PhySys2       PhySys; 
+    AISys         AISys;
+    NodeMapSys    MapSys;
+    LogicSystem   LogSys;
+    SpawnSystem   SpawnSys;
+    SelfDestSys   DstSys;
+    PartSys       PartSys;
+    AnimMan AM(GE.glEng);
 
     bool dead { false }, pause { false };
-
-    size_t map_ID = init_map(LM, GE, SouSys);
+    size_t actualMenu {abandon};
+    
+    std::size_t map_ID = LM.createMap2(GE, SouSys);
+    ColSys.init_Hitoxes_Map2(LM);
+    LM.createWeapon2(GE, Vec3 {-42, 2.8, -15}, W_Type::Fusil, SouSys);
 
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -87,44 +120,76 @@ bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSy
 
     constexpr double dt = 1.0 / 60;
 
-    while(!dead && !abandon && !glfwWindowShouldClose(GE.getWindow()) ) {
-        if(pause) {
-            pause = RenSys.updateMenuPausa( GE, UISys, abandon);
-            abandon = pause;
-        }
-        else {
-            EM.update();
-            RenSys.update2(EM, GE, player_ID, UISys, dt);
-            MapSys.update2(EM, player_ID, map_ID);
-            InpSys.update2(LM, GE, SouSys, dt, UISys);
-            AISys. update2(LM, GE, dt);
-            PhySys.update (EM, dt);
-            ColSys.update (EM);
-            LogSys.update2(LM, GE, dt, UISys, dead);
-            PhySys.update_after_colision(EM, dt);
-            SouSys.update (EM);
-            SpawnSys.update(LM, GE, SouSys, player_ID, dt);
-            DstSys.update (EM, dt);  
+    while(abandon == 1 && !glfwWindowShouldClose(GE.getWindow()) ) {
+        
+        switch (actualMenu) {
+            
+            case 3: 
+                actualMenu = RenSys.updateMenuPausa( GE, UISys);
+                if(actualMenu == 0){
+                    abandon = actualMenu;
+                }
+
+            case 4:
+                actualMenu = bucleControles( GE, RenSys, UISys);
+
+            case 5:
+                actualMenu = bucleSonido(GE,RenSys, UISys);
+
+            default:
+                EM.update();
+                RenSys.update2(EM, GE, player_ID, UISys, dt);
+                MapSys.update2(EM, player_ID, map_ID);
+                InpSys.update2(LM, GE, SouSys, dt, UISys);
+                AISys. update2(LM, GE, dt);
+                PhySys.update (EM, dt);
+                ColSys.update (EM);
+                LogSys.update2(LM, GE, dt, UISys, dead);
+                PhySys.update_after_colision(EM, dt);
+                SouSys.update (EM);
+                DstSys.update (EM, dt);
+        
         }
         //ge.glEng.drawFocos();
     }
     LM.resetLevel();
     
-    abandon = true;
+    abandon = 0;
 
     return abandon;
 }
 
-bool GameMan::bucleDead(LevelMan& LM, GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
-    EntyMan&  EM = LM.getEM();
-    bool menu { true };
+size_t GameMan::bucleDead(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
+    size_t abandon { 2 };
         
-    while(menu && !glfwWindowShouldClose(GE.getWindow())) {
+    while(abandon == 2 && !glfwWindowShouldClose(GE.getWindow())) {
         //menu = RenSys.updateMenuDead(GE, UISys, menu);
-        menu = RenSys.updateMenuPausa(GE, UISys, menu);
+        abandon = RenSys.updateMenuPausa(GE, UISys);
     }
 
-    return menu;
+    return abandon;
+}
+
+size_t GameMan::bucleControles(GraphicEngine &GE ,RenSys2 &RenSys, UIsys &UISys){
+    size_t abandon { 4 };
+        
+    while(abandon == 4 && !glfwWindowShouldClose(GE.getWindow())) {
+        //menu = RenSys.updateMenuDead(GE, UISys, menu);
+        abandon = RenSys.updateMenuControles(GE, UISys);
+    }
+
+    return abandon;
+}
+
+size_t GameMan::bucleSonido(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
+    size_t abandon { 5 };
+        
+    while(abandon == 5 && !glfwWindowShouldClose(GE.getWindow())) {
+        //menu = RenSys.updateMenuDead(GE, UISys, menu);
+        abandon = RenSys.updateMenuSonido(GE, UISys);
+    }
+
+    return abandon;
 }
 
 void GameMan::init_config(GraphicEngine& GE) {
