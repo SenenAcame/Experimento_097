@@ -463,9 +463,9 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
     EM.addComponent<EstadoCmp>(enemy, 1.f, 1.5f, 1.f);
     EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>  (enemy);
-    //auto &part = EM.addComponent<ParticleCMP> (enemy);
+    auto &part = EM.addComponent<ParticleCMP> (enemy);
     
-    //PartSys.setParticle(part, "assets/textures/partExplosion.png", 100, 0, 0.f, 1.0f, {.5f, 1.f, .5f}, 3.f, 0.f, 0.1f, -8.f);
+    PartSys.setParticle(part, "assets/textures/partExplosion.png", 100, 0, 0.f, 1.0f, {.5f, 1.f, .5f}, 3.f, 0.f, 0.1f, -8.f);
 
     //TAGS
     EM.addTag<TInteract>(enemy);
@@ -478,8 +478,8 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
-    std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_caminar", "monstruo2/caminar/monstruo2_caminar"};
-    std::vector<int> framesAnim = {111,111};
+    std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_caminar_1", "monstruo2/caminar/monstruo2_caminar_1"};
+    std::vector<int> framesAnim = {181,181};
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy);

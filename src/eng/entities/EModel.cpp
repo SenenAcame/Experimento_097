@@ -106,7 +106,7 @@ void EModel::loadAnimation(std::vector<std::string> animations, ResourceGestor &
     if(!anim->isLoaded()) {
         for(int y = 0; y < animations.size(); y++) {
             std::vector<RMesh> animation;
-            int i = 1;
+            int i = 0;
             while(i < totalFrames[y]) {
                                     //cambiar paths
                 std::string route = "assets/animations/" + animations[y] + std::to_string(i) + ".obj";

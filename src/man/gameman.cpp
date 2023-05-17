@@ -56,8 +56,8 @@ void GameMan::game() {
     std::size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     //std::size_t map_ID    = LM.createMap2(GE, SouSys);
     //ColSys.init_Hitoxes_Map2(LM);
-    //LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys, PartSys);
-    LM.createNormalEnemyAnim(GE, Vec3{-42, 2.8, -15}, SouSys);
+    LM.createNormalEnemy(GE, Vec3{-42, 2.8, -15}, SouSys, PartSys);
+    //LM.createNormalEnemyAnim(GE, Vec3{-42, 2.8, -15}, SouSys);
     //LM.createNormalEnemyAnim(GE, Vec3{-40, 2.8, -10}, SouSys);
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {

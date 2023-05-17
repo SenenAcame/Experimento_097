@@ -49,6 +49,11 @@ GlEngine::GlEngine() {
     Vec3 rot(0.0f, 0.0f, 0.0f);
     Vec3 scl(1.0f);
 
+    RTexture tex("assets/textures/partExplosion.png");
+    unsigned int maxPart =50;
+
+    EGenParticle genPart = EGenParticle(shaderParticle, &tex, maxPart);
+
     //createCamera(NULL, Vec3{0, 0, 0}, rot, scl);
     //setActiveCamera(0);
     //camera_ = getActiveCamera();
@@ -293,9 +298,9 @@ TNodo *GlEngine::createModel(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca, std:
 }
 
 int partCont = 0;
-EGenParticle &GlEngine::createGenParticle(std::string textureFileName /* = assets/wall.jpg */, unsigned int maxParticles) {
+EGenParticle &GlEngine::createGenParticle(std::string textureFileName, unsigned int maxParticles) {
 
-    if(partCont != 0) {
+    if(partCont != 0){
         for(uint16_t i = 0; i < genParticleEntities_.size(); i++) {
             if(strcmp(genParticleEntities_[i].texture->getName().c_str(), textureFileName.c_str())) //if his maxparticles is less -> rescale
                 return genParticleEntities_[i];
