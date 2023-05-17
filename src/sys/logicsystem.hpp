@@ -16,7 +16,7 @@ struct LogicSystem {
     static constexpr double PI { std::numbers::pi };
 
     /*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
-    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys);
+    /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
 
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
 

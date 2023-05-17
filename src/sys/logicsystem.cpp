@@ -55,13 +55,13 @@
 //    );
 //}
 
-/*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys) {
+/*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead) {
     auto& EM = LM.getEM();
     EM.foreach<SYSCMPs, SYSTAGs >(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
             if(entity.hasTAG<TPlayer>()){
                 if(EM.getComponent<EstadisticaCmp>(entity).hitpoints == 0){
-                    markDestroy(entity);
+                    dead = true;
                 }
             }
             if(state.colision != 0) {

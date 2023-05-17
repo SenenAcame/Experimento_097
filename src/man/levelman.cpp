@@ -644,22 +644,23 @@ Enty& LevelMan::createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2)
 
 void LevelMan::resetLevel() {
     
-
     EM.forall(
         [](Enty& ent) {
             bool is_enemy_bullet_or_player = 
                 ent.hasTAG<TEnemy>()  ||
                 ent.hasTAG<TBullet>() ||
                 ent.hasTAG<TWeapon>() ||
-                ent.hasTAG<TSpawn>()  ||
-                ent.hasTAG<TPlayer>();
+                ent.hasTAG<TSpawn>();
+
             if(is_enemy_bullet_or_player) ent.setDestroy();
+           
         }
     );
 
-  
+    
 
     EM.callDestroy();
+
 }
 
 void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {

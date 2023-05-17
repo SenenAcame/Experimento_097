@@ -50,11 +50,10 @@ void GameMan::game() {
             abandon = bucleJuego(LM, GE, RenSys, InpSys, SouSys, abandon, player_ID, UISys) ;
             
         }
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        if(!abandon) abandon = bucleDead(LM, GE, RenSys, UISys, abandon);
-
         abandon = false;
-          
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if(!abandon) abandon = bucleDead(LM, GE, RenSys, UISys);
+        abandon = false;
     }
     RenSys.EndImgui(GE);
 
@@ -105,7 +104,7 @@ bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSy
 
     constexpr double dt = 1.0 / 60;
 
-    while(!glfwWindowShouldClose(GE.getWindow()) && !dead && !abandon) {
+    while(!dead && !abandon && !glfwWindowShouldClose(GE.getWindow()) ) {
         
         if(pause) {
             pause = RenSys.updateMenuPausa( GE, UISys, abandon);
@@ -121,17 +120,18 @@ bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSy
             AISys. update2(EM, dt);
             PhySys.update (EM, dt);
             ColSys.update (EM);
-            LogSys.update2(LM, GE, dt, UISys);
+            LogSys.update2(LM, GE, dt, UISys, dead);
             PhySys.update_after_colision(EM, dt);
             SouSys.update (EM);
-            DstSys.update (EM, dt);
-            dead  = EM.getEntityById(player_ID).getDestroy();  
+            DstSys.update (EM, dt);  
         }
         
         //ge.glEng.drawFocos();
         
     }
     LM.resetLevel();
+    abandon = true;
+    return abandon;
     //RenSys.EndImgui(GE);
 //    init_config(dev);
 //    init_map(LM, dev, SouSys);
@@ -194,18 +194,16 @@ bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSy
 //    ColSys2::init_Hitoxes_Map2(LM);
 //}
 
-bool GameMan::bucleDead(LevelMan& LM, GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys, bool abandon){
+bool GameMan::bucleDead(LevelMan& LM, GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
 
     EntyMan&  EM = LM.getEM();
-
-    bool restart { !abandon };
+    bool menu { true };
         
-    while(restart && !abandon && !glfwWindowShouldClose(GE.getWindow())) {
-        restart = RenSys.updateMenuDead(GE, UISys, restart);
-        abandon = restart;
+    while(menu && !glfwWindowShouldClose(GE.getWindow())) {
+        //menu = RenSys.updateMenuDead(GE, UISys, menu);
+        menu = RenSys.updateMenuPausa(GE, UISys, menu);
     }
 
-
-    return abandon;
+    return menu;
 
 }

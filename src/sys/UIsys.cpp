@@ -131,7 +131,6 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
 
-
     RTexture prueba("assets/Interface/1280x720/zarpazo.png");
     ImGui::SetNextWindowPos(ImVec2(randWidth1,randHeight2));
     ImGui::SetNextWindowSize(ImVec2(width, height));
@@ -170,7 +169,6 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     }
     ImGui::End();
 
-    
     ImGui::SetNextWindowPos(ImVec2(randWidth3,randHeight3));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
@@ -211,11 +209,22 @@ bool UIsys::menuIni (GraphicEngine& GE, bool next){
     );
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
         
         next = false;
     }
     ImGui::PopStyleColor();
+
+    ImGui::SetCursorPos(ImVec2(height/2,width/4));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
+    if(ImGui::Button("Controles", ImVec2(200,100))){
+        
+        next = false;
+    }
+    ImGui::PopStyleColor();
+    //ImGui::PopStyleColor();
     //ImGui::Text("Hola");
     //ImGui::Image((void*)(intptr_t)inicio.ID_, ImVec2(width, height));
  
@@ -309,9 +318,33 @@ bool UIsys::menuPausa (GraphicEngine& GE, bool next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/6.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
+        
+        next = false;
+    }
+    ImGui::PopStyleColor();
+
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/4.4));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Sonido", ImVec2(200,100))){
+        
+        next = false;
+    }
+    ImGui::PopStyleColor();
+
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Controles", ImVec2(200,100))){
+        
+        next = false;
+    }
+    ImGui::PopStyleColor();
+
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/2.4));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Salir", ImVec2(200,100))){
         
         next = false;
     }
