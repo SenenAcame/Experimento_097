@@ -11,7 +11,8 @@ using ComponentList = MP::Typelist<
 using TagList = MP::Typelist<
     TPlayer, TEnemy, TBullet, TMap, TWeapon, 
     TEneBullet, TSpawn, TInteract, TDoor, TDistEnemy, 
-    TWall, TKey, TTankEnemy, TSmallEnemy, TSpwEnemy, TSpwWeapon>;
+    TWall, TKey, TTankEnemy, TSmallEnemy, TSpwEnemy, 
+    TSpwWeapon, TPowerUp>;
 
 using EntyMan = EntityMan2<ComponentList, TagList>;
 using Enty    = EntyMan::Entity;

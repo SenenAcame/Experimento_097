@@ -57,7 +57,7 @@ void GameMan::game() {
 }
 
 void GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
-    bool menu{true};
+    bool menu { true };
 
     while(menu && !glfwWindowShouldClose(GE.getWindow())) {
         menu = RenSys.updateMenuInicio(GE, UISys, menu);
@@ -65,25 +65,21 @@ void GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
 }
 
 bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, bool abandon, std::size_t player_ID, UIsys &UISys){
-    EntyMan&      EM = LM.getEM();
-    ColSys2       ColSys;
-    PhySys2       PhySys; 
-    AISys         AISys;
-    NodeMapSys    MapSys;
-    LogicSystem   LogSys;
-    SpawnSystem   SpawnSys;
-    SelfDestSys   DstSys;
-    PartSys       PartSys;
-    AnimMan AM(GE.glEng);
+    EntyMan&    EM = LM.getEM();
+    ColSys2     ColSys;
+    PhySys2     PhySys; 
+    AISys       AISys;
+    NodeMapSys  MapSys;
+    LogicSystem LogSys;
+    SpawnSystem SpawnSys;
+    SelfDestSys DstSys;
+    PartSys     PartSys;
+    AnimMan     AM(GE.glEng);
 
     bool dead { false }, pause { false };
-    
-    std::size_t map_ID    = LM.createMap2(GE, SouSys);
-    ColSys.init_Hitoxes_Map2(LM);
-    LM.createWeapon2(GE, Vec3 {-42, 2.8, -15}, W_Type::Fusil, SouSys);
 
-    
-    
+    size_t map_ID = init_map(LM, GE, SouSys);
+
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
     //    ge.glEng.setActiveFoco(i, true);
@@ -92,7 +88,6 @@ bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSy
     constexpr double dt = 1.0 / 60;
 
     while(!dead && !abandon && !glfwWindowShouldClose(GE.getWindow()) ) {
-        
         if(pause) {
             pause = RenSys.updateMenuPausa( GE, UISys, abandon);
             abandon = pause;
@@ -108,6 +103,7 @@ bool GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSy
             LogSys.update2(LM, GE, dt, UISys, dead);
             PhySys.update_after_colision(EM, dt);
             SouSys.update (EM);
+            SpawnSys.update(LM, GE, SouSys, player_ID, dt);
             DstSys.update (EM, dt);  
         }
         //ge.glEng.drawFocos();

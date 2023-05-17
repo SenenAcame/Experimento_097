@@ -39,7 +39,7 @@
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
             if(ent.hasTAG<TEnemy>())  rotateEnemy (rend, phy); 
-            if(ent.hasTAG<TWeapon>()) rotateWeapon(rend, phy); 
+            if(ent.hasTAG<TWeapon>() || ent.hasTAG<TPowerUp>()) rotateWeapon(rend, phy); 
             
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();

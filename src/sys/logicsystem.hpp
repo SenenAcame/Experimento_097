@@ -20,10 +20,10 @@ struct LogicSystem {
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
     /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
     /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
-    void colisionBullet(EntyMan& EM, Enty& current, Enty& colisioned);
+    void colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     /*NUEVO*/ void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
-    /*NUEVO*/ void receiveEntityDamage2(LevelMan& LM, GraphicEngine& eng, Enty& receptor, Enty& agressor);
-    void reciveDamge(EntyMan& EM, Enty& receptor, Enty& agressor);
+    /*NUEVO*/ void receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
+    void reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
     void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt);
     /*NUEVO*/ void takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon);
@@ -33,6 +33,7 @@ struct LogicSystem {
     void preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt);
     void secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt);
     bool checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept;
+    void chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy);
 
     ///*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
     ///*VIEJO*/ void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
@@ -46,4 +47,7 @@ struct LogicSystem {
     //void openDoor();
     //void takeKey();
     //void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state);
+
+private:
+    double spawn_perc { 50.0 };
 };
