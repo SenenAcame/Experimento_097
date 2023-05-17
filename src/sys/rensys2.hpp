@@ -14,7 +14,6 @@ struct RenSys2 {
 
     static constexpr double PI { std::numbers::pi };
 
-    /*VIEJO*/ void update  (EntyMan& EM, TheEngine& GFX);
     /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UIsys, double dt);
     bool updateMenuInicio(GraphicEngine& GE, UIsys& UISys, bool next);
     bool updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next);

@@ -54,8 +54,6 @@ struct LevelMan {
     /*NUEVO*/ Enty&  createWpnSpawn(Vec3 pos, GraphicEngine& GE, int room, double timer = 1);
     /*NUEVO*/ Enty&  createSpawn2  (Vec3 pos, GraphicEngine& GE, int room, double timer = 1);
 
-    EntyMan&         getEM() { return EM; }
-
     //Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
     //void initInterface (TheEngine& dev, Enty& player);
     ////void createInterface (TheEngine& dev, Enty& player);

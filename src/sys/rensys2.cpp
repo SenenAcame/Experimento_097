@@ -54,6 +54,16 @@
     ImGUI_Postrender(GE);
 }
 
+bool RenSys2::updateMenuInicio(GraphicEngine& GE, UIsys& UISys, bool next) {
+    ImGUI_Prerender();
+
+    next = UISys.menuIni(GE, next);
+
+    ImGUI_Postrender(GE);
+
+    return next;
+}
+
  bool RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys, bool next){
 
     ImGUI_Prerender();
@@ -226,7 +236,6 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     int wave = 0;
     int kills = 0;
     
-    
     RTexture prueba("assets/Interface/1280x720/zarpazo.png");
     
     switch (invent.equipada) {
@@ -302,10 +311,7 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     //ImGui::Text("HP: %d", hp);
     ImGui::Text("%d/%d", magazine, ammo );
     
-    ImGui::End();
-
-
-    
+    ImGui::End();    
 }
 
 void RenSys2::ImGUI_Postrender(GraphicEngine& GE) const noexcept {

@@ -70,7 +70,7 @@
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
             if(entity.hasTAG<TPlayer>()){
-                if(EM.getComponent<EstadisticaCmp>(entity).hitpoints == 0){
+                if(EM.getComponent<EstadisticaCmp>(entity).hitpoints == 0) {
                     dead = true;
                 }
             }
@@ -79,12 +79,12 @@
                 stats.ClockAttackEnemy += dt;
             }
 
-            if(state.colision != 0) checkColision(LM, GE, entity, state, dt);
+            if(state.colision != 0) checkColision(LM, GE, entity, state, UISys, dt);
         }
     );
 }
 
-/*NUEVO*/ void LogicSystem::checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, double dt) {
+/*NUEVO*/ void LogicSystem::checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, UIsys& UISys, double dt) {
     auto& EM = LM.getEM();
     auto& entity_colisioned = EM.getEntityById(state.entityCol);
 

@@ -16,7 +16,7 @@ struct LogicSystem {
     static constexpr double PI { std::numbers::pi };
 
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
-    /*NUEVO*/ void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, double dt);
+    /*NUEVO*/ void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, UIsys& UISys, double dt);
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
     /*NUEVO*/ void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
     /*NUEVO*/ void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
