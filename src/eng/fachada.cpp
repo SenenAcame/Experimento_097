@@ -202,11 +202,7 @@ void TheFachada::changeVCAVolume(int tipo, float volumen){
             FMOD_Studio_System_GetVCA(system, "vca:/Voces", &vca);
             break;
     }
-    if(volumen>0 && FMOD_Studio_VCA_GetVolume(vca,0,0)>0)
-        FMOD_Studio_VCA_SetVolume(vca, FMOD_Studio_VCA_GetVolume(vca,0,0)+volumen);
-    else if(volumen<0 && FMOD_Studio_VCA_GetVolume(vca,0,0)<1){
-        FMOD_Studio_VCA_SetVolume(vca, FMOD_Studio_VCA_GetVolume(vca,0,0)+volumen);
-    }
+    FMOD_Studio_VCA_SetVolume(vca, volumen);
 }
 
 void TheFachada::changeVCAMaster(float volumen){
