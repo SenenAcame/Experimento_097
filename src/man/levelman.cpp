@@ -30,7 +30,7 @@
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
     EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas(), .nodos=NodeMapSys::creaNodos()});
-    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true});
+    EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true, .loop=true});
     EM.addTag<TMap>(map);
 
     for(int i = 0; i < size; i++) {
@@ -54,7 +54,7 @@
     EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
     EM.addComponent<InventarioCmp> (player);
     EM.addComponent<SalaCmp>       (player);
-    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(9));
     //TAGS
     EM.addTag<TPlayer>  (player);
     EM.addTag<TInteract>(player);
