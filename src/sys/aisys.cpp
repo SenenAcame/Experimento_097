@@ -151,29 +151,6 @@ void AISys::find(AICmp& ai, PhysicsCmp2& phy){
     }
 }
 
-void AISys::find(AICmp& ai, PhysicsCmp2& phy){
-    if(ai.ruta.size()>0){
-        double desv_x=0;
-        double desv_z=0;
-        /*if(ai.xrand)
-            desv_x+=ai.random;
-        else
-            desv_x-=ai.random;
-        if(ai.zrand)
-            desv_z+=ai.random;
-        else
-            desv_z-=ai.random;*/
-        if(phy.x>=ai.ruta.at(ai.ruta.size()-1).coord.x-1+desv_x && phy.x<=ai.ruta.at(ai.ruta.size()-1).coord.x+1+desv_x && phy.z>=ai.ruta.at(ai.ruta.size()-1).coord.z-1+desv_z && phy.z<=ai.ruta.at(ai.ruta.size()-1).coord.z+1+desv_z){
-            ai.ruta.pop_back();
-        }
-        if(ai.ruta.size()>0){
-            ai.ox=ai.ruta.at(ai.ruta.size()-1).coord.x+desv_x;
-            ai.oz=ai.ruta.at(ai.ruta.size()-1).coord.z+desv_z;
-            seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive);
-        }
-    }
-}
-
 void AISys::die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const noexcept {
     renderEne.node->rotate( {-1, 0, 0});
     auto rot = renderEne.node->getRotation();
@@ -191,8 +168,8 @@ void AISys::die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const 
             if(!ai.enable) return;
 
             switch(ai.behaviour){
-                case SB::Arrive: arrive(ai, phy); break;
-                case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+                //case SB::Arrive: arrive(ai, phy); break;
+                //case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                 //case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
                 case SB::Patrol: find  (ai, phy); break;
                 case SB::Shoot:  shoot2(LM, GE, entity, ai, phy);
