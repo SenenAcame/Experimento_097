@@ -21,7 +21,7 @@ struct RenSys2 {
     size_t updateMenuControles(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuSonido(GraphicEngine& GE, UIsys& UISys);
 
-    void updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID);
+    void static updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID);
     
     ///*VIEJO*/ void drawAll (EntyMan& EM, TheEngine& GFX);
     ///*VIEJO*/ void drawBBox(EntyMan& EM, TheEngine& GFX);

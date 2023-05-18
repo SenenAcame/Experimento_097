@@ -13,7 +13,7 @@ struct Weapon {
     int magazine {}, ammo {};
     
     double reload_T {}, clock_R {};
-    double cadence {};
+    double cadence  {}, recoil  {};
 };
 
 struct InventarioCmp {
@@ -23,7 +23,7 @@ struct InventarioCmp {
 
     W_Type actual = W_Type::Pistol;
     //1 =  desbloqueada, 0 = no, 2 = arma actual
-    std::size_t inventary [3] = { 2, 0, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
+    std::size_t inventary [3] = { 2, 1, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
     
     Weapon gun {
         W_Type::Pistol,
@@ -33,7 +33,8 @@ struct InventarioCmp {
         100,
         0.8,
         0.8,
-        0
+        0,
+        1.
     };
 
     Weapon shot {
@@ -42,9 +43,10 @@ struct InventarioCmp {
         20,
         2,
         20,
-        3,
         1.5,
-        0
+        1.5,
+        0,
+        5.
     };
 
     Weapon rifle {
@@ -55,7 +57,8 @@ struct InventarioCmp {
         200,
         1.1,
         1.1,
-        0.05
+        0.05,
+        1.
     };
 
     //weapon1

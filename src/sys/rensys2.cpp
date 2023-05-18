@@ -3,6 +3,7 @@
 #include "../eng/engine2.hpp"
 #include "UIsys.hpp"
 #include <cstddef>
+#include <iostream>
 #include <iterator>
 //IMGUI
 #include <GL/gl.h>
@@ -113,15 +114,22 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     auto& player = EM.getEntityById(player_ID);
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& ren    = EM.getComponent<RenderCmp2>(player);
-    auto& sala   = EM.getComponent<SalaCmp>(player);
+    //auto& sala   = EM.getComponent<SalaCmp>(player);
 
     //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
     //std::cout<<"Sala jugador: "<<sala.sala<<"\n";
+    auto* cam = GE.getCamera();
 
-    float pitch = GE.getCamera()->Pitch;
-    float yaw   = GE.getCamera()->Yaw;
+    float pitch = cam->Pitch;
+    float yaw   = cam->Yaw;
+
+    //std::cout<<"Valores de camara: "<<pitch<<" "<<yaw<<"\n";
 
     ren.node->setRotation(Vec3(0, -yaw, pitch));
+
+    cam->updateCameraVectors();
+
+    //std::cout<<"Rotacion del nodo: "<<ren.node->getRotation().x<<" "<<ren.node->getRotation().y<<" "<<ren.node->getRotation().z<<"\n";
 
     phy.orienx = glm::radians(pitch);
     phy.orieny = glm::radians(yaw);

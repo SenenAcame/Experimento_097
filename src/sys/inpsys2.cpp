@@ -1,6 +1,7 @@
 #include "inpsys2.hpp"
 #include "../man/levelman.hpp"
 #include "UIsys.hpp"
+#include "rensys2.hpp"
 #include "soundsystem.hpp"
 #include "../eng/engine2.hpp"
 #include <GL/glut.h>
@@ -8,38 +9,6 @@
 #include <X11/X.h>
 #include <cstdint>
 #include <glm/fwd.hpp>
-
-///*VIEJO*/ void InpSys2::update(LevelMan& LM, TheEngine& eng, SoundSystem_t& SS, double const dt) {
-//    auto& EM = LM.getEM();
-//    auto& bb = EM.getBoard();
-//    EM.foreach<SYSCMPs, SYSTAGs>(
-//        [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
-//            bool up = false, down = false;
-//
-//            if(equip.reloading == 1) { equip.clockReload += dt; }
-//            equip.clockCadence += dt;
-//            phy.v_lin = phy.v_ang = 0;
-//            
-//            //movementMouse(eng, rend, phy);
-//            //if(mouse.isLeftPressed()) { shoot(LM, player, eng, SS, equip); }
-//
-//            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up = true;}
-//            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down  = true;}
-//            if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, up, down); }
-//            if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, down, up); }
-//            if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload(LM, eng, equip); }
-//            if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon(LM, equip, rend, 0, eng); }
-//            if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon(LM, equip, rend, 1, eng); }
-//            if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon(LM, equip, rend, 2, eng); }
-//            //if(keyboard.isKeyPressed(input.key_interaction)) { interact(EM, player, input.key_interaction); }
-//
-//            if(keyboard.isKeyPressed(input.key_unlockAll))  { unlockAll(equip.inventary); }
-//            if(keyboard.isKeyPressed(input.key_rldALLAmmo)) { reloadAll(EM, equip); }
-//            
-//            bb = { phy.x, phy.z, true, true , player.getID()};
-//        }
-//    );
-//} 
 
 /*NUEVO*/ void InpSys2::update2(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt, UIsys& UI) {
     auto& EM = LM.getEM();
@@ -54,7 +23,7 @@
             equip.clockCadence += dt;
             phy.v_lin = phy.v_ang = 0;
 
-            if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
+            if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys, player.getID()); }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
             if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -10, up, down); }
@@ -71,66 +40,6 @@
         }
     );
 }
-
-///*VIEJO*/ bool InpSys2::OnEvent(const irr::SEvent& event) {
-//    if (event.EventType == irr::EET_KEY_INPUT_EVENT){
-//        switch (event.KeyInput.Key) {
-//            case irr::KEY_KEY_W:
-//                checkPressed(event, XK_W);
-//                break;
-//            case irr::KEY_KEY_A:
-//                checkPressed(event, XK_A);
-//                break;
-//            case irr::KEY_KEY_S:
-//                checkPressed(event, XK_S);
-//                break;
-//            case irr::KEY_KEY_D:
-//                checkPressed(event, XK_D);
-//                break;
-//            case irr::KEY_KEY_E:
-//                checkPressed(event, XK_E);
-//                break;
-//            case irr::KEY_KEY_P:
-//                checkPressed(event, XK_P);
-//                break;
-//            case irr::KEY_KEY_R:
-//                checkPressed(event, XK_R);
-//                break;
-//            case irr::KEY_KEY_F:
-//                checkPressed(event, XK_F);
-//                break;
-//            case irr::KEY_KEY_1:
-//                checkPressed(event,XK_1);
-//                break;
-//            case irr::KEY_KEY_2:
-//                checkPressed(event,XK_2);
-//                break;
-//            case irr::KEY_KEY_3:
-//                checkPressed(event,XK_3);
-//                break;
-//            case irr::KEY_KEY_L:
-//                checkPressed(event,XK_L);
-//                break;
-//            case irr::KEY_ESCAPE:
-//                exit(0);
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//    else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
-//        switch(event.MouseInput.Event) {
-//            case irr::EMIE_LMOUSE_PRESSED_DOWN:
-//                mouse.pressLeft();
-//                break;
-//            case irr::EMIE_LMOUSE_LEFT_UP:
-//                mouse.releaseLeft();
-//                break;
-//            default: break;
-//        }
-//    }
-//    return false;
-//}
 
 /*NUEVO*/ bool InpSys2::checkKeyboard(GLFWwindow* window) {
     unsigned int const size = 10;
@@ -154,12 +63,6 @@
         checkPressed(keyboar_k[i], GLFW_keys[i], actual_state);
     }
 }
-
-///*VIEJO*/ void InpSys2::checkPressed(const irr::SEvent& event, KeySym k) {
-//    if(event.KeyInput.PressedDown) { keyboard.keyPressed(k);  }
-//    else                           { keyboard.keyReleased(k); }
-//}
-
 
 /*NUEVO*/ void InpSys2::checkPressed(int k, int GL_k, int actual) {
     switch(GL_k) {
@@ -223,79 +126,6 @@
 
     return actual;
 }
-
-///*VIEJO*/ void InpSys2::movementMouse(TheEngine& eng, RenderCmp2& rend, PhysicsCmp2& phy) {
-//    auto centerWidth  = static_cast<irr::s32>(eng.getWidth() /2);
-//    auto centerHeight = static_cast<irr::s32>(eng.getHeight()/2);
-//    auto cursor       = eng.getDevice()->getCursorControl();
-//    auto ray_traced   = eng.getSceneManager()->getSceneCollisionManager()->getRayFromScreenCoordinates({ cursor->getPosition().X, cursor->getPosition().Y });
-//    auto angx = eng.getCamera()->getRotation().X * std::numbers::pi / 180;
-//    auto angy = eng.getCamera()->getRotation().Y * std::numbers::pi / 180;
-//    
-//    eng.getCamera()->setTarget({ ray_traced.end.X, ray_traced.end.Y, ray_traced.end.Z });
-//    rend.n->setRotation({
-//        eng.getCamera()->getRotation().X, 
-//        eng.getCamera()->getRotation().Y, 
-//        0
-//    });
-//    cursor->setPosition(centerWidth, centerHeight);
-//
-//    phy.orieny = angy;
-//    phy.orienx = angx;
-//}
-
-///*VIEJO*/ void InpSys2::changeWeapon(LevelMan& LM, InventarioCmp& p_invent, RenderCmp2& playerRender, size_t equip, TheEngine& eng) {
-//    int magazine {}, ammo{};
-//    playerRender.n->remove();
-//    
-//    if(p_invent.reloading == 1) {
-//        switch (p_invent.equipada) {
-//            case 0: p_invent.clockReload1 = p_invent.clockReload;
-//                break;
-//            case 1: p_invent.clockReload2 = p_invent.clockReload;
-//                break;
-//            case 2: p_invent.clockReload3 = p_invent.clockReload;
-//                break;
-//            default: break;
-//        }
-//    }
-//    
-//    p_invent.inventary[p_invent.equipada] = 1;
-//    p_invent.equipada = equip;
-//    p_invent.inventary[equip] = 2;
-//    
-//    switch (p_invent.equipada) {
-//        case 0:
-//            playerRender.n = eng.createPlayer("assets/models/armas/pistola.obj","assets/textures/fire.bmp");
-//            p_invent.clockReload = p_invent.clockReload1;
-//            if(p_invent.clockReload >= p_invent.reloadTime1) { notReloading(p_invent); }
-//            else { iAmReloading(p_invent); }
-//            magazine = p_invent.magazine1;
-//            ammo = p_invent.ammo1;
-//            break;
-//    
-//        case 1:
-//            playerRender.n = eng.createPlayer("assets/models/armas/escopeta.obj","assets/textures/fire.bmp");
-//            p_invent.clockReload = p_invent.clockReload2;
-//            if(p_invent.clockReload >= p_invent.reloadTime2) { notReloading(p_invent); }
-//            else { iAmReloading(p_invent); }
-//            magazine = p_invent.magazine2;
-//            ammo = p_invent.ammo2;
-//            break;
-//    
-//        case 2:
-//            playerRender.n = eng.createPlayer("assets/models/armas/subfusil.obj","assets/textures/fire.bmp");
-//            p_invent.clockReload = p_invent.clockReload3;
-//            if(p_invent.clockReload >= p_invent.reloadTime3) { notReloading(p_invent); }
-//            else { iAmReloading(p_invent); }
-//            magazine = p_invent.magazine3;
-//            ammo = p_invent.ammo3;
-//            break;
-//    
-//        default: break;
-//    }
-//    LM.updateInterfaceWhenReload(eng, magazine, ammo);
-//}
 
 /*NUEVO*/ void InpSys2::changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip) {
     //Mag_Amm bullets {};
@@ -478,7 +308,7 @@
 //    return;
 //}
 
-/*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys) {
+/*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, size_t player_ID) {
     Mag_Tim_Cad values {};
     
     switch (invent.equipada) {
@@ -499,7 +329,7 @@
     invent.reloading   = 0;
     
     if(values.mag > 0) {
-        createBullet2(LM, GE, invent, phy, SouSys, values.cad);
+        createBullet2(LM, GE, invent, phy, SouSys, values.cad, player_ID);
 
         //LM.updateInterfaceMag(eng, ammo-1);
     }
@@ -510,33 +340,40 @@
     return { wpn.magazine, wpn.reload_T, wpn.cadence };
 }
 
-/*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon) {
+/*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon, size_t player_ID) {
     if(invent.clockCadence <= cadenciaWeapon) return;
+    auto& EM = LM.getEM();
+    auto* cam = GE.getCamera();
 
     invent.clockCadence = 0 ;
 
     switch (invent.equipada) {
         case 0:
             lock_Left = 0;
+            recoil(EM, GE, cam, player_ID, invent.gun.recoil);
             LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
-            invent.gun.magazine -= 1;
-            //std::cout<<"Municion: "<<invent.gun.magazine<<" / "<<invent.gun.ammo<<"\n";
+            invent.gun.magazine--;
             break;
         case 1:
             lock_Left = 0;
+            recoil(EM, GE, cam, player_ID, invent.shot.recoil);
             LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
-            invent.shot.magazine -= 1;
-            //std::cout<<"Municion: "<<invent.shot.magazine<<" / "<<invent.shot.ammo<<"\n";
+            invent.shot.magazine--;
             break;
         case 2:
             lock_Left = 1;
+            recoil(EM, GE, cam, player_ID, invent.rifle.recoil);
             LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
-            invent.rifle.magazine -= 1;
-            //std::cout<<"Municion: "<<invent.rifle.magazine<<" / "<<invent.rifle.ammo<<"\n";
+            invent.rifle.magazine--;
             break;
     }
 
     return;
+}
+
+void InpSys2::recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, size_t player_ID, double desv) {
+    cam->Pitch += desv;
+    RenSys2::updateCamera(EM, GE, player_ID);
 }
 
 void InpSys2::digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down) {
