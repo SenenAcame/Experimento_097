@@ -71,7 +71,7 @@ void GameMan::game() {
         //ge.glEng.drawFocos();
         EM.update();
         RenSys.update2(EM, GE, player_ID);
-        MapSys.update2(EM, player_ID, map_ID);
+        MapSys.update3(EM, player_ID, map_ID, dt);
         InpSys.update2(LM, GE, SouSys, dt);
         AISys. update2(LM, GE, dt);
         PhySys.update (EM, dt);
