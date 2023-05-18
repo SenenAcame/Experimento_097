@@ -10,68 +10,12 @@
 
 //int aux = 0;
 
-///*VIEJO*/ void LogicSystem::update(LevelMan& LM, TheEngine& eng, double dt) {
-//    auto& EM = LM.getEM();
-//    EM.foreach<SYSCMPs, SYSTAGs >(
-//        [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
-
-//            if(entity.hasTAG<TEnemy>()) EM.getComponent<EstadisticaCmp>(entity).ClockAttackEnemy += dt;
-//
-//            if(state.colision != 0) {
-
-//                auto& entity_colisioned = EM.getEntityById(state.entityCol);
-
-//                if(entity_colisioned.hasCMP<EstadoCmp>()) {
-
-//                    auto& colisiones_state  = EM.getComponent<EstadoCmp>(entity_colisioned);
-
-//                    if(entity.hasTAG<TWall>()){
-//                        //proceso Colision Wall
-//                        colisionWall     (EM, entity, entity_colisioned, dt);
-//                    }
-//                    else if(entity.hasTAG<TPlayer>()){
-//                        //proceso Colision Jugador
-//                        colisionPlayer   (LM, eng, entity, entity_colisioned, dt);
-//                    }
-//                    else if(entity.hasTAG<TEnemy>()){
-//                        //proceso Colision Enemy
-//                        colisionEnemy    (LM, eng, entity, entity_colisioned, dt);
-//                    }
-//                    else if(entity.hasTAG<TBullet>()){
-//                        //proceso Colision Bullet
-//                        colisionBullet   (EM, entity, entity_colisioned);
-//                    }
-//                    //else if(entity.hasTAG<TEneBullet>()){
-//                    //    //proceso Colision EnemyBullet
-//                    //    colisionEneBullet(EM, entity, entity_colisioned);
-//                    //}
-//                    else if(entity.hasTAG<TWeapon>()){
-//                        //proceso Colision Weapon
-//                        colisionWeapon   (LM, entity, entity_colisioned, eng);
-//                    }
-//                    //else if(entity.hasTAG<TDoor>()){
-//                    //    //proceso Colision Door
-//                    //    colisionDoor     (EM, entity, entity_colisioned);
-//                    //}
-//                    //else if(entity.hasTAG<TKey>()){
-//                    //    //proceso Colision Key
-//                    //    colisionKey     (EM, entity, entity_colisioned);
-//                    //
-//                    //resetCollision(state, colisiones_state);
-//                    resetCollision(colisiones_state);
-//                }
-//                resetCollision(state);
-//            }
-//        }
-//    );
-//}
-
 /*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead) {
     auto& EM = LM.getEM();
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& entity, PhysicsCmp2&, EstadoCmp& state) {
             if(entity.hasTAG<TPlayer>()){
-                if(EM.getComponent<EstadisticaCmp>(entity).hitpoints == 0) {
+                if(EM.getComponent<EstadisticaCmp>(entity).hitpoints <= 0) {
                     dead = true;
                 }
             }
@@ -115,6 +59,10 @@
             //proceso Colision Weapon
             colisionWeapon2(LM, GE, entity, entity_colisioned);
         }
+        else if(entity.hasTAG<TPowerUp>()){
+            //proceso Colision Weapon
+            colisionPowerUp(LM, GE, entity, entity_colisioned);
+        }
         resetCollision(colisiones_state);
     }
     resetCollision(state);
@@ -132,23 +80,28 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
 }
 
 /*NUEVO*/ void LogicSystem::colisionPlayer2(LevelMan &LM, GraphicEngine &GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys) {
-    if(colisioned.hasTAG<TWall>()){
+    if(colisioned.hasTAG<TWall>()) {
         //moverse hacia atras
         auto& EM = LM.getEM();
         cancelMove(EM, current, dt);
     }
-    else if(colisioned.hasTAG<TEnemy>()){
+    else if(colisioned.hasTAG<TEnemy>()) {
         //jugador recibe daño del enemigo
         //receiveEntityDamage2(LM, GE, current, colisioned);
     }
-    else if(colisioned.hasTAG<TEneBullet>()){
+    else if(colisioned.hasTAG<TEneBullet>()) {
         //jugador recibe daño de bala enemiga
         //auto& EM = LM.getEM();
         //reciveDamge(EM, current, colisioned);
     }
-    else if(colisioned.hasTAG<TWeapon>()){
+    else if(colisioned.hasTAG<TWeapon>()) {
         //mostrar texto de recoger arma
         takeWeapon2(LM, GE, current, colisioned);
+    }
+    else if(colisioned.hasTAG<TPowerUp>()) {
+        //proceso Colision Weapon
+        auto& EM = LM.getEM();
+        increaseStat(EM, current, colisioned);
     }
 }
 
@@ -191,9 +144,10 @@ void LogicSystem::colisionEneBullet(LevelMan& LM, GraphicEngine& GE, Enty& curre
 }
 
 void LogicSystem::colisionPowerUp(LevelMan &LM, GraphicEngine &GE, Enty &current, Enty &colisioned) {
-    if(colisioned.hasTAG<TPlayer>()){
+    if(colisioned.hasTAG<TPlayer>()) {
         //powerup recogido por jugador
-        //markDestroy(current);
+        auto& EM = LM.getEM();
+        increaseStat(EM, colisioned, current);
     }
 }
 
@@ -254,15 +208,20 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
     InpSys2::changeWeaponMethod(GE, invent, new_wpn.typeWe, old_wpn);
 
     switch(new_wpn.typeWe) {
-        case 0: invent.gun.ammo += invent.gun.maxAmmo/10;
-            break;
-        case 1: invent.shot.ammo += invent.shot.maxAmmo/10;
-            break;
-        case 2: invent.rifle.ammo += invent.rifle.maxAmmo/10;
-            break;
+        case 0: invent.gun.ammo   += invent.gun.maxAmmo/10;   break;
+        case 1: invent.shot.ammo  += invent.shot.maxAmmo/10;  break;
+        case 2: invent.rifle.ammo += invent.rifle.maxAmmo/10; break;
     }
     
     weapon.setDestroy();
+}
+
+void LogicSystem::increaseStat(EntyMan& EM, Enty& player, Enty& power) {
+    auto& stats = EM.getComponent<EstadisticaCmp>(player);
+
+    stats.extra_dmg += .2;
+
+    markDestroy(power);
 }
 
 void LogicSystem::resetCollision(EstadoCmp& state) {
@@ -274,7 +233,7 @@ void LogicSystem::soundMonster(EntyMan& EM, Enty& e) {
     auto& monster = EM.getComponent<SoundCmp>(e);
     EM.changeSound(monster, 2);
     EM.foreach<SYSCMP_Player, SYSTAG_Player>(
-        [&](Enty&, SoundCmp& voice){
+        [&](Enty&, SoundCmp& voice) {
             EM.changeSound(voice, 1);
         }
     );

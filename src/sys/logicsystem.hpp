@@ -31,9 +31,10 @@ struct LogicSystem {
     void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt);
     void takeWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& player, Enty& weapon);
+    void increaseStat(EntyMan& EM, Enty& player, Enty& power);
+
     void resetCollision(EstadoCmp& state);
     void soundMonster(EntyMan& EM, Enty& e);
-
     void partialVelocities(EntyMan& EM, Enty& player, double dt);
     void preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt);
     void secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt);

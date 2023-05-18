@@ -82,39 +82,39 @@
     }
 }
 
-/*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, /*PartSys& PartSys,*/ ExtraStats plus) {
-    std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
-    Vec3 base_stats = { 20, 20, 4 };
-    
-    Enty& enemy = EM.createEntity();
-    //CMPS 
-    defineAI(enemy, SB::Two_Steps, 0.1);
-    auto& stats = EM.addComponent<EstadisticaCmp>(
-        enemy, 
-        EstadisticaCmp { 
-            .hitpoints = static_cast<int>(base_stats.x * plus.life.extra), 
-            .damage    = static_cast<int>(base_stats.y * plus.damg.extra), 
-            .speed     = base_stats.z * plus.sped.extra 
-        }
-    );
-
-    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
-    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
-    EM.addComponent<EstadoCmp>  (enemy, 0.7f, 1.5f, 0.7f);
-    EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
-    EM.addComponent<SalaCmp>    (enemy);
-
-    //auto &part = EM.addComponent<ParticleCMP> (enemy);
-    //PartSys.setParticle(part, "assets/textures/partExplosion.png", 100, 0, 0.f, 1.0f, {.5f, 1.f, .5f}, 3.f, 0.f, 0.1f, -8.f);
-
-    //TAGS
-    EM.addTag<TInteract>(enemy);
-    EM.addTag<TEnemy>   (enemy);
-
-    //viewBB(GE, enemy);
-
-    return enemy;
-}
+///*NUEVO*/ Enty& LevelMan::createNormalEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, /*PartSys& PartSys,*/ ExtraStats plus) {
+//    std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
+//    Vec3 base_stats = { 20, 20, 4 };
+//    
+//    Enty& enemy = EM.createEntity();
+//    //CMPS 
+//    defineAI(enemy, SB::Two_Steps, 0.1);
+//    auto& stats = EM.addComponent<EstadisticaCmp>(
+//        enemy, 
+//        EstadisticaCmp { 
+//            .hitpoints = static_cast<int>(base_stats.x * plus.life.extra), 
+//            .damage    = static_cast<int>(base_stats.y * plus.damg.extra), 
+//            .speed     = base_stats.z * plus.sped.extra 
+//        }
+//    );
+//
+//    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
+//    EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
+//    EM.addComponent<EstadoCmp>  (enemy, 0.7f, 1.5f, 0.7f);
+//    EM.addComponent<SoundCmp>   (enemy, SouSys.createinstance(7));
+//    EM.addComponent<SalaCmp>    (enemy);
+//
+//    //auto &part = EM.addComponent<ParticleCMP> (enemy);
+//    //PartSys.setParticle(part, "assets/textures/partExplosion.png", 100, 0, 0.f, 1.0f, {.5f, 1.f, .5f}, 3.f, 0.f, 0.1f, -8.f);
+//
+//    //TAGS
+//    EM.addTag<TInteract>(enemy);
+//    EM.addTag<TEnemy>   (enemy);
+//
+//    //viewBB(GE, enemy);
+//
+//    return enemy;
+//}
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
     std::string file_model        = "assets/models/personajes/monstruo2/enemigo2.obj";
@@ -345,28 +345,6 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
 //    EM.addTag      <TSmallEnemy>(enemy);
 //    return enemy;
 //}
-//
-//Enty& LevelMan::createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-//    Enty& enemy = createEnemy(SouSys);
-//    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
-//
-//    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-//    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo2.obj","assets/textures/fire.bmp"));
-//    EM.addComponent<EstadoCmp>  (enemy, 0.945f, 4.005f, 1.01f);
-//    EM.addTag      <TDistEnemy> (enemy);
-//    return enemy;
-//}
-//
-//Enty& LevelMan::createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-//    Enty& enemy = createEnemy(SouSys);
-//    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=1.5f});
-//
-//    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=4.055, .z=z_pos, .kMxVLin = stats.speed});
-//    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/personajes/monstruo3.obj","assets/textures/faerie2.bmp"));
-//    EM.addComponent<EstadoCmp>  (enemy, 1.525f, 5.725f, 2.105f);
-//    EM.addTag      <TTankEnemy> (enemy);
-//    return enemy;
-//}
 
 Enty& LevelMan::createEneSpawn(Vec3 pos, GraphicEngine& GE, int room, double timer){
     Enty& spawn = createSpawn2(pos, GE, room, timer);
@@ -395,7 +373,9 @@ Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
     Enty& power = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(power, PhysicsCmp2 { .x = phy.x, .y = 2., .z = phy.z   });
     EM.addComponent<RenderCmp2> (power, RenderCmp2  { .node = GE.createNode(file_model) });
+    EM.addComponent<EstadoCmp>  (power);
     EM.addComponent<SelfDestCmp>(power, 5.);
+    EM.addTag      <TInteract>  (power);
     EM.addTag      <TPowerUp>   (power);
     return power;
 }

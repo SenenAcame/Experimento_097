@@ -7,9 +7,9 @@ struct LevelMan;
 struct ColSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<TInteract>;
-    static constexpr double pos_y = 9;
-    static constexpr float height = 10;
-    static constexpr float thick  = 0.01f;
+    static constexpr double pos_y  = 3.5;
+    static constexpr float  height = 10;
+    static constexpr float  thick  = 0.01f;
 
     void update(EntyMan& EM);
     [[nodiscard]] static constexpr float calculateDist(float const main_pos, float const coll_pos, float const main_dim, float const coll_dim) noexcept;
@@ -17,12 +17,12 @@ struct ColSys2 {
     void static init_Hitoxes_Map2(LevelMan& LM) noexcept;
 
     //salas del mapa simple
-    void static hitboxesMapaSimpleSala1(LevelMan& LM) noexcept;
-    void static hitboxesMapaSimpleSala2(LevelMan& LM) noexcept;
-    void static hitboxesMapaSimpleSala3(LevelMan& LM) noexcept;
-    void static hitboxesMapaSimpleSala4(LevelMan& LM) noexcept;
-    void static hitboxesMapaSimpleSala5(LevelMan& LM) noexcept;
-    void static hitboxesMapaSimplePatio(LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala1   (LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala2   (LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala3   (LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala4   (LevelMan& LM) noexcept;
+    void static hitboxesMapaSimpleSala5   (LevelMan& LM) noexcept;
+    void static hitboxesMapaSimplePatio   (LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo1(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo2(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo3(LevelMan& LM) noexcept;

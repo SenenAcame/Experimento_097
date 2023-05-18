@@ -5,6 +5,8 @@ struct EstadisticaCmp {
     int hitpoints {}, damage {};
     float speed {}; 
 
+    double extra_dmg { 1. };
+
     double attackSpeedEnemy { 1 };
     double ClockAttackEnemy { 1 };
    

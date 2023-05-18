@@ -16,7 +16,7 @@
     checkKeyboard(GE.getWindow());
 
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats){
+        [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
             bool up = false, down = false;
 
             if(equip.reloading == 1) { equip.clockReload += dt; }
@@ -24,18 +24,16 @@
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys, player.getID()); }
-            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up = true; }
-            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down  = true; }
+            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up   = true; }
+            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down = true; }
             if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -10, up, down); }
-            if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, 10, down, up);  }
+            if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, 10, down, up); }
             if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload2(LM, GE, equip); }
             if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon2(LM, GE, equip, rend, 0); }
             if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon2(LM, GE, equip, rend, 1); }
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon2(LM, GE, equip, rend, 2); }
             if(keyboard.isKeyPressed(XK_Escape))            { stats.hitpoints = 0; }
             
-            
-
             bb = { phy.x, phy.z, true, true, player.getID()};
         }
     );
@@ -116,9 +114,9 @@
 // Pasar funcion por parametro -> unificar metodos
 /*NUEVO*/ int InpSys2::previousMouseStatus(int k, int actual, int prev, int lock) {
     if(!actual)      mouse.releaseButton(k);      // Actual   state: Release
-    else {                                           // Actual   state: Press
+    else {                                          // Actual   state: Press
         if(!prev)    mouse.pressButton(k);        // Previous state: Release
-        else {                                       // Previous state: Press
+        else {                                      // Previous state: Press
             if(lock) mouse.pressButton(k);        // Lock          : On
             else     mouse.releaseButton(k);      // Lock          : Off
         }
@@ -128,21 +126,12 @@
 }
 
 /*NUEVO*/ void InpSys2::changeWeapon2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, size_t equip) {
-    //Mag_Amm bullets {};
-
-    if(invent.reloading == 1) {
+    if(invent.reloading == 1)
         switch (invent.equipada) {
-            case 0:
-                invent.gun.clock_R = invent.clockReload;
-                break;
-            case 1:
-                invent.shot.clock_R = invent.clockReload;
-                break;
-            case 2:
-                invent.rifle.clock_R = invent.clockReload;
-                break;
+            case 0: invent.gun.clock_R   = invent.clockReload; break;
+            case 1: invent.shot.clock_R  = invent.clockReload; break;
+            case 2: invent.rifle.clock_R = invent.clockReload; break;
         }
-    }
 
     changeWeaponMethod(GE, invent, equip, invent.equipada);
 }
@@ -181,15 +170,9 @@
 /*NUEVO*/ void InpSys2::reload2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent) {
     auto& EM = LM.getEM();
     switch (invent.equipada) {
-        case 0:
-            reloadProcess2(LM, GE, invent, invent.gun);
-            break;
-        case 1:
-            reloadProcess2(LM, GE, invent, invent.shot);
-            break;
-        case 2:
-            reloadProcess2(LM, GE, invent, invent.rifle);
-            break;
+        case 0: reloadProcess2(LM, GE, invent, invent.gun);   break;
+        case 1: reloadProcess2(LM, GE, invent, invent.shot);  break;
+        case 2: reloadProcess2(LM, GE, invent, invent.rifle); break;
         default: break;
     }
 
@@ -199,13 +182,13 @@
 /*NUEVO*/ void InpSys2::reloadProcess2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, Weapon& wpn) {
     int currentAmmo = wpn.maxMagazine - wpn.magazine; //0 is magazine complete
 
-    if((wpn.ammo - currentAmmo) > 0){
-        wpn.ammo     -= currentAmmo;
+    if((wpn.ammo - currentAmmo) > 0) {
         wpn.magazine += currentAmmo;
+        wpn.ammo     -= currentAmmo;
     }
     else {
         wpn.magazine = wpn.ammo;
-        wpn.ammo = 0;
+        wpn.ammo     = 0;
     }
 
     invent.reloading = 1;
@@ -215,15 +198,9 @@
     Mag_Tim_Cad values {};
     
     switch (invent.equipada) {
-        case 0:
-            values = shootProcess(invent.gun);
-            break;
-        case 1: 
-            values = shootProcess(invent.shot);
-            break;
-        case 2: 
-            values = shootProcess(invent.rifle);
-            break;
+        case 0: values = shootProcess(invent.gun);   break;
+        case 1: values = shootProcess(invent.shot);  break;
+        case 2: values = shootProcess(invent.rifle); break;
     }
     
     if(invent.reloading == 1 && invent.clockReload <= values.tim) return;
@@ -231,43 +208,68 @@
     invent.clockReload = 0;
     invent.reloading   = 0;
     
-    if(values.mag > 0) {
-        createBullet2(LM, GE, invent, phy, SouSys, values.cad, player_ID);
-    }
-    else reload2(LM, GE, invent);
+    if(values.mag > 0) createBullet2(LM, GE, invent, phy, SouSys, values.cad, player_ID);
+    else               reload2(LM, GE, invent);
 }
 
 /*NUEVO*/ Mag_Tim_Cad InpSys2::shootProcess(Weapon& wpn) {
     return { wpn.magazine, wpn.reload_T, wpn.cadence };
 }
 
-/*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon, size_t player_ID) {
+/*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, 
+PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon, size_t player_ID) {
     if(invent.clockCadence <= cadenciaWeapon) return;
+
     auto& EM = LM.getEM();
     auto* cam = GE.getCamera();
+
+    auto& ply   = EM.getEntityById(player_ID);
+    auto& stats = EM.getComponent<EstadisticaCmp>(ply);
 
     invent.clockCadence = 0 ;
 
     switch (invent.equipada) {
         case 0:
-            lock_Left = 0;
-            recoil(EM, GE, cam, player_ID, invent.gun.recoil);
-            LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
-            invent.gun.magazine--;
+            bulletProcess(LM, GE, cam, player_ID, invent.gun, 
+                phy, SouSys, stats.extra_dmg);
             break;
         case 1:
-            lock_Left = 0;
-            recoil(EM, GE, cam, player_ID, invent.shot.recoil);
-            LM.createShotgunBullets2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
-            invent.shot.magazine--;
+            bulletProcess(LM, GE, cam, player_ID, invent.shot, 
+                phy, SouSys, stats.extra_dmg, true);
             break;
-        case 2:
-            lock_Left = 1;
-            recoil(EM, GE, cam, player_ID, invent.rifle.recoil);
-            LM.createBullet2(GE, phy, EstadisticaCmp{ .damage = 5, .speed = 0.5f }, GE.getFrontCamera(), SouSys);
-            invent.rifle.magazine--;
+        case 2: 
+            bulletProcess(LM, GE, cam, player_ID, invent.rifle, 
+                phy, SouSys, stats.extra_dmg, false, 1);
             break;
     }
+}
+
+void InpSys2::bulletProcess(LevelMan& LM, GraphicEngine& GE, ECamera* cam, size_t player_ID, 
+Weapon& wpn, PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot, int lock) {
+    auto& EM = LM.getEM();
+
+    lock_Left = lock;
+    recoil(EM, GE, cam, player_ID, wpn.recoil);
+    wpn.magazine--;
+
+    if(is_shot)
+        LM.createShotgunBullets2(
+            GE, phy, 
+            EstadisticaCmp { 
+                .damage = static_cast<int>(5 * extra), 
+                .speed  = 0.5f 
+            }, 
+            GE.getFrontCamera(), SouSys
+        );
+    else
+        LM.createBullet2(
+            GE, phy, 
+            EstadisticaCmp { 
+                .damage = static_cast<int>(5 * extra), 
+                .speed  = 0.5f 
+            }, 
+            GE.getFrontCamera(), SouSys
+        );
 }
 
 void InpSys2::recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, size_t player_ID, double desv) {
