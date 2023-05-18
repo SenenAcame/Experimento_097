@@ -134,7 +134,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
             default:
                 EM.update();
                 RenSys.update2(EM, GE, player_ID, UISys, dt);
-                MapSys.update2(EM, player_ID, map_ID);
+                MapSys.update3(EM, player_ID, map_ID, dt);
                 InpSys.update2(LM, GE, SouSys, dt, UISys);
                 AISys. update2(LM, GE, dt);
                 PhySys.update (EM, dt);
