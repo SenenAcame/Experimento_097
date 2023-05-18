@@ -22,6 +22,7 @@ struct ColSys2 {
     void static hitboxesMapaSimpleSala3(LevelMan& LM) noexcept;
     void static hitboxesMapaSimpleSala4(LevelMan& LM) noexcept;
     void static hitboxesMapaSimpleSala5(LevelMan& LM) noexcept;
+    void static hitboxesMapaSimplePatio(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo1(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo2(LevelMan& LM) noexcept;
     void static hitboxesMapaSimplePasillo3(LevelMan& LM) noexcept;

@@ -51,11 +51,14 @@ void  ColSys2::init_Hitoxes_Map2(LevelMan& LM) noexcept {
     hitboxesMapaSimpleSala3   (LM);
     hitboxesMapaSimpleSala4   (LM);
     hitboxesMapaSimpleSala5   (LM);
+    hitboxesMapaSimplePatio   (LM);
     hitboxesMapaSimplePasillo1(LM);
     hitboxesMapaSimplePasillo2(LM);
     hitboxesMapaSimplePasillo3(LM);
     hitboxesMapaSimplePasillo4(LM);
     hitboxesMapaSimplePasillo5(LM);
+    hitboxesMapaSimplePasillo6(LM);
+    hitboxesMapaSimplePasillo7(LM);
 }
 
 void ColSys2::hitboxesMapaSimpleSala1(LevelMan& LM) noexcept {
@@ -169,6 +172,28 @@ void ColSys2::hitboxesMapaSimpleSala5(LevelMan& LM) noexcept {
     create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
 }
 
+void ColSys2::hitboxesMapaSimplePatio(LevelMan& LM) noexcept {
+    //Patio:
+    //
+    //Dimensiones
+    //   extremo  mitad  extremo  dist
+    //x: { -89.5,   -58, -26.5} 31.5
+    //z: {  43.8, 33.45,  23.1} 10.35
+    //
+    //Paredes con puerta en medio
+    //x: { -89.5,  -86.1, -82.7} 3.4
+    //x: { -75.5, -57.95, -40.4} 17.55
+    //x: { -33.2, -29.85, -26.5} 3.35
+
+    float pos_x[] = { -58,   -26.5, -89.5, -86.1, -57.95, -29.85};
+    float pos_z[] = { 43.8,  33.45, 33.45, 23.1,  23.1,   23.1};
+    float widht[] = { 31.5,  thick, thick, 3.4,   17.55,  3.35};
+    float depth[] = { thick, 10.35, 10.35, thick, thick,  thick};
+    uint8_t num_paredes { 6 };
+    
+    create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
+}
+
 void ColSys2::hitboxesMapaSimplePasillo1(LevelMan& LM) noexcept {
     //Pasillo 1:
     //
@@ -269,39 +294,39 @@ void ColSys2::hitboxesMapaSimplePasillo5(LevelMan& LM) noexcept {
     create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
 }
 
-//void ColSys2::hitboxesMapaSimplePasillo6(LevelMan& LM) noexcept {
-//    //Pasillo 6:
-//    //
-//    //Dimensiones
-//    //   extremo  mitad  extremo  dist
-//    //x: { -40.4, , -33.2}
-//    //z: {  23.1, ,  1.54}
-//
-//    float pos_x[] = { -61.6, -54.4};
-//    float pos_z[] = { -54.7, -54.7};
-//    float widht[] = { thick, thick};
-//    float depth[] = { 7.2,   7.2};
-//    uint8_t num_paredes { 2 };
-//    
-//    create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
-//}
+void ColSys2::hitboxesMapaSimplePasillo6(LevelMan& LM) noexcept {
+    //Pasillo 6:
+    //
+    //Dimensiones
+    //   extremo  mitad  extremo  dist
+    //x: { -40.4, -36.8, -33.2} 3.6
+    //z: {  23.1,  12.3,   1.5} 10.8
 
-//void ColSys2::hitboxesMapaSimplePasillo7(LevelMan& LM) noexcept {
-//    //Pasillo 7:
-//    //
-//    //Dimensiones
-//    //   extremo  mitad  extremo  dist
-//    //x: { -61.6,   -58, -54.4} 3.6
-//    //z: { -61.9, -54.7, -47.5} 7.2
-//
-//    float pos_x[] = { -61.6, -54.4};
-//    float pos_z[] = { -54.7, -54.7};
-//    float widht[] = { thick, thick};
-//    float depth[] = { 7.2,   7.2};
-//    uint8_t num_paredes { 2 };
-//    
-//    create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
-//}
+    float pos_x[] = { -40.4, -33.2};
+    float pos_z[] = { 12.3,  12.3};
+    float widht[] = { thick, thick};
+    float depth[] = { 10.8,  10.8};
+    uint8_t num_paredes { 2 };
+    
+    create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
+}
+
+void ColSys2::hitboxesMapaSimplePasillo7(LevelMan& LM) noexcept {
+    //Pasillo 7:
+    //
+    //Dimensiones
+    //   extremo  mitad  extremo  dist
+    //x: { -82.7, -79.1, -75.5} 3.6
+    //z: {  23.1,  15.9,   8.7} 7.2
+
+    float pos_x[] = { -82.7, -75.5};
+    float pos_z[] = { 15.9,  15.9};
+    float widht[] = { thick, thick};
+    float depth[] = { 7.2,   7.2};
+    uint8_t num_paredes { 2 };
+    
+    create_HitBoxes(num_paredes, LM, pos_x, pos_z, widht, depth);
+}
 
 void ColSys2::create_HitBoxes(uint8_t const num, LevelMan& LM, float const pos_x[], float const pos_z[], float const widht[], float const depth[]) {
     for(uint8_t i {0}; i < num; i++)

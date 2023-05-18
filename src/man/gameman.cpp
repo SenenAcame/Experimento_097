@@ -42,7 +42,6 @@ void GameMan::game() {
     while(!glfwWindowShouldClose(window) && menu == 0) {
 
         switch (menu) {
-
             case 0:{
                 menu = bucleInicio(RenSys, GE, UISys);
                 //std::cout<<"menu = " << menu<<"\n";
@@ -70,9 +69,6 @@ void GameMan::game() {
                     menu = bucleSonido( GE, RenSys, UISys) ;
                 }
             }
-
-            
-
         }
 
         while(!glfwWindowShouldClose(window) && menu == 2){
@@ -85,7 +81,7 @@ void GameMan::game() {
 }
 
 size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
-    size_t abandon{0};
+    size_t abandon { 0 };
 
     while(abandon == 0 && !glfwWindowShouldClose(GE.getWindow())) {
         abandon = RenSys.updateMenuInicio(GE, UISys);
@@ -101,17 +97,16 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     AISys         AISys;
     NodeMapSys    MapSys;
     LogicSystem   LogSys;
-    SpawnSystem   SpawnSys;
+    SpawnSystem   SpwSys;
     SelfDestSys   DstSys;
     PartSys       PartSys;
-    AnimMan AM(GE.glEng);
-
+    AnimMan       AM(GE.glEng);
+    
     bool dead { false }, pause { false };
-    size_t actualMenu {abandon};
+    size_t actualMenu { abandon };
     
     std::size_t map_ID = LM.createMap2(GE, SouSys);
-    ColSys.init_Hitoxes_Map2(LM);
-    LM.createWeapon2(GE, Vec3 {-42, 2.8, -15}, W_Type::Fusil, SouSys);
+    init_map(LM, GE, SouSys);
 
     //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
     //for (int i =0; i<6; i++) {
@@ -147,6 +142,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
                 SouSys.update (EM);
+                SpwSys.update (LM, GE, SouSys, player_ID, dt);
                 DstSys.update (EM, dt);
         
         }
