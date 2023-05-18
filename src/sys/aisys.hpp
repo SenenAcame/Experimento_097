@@ -25,7 +25,7 @@ struct AISys {
     void persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlayer, double const timeArrive) const noexcept;
     void twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int const sala) const noexcept;
     constexpr void percept(BlackBoardCmp const& board, AICmp& ai, double const delta) const noexcept;
-    void die(Enty& enemy, RenderCmp2& renderEne) const noexcept;
+    void die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const noexcept;
     
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
 

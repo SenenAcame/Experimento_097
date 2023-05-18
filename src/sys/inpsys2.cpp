@@ -167,8 +167,6 @@
             bullets = changeWeaponProcess(GE, invent, "assets/models/armas/subfusil.obj", invent.rifle);
             break;
     }
-
-    //LM.updateInterfaceWhenReload(eng, bullets.mag, bullets.amm);
 }
 
 /*NUEVO*/ Mag_Amm InpSys2::changeWeaponProcess(GraphicEngine& GE, InventarioCmp& invent, std::string file, Weapon& wpn) {
@@ -179,38 +177,6 @@
 
     return { wpn.magazine, wpn.ammo };
 }
-
-///*VIEJO*/ void InpSys2::reload(LevelMan& LM, TheEngine& dev, InventarioCmp& equipment) {
-//    auto& EM = LM.getEM();
-//    int currentAmmo = 0;
-//    switch (equipment.equipada) {
-//        case 0:
-//            reloadProcess(LM, dev, equipment, currentAmmo, equipment.ammo1, equipment.magazine1, 5);
-//        break;
-//        case 1:
-//            reloadProcess(LM, dev, equipment, currentAmmo, equipment.ammo2, equipment.magazine2, 2);
-//        break;
-//        case 2:
-//            reloadProcess(LM, dev, equipment, currentAmmo, equipment.ammo3, equipment.magazine3, 25);
-//        break;
-//        default: break;
-//    }
-//    soundWeapon(EM);
-//}
-
-///*VIEJO*/ void InpSys2::reloadProcess(LevelMan& LM, TheEngine& dev, InventarioCmp& p_invent, int currentAmmo, int& ammo, int& magazine, int maxAmmo) {
-//    currentAmmo = maxAmmo - magazine; //0 is magazine complete
-//    if((ammo-currentAmmo) > 0){
-//        ammo = ammo - currentAmmo;
-//        magazine = magazine + currentAmmo;
-//    }
-//    else {
-//        magazine = ammo;
-//        ammo = 0;
-//    }
-//    iAmReloading(p_invent);
-//    LM.updateInterfaceWhenReload(dev, magazine, ammo);
-//}
 
 /*NUEVO*/ void InpSys2::reload2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent) {
     auto& EM = LM.getEM();
@@ -242,71 +208,8 @@
         wpn.ammo = 0;
     }
 
-    //iAmReloading(invent);
     invent.reloading = 1;
-
-    //LM.updateInterfaceWhenReload(GE, wpn.magazine, wpn.ammo);
 }
-
-///*VIEJO*/ void InpSys2::shoot(LevelMan& LM, Enty& player, TheEngine& eng, SoundSystem_t& SS, InventarioCmp& equipment) {
-//    int ammo = 0;
-//    double weaponCadence = 0;
-//    double reloadTimer = 0;
-//    switch (equipment.equipada) {
-//        case 0: ammo = equipment.magazine1;
-//                reloadTimer = equipment.reloadTime1;
-//        break;
-//        case 1: ammo = equipment.magazine2;
-//                reloadTimer = equipment.reloadTime2;
-//        break;
-//        case 2: ammo = equipment.magazine3;
-//                reloadTimer = equipment.reloadTime3;
-//                weaponCadence = equipment.cadenceWeapon3;
-//        break;
-//        default: break;
-//    }
-//    
-//    if(equipment.reloading == 1 && equipment.clockReload <= reloadTimer) { return; }
-//    equipment.clockReload = 0;
-//    notReloading(equipment);
-//    
-//    if(ammo > 0) { 
-//        createBullet(LM, player, weaponCadence, eng, SS);
-//        LM.updateInterfaceMag(eng, ammo-1);
-//    }
-//    else if(ammo == 0) { reload(LM, eng, equipment); }
-//
-//    //if(equipment.equipada == 0 || equipment.equipada ==1){ mouse.releaseLeft(); }
-//}
-
-///*VIEJO*/ void InpSys2::createBullet(LevelMan& LM, Enty& player, double cadenciaWeapon, TheEngine& eng, SoundSystem_t& SS) {
-//    auto& EM = LM.getEM();
-//    auto& equipment  = EM.getComponent<InventarioCmp>(player);
-//    auto& phy_player = EM.getComponent<PhysicsCmp2>(player);
-//    //int ammo {};
-//
-//    if(equipment.clockCadence <= cadenciaWeapon) { return; }
-//    //Cadencia alcanzada
-//    equipment.clockCadence = 0 ;
-//
-//    if(equipment.equipada == 0){ //pistola
-//        LM.createBullet(phy_player, eng, SS, 18., 5., 0.1, 9.);
-//        equipment.magazine1 -= 1;
-//        //ammo = equipment.magazine1;
-//    }
-//    else if (equipment.equipada == 1){ //escopeta
-//        LM.createShotgunBullets(phy_player, eng, SS, 8., 3., 0.15, 0.4, 10);
-//        equipment.magazine2 -= 1;
-//        //ammo = equipment.magazine1;
-//    }
-//    else if(equipment.equipada == 2){ //ametralladora
-//        LM.createBullet(phy_player, eng, SS, 15., 4., 0.1, 1.5);
-//        equipment.magazine3 -= 1;
-//        //ammo = equipment.magazine1;
-//    }
-//    //return ammo;
-//    return;
-//}
 
 /*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, size_t player_ID) {
     Mag_Tim_Cad values {};
@@ -330,8 +233,6 @@
     
     if(values.mag > 0) {
         createBullet2(LM, GE, invent, phy, SouSys, values.cad, player_ID);
-
-        //LM.updateInterfaceMag(eng, ammo-1);
     }
     else reload2(LM, GE, invent);
 }
@@ -367,8 +268,6 @@
             invent.rifle.magazine--;
             break;
     }
-
-    return;
 }
 
 void InpSys2::recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, size_t player_ID, double desv) {
@@ -382,55 +281,6 @@ void InpSys2::digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bo
     if(up)        phy.v_ang = 135;
     else if(down) phy.v_ang = 45;
 }
-
-//void InpSys2::interact(EntyMan& EM, Enty& player, KeySym key) {
-//    auto& col = EM.getComponent<EstadoCmp>(player);
-//    if(col.colision != 0){
-//        auto& col_entity = EM.getEntityById(col.entityCol);
-//        if(col_entity.hasTAG<TWeapon>()){
-//            //std::cout<<"Recoger arma\n";
-//        }
-//        else if(col_entity.hasTAG<TDoor>()) {
-//            //std::cout<<"Abrir puerta\n";
-//            openDoor(EM, player, col_entity);
-//        }
-//        else if(col_entity.hasTAG<TKey>()) {
-//            //std::cout<<"Recoger llave\n";
-//            addKeyToInventary(EM, player);
-//            col_entity.setDestroy();
-//        }
-//    }
-//    keyboard.keyReleased(key);
-//}
-
-//void InpSys2::unlockAll(size_t* invent) {
-//    for(int i=0; i<3; i++) {
-//        if(invent[i]!=2) invent[i]=1;
-//    }
-//}
-
-//void InpSys2::reloadAll(EntyMan& EM, InventarioCmp& equip) {
-//    equip.ammo1 = 20;
-//    equip.ammo2 = 10;
-//    equip.ammo3 = 100;
-//    soundWeapon(EM);
-//}
-
-//void InpSys2::addKeyToInventary(EntyMan& EM, Enty& player) {
-//    auto& inventay = EM.getComponent<InventarioCmp>(player);
-//    inventay.keys_inv[0] = 1;
-//}
-
-//void InpSys2::openDoor(EntyMan& EM, Enty& player, Enty& door) {
-//    auto& inventay = EM.getComponent<InventarioCmp>(player);
-//    if(inventay.keys_inv[0]) {
-//        //std::cout<<"Puerta abierta\n";
-//        door.setDestroy();
-//    }
-//    else {
-//        //std::cout<<"Puerta cerrada\n";
-//    }
-//}
 
 void InpSys2::soundWeapon(EntyMan& EM) {
     for(auto& a : EM.getEntities()){

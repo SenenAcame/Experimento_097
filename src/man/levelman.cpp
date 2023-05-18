@@ -98,8 +98,6 @@
         }
     );
 
-    //std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
-
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
     EM.addComponent<EstadoCmp>  (enemy, 0.7f, 1.5f, 0.7f);
@@ -169,8 +167,6 @@
         }
     );
 
-    //std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
-
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2 { .node = GE.createNode(file_model) });
     EM.addComponent<EstadoCmp>  (enemy, 1.f, 1.5f, 1.f);
@@ -200,8 +196,6 @@
             .speed     = base_stats.z * plus.sped.extra 
         }
     );
-
-    //std::cout<<stats.hitpoints<<" "<<stats.damage<<" "<<stats.speed<<"\n";
 
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed });
     EM.addComponent<RenderCmp2> (enemy, RenderCmp2  { .node = GE.createNode(file_model) });
@@ -237,16 +231,9 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
     std::string file_model = "assets/models/armas/bala.obj";
 
     auto* model = GE.playerModel;
-    //auto tras = model->translation_;
     auto mat  = model->matTransf_;
 
-    //std::cout<<"Origen de bala: "<<mat[3][0]<<" "<<mat[3][1]<<" "<<mat[3][2]<<"\n";
-
-    Vec3 pos_b = {
-        mat[3][0],
-        mat[3][1],
-        mat[3][2]
-
+    Vec3 pos_b = { mat[3][0], mat[3][1], mat[3][2]
         ///*X*/ tras.x * cos(pos.orieny) + tras.y * 0 + tras.z * (-sin(pos.orieny)),
         ///*Y*/ tras.x * 0               + tras.y * 0 + tras.z * 0,
         ///*Z*/ tras.x * sin(pos.orieny) + tras.y * 0 + tras.z * cos(pos.orieny)
@@ -429,71 +416,6 @@ void LevelMan::resetLevel() {
 
     EM.callDestroy();
 }
-
-//void LevelMan::resetLevel(TheEngine& dev) {
-//    const wchar_t* empty = L"";
-//    dev.changeTextFromPointer(amm1, empty);
-//    dev.changeTextFromPointer(mag, empty);
-//    dev.changeTextFromPointer(h1, empty);
-//    dev.changeTextFromPointer(pointsUI, empty);
-//    dev.changeTextFromPointer(wave, empty);
-//
-//    EM.forall(
-//        [](Enty& ent) {
-//            bool is_enemy_bullet_or_player = 
-//                ent.hasTAG<TEnemy>()  ||
-//                ent.hasTAG<TBullet>() ||
-//                ent.hasTAG<TWeapon>() ||
-//                ent.hasTAG<TSpawn>()  ||
-//                ent.hasTAG<TPlayer>();
-//            if(is_enemy_bullet_or_player) ent.setDestroy();
-//        }
-//    );
-//
-//    dev.setInvisibleImage(hit1);
-//    dev.setInvisibleImage(hit2);
-//    dev.setInvisibleImage(hit3);
-//
-//    waveNumber           = 1; //actual wave
-//    extraHeal            = 5; //extra EnemyHeal per wave
-//    extraSpeed           = 0;
-//    numberOfEnemysBasics = 2; //number of enemys per wave
-//    aliveEnemys          = 0;
-//    extraEnemys          = 3; //extra number of enemys per wave
-//    maxEnemysWave        = 15; //max number of enemy created
-//    timeBtwWaves         = 2;
-//    clockToNextWave      = 0; //clock unter next wave
-//    inRound              = false;
-//    points               = 0;
-//
-//    updateInterfacePoints(dev);
-//    updateInterfaceWave(dev);   
-//
-//    EM.callDestroy();
-//}
-
-//void LevelMan::createSoundEffect(SoundSystem_t& SouSys) {
-//    Enty& weapon = EM.createEntity();
-//    EM.addComponent<SoundCmp>(weapon, SouSys.createinstance(1));
-//    EM.addTag<TWeapon>(weapon);
-//    return;
-//}
-
-//Enty& LevelMan::createEnemy(SoundSystem_t& SouSys){
-//    Enty& enemy = EM.createEntity();
-//    defineAI(enemy);
-//    EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
-//    EM.addComponent<SalaCmp>  (enemy);
-//    EM.addTag      <TEnemy>   (enemy);
-//    EM.addTag      <TInteract>(enemy);
-//    return enemy;
-//}
-
-//void LevelMan::createRoom(TheEngine& dev, irr::io::path const model, irr::io::path const texture) {
-//    Enty& room = EM.createEntity();
-//    EM.addComponent<PhysicsCmp2>(room);
-//    EM.addComponent<RenderCmp2> (room, dev.createModel(model, texture));
-//}
 
 TwoAngles LevelMan::disperShotgun(uint8_t disp) {
     double mod = (rand() % 2 - 1) / 10;

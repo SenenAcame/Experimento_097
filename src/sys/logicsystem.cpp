@@ -103,6 +103,10 @@
             //proceso Colision Enemy
             colisionEnemy2(LM, GE, entity, entity_colisioned, dt);
         }
+        else if(entity.hasTAG<TEneBullet>()){
+            //proceso Colision Bullet
+            colisionEneBullet(LM, GE, entity, entity_colisioned);
+        }
         else if(entity.hasTAG<TBullet>()){
             //proceso Colision Bullet
             colisionBullet(LM, GE, entity, entity_colisioned);
@@ -135,7 +139,12 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
     else if(colisioned.hasTAG<TEnemy>()){
         //jugador recibe daño del enemigo
-        //std::cout<<"Daño\n";
+        //receiveEntityDamage2(LM, GE, current, colisioned);
+    }
+    else if(colisioned.hasTAG<TEneBullet>()){
+        //jugador recibe daño de bala enemiga
+        //auto& EM = LM.getEM();
+        //reciveDamge(EM, current, colisioned);
     }
     else if(colisioned.hasTAG<TWeapon>()){
         //mostrar texto de recoger arma
@@ -151,7 +160,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
     else if(colisioned.hasTAG<TPlayer>()){
         //enemigo hace daño al jugador
-        //std::cout<<"Daño\n";
+        ///receiveEntityDamage2(LM, GE, colisioned, current);
     }
     else if(colisioned.hasTAG<TBullet>()){
         //enemigo recibe daño de la bala
@@ -170,21 +179,21 @@ void LogicSystem::colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current,
     }
 }
 
-//void LogicSystem::colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned) {
-//    if(colisioned.hasTAG<TWall>()){
-//        //bala enemiga impacta en muro
-//        markDestroy(current);
-//    }
-//    else if(colisioned.hasTAG<TPlayer>()){
-//        //bala enemiga hace daño al jugador
-//        reciveDamge(EM, colisioned, current);
-//    }
-//}
+void LogicSystem::colisionEneBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned) {
+    if(colisioned.hasTAG<TWall>()){
+        //bala enemiga impacta en muro
+        markDestroy(current);
+    }
+    else if(colisioned.hasTAG<TPlayer>()){
+        //bala enemiga hace daño al jugador
+        reciveDamge(LM, GE, colisioned, current);
+    }
+}
 
 void LogicSystem::colisionPowerUp(LevelMan &LM, GraphicEngine &GE, Enty &current, Enty &colisioned) {
     if(colisioned.hasTAG<TPlayer>()){
         //powerup recogido por jugador
-        markDestroy(current);
+        //markDestroy(current);
     }
 }
 
@@ -198,10 +207,11 @@ void LogicSystem::colisionPowerUp(LevelMan &LM, GraphicEngine &GE, Enty &current
 /*NUEVO*/ void LogicSystem::receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor) {
     auto& EM = LM.getEM();
     auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
-    if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) { return; }
+
+    if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) return;
+
     enemyStats.ClockAttackEnemy = 0;
     reciveDamge(LM, GE, receptor, agressor);
-    //LM.updateInterfaceHit(eng, receptor);
 }
 
 void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor) {
@@ -211,21 +221,17 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
     
     recept_stats.hitpoints -= agress_stats.damage;
 
-    if(recept_stats.hitpoints <= 0) {
-        //if(receptor.hasTAG<TEnemy>()) { 
-        //    EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
-        //    EM.removeComponent<EstadoCmp>(receptor);
-        //}
-        //else { markDestroy(receptor); } 
-        markDestroy(receptor);
-    }
-    
     if(!agressor.hasTAG<TEnemy>()) markDestroy(agressor);
 
-    bool drop_power = receptor.hasTAG<TEnemy>() && receptor.getDestroy();
-    if(drop_power){
-        auto& phy = EM.getComponent<PhysicsCmp2>(receptor);
-        chanceDrop(LM, GE, phy);
+    if(recept_stats.hitpoints <= 0) {
+        if(receptor.hasTAG<TEnemy>()) { 
+            auto& phy = EM.getComponent<PhysicsCmp2>(receptor);
+            chanceDrop(LM, GE, phy);
+
+            EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
+            EM.removeComponent<EstadoCmp>(receptor);
+        }
+        else markDestroy(receptor);
     }
 }
 

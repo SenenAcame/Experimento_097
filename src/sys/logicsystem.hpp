@@ -21,6 +21,7 @@ struct LogicSystem {
     void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
     void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
     void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+    void colisionEneBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     void colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     void colisionPowerUp(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
@@ -43,7 +44,6 @@ struct LogicSystem {
     ///*VIEJO*/ void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     ///*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
     ///*VIEJO*/ void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
-    ///*VIEJO*/ void colisionEneBullet(EntyMan& EM, Enty& current, Enty& colisioned);
     //void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned);
     //void colisionKey(EntyMan& EM, Enty& current, Enty& colisioned);
     ///*VIEJO*/ void receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor);

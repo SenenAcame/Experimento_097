@@ -19,11 +19,9 @@ struct Weapon {
 struct InventarioCmp {
     static constexpr int numWeapons { 3 };
 
-    int equipada { 0 };
-
+    int equipada { 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
     W_Type actual = W_Type::Pistol;
-    //1 =  desbloqueada, 0 = no, 2 = arma actual
-    std::size_t inventary [3] = { 2, 1, 0 }; //0 = pistola, 1 = escopeta, 2 = ametralladora
+    std::size_t inventary [3] = { 2, 0, 0 }; //1 = desbloqueada, 0 = no, 2 = arma actual
     
     Weapon gun {
         W_Type::Pistol,
@@ -60,27 +58,6 @@ struct InventarioCmp {
         0.05,
         1.
     };
-
-    //weapon1
-    int ammo1           { 100 };
-    int magazine1       { 5 };
-    double reloadTime1  { 0.8 };
-    double clockReload1 { 0.8 };
-    //double cadenceWeapon1{1}; // 1 vez por segundo
-    
-    //weapon2
-    int ammo2           { 20 };
-    int magazine2       { 2 };
-    double reloadTime2  { 3 };
-    double clockReload2 { 1.5 };
-    //double cadenceWeapon2 {0.2}; //5 veces por segundo
-
-    //weapon3
-    int ammo3             { 200 };
-    int magazine3         { 25 };
-    double reloadTime3    { 1.1 };
-    double clockReload3   { 1.1 };
-    double cadenceWeapon3 { 0.05 }; 
     
     std::size_t reloading { 0 }; //0 not reloading 1 reloading
     double clockCadence   {};

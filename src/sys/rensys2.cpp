@@ -17,30 +17,13 @@
 #endif
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-///*VIEJO*/ void RenSys2::update(EntyMan& EM, TheEngine& GFX) {
-//    //ImGUI_Prerender();
-//    EM.foreach<SYSCMPs, SYSTAGs>(
-//        [&](Enty& ent, PhysicsCmp2 const& phy, RenderCmp2& rend) {
-//            if(ent.hasTAG<TEnemy>()) {
-//                float giro = (-phy.orieny)*180/irr::core::PI+360;
-//                rend.n->setRotation({rend.n->getRotation().X,giro,rend.n->getRotation().Z});
-//            }
-//            rend.n->setPosition({static_cast<float>(phy.x), static_cast<float>(phy.y), static_cast<float>(phy.z)});
-//        }
-//    );
-//    drawAll(EM, GFX);
-//    //RENDER in Opengl context
-//    //ImGUI_renderOpenGlContext();
-//    //ImGUI_Postrender();
-//};
-
 /*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UISys, double dt) {
     ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
-        [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend){
-            if(ent.hasTAG<TEnemy>())  rotateEnemy (rend, phy); 
-            if(ent.hasTAG<TWeapon>() || ent.hasTAG<TPowerUp>()) rotateWeapon(rend, phy); 
+        [&](Enty& ent, PhysicsCmp2& phy, RenderCmp2& rend) {
+            rotateEnemy (ent, rend, phy); 
+            rotateWeapon(ent, rend, phy);
             
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
             GE.glEng.drawScene();
@@ -135,27 +118,6 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
     phy.orieny = glm::radians(yaw);
 }
 
-
-///*VIEJO*/ void RenSys2::drawAll(EntyMan& EM, TheEngine& GFX) {
-//    GFX.beginScene();
-//    GFX.drawAll();
-//    //drawBBox(EM, GFX);
-//    GFX.endScene();
-//}
-
-///*VIEJO*/ void RenSys2::drawBBox(EntyMan& EM, TheEngine& GFX) {
-//    auto vd = GFX.getDevice()->getVideoDriver();
-//    vd->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
-//    EM.foreach<BOXCMPs, SYSTAGs>(
-//        [&](Enty& ent, PhysicsCmp2 const& phy, EstadoCmp const& state){
-//            vd->draw3DBox({
-//                { (float)phy.x-state.width, (float)phy.y-state.height, (float)phy.z-state.depth }, 
-//                { (float)phy.x+state.width, (float)phy.y+state.height, (float)phy.z+state.depth }
-//            });
-//        }
-//    );
-//}
-
 void RenSys2::drawWorld(GraphicEngine &GE) {
     GE.glEng.beginScene();
     GE.glEng.drawScene();
@@ -165,18 +127,24 @@ void RenSys2::drawWorld(GraphicEngine &GE) {
     //GE.glEng.endScene();
 }
 
-void RenSys2::rotateWeapon(RenderCmp2 &rend, PhysicsCmp2 &phy) {
-    rend.node->rotate(Vec3 { 0, 1, 0 });
+void RenSys2::rotateWeapon(Enty& ent, RenderCmp2 &rend, PhysicsCmp2 &phy) {
+    if(ent.hasTAG<TWeapon>() || ent.hasTAG<TPowerUp>()) {
+        rend.node->rotate(Vec3 { 0, 1, 0 });
 
-    phy.y += rend.elev;
+        phy.y += rend.elev;
 
-    if(phy.y >= 3.5) rend.elev = -0.01;
-    if(phy.y <= 2.5) rend.elev = 0.01;
+        if(phy.y >= 3.5) rend.elev = -0.01;
+        if(phy.y <= 2.5) rend.elev = 0.01;
+    }
 }
 
-void RenSys2::rotateEnemy(RenderCmp2 &rend, PhysicsCmp2 &phy) {
-    float giro_y = (-phy.orieny) * 180 / PI + 90;
-    rend.node->setRotation(Vec3 { 0, giro_y, 0 });
+void RenSys2::rotateEnemy(Enty& ent, RenderCmp2 &rend, PhysicsCmp2 &phy) {
+    if(ent.hasTAG<TEnemy>()) {
+        auto rot = rend.node->getRotation();
+        float giro_y = (-phy.orieny) * 180 / PI + 90;
+        
+        rend.node->setRotation(Vec3 { rot.x, giro_y, rot.z });
+    }
 }
 
 //IMGUI
@@ -240,7 +208,7 @@ void RenSys2::ImGUI_Prerender() const noexcept {
     ImGui::NewFrame();
 }
 
-void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
+//void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
     //auto* frameB{m_framebuffer.get()};
     //glDrawPixels(m_w, m_h, GL_RGBA, GL_UNSIGNED_BYTE, frameB);
     //
@@ -249,7 +217,7 @@ void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
     ////glViewport(0, 0, display_w, display_h);
     ////glClearColor(0.0, 0.0, 0.0, 0.0);
     ////glClear(GL_COLOR_BUFFER_BIT);
-}
+//}
 
 
 void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) const noexcept{
@@ -258,8 +226,8 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
     auto& player = EM.getEntityById(player_ID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width     = GE.glEng.getWidth();
+    auto height    = GE.glEng.getHeight();
    
     int magazine = 0;
     int ammo = 0;
@@ -273,17 +241,14 @@ void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_
         case 0:
             magazine = invent.gun.magazine;
             ammo = invent.gun.ammo;
-            
             break;
         case 1: 
             magazine = invent.shot.magazine;
             ammo = invent.shot.ammo;
-            
             break;
         case 2: 
             magazine = invent.rifle.magazine;
             ammo = invent.rifle.ammo;
-            
             break;
     }
     ImGui::SetNextWindowPos(ImVec2(10,10));

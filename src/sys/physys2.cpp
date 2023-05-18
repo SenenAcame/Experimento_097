@@ -7,11 +7,11 @@ void PhySys2::update(EntyMan& EM, double delta) {
             
             if(is_bullet) bulletPhysics(physic);
             else {
-                bool enemy_is_diying              =  (enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Diying);
-                bool player_or_enemy_not_shooting = !(enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Shoot);
+                bool enemy_is_diying = (enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Diying);
+                //bool player_or_enemy_not_shooting = !(enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Shoot);
                 
                 if(enemy_is_diying) 
-                    physic.y -= 0.1;
+                    physic.y -= 0.;
                 else //if(player_or_enemy_not_shooting) 
                     entityPhysics(enty.hasTAG<TEnemy>(), physic, delta);
             }
@@ -57,15 +57,6 @@ void PhySys2::calculatePosition(bool const is_enemy, PhysicsCmp2& p, double cons
 
     p.vx =  p.v_lin * std::cos(p.orieny);
     p.vz =  p.v_lin * std::sin(p.orieny);
-
-    //if(is_enemy) {
-    //    p.vx =  p.v_lin * std::cos(p.orieny);
-    //    p.vz =  p.v_lin * std::sin(p.orieny);
-    //}
-    //else {
-    //    p.vx =  p.v_lin * std::sin(p.orieny);
-    //    p.vz =  p.v_lin * std::cos(p.orieny);
-    //}
 
     p.x += dt * p.vx;
     p.z += dt * p.vz;
