@@ -14,14 +14,14 @@ struct RenSys2 {
 
     static constexpr double PI { std::numbers::pi };
 
-    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UIsys, double dt);
+    /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, UIsys& UIsys, double dt);
     size_t updateMenuInicio(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuDead(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuPausa(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuControles(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuSonido(GraphicEngine& GE, UIsys& UISys);
 
-    void static updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID);
+    void static updateCamera(EntyMan& EM, GraphicEngine& GE);
     
     ///*VIEJO*/ void drawAll (EntyMan& EM, TheEngine& GFX);
     ///*VIEJO*/ void drawBBox(EntyMan& EM, TheEngine& GFX);
@@ -33,7 +33,7 @@ struct RenSys2 {
     //IMGUI
     void initIMGUI(GraphicEngine& GE);
     void ImGUI_Prerender() const noexcept;
-    void ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) const noexcept;
+    void ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE) const noexcept;
     void ImGUI_renderOpenGlContext() const noexcept;
     void ImGUI_Postrender(GraphicEngine& GE) const noexcept;
     void EndImgui(GraphicEngine& GE);

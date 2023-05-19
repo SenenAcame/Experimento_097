@@ -13,8 +13,8 @@ struct NodeMapSys {
     using EneTAGs       = MP::Typelist<TEnemy>;
 
     /*VIEJO*/ void update (EntyMan& EM);
-    /*NUEVO*/ void update2(EntyMan& EM, std::size_t player_ID, std::size_t map_ID);
-    void update3(EntyMan& EM, std::size_t player_ID, std::size_t map_ID, double);
+    /*NUEVO*/ void update2(EntyMan& EM, std::size_t map_ID);
+    void update3(EntyMan& EM, std::size_t map_ID, double);
     
     int getSala(NodoCmp& map, float x, float z);
     void vaciaPadres(std::vector<nodomap>);

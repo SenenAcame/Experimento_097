@@ -35,6 +35,8 @@ void GameMan::game() {
     UISys.iniText();
     
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+    LM.getEM().getBoard().entyID = player_ID;
+
     size_t menu = 0; //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     
     auto window = GE.getWindow();
@@ -51,7 +53,7 @@ void GameMan::game() {
                 while(!glfwWindowShouldClose(window) && menu == 1){
                     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                     UISys.inGame = 1;
-                    menu = bucleJuego(LM, GE, RenSys, InpSys, SouSys, menu, player_ID, UISys) ;
+                    menu = bucleJuego(LM, GE, RenSys, InpSys, SouSys, menu, UISys) ;
                     UISys.inGame = 0;
                 }
             }
@@ -90,7 +92,7 @@ size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
 }
 
 
-size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, size_t abandon, std::size_t player_ID, UIsys &UISys){
+size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, size_t abandon, UIsys &UISys){
     EntyMan&      EM = LM.getEM();
     ColSys2       ColSys;
     PhySys2       PhySys; 
@@ -133,16 +135,16 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
 
             default:
                 EM.update();
-                RenSys.update2(EM, GE, player_ID, UISys, dt);
-                MapSys.update3(EM, player_ID, map_ID, dt);
+                RenSys.update2(EM, GE, UISys, dt);
+                MapSys.update3(EM, map_ID, dt);
                 InpSys.update2(LM, GE, SouSys, dt, UISys);
                 AISys. update2(LM, GE, dt);
                 PhySys.update (EM, dt);
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
-                SouSys.update (EM, player_ID);
-                SpwSys.update (LM, GE, SouSys, player_ID, dt);
+                SouSys.update (EM);
+                SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
         
         }

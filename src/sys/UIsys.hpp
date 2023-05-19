@@ -42,7 +42,7 @@ struct UIsys {
     int equipada{0};
 
     //UI game
-    void renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, double dt);
+    void renderInterface(EntyMan& EM, GraphicEngine& GE, double dt);
     void hitInterface(GraphicEngine& GE);
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
 

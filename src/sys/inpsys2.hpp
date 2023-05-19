@@ -37,14 +37,14 @@ private:
     /*NUEVO*/ int previousMouseStatus(int k, int actual, int prev, int lock);
     /*NUEVO*/ void reload2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent);
     /*NUEVO*/ void reloadProcess2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, Weapon& wpn);
-    /*NUEVO*/ void shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, size_t player_ID);
+    /*NUEVO*/ void shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys);
     /*NUEVO*/ Mag_Tim_Cad shootProcess(Weapon& wpn);
-    /*NUEVO*/ void createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon, size_t player_ID);
+    /*NUEVO*/ void createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon);
     
-    void bulletProcess(LevelMan& LM, GraphicEngine& GE, ECamera* cam, size_t player_ID, 
-        Weapon& wpn, PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot = false, int lock = 0);
+    void bulletProcess(LevelMan& LM, GraphicEngine& GE, ECamera* cam, Weapon& wpn, 
+        PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot = false, int lock = 0);
 
-    void recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, size_t player_ID, double desv);
+    void recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, double desv);
     void digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down);
     void soundWeapon(EntyMan& EM);
     static void onkeypressed(KeySym k)  { keyboard.keyPressed(k);  }

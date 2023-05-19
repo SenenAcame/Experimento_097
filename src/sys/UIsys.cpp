@@ -11,10 +11,10 @@ void UIsys::iniText(){
     pausa.setImage("assets/Interface/1280x720/pantalla_pausa.png");
 }
 
-void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, double dt) {
+void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("This is some useful text");
     auto* m_window = GE.getWindow();
-    auto& player = EM.getEntityById(player_ID);
+    auto& player = EM.getEntityById(EM.getBoard().entyID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
     auto width     = GE.glEng.getWidth();

@@ -5,13 +5,13 @@ SoundSystem_t::SoundSystem_t() {
     facherita.init();
 }
 
-void SoundSystem_t::update(EntyMan& EM, std::size_t player_ID) {
+void SoundSystem_t::update(EntyMan& EM) {
     EM.foreach<PHYCMPs,ENETAGs>(
         [&](Enty& e, PhysicsCmp2& p, SoundCmp& s) {
             facherita.set3DAttributes(s, p);
         }
     );
-    facherita.setListener(EM.getComponent<PhysicsCmp2>(EM.getEntityById(player_ID)));
+    facherita.setListener(EM.getComponent<PhysicsCmp2>(EM.getEntityById(EM.getBoard().entyID)));
     EM.foreach<SYSCMPs,SYSTAGs>(
         [&](Enty& e, SoundCmp& s) {
             if(s.cambia) {

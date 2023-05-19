@@ -23,7 +23,7 @@
             equip.clockCadence += dt;
             phy.v_lin = phy.v_ang = 0;
 
-            if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys, player.getID()); }
+            if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up   = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down = true; }
             if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -10, up, down); }
@@ -198,7 +198,7 @@
     invent.reloading = 1;
 }
 
-/*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, size_t player_ID) {
+/*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys) {
     Mag_Tim_Cad values {};
     
     switch (invent.equipada) {
@@ -212,7 +212,7 @@
     invent.clockReload = 0;
     invent.reloading   = 0;
     
-    if(values.mag > 0) createBullet2(LM, GE, invent, phy, SouSys, values.cad, player_ID);
+    if(values.mag > 0) createBullet2(LM, GE, invent, phy, SouSys, values.cad);
     else               reload2(LM, GE, invent);
 }
 
@@ -221,39 +221,39 @@
 }
 
 /*NUEVO*/ void InpSys2::createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, 
-PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon, size_t player_ID) {
+PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon) {
     if(invent.clockCadence <= cadenciaWeapon) return;
 
     auto& EM = LM.getEM();
     auto* cam = GE.getCamera();
 
-    auto& ply   = EM.getEntityById(player_ID);
+    auto& ply   = EM.getEntityById(EM.getBoard().entyID);
     auto& stats = EM.getComponent<EstadisticaCmp>(ply);
 
     invent.clockCadence = 0 ;
 
     switch (invent.equipada) {
         case 0:
-            bulletProcess(LM, GE, cam, player_ID, invent.gun, 
+            bulletProcess(LM, GE, cam, invent.gun, 
                 phy, SouSys, stats.extra_dmg);
             break;
         case 1:
-            bulletProcess(LM, GE, cam, player_ID, invent.shot, 
+            bulletProcess(LM, GE, cam, invent.shot, 
                 phy, SouSys, stats.extra_dmg, true);
             break;
         case 2: 
-            bulletProcess(LM, GE, cam, player_ID, invent.rifle, 
+            bulletProcess(LM, GE, cam, invent.rifle, 
                 phy, SouSys, stats.extra_dmg, false, 1);
             break;
     }
 }
 
-void InpSys2::bulletProcess(LevelMan& LM, GraphicEngine& GE, ECamera* cam, size_t player_ID, 
-Weapon& wpn, PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot, int lock) {
+void InpSys2::bulletProcess(LevelMan& LM, GraphicEngine& GE, ECamera* cam, Weapon& wpn, 
+PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot, int lock) {
     auto& EM = LM.getEM();
 
     lock_Left = lock;
-    recoil(EM, GE, cam, player_ID, wpn.recoil);
+    recoil(EM, GE, cam, wpn.recoil);
     wpn.magazine--;
 
     if(is_shot)
@@ -276,9 +276,9 @@ Weapon& wpn, PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot
         );
 }
 
-void InpSys2::recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, size_t player_ID, double desv) {
+void InpSys2::recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, double desv) {
     cam->Pitch += desv;
-    RenSys2::updateCamera(EM, GE, player_ID);
+    RenSys2::updateCamera(EM, GE);
 }
 
 void InpSys2::digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down) {

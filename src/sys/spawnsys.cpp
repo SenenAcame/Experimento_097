@@ -2,14 +2,14 @@
 #include "../eng/engine2.hpp"
 #include "../man/levelman.hpp"
 
-void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
+void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt) {
     auto& EM = LM.getEM();
 
     updateAliveEnem(EM);
 
-    updateSpawnEnem(LM, GE, SouSys, player_ID, dt);
+    updateSpawnEnem(LM, GE, SouSys, dt);
 
-    updateWave(LM, GE, SouSys, player_ID, dt);    
+    updateWave(LM, GE, SouSys, dt);    
 }
 
 void SpawnSystem::updateAliveEnem(EntyMan& EM) {
@@ -22,13 +22,13 @@ void SpawnSystem::updateAliveEnem(EntyMan& EM) {
     );
 }
 
-void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
+void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt) {
     auto& EM      = LM.getEM();
     auto& bb      = EM.getBoard();
     auto& wave    = bb.wave;
     auto& spw_wpn = bb.restart_weapons;
 
-    Enty& player = EM.getEntityById(player_ID);
+    Enty& player = EM.getEntityById(bb.entyID);
     auto& room_ply = EM.getComponent<SalaCmp>(player);
 
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -49,10 +49,10 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
     spw_wpn.cooldwn += dt;
 
     if(spw_wpn.cooldwn >= spw_wpn.time)
-        spawnWeapons(LM, GE, SouSys, player_ID);
+        spawnWeapons(LM, GE, SouSys);
 }
 
-void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
+void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt) {
     auto& bb      = LM.getEM().getBoard();
     auto& progres = bb.progres;
     auto& wave    = bb.wave;
@@ -73,7 +73,7 @@ void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& Sou
 
         if(toNextWave) { 
             nextWave(bb);
-            spawnWeapons(LM, GE, SouSys, player_ID);
+            spawnWeapons(LM, GE, SouSys);
         }
     }
 }
@@ -132,10 +132,10 @@ void SpawnSystem::nextWave(BlackBoardCmp& black_b) {
     aumentDifficult(black_b);
 }
 
-void SpawnSystem::spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID) {
+void SpawnSystem::spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
     deleteWeapons(LM, GE, SouSys);
 
-    createWeapons(LM, GE, SouSys, player_ID);
+    createWeapons(LM, GE, SouSys);
 }
 
 void SpawnSystem::deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
@@ -147,11 +147,11 @@ void SpawnSystem::deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& 
     );
 }
 
-void SpawnSystem::createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID) {
+void SpawnSystem::createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys) {
     auto& EM = LM.getEM();
     auto& bb = EM.getBoard();
 
-    Enty& player = EM.getEntityById(player_ID);
+    Enty& player = EM.getEntityById(bb.entyID);
     auto& room_ply = EM.getComponent<SalaCmp>(player);
 
     W_Type weapons[] = {W_Type::Pistol, W_Type::Shotgun, W_Type::Fusil};

@@ -18,18 +18,18 @@ struct SpawnSystem {
     using SALCMPs = MP::Typelist<SalaCmp, SpawnCmp>;
     using W_STAGs = MP::Typelist<TSpawn, TSpwWeapon>;
 
-    void update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
+    void update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
     
 private:
     void updateAliveEnem(EntyMan& EM);
-    void updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
-    void updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
+    void updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
+    void updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
     
     CuantityEnemies refill(CuantityEnemies type);
     void aumentDifficult(BlackBoardCmp& black_b);
     void spawnProcess(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, SpawnCmp& spawn, PhysicsCmp2& phy);
     void nextWave(BlackBoardCmp& black_b);
-    void spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID);
+    void spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
     void deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
-    void createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID);
+    void createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
 };

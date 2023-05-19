@@ -17,7 +17,7 @@
 #endif
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, UIsys& UISys, double dt) {
+/*NUEVO*/ void RenSys2::update2(EntyMan& EM, GraphicEngine& GE, UIsys& UISys, double dt) {
     ImGUI_Prerender();
 
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -29,12 +29,12 @@
             GE.glEng.drawScene();
         }
     );
-    updateCamera(EM, GE, player_ID);
+    updateCamera(EM, GE);
 
     drawWorld(GE);
-    UISys.renderInterface(EM, GE, player_ID, dt); 
+    UISys.renderInterface(EM, GE, dt); 
     
-    //ImGUI_RenderUI(EM, GE, player_ID);
+    //ImGUI_RenderUI(EM, GE);
     ImGUI_Postrender(GE);
 }
 
@@ -78,8 +78,8 @@ size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys) {
     return abandon;
 }
 
-void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE, size_t player_ID) {
-    auto& player = EM.getEntityById(player_ID);
+void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
+    auto& player = EM.getEntityById(EM.getBoard().entyID);
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& ren    = EM.getComponent<RenderCmp2>(player);
     //auto& sala   = EM.getComponent<SalaCmp>(player);
@@ -205,10 +205,10 @@ void RenSys2::ImGUI_Prerender() const noexcept {
 //}
 
 
-void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID) const noexcept{
+void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE) const noexcept{
     //ImGui::Text("This is some useful text");
     auto* m_window = GE.getWindow();
-    auto& player = EM.getEntityById(player_ID);
+    auto& player = EM.getEntityById(EM.getBoard().entyID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
     auto width     = GE.glEng.getWidth();

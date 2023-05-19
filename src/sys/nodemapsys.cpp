@@ -82,8 +82,8 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     ////);
 //}
 
-/*NUEVO*/ void NodeMapSys::update2(EntyMan& EM, size_t player_ID, size_t map_ID){
-    Enty& player = EM.getEntityById(player_ID);
+/*NUEVO*/ void NodeMapSys::update2(EntyMan& EM, size_t map_ID){
+    Enty& player = EM.getEntityById(EM.getBoard().entyID);
     Enty& map    = EM.getEntityById(map_ID);
 
     auto& phy_cmp = EM.getComponent<PhysicsCmp2>(player);
@@ -148,8 +148,8 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     );
 }
 
-void NodeMapSys::update3(EntyMan& EM, std::size_t player_ID, std::size_t map_ID, double dt){
-    Enty& player = EM.getEntityById(player_ID);
+void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
+    Enty& player = EM.getEntityById(EM.getBoard().entyID);
     Enty& map    = EM.getEntityById(map_ID);
 
     auto& phy_cmp = EM.getComponent<PhysicsCmp2>(player);
