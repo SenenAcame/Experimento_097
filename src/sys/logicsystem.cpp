@@ -88,12 +88,12 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
     else if(colisioned.hasTAG<TEnemy>()) {
         //jugador recibe daño del enemigo
-        //receiveEntityDamage2(LM, GE, current, colisioned);
+        receiveEntityDamage2(LM, GE, current, colisioned);
     }
     else if(colisioned.hasTAG<TEneBullet>()) {
         //jugador recibe daño de bala enemiga
         //auto& EM = LM.getEM();
-        //reciveDamge(EM, current, colisioned);
+        reciveDamge(LM, GE, current, colisioned);
     }
     else if(colisioned.hasTAG<TWeapon>()) {
         //mostrar texto de recoger arma
@@ -114,7 +114,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
     else if(colisioned.hasTAG<TPlayer>()){
         //enemigo hace daño al jugador
-        ///receiveEntityDamage2(LM, GE, colisioned, current);
+        receiveEntityDamage2(LM, GE, colisioned, current);
     }
     else if(colisioned.hasTAG<TBullet>()){
         //enemigo recibe daño de la bala
@@ -173,8 +173,12 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
     auto& EM = LM.getEM();
     auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
     auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
-    
+
+    std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
+
     recept_stats.hitpoints -= agress_stats.damage;
+
+    std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
 
     if(!agressor.hasTAG<TEnemy>()) markDestroy(agressor);
 
@@ -186,7 +190,7 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
             EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
             EM.removeComponent<EstadoCmp>(receptor);
         }
-        else markDestroy(receptor);
+        else if(!receptor.hasTAG<TPlayer>()) markDestroy(receptor);
     }
 }
 
