@@ -251,16 +251,13 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     punto punto16 = { -58.64, -8.83 };
     punto punto17 = { -99.83, -2 };
     punto punto18 = { -100.69, -22.22 };
-    punto punto19 = { -37.12, 4.6 };
-    punto punto20 = { -37.12, 21.09 };
+    punto punto19 = { -36.51, 12.13 };
     punto punto21 = { -37.12, -21.41 };
     punto punto22 = { -45.42, -38.2 };
-    punto punto23 = { -58.32, -49.77 };
-    punto punto24 = { -58.32, -60 };
+    punto punto23 = { -57.48, -54.85 };
     punto punto25 = { -49.81, -9.16 };
     punto punto26 = { -67.19, -1.89 };
-    punto punto27 = { -79.26, 10.35 };
-    punto punto28 = { -79.26, 20.89 };
+    punto punto27 = { -79, 16 };
     punto punto29 = { -70.69, -37.6 };
     punto punto30 = { -79.42, -14.38 };
     punto punto31 = { -91.71, -1.6 };
@@ -279,15 +276,12 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     std::vector<nodomap> Vnodo17;
     std::vector<nodomap> Vnodo18;
     std::vector<nodomap> Vnodo19;
-    std::vector<nodomap> Vnodo20;
     std::vector<nodomap> Vnodo21;
     std::vector<nodomap> Vnodo22;
     std::vector<nodomap> Vnodo23;
-    std::vector<nodomap> Vnodo24;
     std::vector<nodomap> Vnodo25;
     std::vector<nodomap> Vnodo26;
     std::vector<nodomap> Vnodo27;
-    std::vector<nodomap> Vnodo28;
     std::vector<nodomap> Vnodo29;
     std::vector<nodomap> Vnodo30;
     std::vector<nodomap> Vnodo31;
@@ -306,15 +300,12 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodomap nodo17 = nodomap{ 17, punto17 };
     nodomap nodo18 = nodomap{ 18, punto18 };
     nodomap nodo19 = nodomap{ 19, punto19 };
-    nodomap nodo20 = nodomap{ 20, punto20 };
     nodomap nodo21 = nodomap{ 21, punto21 };
     nodomap nodo22 = nodomap{ 22, punto22 };
     nodomap nodo23 = nodomap{ 23, punto23 };
-    nodomap nodo24 = nodomap{ 24, punto24 };
     nodomap nodo25 = nodomap{ 25, punto25 };
     nodomap nodo26 = nodomap{ 26, punto26 };
     nodomap nodo27 = nodomap{ 27, punto27 };
-    nodomap nodo28 = nodomap{ 28, punto28 };
     nodomap nodo29 = nodomap{ 29, punto29 };
     nodomap nodo30 = nodomap{ 30, punto30 };
     nodomap nodo31 = nodomap{ 31, punto31 };
@@ -331,7 +322,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo4.push_back(nodo23);
     Vnodo4.push_back(nodo29);
 
-    Vnodo7.push_back(nodo24);
+    Vnodo7.push_back(nodo23);
 
     Vnodo8.push_back(nodo29);
     Vnodo8.push_back(nodo30);
@@ -341,11 +332,11 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo9.push_back(nodo27);
     Vnodo9.push_back(nodo26);
 
-    Vnodo13.push_back(nodo28);
+    Vnodo13.push_back(nodo27);
     Vnodo13.push_back(nodo14);
 
     Vnodo14.push_back(nodo13);
-    Vnodo14.push_back(nodo20);
+    Vnodo14.push_back(nodo19);
 
     Vnodo15.push_back(nodo26);
     Vnodo15.push_back(nodo16);
@@ -359,10 +350,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo18.push_back(nodo32);
 
     Vnodo19.push_back(nodo0);
-    Vnodo19.push_back(nodo20);
-
-    Vnodo20.push_back(nodo19);
-    Vnodo20.push_back(nodo14);
+    Vnodo19.push_back(nodo14);
 
     Vnodo21.push_back(nodo0);
     Vnodo21.push_back(nodo3);
@@ -371,10 +359,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo22.push_back(nodo4);
 
     Vnodo23.push_back(nodo4);
-    Vnodo23.push_back(nodo24);
-
-    Vnodo24.push_back(nodo23);
-    Vnodo24.push_back(nodo7);
+    Vnodo23.push_back(nodo7);
 
     Vnodo25.push_back(nodo0);
     Vnodo25.push_back(nodo16);
@@ -383,10 +368,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo26.push_back(nodo15);
 
     Vnodo27.push_back(nodo9);
-    Vnodo27.push_back(nodo28);
-
-    Vnodo28.push_back(nodo27);
-    Vnodo28.push_back(nodo13);
+    Vnodo27.push_back(nodo13);
 
     Vnodo29.push_back(nodo4);
     Vnodo29.push_back(nodo8);
@@ -413,15 +395,12 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodo17.putnodo(Vnodo17);
     nodo18.putnodo(Vnodo18);
     nodo19.putnodo(Vnodo19);
-    nodo20.putnodo(Vnodo20);
     nodo21.putnodo(Vnodo21);
     nodo22.putnodo(Vnodo22);
     nodo23.putnodo(Vnodo23);
-    nodo24.putnodo(Vnodo24);
     nodo25.putnodo(Vnodo25);
     nodo26.putnodo(Vnodo26);
     nodo27.putnodo(Vnodo27);
-    nodo28.putnodo(Vnodo28);
     nodo29.putnodo(Vnodo29);
     nodo30.putnodo(Vnodo30);
     nodo31.putnodo(Vnodo31);
@@ -441,15 +420,12 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodos.push_back(nodo17);
     nodos.push_back(nodo18);
     nodos.push_back(nodo19);
-    nodos.push_back(nodo20);
     nodos.push_back(nodo21);
     nodos.push_back(nodo22);
     nodos.push_back(nodo23);
-    nodos.push_back(nodo24);
     nodos.push_back(nodo25);
     nodos.push_back(nodo26);
     nodos.push_back(nodo27);
-    nodos.push_back(nodo28);
     nodos.push_back(nodo29);
     nodos.push_back(nodo30);
     nodos.push_back(nodo31);
