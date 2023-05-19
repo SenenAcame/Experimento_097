@@ -143,7 +143,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
-                SouSys.update (EM);
+                //SouSys.update (EM);
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
         
@@ -203,6 +203,7 @@ size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys)
     LM.createEneSpawn(Vec3{ -84,  0, -6  }, GE, 6);
     LM.createEneSpawn(Vec3{ -103, 0, -32 }, GE, 11);
     LM.createEneSpawn(Vec3{ -53,  0, -77 }, GE, 13);
+    LM.createEneSpawn(Vec3{ -60,  0, 28  }, GE, 16);
 
     // SPAWN ARMAS
     LM.createWpnSpawn(Vec3 { -30,  2.8, -13 }, GE, 0);
@@ -210,7 +211,7 @@ size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys)
     LM.createWpnSpawn(Vec3 { -77,  2.8, 4   }, GE, 6);
     LM.createWpnSpawn(Vec3 { -100, 2.8, -35 }, GE, 11);
     LM.createWpnSpawn(Vec3 { -57,  2.8, -78 }, GE, 13);
-    // LM.createWpnSpawn(Vec3 { -60,  2.8, 32  }, GE, X); Sala X (patio)
+    LM.createWpnSpawn(Vec3 { -60,  2.8, 40  }, GE, 16);
 
     return LM.createMap2(GE, SouSys);
 }
