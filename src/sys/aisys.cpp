@@ -129,9 +129,10 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
 }
 
 void AISys::find(AICmp& ai, PhysicsCmp2& phy){
-    if(ai.ruta.size()>0){
-        double desv_x=0;
-        double desv_z=0;
+    double desv_x=0;
+    double desv_z=0;
+    if(ai.ruta.size()>1){
+        
         /*if(ai.xrand)
             desv_x+=ai.random;
         else
@@ -140,14 +141,18 @@ void AISys::find(AICmp& ai, PhysicsCmp2& phy){
             desv_z+=ai.random;
         else
             desv_z-=ai.random;*/
-        if(phy.x>=ai.ruta.at(ai.ruta.size()-1).coord.x-1+desv_x && phy.x<=ai.ruta.at(ai.ruta.size()-1).coord.x+1+desv_x && phy.z>=ai.ruta.at(ai.ruta.size()-1).coord.z-1+desv_z && phy.z<=ai.ruta.at(ai.ruta.size()-1).coord.z+1+desv_z){
+        float dist_nodos=sqrt((ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
+        float dist_ene_nodo=sqrt((phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
+        if(dist_ene_nodo<=dist_nodos)
             ai.ruta.pop_back();
-        }
-        if(ai.ruta.size()>0){
-            ai.ox=ai.ruta.at(ai.ruta.size()-1).coord.x+desv_x;
-            ai.oz=ai.ruta.at(ai.ruta.size()-1).coord.z+desv_z;
-            seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive);
-        }
+        //else if(phy.x>=ai.ruta.at(ai.ruta.size()-1).coord.x-1+desv_x && phy.x<=ai.ruta.at(ai.ruta.size()-1).coord.x+1+desv_x && phy.z>=ai.ruta.at(ai.ruta.size()-1).coord.z-1+desv_z && phy.z<=ai.ruta.at(ai.ruta.size()-1).coord.z+1+desv_z){
+        //    ai.ruta.pop_back();
+        //}
+    }
+    if(ai.ruta.size()>0){
+        ai.ox=ai.ruta.at(ai.ruta.size()-1).coord.x+desv_x;
+        ai.oz=ai.ruta.at(ai.ruta.size()-1).coord.z+desv_z;
+        seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive);
     }
 }
 

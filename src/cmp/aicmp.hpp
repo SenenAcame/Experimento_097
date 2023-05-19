@@ -23,7 +23,7 @@ struct AICmp {
     bool   enable        { true };
     bool   shoot         { false };
     std::vector<nodomap> ruta {};
-    double cooldown_ruta {3.0};
+    double cooldown_ruta {0.0};
     /*double random        {static_cast<double>((rand()%15)/10)};
     int    xrand         {rand()%1};
     int    zrand         {rand()%1};*/

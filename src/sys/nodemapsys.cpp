@@ -181,7 +181,7 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                         ai.cooldown_ruta-=dt;
                     }
                     else{
-                        ai.cooldown_ruta=3;
+                    //    ai.cooldown_ruta=3;
                         float dist_player = FLT_MAX;
                         float dist_ene = FLT_MAX;
                         nodomap player_nod;
@@ -200,13 +200,15 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                         //std::cout<<"Player nodo:"<<player_nod.num<<std::endl;
                         //std::cout<<"Enemy nodo:"<<enemy_nod.num<<std::endl;
                         //std::cout<<"Enemy pos X: "<<p.x<<" , Z"<<p.z<<std::endl;
-
                         std::vector<nodomap> camino=aEstrella(map_cmp.nodos, enemy_nod, player_nod);
-                        ai.ruta.clear();
+                        if(ai.ruta.size()>0)
+                            ai.ruta.clear();
                         for(int i=0;i<camino.size();i++){
                             ai.ruta.push_back(camino.at(i));
                         }
-                        
+                        if(camino.size()>2){
+                            ai.cooldown_ruta=3;
+                        }
                         vaciaPadres(map_cmp.nodos);
                     }
                 }
@@ -237,24 +239,17 @@ void NodeMapSys::vaciaPadres(std::vector<nodomap>nodos){
 }
 
 std::vector<nodomap> NodeMapSys::creaNodos() {
-    punto punto0 = { -37.28, -1 };
-    punto punto1 = { -44.8, -8.83 };
-    punto punto2 = { -37.26, -17.53 };
-    punto punto3 = { -36.57, -31.7 };
-    punto punto4 = { -50.66, -38.29 };
-    punto punto5 = { -58.1, -45.38 };
-    punto punto6 = { -65.59, -37.64 };
+    punto punto0 = { -35.51, -8.65 };
+    punto punto3 = { -36.57, -37.3 };
+    punto punto4 = { -57.75, -37.39 };
     punto punto7 = { -58.1, -66.76 };
-    punto punto8 = { -74.21, -37.24 };
-    punto punto9 = { -79.89, -10.48 };
-    punto punto10 = { -86.89, -1.79 };
-    punto punto11 = { -71.03, -1.79 };
-    punto punto12 = { -79.89, 6.6 };
+    punto punto8 = { -78.58, -37.24 };
+    punto punto9 = { -79.46, -1.46 };
     punto punto13 = { -79.89, 26.01 };
     punto punto14 = { -37.17, 26.01 };
     punto punto15 = { -58.86, -1.87 };
     punto punto16 = { -58.64, -8.83 };
-    punto punto17 = { -95.83, -2 };
+    punto punto17 = { -99.83, -2 };
     punto punto18 = { -100.69, -22.22 };
     punto punto19 = { -37.12, 4.6 };
     punto punto20 = { -37.12, 21.09 };
@@ -270,23 +265,13 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     punto punto30 = { -79.42, -14.38 };
     punto punto31 = { -91.71, -1.6 };
     punto punto32 = { -101, -17.51 };
-    punto punto33 = { -40.28, -37.24 };
-    punto punto34 = { -78.71, -32 };
-    punto punto35 = { -100.16, -7.09 };
 
     std::vector<nodomap> Vnodo0;
-    std::vector<nodomap> Vnodo1;
-    std::vector<nodomap> Vnodo2;
     std::vector<nodomap> Vnodo3;
     std::vector<nodomap> Vnodo4;
-    std::vector<nodomap> Vnodo5;
-    std::vector<nodomap> Vnodo6;
     std::vector<nodomap> Vnodo7;
     std::vector<nodomap> Vnodo8;
     std::vector<nodomap> Vnodo9;
-    std::vector<nodomap> Vnodo10;
-    std::vector<nodomap> Vnodo11;
-    std::vector<nodomap> Vnodo12;
     std::vector<nodomap> Vnodo13;
     std::vector<nodomap> Vnodo14;
     std::vector<nodomap> Vnodo15;
@@ -307,23 +292,13 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     std::vector<nodomap> Vnodo30;
     std::vector<nodomap> Vnodo31;
     std::vector<nodomap> Vnodo32;
-    std::vector<nodomap> Vnodo33;
-    std::vector<nodomap> Vnodo34;
-    std::vector<nodomap> Vnodo35;
 
     nodomap nodo0 = nodomap{ 0, punto0 };
-    nodomap nodo1 = nodomap{ 1, punto1 };
-    nodomap nodo2 = nodomap{ 2, punto2 };
     nodomap nodo3 = nodomap{ 3, punto3 };
     nodomap nodo4 = nodomap{ 4, punto4 };
-    nodomap nodo5 = nodomap{ 5, punto5 };
-    nodomap nodo6 = nodomap{ 6, punto6 };
     nodomap nodo7 = nodomap{ 7, punto7 };
     nodomap nodo8 = nodomap{ 8, punto8 };
     nodomap nodo9 = nodomap{ 9, punto9 };
-    nodomap nodo10 = nodomap{ 10, punto10 };
-    nodomap nodo11 = nodomap{ 11, punto11 };
-    nodomap nodo12 = nodomap{ 12, punto12 };
     nodomap nodo13 = nodomap{ 13, punto13 };
     nodomap nodo14 = nodomap{ 14, punto14 };
     nodomap nodo15 = nodomap{ 15, punto15 };
@@ -343,62 +318,28 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodomap nodo29 = nodomap{ 29, punto29 };
     nodomap nodo30 = nodomap{ 30, punto30 };
     nodomap nodo31 = nodomap{ 31, punto31 };
-    nodomap nodo32 = nodomap{ 32, punto32 };
-    nodomap nodo33 = nodomap{ 33, punto33 };
-    nodomap nodo34 = nodomap{ 34, punto34 };
-    nodomap nodo35 = nodomap{ 35, punto35 };   
+    nodomap nodo32 = nodomap{ 32, punto32 }; 
 
-    Vnodo0.push_back(nodo1);
-    Vnodo0.push_back(nodo2);
+    Vnodo0.push_back(nodo21);
+    Vnodo0.push_back(nodo25);
     Vnodo0.push_back(nodo19);
 
-    Vnodo1.push_back(nodo0);
-    Vnodo1.push_back(nodo2);
-    Vnodo1.push_back(nodo25);
-
-    Vnodo2.push_back(nodo0);
-    Vnodo2.push_back(nodo1);
-    Vnodo2.push_back(nodo21);
-
     Vnodo3.push_back(nodo21);
-    Vnodo3.push_back(nodo33);
+    Vnodo3.push_back(nodo22);
 
     Vnodo4.push_back(nodo22);
-    Vnodo4.push_back(nodo5);
-    Vnodo4.push_back(nodo6);
-
-    Vnodo5.push_back(nodo4);
-    Vnodo5.push_back(nodo6);
-    Vnodo5.push_back(nodo23);
-    
-    Vnodo6.push_back(nodo4);
-    Vnodo6.push_back(nodo5);
-    Vnodo6.push_back(nodo29);
+    Vnodo4.push_back(nodo23);
+    Vnodo4.push_back(nodo29);
 
     Vnodo7.push_back(nodo24);
 
     Vnodo8.push_back(nodo29);
-    Vnodo8.push_back(nodo34);
+    Vnodo8.push_back(nodo30);
 
     Vnodo9.push_back(nodo30);
-    Vnodo9.push_back(nodo10);
-    Vnodo9.push_back(nodo11);
-    Vnodo9.push_back(nodo12);
-
-    Vnodo10.push_back(nodo9);
-    Vnodo10.push_back(nodo11);
-    Vnodo10.push_back(nodo12);
-    Vnodo10.push_back(nodo31);
-
-    Vnodo11.push_back(nodo9);
-    Vnodo11.push_back(nodo10);
-    Vnodo11.push_back(nodo12);
-    Vnodo11.push_back(nodo26);
-
-    Vnodo12.push_back(nodo9);
-    Vnodo12.push_back(nodo10);
-    Vnodo12.push_back(nodo11);
-    Vnodo12.push_back(nodo27);
+    Vnodo9.push_back(nodo31);
+    Vnodo9.push_back(nodo27);
+    Vnodo9.push_back(nodo26);
 
     Vnodo13.push_back(nodo28);
     Vnodo13.push_back(nodo14);
@@ -413,7 +354,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo16.push_back(nodo25);
 
     Vnodo17.push_back(nodo31);
-    Vnodo17.push_back(nodo35);
+    Vnodo17.push_back(nodo32);
 
     Vnodo18.push_back(nodo32);
 
@@ -423,64 +364,48 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo20.push_back(nodo19);
     Vnodo20.push_back(nodo14);
 
-    Vnodo21.push_back(nodo2);
+    Vnodo21.push_back(nodo0);
     Vnodo21.push_back(nodo3);
 
-    Vnodo22.push_back(nodo33);
+    Vnodo22.push_back(nodo3);
     Vnodo22.push_back(nodo4);
 
-    Vnodo23.push_back(nodo5);
+    Vnodo23.push_back(nodo4);
     Vnodo23.push_back(nodo24);
 
     Vnodo24.push_back(nodo23);
     Vnodo24.push_back(nodo7);
 
-    Vnodo25.push_back(nodo1);
+    Vnodo25.push_back(nodo0);
     Vnodo25.push_back(nodo16);
 
-    Vnodo26.push_back(nodo11);
+    Vnodo26.push_back(nodo9);
     Vnodo26.push_back(nodo15);
 
-    Vnodo27.push_back(nodo12);
+    Vnodo27.push_back(nodo9);
     Vnodo27.push_back(nodo28);
 
     Vnodo28.push_back(nodo27);
     Vnodo28.push_back(nodo13);
 
-    Vnodo29.push_back(nodo6);
+    Vnodo29.push_back(nodo4);
     Vnodo29.push_back(nodo8);
 
-    Vnodo30.push_back(nodo34);
+    Vnodo30.push_back(nodo8);
     Vnodo30.push_back(nodo9);
 
-    Vnodo31.push_back(nodo10);
+    Vnodo31.push_back(nodo9);
     Vnodo31.push_back(nodo17);
 
-    Vnodo32.push_back(nodo35);
+    Vnodo32.push_back(nodo17);
     Vnodo32.push_back(nodo18);
 
-    Vnodo33.push_back(nodo3);
-    Vnodo33.push_back(nodo22);
-
-    Vnodo34.push_back(nodo30);
-    Vnodo34.push_back(nodo8);
-
-    Vnodo35.push_back(nodo32);
-    Vnodo35.push_back(nodo17);
-
     nodo0.putnodo(Vnodo0);
-    nodo1.putnodo(Vnodo1);
-    nodo2.putnodo(Vnodo2);
     nodo3.putnodo(Vnodo3);
     nodo4.putnodo(Vnodo4);
-    nodo5.putnodo(Vnodo5);
-    nodo6.putnodo(Vnodo6);
     nodo7.putnodo(Vnodo7);
     nodo8.putnodo(Vnodo8);
     nodo9.putnodo(Vnodo9);
-    nodo10.putnodo(Vnodo10);
-    nodo11.putnodo(Vnodo11);
-    nodo12.putnodo(Vnodo12);
     nodo13.putnodo(Vnodo13);
     nodo14.putnodo(Vnodo14);
     nodo15.putnodo(Vnodo15);
@@ -501,24 +426,14 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodo30.putnodo(Vnodo30);
     nodo31.putnodo(Vnodo31);
     nodo32.putnodo(Vnodo32);
-    nodo33.putnodo(Vnodo33);
-    nodo34.putnodo(Vnodo34);
-    nodo35.putnodo(Vnodo35);
 
     std::vector<nodomap> nodos;
     nodos.push_back(nodo0);
-    nodos.push_back(nodo1);
-    nodos.push_back(nodo2);
     nodos.push_back(nodo3);
     nodos.push_back(nodo4);
-    nodos.push_back(nodo5);
-    nodos.push_back(nodo6);
     nodos.push_back(nodo7);
     nodos.push_back(nodo8);
     nodos.push_back(nodo9);
-    nodos.push_back(nodo10);
-    nodos.push_back(nodo11);
-    nodos.push_back(nodo12);
     nodos.push_back(nodo13);
     nodos.push_back(nodo14);
     nodos.push_back(nodo15);
@@ -539,9 +454,6 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodos.push_back(nodo30);
     nodos.push_back(nodo31);
     nodos.push_back(nodo32);
-    nodos.push_back(nodo33);
-    nodos.push_back(nodo34);
-    nodos.push_back(nodo35);
 
     //std::cout<<"Nodoacual: "<<nodos.at(0).nodos_adya.at(0).num<<" tamaño:"<<nodos.at(0).nodos_adya.at(0).nodos_adya.size()<<std::endl;
 
@@ -574,9 +486,9 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                 camino.push_back(nodoActual);
                 nodoActual = *nodoActual.padre;
             }
-            //camino.push_back(inicio);
+            camino.push_back(inicio);
             //for(int i=0;i<camino.size();i++){
-            //        std::cout<<i<<"Ruta: "<<camino.at(i).num<<std::endl;
+            //    std::cout<<i<<"Ruta: "<<camino.at(i).num<<std::endl;
             //}
             return camino;
         }
@@ -594,16 +506,16 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                     float costoActual = nodoActual.total + 1;
                     float costoEstimado = costoActual + calcularDist(nodos.at(i), objetivo);
                     //std::cout<<"Vecino: "<<nodos.at(i).num<<" tamaño: "<<nodos.at(i).nodos_adya.size()<<std::endl;
-                    if(nodos.at(i).padre!=nullptr)
+                    //if(nodos.at(i).padre!=nullptr)
                     //std::cout<<"Padre vecino: "<<nodos.at(i).padre->num<<std::endl;
                     if ((nodos.at(i).padre == nullptr || costoEstimado < nodos.at(i).total + nodos.at(i).estimado)) {
-                            nodos.at(i).total = costoActual;
-                            nodos.at(i).estimado = calcularDist(nodos.at(i), objetivo);
-                            for(int k=0;k<nodos.size();k++){
-                                if(nodos.at(k).num==nodoActual.num)
-                                    nodos.at(i).padre = &nodos.at(k);
-                            }
-                            frontera.push(nodos.at(i));
+                        nodos.at(i).total = costoActual;
+                        nodos.at(i).estimado = calcularDist(nodos.at(i), objetivo);
+                        for(int k=0;k<nodos.size();k++){
+                            if(nodos.at(k).num==nodoActual.num)
+                                nodos.at(i).padre = &nodos.at(k);
+                        }
+                        frontera.push(nodos.at(i));
                     }
                 }
             }
