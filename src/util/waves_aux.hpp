@@ -27,6 +27,7 @@ struct ExtraStats {
 };
 
 struct WaveInfo {
+    int kills     { 0 };
     int maximEnem { 7 }; //maximos vivos en total
     int aliveEnem { 0 }; //numero vivos en total 
 

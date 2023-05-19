@@ -17,7 +17,10 @@ void SpawnSystem::updateAliveEnem(EntyMan& EM) {
 
     EM.foreach<VOICMPs, ENETAGs>(
         [&](Enty& enemy) {
-            if(enemy.getDestroy()) bb.wave.aliveEnem--;
+            if(enemy.getDestroy()) {
+                bb.wave.aliveEnem--;
+                bb.wave.kills++;
+            }
         }
     );
 }
