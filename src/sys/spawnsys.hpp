@@ -1,14 +1,10 @@
 #pragma once
 #include "../util/types.hpp"
-#include "../util/waves_aux.hpp"
+//#include "../util/waves_aux.hpp"
 
 struct SoundSystem_t;
 struct LevelMan;
 struct GraphicEngine;
-
-struct Clock {
-    double cooldwn {}, time {};
-};
 
 struct SpawnSystem {
     using VOICMPs = MP::Typelist<>;
@@ -30,15 +26,10 @@ private:
     void updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt);
     
     CuantityEnemies refill(CuantityEnemies type);
-    void aumentDifficult();
+    void aumentDifficult(BlackBoardCmp& black_b);
     void spawnProcess(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, SpawnCmp& spawn, PhysicsCmp2& phy);
-    void nextWave();
+    void nextWave(BlackBoardCmp& black_b);
     void spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID);
     void deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys);
     void createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID);
-    
-    ExtraStats   difficult {};
-    WaveInfo     wave      {};
-    WavesProgres progres   {};
-    Clock restart_weapons { 0, 20 };
 };

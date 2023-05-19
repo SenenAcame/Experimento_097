@@ -15,16 +15,16 @@ struct LogicSystem {
 
     static constexpr double PI { std::numbers::pi };
 
-    void update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
+    void update2      (LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead);
     void checkColision(LevelMan& LM, GraphicEngine& GE, Enty& entity, EstadoCmp& state, UIsys& UISys, double dt);
 
-    void colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, double dt);
-    void colisionPlayer2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
-    void colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+    void colisionWall     (EntyMan& EM, Enty& current, Enty& colisioned, double dt);
+    void colisionPlayer2  (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
+    void colisionEnemy2   (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
     void colisionEneBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
-    void colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
-    void colisionWeapon2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
-    void colisionPowerUp(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
+    void colisionBullet   (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
+    void colisionWeapon2  (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
+    void colisionPowerUp  (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
 
     void receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
     void reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
@@ -40,19 +40,4 @@ struct LogicSystem {
     void secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt);
     bool checkFutureCollision(EntyMan& EM, size_t const colld_id, float const f_coordx, float const f_coordz, float const width, float const depth) const noexcept;
     void chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy);
-
-    ///*VIEJO*/ void update (LevelMan& LM, TheEngine& eng, double dt);
-    ///*VIEJO*/ void colisionPlayer(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
-    ///*VIEJO*/ void colisionEnemy(LevelMan& LM, TheEngine& eng, Enty& current, Enty& colisioned, double dt);
-    ///*VIEJO*/ void colisionWeapon(LevelMan& LM, Enty& current, Enty& colisioned, TheEngine& eng);
-    //void colisionDoor(EntyMan& EM, Enty& current, Enty& colisioned);
-    //void colisionKey(EntyMan& EM, Enty& current, Enty& colisioned);
-    ///*VIEJO*/ void receiveEntityDamage(LevelMan& LM, TheEngine& eng, Enty& receptor, Enty& agressor);
-    ///*VIEJO*/ void takeWeapon(Enty& player, Enty& weapon, LevelMan& LM, TheEngine& eng);
-    //void openDoor();
-    //void takeKey();
-    //void resetCollision(EstadoCmp& recept_state, EstadoCmp& agress_state);
-
-private:
-    double spawn_perc { 50.0 };
 };

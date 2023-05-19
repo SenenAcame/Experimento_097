@@ -34,7 +34,11 @@
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon2(LM, GE, equip, rend, 2); }
             if(keyboard.isKeyPressed(XK_Escape))            { stats.hitpoints = 0; }
             
-            bb = { phy.x, phy.z, true, true, player.getID()};
+            bb.tx      = phy.x; 
+            bb.tz      = phy.z; 
+            bb.tactive = true; 
+            bb.shoot   = true; 
+            bb.entyID  = player.getID();
         }
     );
 }

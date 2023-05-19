@@ -13,15 +13,20 @@ void SpawnSystem::update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys,
 }
 
 void SpawnSystem::updateAliveEnem(EntyMan& EM) {
+    auto&& bb = EM.getBoard();
+
     EM.foreach<VOICMPs, ENETAGs>(
         [&](Enty& enemy) {
-            if(enemy.getDestroy()) wave.aliveEnem--;
+            if(enemy.getDestroy()) bb.wave.aliveEnem--;
         }
     );
 }
 
 void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
-    auto& EM = LM.getEM();
+    auto& EM      = LM.getEM();
+    auto& bb      = EM.getBoard();
+    auto& wave    = bb.wave;
+    auto& spw_wpn = bb.restart_weapons;
 
     Enty& player = EM.getEntityById(player_ID);
     auto& room_ply = EM.getComponent<SalaCmp>(player);
@@ -41,13 +46,17 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
         }
     );
 
-    restart_weapons.cooldwn += dt;
+    spw_wpn.cooldwn += dt;
 
-    if(restart_weapons.cooldwn >= restart_weapons.time)
+    if(spw_wpn.cooldwn >= spw_wpn.time)
         spawnWeapons(LM, GE, SouSys, player_ID);
 }
 
 void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID, double const dt) {
+    auto& bb      = LM.getEM().getBoard();
+    auto& progres = bb.progres;
+    auto& wave    = bb.wave;
+    
     bool finished_wave { 
         progres.inRound         && 
         wave.total.reserve == 0 && 
@@ -63,7 +72,7 @@ void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& Sou
         bool toNextWave = progres.clockNextWave >= progres.timeBtwWaves;
 
         if(toNextWave) { 
-            nextWave();
+            nextWave(bb);
             spawnWeapons(LM, GE, SouSys, player_ID);
         }
     }
@@ -75,13 +84,18 @@ CuantityEnemies SpawnSystem::refill(CuantityEnemies type) {
     return type;
 }
 
-void SpawnSystem::aumentDifficult() {
-    difficult.life.extra += difficult.life.aument_extra;
-    difficult.damg.extra += difficult.damg.aument_extra;
-    difficult.sped.extra += difficult.sped.aument_extra;
+void SpawnSystem::aumentDifficult(BlackBoardCmp& black_b) {
+    auto& stats = black_b.difficult;
+
+    stats.life.extra += stats.life.aument_extra;
+    stats.damg.extra += stats.damg.aument_extra;
+    stats.sped.extra += stats.sped.aument_extra;
 }
 
 void SpawnSystem::spawnProcess(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, SpawnCmp& spawn, PhysicsCmp2& phy) {
+    auto& bb   = LM.getEM().getBoard();
+    auto& wave = bb.wave;
+    
     Type_Enemy type = Type_Enemy::Normal;
 
     spawn.clock = 0;
@@ -97,10 +111,12 @@ void SpawnSystem::spawnProcess(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& S
         type = Type_Enemy::Distance;
     }
 
-    LM.createEnemy(GE, Vec3{ phy.x, phy.y, phy.z }, SouSys, type, difficult);
+    LM.createEnemy(GE, Vec3{ phy.x, phy.y, phy.z }, SouSys, type, bb.difficult);
 }
 
-void SpawnSystem::nextWave() {
+void SpawnSystem::nextWave(BlackBoardCmp& black_b) {
+    auto& progres = black_b.progres;
+    auto& wave        = black_b.wave;
     //Comienza siguiente oleada
     progres.clockNextWave = 0;
     progres.inRound       = true;
@@ -113,7 +129,7 @@ void SpawnSystem::nextWave() {
     if(distWave) wave.disp = refill(wave.disp);
     wave.total = refill(wave.total);
 
-    aumentDifficult();
+    aumentDifficult(black_b);
 }
 
 void SpawnSystem::spawnWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID) {
@@ -133,6 +149,7 @@ void SpawnSystem::deleteWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& 
 
 void SpawnSystem::createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, size_t player_ID) {
     auto& EM = LM.getEM();
+    auto& bb = EM.getBoard();
 
     Enty& player = EM.getEntityById(player_ID);
     auto& room_ply = EM.getComponent<SalaCmp>(player);
@@ -158,13 +175,5 @@ void SpawnSystem::createWeapons(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& 
         spawns.erase(spawns.begin() + pos);
     }
     
-    restart_weapons.cooldwn = 0;
-
-    // MANUAL
-    //LM.createWeapon2(GE, Vec3 { -30, 2.8, -13 }, W_Type::Pistol,  SouSys); // Sala 0
-    //LM.createWeapon2(GE, Vec3 { -77, 2.8, 4   }, W_Type::Shotgun, SouSys); // Sala 6
-    //LM.createWeapon2(GE, Vec3 { -58, 2.8, -31 }, W_Type::Fusil,   SouSys); // Sala 3
-    // (-100, 2.8, -35) Sala 11
-    // ( -57, 2.8, -78) Sala 13
-    // ( -60, 2.8,  32) Sala X (patio)
+    bb.restart_weapons.cooldwn = 0;
 }

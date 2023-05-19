@@ -7,6 +7,7 @@
 #include "../eng/engine2.hpp"
 #include "../util/munition_aux.hpp"
 #include <cstdlib>
+#include <iostream>
 
 //int aux = 0;
 
@@ -295,10 +296,12 @@ bool LogicSystem::checkFutureCollision(EntyMan& EM, size_t const colld_id, float
 }
 
 void LogicSystem::chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy) {
+    auto& bb = LM.getEM().getBoard();
     int num = rand() % 100 + 1;
-    if(num <= spawn_perc) {
+
+    if(num <= bb.spawn_perc) {
         LM.createPowerUp(GE, phy);
-        spawn_perc = 1;
+        bb.spawn_perc = 1;
     }
-    else spawn_perc++; 
+    else bb.spawn_perc++; 
 }

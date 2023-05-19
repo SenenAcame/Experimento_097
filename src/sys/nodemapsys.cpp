@@ -191,15 +191,15 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t player_ID, std::size_t map_ID,
                                 player_nod=map_cmp.nodos.at(i);
                                 dist_player=sqrt((map_cmp.nodos.at(i).coord.x-phy_cmp.x)*(map_cmp.nodos.at(i).coord.x-phy_cmp.x)+(map_cmp.nodos.at(i).coord.z-phy_cmp.z)*(map_cmp.nodos.at(i).coord.z-phy_cmp.z));
                             }
-                            std::cout<<"Distancia del nodo "<<map_cmp.nodos.at(i).num<<" es "<<sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z))<<std::endl;
+                            //std::cout<<"Distancia del nodo "<<map_cmp.nodos.at(i).num<<" es "<<sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z))<<std::endl;
                             if(sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z))<dist_ene){
                                 enemy_nod=map_cmp.nodos.at(i);
                                 dist_ene=sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z));
                             }
                         }
-                        std::cout<<"Player nodo:"<<player_nod.num<<std::endl;
-                        std::cout<<"Enemy nodo:"<<enemy_nod.num<<std::endl;
-                        std::cout<<"Enemy pos X: "<<p.x<<" , Z"<<p.z<<std::endl;
+                        //std::cout<<"Player nodo:"<<player_nod.num<<std::endl;
+                        //std::cout<<"Enemy nodo:"<<enemy_nod.num<<std::endl;
+                        //std::cout<<"Enemy pos X: "<<p.x<<" , Z"<<p.z<<std::endl;
 
                         std::vector<nodomap> camino=aEstrella(map_cmp.nodos, enemy_nod, player_nod);
                         ai.ruta.clear();
@@ -543,7 +543,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodos.push_back(nodo34);
     nodos.push_back(nodo35);
 
-    std::cout<<"Nodoacual: "<<nodos.at(0).nodos_adya.at(0).num<<" tamaño:"<<nodos.at(0).nodos_adya.at(0).nodos_adya.size()<<std::endl;
+    //std::cout<<"Nodoacual: "<<nodos.at(0).nodos_adya.at(0).num<<" tamaño:"<<nodos.at(0).nodos_adya.at(0).nodos_adya.size()<<std::endl;
 
     return nodos;
 }
@@ -566,7 +566,7 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
 
     while (!frontera.empty()) {
         nodomap nodoActual = frontera.top();
-        std::cout<<"Nodoacual: "<<nodoActual.num<<" tamaño:"<<nodoActual.nodos_adya.size()<<std::endl;
+        //std::cout<<"Nodoacual: "<<nodoActual.num<<" tamaño:"<<nodoActual.nodos_adya.size()<<std::endl;
         frontera.pop();
         if (nodoActual.num == objetivo.num) {
             std::vector<nodomap> camino;
@@ -575,9 +575,9 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                 nodoActual = *nodoActual.padre;
             }
             //camino.push_back(inicio);
-            for(int i=0;i<camino.size();i++){
-                    std::cout<<i<<"Ruta: "<<camino.at(i).num<<std::endl;
-            }
+            //for(int i=0;i<camino.size();i++){
+            //        std::cout<<i<<"Ruta: "<<camino.at(i).num<<std::endl;
+            //}
             return camino;
         }
         visitados.push_back(nodoActual);
@@ -593,9 +593,9 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                     }
                     float costoActual = nodoActual.total + 1;
                     float costoEstimado = costoActual + calcularDist(nodos.at(i), objetivo);
-                    std::cout<<"Vecino: "<<nodos.at(i).num<<" tamaño: "<<nodos.at(i).nodos_adya.size()<<std::endl;
+                    //std::cout<<"Vecino: "<<nodos.at(i).num<<" tamaño: "<<nodos.at(i).nodos_adya.size()<<std::endl;
                     if(nodos.at(i).padre!=nullptr)
-                    std::cout<<"Padre vecino: "<<nodos.at(i).padre->num<<std::endl;
+                    //std::cout<<"Padre vecino: "<<nodos.at(i).padre->num<<std::endl;
                     if ((nodos.at(i).padre == nullptr || costoEstimado < nodos.at(i).total + nodos.at(i).estimado)) {
                             nodos.at(i).total = costoActual;
                             nodos.at(i).estimado = calcularDist(nodos.at(i), objetivo);
@@ -609,7 +609,7 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
             }
         }
     }
-    std::cout<<"No hay ruta"<<std::endl;
+    //std::cout<<"No hay ruta"<<std::endl;
     return std::vector<nodomap>();
 }
 

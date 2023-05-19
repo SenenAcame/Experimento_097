@@ -368,7 +368,7 @@ Enty& LevelMan::createSpawn2(Vec3 pos, GraphicEngine& GE, int room, double timer
 }
 
 Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
-    std::string file_model = "assets/models/personajes/monstruo1/bala_ene.obj";
+    std::string file_model = "assets/models/powerup/powerup.obj";
 
     Enty& power = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(power, PhysicsCmp2 { .x = phy.x, .y = 2., .z = phy.z   });
