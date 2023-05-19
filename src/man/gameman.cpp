@@ -35,50 +35,61 @@ void GameMan::game() {
     UISys.iniText();
     
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
+    size_t playing = 0; //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     size_t menu = 0; //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     
     auto window = GE.getWindow();
 
-    while(!glfwWindowShouldClose(window) && menu == 0) {
+    while(!glfwWindowShouldClose(window) && playing == 0) {
 
         switch (menu) {
 
             case 0:{
                 menu = bucleInicio(RenSys, GE, UISys);
+                break;
                 //std::cout<<"menu = " << menu<<"\n";
             }
 
             case 1:{
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 while(!glfwWindowShouldClose(window) && menu == 1){
-                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                    
+                    
                     UISys.inGame = 1;
                     menu = bucleJuego(LM, GE, RenSys, InpSys, SouSys, menu, player_ID, UISys) ;
                     UISys.inGame = 0;
                 }
+                break;
+            }
+
+            case 2:{
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                while(!glfwWindowShouldClose(window) && menu == 2){
+                    menu = bucleDead(GE, RenSys, UISys);
+                }
+                break;
             }
 
             case 4:{
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 while(!glfwWindowShouldClose(window) && menu == 4){
-                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                    
                     menu = bucleControles( GE, RenSys, UISys);
                 }
+                break;
             }
 
             case 5:{
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 while(!glfwWindowShouldClose(window) && menu == 5){
-                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                    menu = bucleSonido( GE, RenSys, UISys) ;
+                    
+                    menu = bucleSonido( GE, RenSys, UISys, SouSys) ;
                 }
+                break;
             }
 
-            
-
         }
-
-        while(!glfwWindowShouldClose(window) && menu == 2){
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            menu = bucleDead(GE, RenSys, UISys);
-        }
+        
         
     }
     RenSys.EndImgui(GE);
@@ -106,7 +117,8 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     PartSys       PartSys;
     AnimMan AM(GE.glEng);
 
-    bool dead { false }, pause { false };
+    
+    bool dead { false };
     size_t actualMenu {abandon};
     
     std::size_t map_ID = LM.createMap2(GE, SouSys);
@@ -120,23 +132,41 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
 
     constexpr double dt = 1.0 / 60;
 
-    while(abandon == 1 && !glfwWindowShouldClose(GE.getWindow()) ) {
+    while(abandon == 1 && !dead && !glfwWindowShouldClose(GE.getWindow()) ) {
+        
         
         switch (actualMenu) {
             
-            case 3: 
+            case 3:{
+               
+                glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 actualMenu = RenSys.updateMenuPausa( GE, UISys);
+                UISys.pause =false;
                 if(actualMenu == 0){
+                    
                     abandon = actualMenu;
                 }
-
-            case 4:
+                
+                
+                break;
+                
+            }
+            case 4:{
+                
+                glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 actualMenu = bucleControles( GE, RenSys, UISys);
-
-            case 5:
-                actualMenu = bucleSonido(GE,RenSys, UISys);
-
-            default:
+                
+                break;
+            }
+            case 5:{
+                
+                glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                actualMenu = bucleSonido(GE,RenSys, UISys, SouSys);
+                
+                break;
+            }
+            default:{
+                glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 EM.update();
                 RenSys.update2(EM, GE, player_ID, UISys, dt);
                 MapSys.update2(EM, player_ID, map_ID);
@@ -148,13 +178,24 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 PhySys.update_after_colision(EM, dt);
                 SouSys.update (EM);
                 DstSys.update (EM, dt);
+                if(UISys.pause == true){
+                    actualMenu = 3;
+                }
+                break;
+            }
         
         }
         //ge.glEng.drawFocos();
     }
-    LM.resetLevel();
     
-    abandon = 0;
+    LM.resetLevel(player_ID, GE, SouSys);
+    
+    if(dead)abandon=2;
+    else{
+        abandon = 0;
+    }
+
+    
 
     return abandon;
 }
@@ -164,7 +205,7 @@ size_t GameMan::bucleDead(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
         
     while(abandon == 2 && !glfwWindowShouldClose(GE.getWindow())) {
         //menu = RenSys.updateMenuDead(GE, UISys, menu);
-        abandon = RenSys.updateMenuPausa(GE, UISys);
+        abandon = RenSys.updateMenuDead(GE, UISys);
     }
 
     return abandon;
@@ -181,12 +222,12 @@ size_t GameMan::bucleControles(GraphicEngine &GE ,RenSys2 &RenSys, UIsys &UISys)
     return abandon;
 }
 
-size_t GameMan::bucleSonido(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
+size_t GameMan::bucleSonido(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys, SoundSystem_t& Sou){
     size_t abandon { 5 };
         
     while(abandon == 5 && !glfwWindowShouldClose(GE.getWindow())) {
         //menu = RenSys.updateMenuDead(GE, UISys, menu);
-        abandon = RenSys.updateMenuSonido(GE, UISys);
+        abandon = RenSys.updateMenuSonido(GE, UISys, Sou);
     }
 
     return abandon;

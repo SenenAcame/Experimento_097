@@ -1,6 +1,7 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../eng/engine2.hpp"
+#include "soundsystem.hpp"
 #include <cstddef>
 #include <iterator>
 //IMGUI
@@ -29,6 +30,13 @@ struct UIsys {
     RTexture controles;
     RTexture pausa;
     //RTexture sonido;
+
+    //Icons
+    RTexture iconoEscopeta;
+    RTexture iconoPistola;
+    RTexture iconoSubfusil;
+    RTexture iconoRonda;
+    RTexture iconoBajas;
     
     int activateHit {0};
     bool hit1{false}, hit2{false}, hit3{false};
@@ -41,6 +49,13 @@ struct UIsys {
     //weapons
     int equipada{0};
 
+    //Sound
+    float SoundMaster = 1;
+    float SoundAmbient = 1;
+    float SoundMusic = 1;
+    float SoundSFX = 1;
+    float SoundVoices = 1;
+
     //UI game
     void renderInterface(EntyMan& EM, GraphicEngine& GE, std::size_t player_ID, double dt);
     void hitInterface(GraphicEngine& GE);
@@ -51,8 +66,11 @@ struct UIsys {
     size_t menuMuerto (GraphicEngine& GE, size_t next);
     size_t menuControles (GraphicEngine& GE, size_t next);
     size_t menuPausa (GraphicEngine& GE, size_t next);
-    size_t menuSonido (GraphicEngine& GE, size_t next);
+    size_t menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou);
     bool inGame{false};
+    bool pause{false};
+
+
 
     void iniText();
 
