@@ -22,7 +22,8 @@ void UIsys::iniText(){
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("This is some useful text");
     auto* m_window = GE.getWindow();
-    auto& player = EM.getEntityById(EM.getBoard().entyID);
+    auto board = EM.getBoard();
+    auto& player = EM.getEntityById(board.entyID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
     auto width     = GE.glEng.getWidth();
@@ -31,8 +32,8 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     int magazine = 0;
     int ammo     = 0;
     double hp    = stats.hitpoints/100;
-    int wave     = 0;
-    int kills    = 0;
+    int wave     = board.progres.actualWave;
+    int kills    = board.wave.kills;
     unsigned int iconWeaponID = 0;
     
     switch (invent.equipada) {
