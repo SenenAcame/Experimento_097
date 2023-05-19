@@ -371,8 +371,8 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SliderFloat("Master:", SoundMaster, 0.0f, 1.0f); 
-    ImGui::SliderFloat("Ambiente:", SoundAmbient, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    ImGui::SliderFloat("Master:", &SoundMaster, 0.0f, 1.0f); 
+    ImGui::SliderFloat("Ambiente:", &SoundAmbient, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
@@ -389,8 +389,8 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     ImGui::PopStyleColor();
     ImGui::End();
 
-    Sou.changeMasterVCA(SoundMaster);
-    Sou.changeVCA(0,SoundAmbient);
+    //Sou.changeMasterVCA(SoundMaster);
+    //Sou.changeVCA(0,SoundAmbient);
     
 
     return next;
