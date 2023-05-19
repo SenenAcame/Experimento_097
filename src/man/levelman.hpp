@@ -86,7 +86,7 @@ struct LevelMan {
     //void resetLevel(TheEngine& dev);
     
     void resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys);
-    void resetBlackboard();
+    void resetBlackboard(size_t player_ID);
     EntyMan& getEM() { return EM; }
 
 private:

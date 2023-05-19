@@ -88,9 +88,10 @@ size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys, SoundSystem_t&
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
     auto& player = EM.getEntityById(EM.getBoard().entyID);
-    auto& phy    = EM.getComponent<PhysicsCmp2>(player);
+    
     auto& ren    = EM.getComponent<RenderCmp2>(player);
     auto& sala   = EM.getComponent<SalaCmp>(player);
+    auto& phy    = EM.getComponent<PhysicsCmp2>(player);
 
     //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
     //std::cout<<"Sala jugador: "<<sala.sala<<"\n";

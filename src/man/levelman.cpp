@@ -383,18 +383,18 @@ Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
 void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys) {
 
     auto& player = EM.getEntityById(player_ID);
+
     EM.forall(
         [](Enty& ent) {
-            bool is_player = 
-                ent.hasTAG<TPlayer>();
+            bool is_player = ent.hasTAG<TPlayer>();
 
             if(!is_player) ent.setDestroy();  
         }
-        
     );
     
     EM.removeComponents<PhysicsCmp2, InputCmp2, EstadoCmp, EstadisticaCmp,
     InventarioCmp, SalaCmp, SoundCmp>(player);
+
     EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2 { .x = -35, .y = 3.5, .z = -5 });
     EM.addComponent<InputCmp2>     (player, InputCmp2 {});
     EM.addComponent<EstadoCmp>     (player, 1.f, 3.f, 1.f);
@@ -402,21 +402,19 @@ void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_
     EM.addComponent<InventarioCmp> (player);
     EM.addComponent<SalaCmp>       (player);
     EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    
     GE.playerModel->remove();
-    GE.createPlayerModel           ("assets/models/armas/pistola.obj");
+    GE.createPlayerModel("assets/models/armas/pistola.obj");
 
+    resetBlackboard(player_ID);
 
-    resetBlackboard();
 
     EM.callDestroy();
-
-    
 }
 
-void LevelMan::resetBlackboard(){
-
+void LevelMan::resetBlackboard(size_t player_ID) {
     auto& board = EM.getBoard();
-    board = {};
+    board = { .entyID = player_ID };
 }
 
 TwoAngles LevelMan::disperShotgun(uint8_t disp) {

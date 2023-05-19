@@ -189,7 +189,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
         //ge.glEng.drawFocos();
     }
     
-    LM.resetLevel(player_ID, GE, SouSys);
+    LM.resetLevel(EM.getBoard().entyID, GE, SouSys);
     
     if(dead)abandon=2;
     else{
