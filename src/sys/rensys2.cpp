@@ -2,6 +2,7 @@
 //#include "../eng/engine.hpp"
 #include "../eng/engine2.hpp"
 #include "UIsys.hpp"
+#include "soundsystem.hpp"
 #include <cstddef>
 #include <iostream>
 #include <iterator>
@@ -54,13 +55,18 @@ size_t RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys) {
    return abandon;
 }
 
-size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys) {
-   size_t abandon = 3;
-   ImGUI_Prerender();
-   abandon = UISys.menuPausa(GE, abandon);
-   ImGUI_Postrender(GE);
-   return abandon;
-}
+ size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys){
+    size_t abandon = 3;
+    ImGUI_Prerender();
+    
+    
+    abandon = UISys.menuPausa(GE, abandon);
+    
+    
+    ImGUI_Postrender(GE);
+
+    return abandon;
+ }
 
 size_t RenSys2::updateMenuControles(GraphicEngine& GE, UIsys& UISys) {
    size_t abandon = 4;
@@ -70,10 +76,12 @@ size_t RenSys2::updateMenuControles(GraphicEngine& GE, UIsys& UISys) {
    return abandon;
 }
 
-size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys) {
+size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys, SoundSystem_t& Sou) {
     size_t abandon = 5;
     ImGUI_Prerender();
-    abandon = UISys.menuSonido(GE, abandon);
+
+    abandon = UISys.menuSonido(GE, abandon, Sou);
+
     ImGUI_Postrender(GE);
     return abandon;
 }
@@ -176,7 +184,7 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chiller.ttf", 80.0f);
     ImGuiStyle& style = ImGui::GetStyle();
     //Color negro
-    style.Colors[ImGuiCol_Text] = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
+    style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
 }
 
 void RenSys2::ImGUI_Prerender() const noexcept {

@@ -1,5 +1,6 @@
 #pragma once
 #include "UIsys.hpp"
+#include "soundsystem.hpp"
 #include <cstddef>
 
 void UIsys::iniText(){
@@ -9,6 +10,13 @@ void UIsys::iniText(){
     muerte.setImage("assets/Interface/1280x720/pantalla_muerto.png");
     controles.setImage("assets/Interface/1280x720/pantalla_controles.png");
     pausa.setImage("assets/Interface/1280x720/pantalla_pausa.png");
+    
+    //ICONS
+    iconoEscopeta.setImage("assets/Interface/1280x720/arma escopeta.png");
+    iconoPistola.setImage("assets/Interface/1280x720/arma pistola.png");
+    iconoSubfusil.setImage("assets/Interface/1280x720/arma fusil.png");
+    iconoRonda.setImage("assets/Interface/1280x720/rondas.png");
+    iconoBajas.setImage("assets/Interface/1280x720/bajas.png");
 }
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
@@ -25,25 +33,29 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     double hp    = stats.hitpoints/100;
     int wave     = 0;
     int kills    = 0;
+    unsigned int iconWeaponID = 0;
     
     switch (invent.equipada) {
         case 0:
             magazine = invent.gun.magazine;
             ammo = invent.gun.ammo;
+            iconWeaponID = iconoPistola.ID_;
             break;
         case 1: 
             magazine = invent.shot.magazine;
             ammo = invent.shot.ammo;
+            iconWeaponID = iconoEscopeta.ID_;
             break;
         case 2: 
             magazine = invent.rifle.magazine;
             ammo = invent.rifle.ammo;
+            iconWeaponID = iconoSubfusil.ID_;
             break;
     }
 
     renderInterfaceHits(GE, dt);
 
-    ImGui::SetNextWindowPos(ImVec2(10,610));
+    ImGui::SetNextWindowPos(ImVec2(width/9.4,height/1.2));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIHP", NULL,
@@ -53,13 +65,26 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     );
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, IM_COL32(255,0,0,255));
     //ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0,0,0,0));
-    ImGui::ProgressBar(hp,ImVec2(300,40), "");
+    ImGui::ProgressBar(hp,ImVec2(250,40), "");
 
     //ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(10,545));
+
+    ImGui::SetNextWindowPos(ImVec2(width/2.38,0));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIiconWave", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconoRonda.ID_, ImVec2(200,100));
+    ImGui::End();
+    
+
+    ImGui::SetNextWindowPos(ImVec2(width/2,10));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIWave", NULL,
@@ -67,11 +92,21 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    
-    ImGui::Text("Wave: %d", wave);
+    ImGui::Text("%d", wave);
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(10,490));
+    ImGui::SetNextWindowPos(ImVec2(0,height/1.5));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIiconKills", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconoBajas.ID_, ImVec2(200,100));
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(width/10,height/1.5));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIKills", NULL,
@@ -80,12 +115,23 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
     //ImGui::Text("Wave: %d", wave);
-    ImGui::Text("Kills: %d", kills);
+    ImGui::Text("%d", kills);
     //ImGui::Text("HP: %d", hp);
     //ImGui::Text("%d/%d", magazine, ammo );
     
+    ImGui::SetNextWindowPos(ImVec2(width/1.4,height/1.4));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIiconWeapon", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconWeaponID, ImVec2(240,130));
     ImGui::End();
-    ImGui::SetNextWindowPos(ImVec2(870,550));
+
+    ImGui::End();
+    ImGui::SetNextWindowPos(ImVec2(width/1.2,height/1.3));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIInventary", NULL,
@@ -194,7 +240,6 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
 
 size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
 
-    
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
@@ -209,31 +254,46 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/6.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
-    //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
+        
         next = 1;
     }
     ImGui::PopStyleColor();
 
-    ImGui::SetCursorPos(ImVec2(height/2,width/4));
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/4.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
-    //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(0,0,0,0)));
+    if(ImGui::Button("Sonido", ImVec2(200,100))){
+        
+        next = 5;
+    }
+    ImGui::PopStyleColor();
+
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
+        
         next = 4;
     }
     ImGui::PopStyleColor();
-    //ImGui::PopStyleColor();
-    //ImGui::Text("Hola");
-    //ImGui::Image((void*)(intptr_t)inicio.ID_, ImVec2(width, height));
+
+    ImGui::SetCursorPos(ImVec2(height/1.7,width/2.4));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    if(ImGui::Button("Salir", ImVec2(200,100))){
+        
+        next = 0;
+    }
+    ImGui::PopStyleColor();
  
     ImGui::End();
+   
     //ImGui::PopStyleVar();
     return next;
 }
 
 size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
+    
     
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
@@ -281,6 +341,7 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
+            
             next = 1;
         }
         else{
@@ -294,13 +355,13 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
     return next;
 }
 
-size_t UIsys::menuSonido (GraphicEngine& GE, size_t next){
+size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
 
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
-
-    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)controles.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
     
     //ImGui::PushStyleVar(ImGuiCol_WindowBg);
     ImGui::SetNextWindowPos(ImVec2(0,0));
@@ -310,10 +371,14 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
+    ImGui::SliderFloat("Master:", &SoundMaster, 0.0f, 1.0f); 
+    ImGui::SliderFloat("Ambiente:", &SoundAmbient, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
+            
             next = 1;
         }
         else{
@@ -324,11 +389,16 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next){
     ImGui::PopStyleColor();
     ImGui::End();
 
+    //Sou.changeMasterVCA(SoundMaster);
+    //Sou.changeVCA(0,SoundAmbient);
+    
+
     return next;
 }
 
 size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
     
+   
     //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
@@ -363,7 +433,7 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
     ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
-        
+        std::cout<<"AQUI NO F\n";
         next = 4;
     }
     ImGui::PopStyleColor();
@@ -378,6 +448,6 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
  
  
     ImGui::End();
-
+    
     return next;
 }

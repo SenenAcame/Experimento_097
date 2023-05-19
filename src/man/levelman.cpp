@@ -380,21 +380,43 @@ Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
     return power;
 }
 
-void LevelMan::resetLevel() {
+void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys) {
+
+    auto& player = EM.getEntityById(player_ID);
     EM.forall(
         [](Enty& ent) {
-            bool is_enemy_bullet_or_player = 
-                ent.hasTAG<TEnemy>()  ||
-                ent.hasTAG<TBullet>() ||
-                ent.hasTAG<TWeapon>() ||
-                ent.hasTAG<TSpawn>();
+            bool is_player = 
+                ent.hasTAG<TPlayer>();
 
-            if(is_enemy_bullet_or_player) ent.setDestroy();
-           
+            if(!is_player) ent.setDestroy();  
         }
+        
     );
+    
+    EM.removeComponents<PhysicsCmp2, InputCmp2, EstadoCmp, EstadisticaCmp,
+    InventarioCmp, SalaCmp, SoundCmp>(player);
+    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2 { .x = -35, .y = 3.5, .z = -5 });
+    EM.addComponent<InputCmp2>     (player, InputCmp2 {});
+    EM.addComponent<EstadoCmp>     (player, 1.f, 3.f, 1.f);
+    EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
+    EM.addComponent<InventarioCmp> (player);
+    EM.addComponent<SalaCmp>       (player);
+    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    GE.playerModel->remove();
+    GE.createPlayerModel           ("assets/models/armas/pistola.obj");
+
+
+    resetBlackboard();
 
     EM.callDestroy();
+
+    
+}
+
+void LevelMan::resetBlackboard(){
+
+    auto& board = EM.getBoard();
+    board = {};
 }
 
 TwoAngles LevelMan::disperShotgun(uint8_t disp) {

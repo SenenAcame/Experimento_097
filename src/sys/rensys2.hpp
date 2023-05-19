@@ -19,7 +19,7 @@ struct RenSys2 {
     size_t updateMenuDead(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuPausa(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuControles(GraphicEngine& GE, UIsys& UISys);
-    size_t updateMenuSonido(GraphicEngine& GE, UIsys& UISys);
+    size_t updateMenuSonido(GraphicEngine& GE, UIsys& UISys, SoundSystem_t& Sou);
 
     void static updateCamera(EntyMan& EM, GraphicEngine& GE);
     

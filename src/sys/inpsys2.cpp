@@ -32,7 +32,9 @@
             if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon2(LM, GE, equip, rend, 0); }
             if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon2(LM, GE, equip, rend, 1); }
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon2(LM, GE, equip, rend, 2); }
-            if(keyboard.isKeyPressed(XK_Escape))            { stats.hitpoints = 0; }
+            if(keyboard.isKeyPressed(XK_Escape))            { UI.pause = true;
+                //stats.hitpoints = 0; 
+            }
             
             bb.tx      = phy.x; 
             bb.tz      = phy.z; 
