@@ -21,14 +21,15 @@
 #include "../sys/partsys.hpp"
 
 void GameMan::game() {
-    LevelMan      LM;
+
     RenSys2       RenSys;
     InpSys2       InpSys;
     SoundSystem_t SouSys;
+    LevelMan      LM;
     UIsys         UISys;
     GraphicEngine GE;
     
-    GE.glEng.setResolution(1280, 700);
+    GE.glEng.setResolution(1080, 700);
     
     RenSys.initIMGUI(GE);
     init_config(GE);

@@ -9,6 +9,7 @@ struct SoundSystem_t;
 struct GraphicEngine;
 struct PartSys;
 
+
 struct TwoAngles {
     double alfa { 0 }, beta { 0 };
 };
