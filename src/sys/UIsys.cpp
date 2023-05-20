@@ -341,7 +341,7 @@ size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
         next = 1;
     }
     ImGui::SetCursorPos(ImVec2(width/10*7,height/10*6));
-    if(ImGui::Button("Menu", ImVec2(200,100))){
+    if(ImGui::Button("Inicio", ImVec2(200,100))){
         next = 0;
     }
     ImGui::PopStyleColor();
@@ -371,10 +371,11 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
-            
+
             next = 3;
         }
         else{
+
             next = 0;
         }
         

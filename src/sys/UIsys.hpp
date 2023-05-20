@@ -22,6 +22,8 @@ struct UIsys {
     
     using SYSCMPs      = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs      = MP::Typelist<>;
+    using SoundCMPs    = MP::Typelist<SoundCmp>;
+    using MAPTAGs      = MP::Typelist<TMap>;
 
     //hits
     RTexture zarpazo;
@@ -68,7 +70,7 @@ struct UIsys {
     size_t menuIni(GraphicEngine& GE, size_t next);
     size_t menuMuerto (GraphicEngine& GE, size_t next);
     size_t menuControles (GraphicEngine& GE, size_t next);
-    size_t menuPausa (GraphicEngine& GE, size_t next);
+    size_t menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSystem_t& Sou);
     size_t menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou);
     bool inGame{false};
     bool pause{false};

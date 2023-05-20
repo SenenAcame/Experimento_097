@@ -102,6 +102,7 @@ size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
     while(abandon == 0 && !glfwWindowShouldClose(GE.getWindow())) {
         abandon = RenSys.updateMenuInicio(GE, UISys);
     }
+    
     return abandon;
 }
 
