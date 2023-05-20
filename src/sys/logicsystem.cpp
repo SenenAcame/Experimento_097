@@ -18,6 +18,7 @@
             if(entity.hasTAG<TPlayer>()){
                 if(EM.getComponent<EstadisticaCmp>(entity).hitpoints <= 0) {
                     dead = true;
+                    EM.changeSound(EM.getComponent<SoundCmp>(entity), 2);
                 }
             }
             if(entity.hasTAG<TEnemy>()) {

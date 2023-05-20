@@ -18,3 +18,4 @@ struct TSmallEnemy { static constexpr uint8_t id {13}; };
 struct TSpwEnemy   { static constexpr uint8_t id {14}; };
 struct TSpwWeapon  { static constexpr uint8_t id {15}; };
 struct TPowerUp    { static constexpr uint8_t id {16}; };
+struct TRonda      { static constexpr uint8_t id {17}; };
