@@ -63,16 +63,16 @@
 /*NUEVO*/ Enty& LevelMan::createEnemy(GraphicEngine &GE, Vec3 pos, SoundSystem_t &SouSys, Type_Enemy type, ExtraStats plus) {
     switch (type) {
         case Type_Enemy::Normal:
-            createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
-            //createNormalEnemyAnim(GE, Vec3{ pos.x, 1, pos.z }, SouSys, plus);
+            //createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
+            createNormalEnemyAnim(GE, Vec3{ pos.x, 1, pos.z }, SouSys, plus);
             break;
         case Type_Enemy::Tank:
-            createTankEnemy(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
-            //createTankEnemyAnim(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
+            //createTankEnemy(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
+            createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys, plus);
             break;
         case Type_Enemy::Distance:
-            createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys);
-            //createDistanceEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
+            //createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys);
+            createDistanceEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
             break;
     }
 }
@@ -173,10 +173,13 @@
 }
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
+    int frames = 162;
+    int init_frame = rand() % frames;
+
     std::string file_model        = "assets/models/personajes/monstruo2/enemigo2.obj";
     std::vector<std::string> anim = { "monstruo2/caminar_2/monstruo2_caminar_" };
-    std::vector<int> framesAnim   = { 162 };
-    Vec3 base_stats = { 20, 20, 4 };
+    std::vector<int> framesAnim   = { frames };
+    Vec3 base_stats = { 20, 20, 5 };
 
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -208,10 +211,10 @@
 }
 
 /*NUEVO*/ Enty& LevelMan::createTankEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
-    std::string file_model        = "assets/models/personajes/monstruo3/monstruo3.obj";
+    std::string file_model        = "assets/models/personajes/monstruo3/enemigo_3.obj";
     std::vector<std::string> anim = { "monstruo3/caminar/monstruo3_caminar_"};
     std::vector<int> framesAnim   = { 165};
-    Vec3 base_stats = { 20, 20, 4 };
+    Vec3 base_stats = { 50, 30, 4 };
 
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -246,7 +249,7 @@
     std::string file_model        = "assets/models/personajes/monstruo1/enemigo1.obj";
     std::vector<std::string> anim = { "monstruo1/caminar/monstruo1_caminar_" };
     std::vector<int> framesAnim   = { 108};
-    Vec3 base_stats = { 20, 20, 4 };
+    Vec3 base_stats = { 20, 20, 5 };
 
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -262,7 +265,7 @@
     );
     EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z, .kMxVLin = stats.speed});
 
-    auto& rend = EM.addComponent<RenderCmp2>(enemy, RenderCmp2 { .node = GE.createNodeAnim(file_model, anim, framesAnim, Vec3{2}) });
+    auto& rend = EM.addComponent<RenderCmp2>(enemy, RenderCmp2 { .node = GE.createNodeAnim(file_model, anim, framesAnim) });
     rend.node->getEntity<EModel>()->currentAnim = 0;
 
     EM.addComponent<EstadoCmp>(enemy, 1.f, 2.5f, 1.f);
