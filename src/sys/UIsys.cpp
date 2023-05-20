@@ -438,8 +438,13 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     return next;
 }
 
-size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
-    
+size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSystem_t& SouSys){
+    EM.foreach<SoundCMPs, MAPTAGs>(
+        [&](Enty& entity, SoundCmp& sound) {
+            sound.play=true;
+            sound.loop=true;
+        }
+    );
    
     //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     auto* m_window = GE.getWindow();

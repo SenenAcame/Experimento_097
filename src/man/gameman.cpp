@@ -140,7 +140,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
             case 3:{
                
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                actualMenu = RenSys.updateMenuPausa( GE, UISys);
+                actualMenu = RenSys.updateMenuPausa( GE, UISys, EM, SouSys);
                 UISys.pause =false;
                 if(actualMenu == 0){
                     

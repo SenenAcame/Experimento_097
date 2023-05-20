@@ -11,13 +11,14 @@ struct RenSys2 {
     using SYSCMPs = MP::Typelist<PhysicsCmp2, RenderCmp2>;
     using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
+    using SoundCMPs = MP::Typelist<SoundCmp>;
 
     static constexpr double PI { std::numbers::pi };
 
     /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, UIsys& UIsys, double dt);
     size_t updateMenuInicio(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuDead(GraphicEngine& GE, UIsys& UISys);
-    size_t updateMenuPausa(GraphicEngine& GE, UIsys& UISys);
+    size_t updateMenuPausa(GraphicEngine& GE, UIsys& UISys, EntyMan& EM, SoundSystem_t& SouSys);
     size_t updateMenuControles(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuSonido(GraphicEngine& GE, UIsys& UISys, SoundSystem_t& Sou);
 
