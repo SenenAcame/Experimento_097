@@ -56,35 +56,6 @@ struct LevelMan {
 
     Enty& createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy);
 
-    //Enty& init_level(TheEngine& dev, SoundSystem_t& SouSys);
-    //void initInterface (TheEngine& dev, Enty& player);
-    ////void createInterface (TheEngine& dev, Enty& player);
-    //void createEmptyInterface (TheEngine& dev);
-    //void updateInterfaceMag(TheEngine& dev, int maga);
-    //void updateInterfacePoints(TheEngine& dev);
-    //void updateInterfaceWave(TheEngine& dev);
-    //void updateInterfaceWhenReload(TheEngine& dev, int maga, int amm);
-    //void updateInterfaceHP(TheEngine& dev, Enty&player);
-    //void updateInterfaceHit(TheEngine& dev, Enty& player);
-    //void cleanHitsInterface(TheEngine& dev ,double dt);
-    ///*VIEJO*/ void createMap(TheEngine& dev, SoundSystem_t& SouSys);
-    ///*VIEJO*/ Enty& createPlayer(TheEngine& dev, SoundSystem_t& SouSys);
-    ///*VIEJO*/ Enty& createBasicEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, int extraHeal, int waveNumber);
-    ///*VIEJO*/ void createBullet(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-    //    int const dmg, float const spd, float const rad, double const slfD,
-    //    double const pbx = 0, double const pby = 0);
-    ///*VIEJO*/ void createShotgunBullets(PhysicsCmp2& phy_player, TheEngine& eng, SoundSystem_t& SS, 
-    //    int const dmg, float const spd, float const rad, double const slfD, uint8_t dispersion);
-    ///*VIEJO*/ Enty& createWeapon (float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
-    //Enty& createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
-    ///*VIEJO*/ Enty& createDistEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
-    //Enty& createTankEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys);
-    //Enty& createWeapon(float x_pos, float y_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys, size_t tipo);
-    //Enty& createDoor(float x_pos, float z_pos, TheEngine& dev);
-    //Enty& createKey(float x_pos, float z_pos, TheEngine& dev);
-    ///*VIEJO*/ Enty& createSpawn(float x_pos, float z_pos, TheEngine& dev, int sala2);
-    //void resetLevel(TheEngine& dev);
-    
     void resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys);
     void resetBlackboard(size_t player_ID);
     EntyMan& getEM() { return EM; }
@@ -92,6 +63,7 @@ struct LevelMan {
 private:
     TwoAngles disperShotgun(uint8_t disp);
     TwoAngles normalize(TwoAngles angs);
+    void      componentsPlayer(Enty& player, SoundSystem_t& SouSys);
     void      defineAI(Enty& enemy, SB patron, double cd);
     double    randAng(uint8_t ang);
 

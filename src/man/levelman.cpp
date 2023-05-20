@@ -46,15 +46,9 @@
     std::string file_model = "assets/models/armas/pistola.obj";
 
     Enty& player = EM.createEntity();
+    EM.addComponent<RenderCmp2>(player, RenderCmp2 { .node = GE.createPlayer() });
     //CMPS
-    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
-    EM.addComponent<RenderCmp2>    (player, RenderCmp2 { .node = GE.createPlayer() });
-    EM.addComponent<InputCmp2>     (player, InputCmp2 {});
-    EM.addComponent<EstadoCmp>     (player, 1.f, 3.f, 1.f);
-    EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
-    EM.addComponent<InventarioCmp> (player);
-    EM.addComponent<SalaCmp>       (player);
-    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(9));
+    componentsPlayer(player, SouSys);
     //TAGS
     EM.addTag<TPlayer>  (player);
     EM.addTag<TInteract>(player);
@@ -69,7 +63,6 @@
 /*NUEVO*/ Enty& LevelMan::createEnemy(GraphicEngine &GE, Vec3 pos, SoundSystem_t &SouSys, Type_Enemy type, ExtraStats plus) {
     switch (type) {
         case Type_Enemy::Normal:
-            //createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
             createNormalEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
             break;
         case Type_Enemy::Tank:
@@ -368,13 +361,29 @@ Enty& LevelMan::createSpawn2(Vec3 pos, GraphicEngine& GE, int room, double timer
 }
 
 Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
-    std::string file_model = "assets/models/powerup/powerup.obj";
+    std::string file_model {};
+    PU_Type type {};
+    int num = rand() % 100 + 1;
+    
+    if(num < 60) {
+        file_model = "assets/models/powerup/powerup.obj";
+        type = PU_Type::Damage;
+    }
+    else if(num < 90) {
+        file_model = "assets/models/powerup/powerup_vida.obj";
+        type = PU_Type::Health;
+    }
+    else {
+        file_model = "assets/models/powerup/powerup.obj";
+        type = PU_Type::Speed;
+    }
 
     Enty& power = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(power, PhysicsCmp2 { .x = phy.x, .y = 2., .z = phy.z   });
     EM.addComponent<RenderCmp2> (power, RenderCmp2  { .node = GE.createNode(file_model) });
+    EM.addComponent<PowerUp>    (power, type);
     EM.addComponent<EstadoCmp>  (power);
-    EM.addComponent<SelfDestCmp>(power, 5.);
+    EM.addComponent<SelfDestCmp>(power, 7.);
     EM.addTag      <TInteract>  (power);
     EM.addTag      <TPowerUp>   (power);
     return power;
@@ -394,20 +403,12 @@ void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_
     
     EM.removeComponents<PhysicsCmp2, InputCmp2, EstadoCmp, EstadisticaCmp,
     InventarioCmp, SalaCmp, SoundCmp>(player);
-
-    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2 { .x = -35, .y = 3.5, .z = -5 });
-    EM.addComponent<InputCmp2>     (player, InputCmp2 {});
-    EM.addComponent<EstadoCmp>     (player, 1.f, 3.f, 1.f);
-    EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints=100, .damage=5, .speed=40.f });
-    EM.addComponent<InventarioCmp> (player);
-    EM.addComponent<SalaCmp>       (player);
-    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(8));
+    componentsPlayer(player, SouSys);
     
     GE.playerModel->remove();
     GE.createPlayerModel("assets/models/armas/pistola.obj");
 
     resetBlackboard(player_ID);
-
 
     EM.callDestroy();
 }
@@ -439,6 +440,16 @@ TwoAngles LevelMan::normalize(TwoAngles angs) {
     angs.alfa /= module;
     angs.beta /= module;
     return angs;
+}
+
+void LevelMan::componentsPlayer(Enty& player, SoundSystem_t& SouSys) {
+    EM.addComponent<PhysicsCmp2>   (player, PhysicsCmp2 { .x = -35, .y = 3.5, .z = -5 });
+    EM.addComponent<InputCmp2>     (player, InputCmp2 {});
+    EM.addComponent<EstadoCmp>     (player, .5f, 1.5f, .5f);
+    EM.addComponent<EstadisticaCmp>(player, EstadisticaCmp{ .hitpoints = 100, .damage = 5, .speed = 10.f });
+    EM.addComponent<InventarioCmp> (player);
+    EM.addComponent<SalaCmp>       (player);
+    EM.addComponent<SoundCmp>      (player, SouSys.createinstance(9));
 }
 
 void LevelMan::defineAI(Enty& enemy, SB patron, double cd) {

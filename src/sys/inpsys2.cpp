@@ -24,10 +24,10 @@
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
-            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  10; up   = true; }
-            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -10; down = true; }
-            if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -10, up, down); }
-            if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, 10, down, up); }
+            if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up   = true; }
+            if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down = true; }
+            if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, up, down); }
+            if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, down, up); }
             if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload2(LM, GE, equip); }
             if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon2(LM, GE, equip, rend, 0); }
             if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon2(LM, GE, equip, rend, 1); }

@@ -174,11 +174,11 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
     auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
     auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
 
-    std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
+    //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
 
     recept_stats.hitpoints -= agress_stats.damage;
 
-    std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
+    //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
 
     if(!agressor.hasTAG<TEnemy>()) markDestroy(agressor);
 
@@ -223,8 +223,20 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
 
 void LogicSystem::increaseStat(EntyMan& EM, Enty& player, Enty& power) {
     auto& stats = EM.getComponent<EstadisticaCmp>(player);
+    auto& power_type = EM.getComponent<PowerUp>(power);
 
-    stats.extra_dmg += .2;
+    switch(power_type.type) {
+        case PU_Type::Damage:
+            stats.extra_dmg += .2; 
+            break;
+        case PU_Type::Speed: 
+            stats.speed     +=  2;
+            break;
+        case PU_Type::Health: 
+            stats.hitpoints += 10;
+            if(stats.hitpoints > 100) stats.hitpoints = 100;
+            break;
+    }
 
     markDestroy(power);
 }
@@ -245,11 +257,11 @@ void LogicSystem::soundMonster(EntyMan& EM, Enty& e) {
 }
 
 void LogicSystem::partialVelocities(EntyMan& EM, Enty& player, double dt) {
-    auto copy_physics = EM.getComponent<PhysicsCmp2>(player);
-    auto& state     = EM.getComponent<EstadoCmp>(player);
-    auto& wall      = EM.getEntityById(state.entityCol);
-    auto& wall_state= EM.getComponent<EstadoCmp>(wall);
-    auto& wall_physc= EM.getComponent<PhysicsCmp2>(wall);
+    auto copy_physics  = EM.getComponent<PhysicsCmp2>(player);
+    auto& state      = EM.getComponent<EstadoCmp>(player);
+    auto& wall       = EM.getEntityById(state.entityCol);
+    auto& wall_state = EM.getComponent<EstadoCmp>(wall);
+    auto& wall_physc = EM.getComponent<PhysicsCmp2>(wall);
     float dx, dz;
 
     //precalculo de coordenadas
@@ -305,7 +317,7 @@ void LogicSystem::chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy) 
 
     if(num <= bb.spawn_perc) {
         LM.createPowerUp(GE, phy);
-        bb.spawn_perc = 1;
+        //bb.spawn_perc = 1;
     }
     else bb.spawn_perc++; 
 }

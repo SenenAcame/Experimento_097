@@ -14,3 +14,4 @@
 #include "../cmp/weaponcmp.hpp"
 #include "../cmp/salacmp.hpp"
 #include "../cmp/particlecmp.hpp"
+#include "../cmp/powerup.hpp"
