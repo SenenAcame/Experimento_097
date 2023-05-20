@@ -46,7 +46,7 @@ private:
 
     void recoil(EntyMan& EM, GraphicEngine& GE, ECamera* cam, double desv);
     void digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bool const down);
-    void soundWeapon(EntyMan& EM);
+    void soundWeapon(EntyMan& EM, int);
     static void onkeypressed(KeySym k)  { keyboard.keyPressed(k);  }
     static void onkeyreleased(KeySym k) { keyboard.keyReleased(k); }
 

@@ -248,7 +248,7 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
     EM.addComponent<RenderCmp2> (bullet, RenderCmp2 { .node = GE.createNode(file_model) });
     EM.addComponent<EstadoCmp>  (bullet);
     EM.addComponent<SelfDestCmp>(bullet, slfD);
-    EM.addComponent<SoundCmp>   (bullet, SoundCmp{ .programmerSoundContext=SouSys.createinstance(1), .parametro=2, .play=true, .cambia=true });
+    EM.addComponent<SoundCmp>   (bullet, SoundCmp{ .programmerSoundContext=SouSys.createinstance(1), .parametro=0, .play=true, .cambia=true });
     //TAGS
     EM.addTag<TBullet>  (bullet);
     EM.addTag<TInteract>(bullet);
@@ -382,6 +382,7 @@ Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
     EM.addComponent<PhysicsCmp2>(power, PhysicsCmp2 { .x = phy.x, .y = 2., .z = phy.z   });
     EM.addComponent<RenderCmp2> (power, RenderCmp2  { .node = GE.createNode(file_model) });
     EM.addComponent<PowerUp>    (power, type);
+    EM.addComponent<SoundCmp>   (power, SouSys.createinstance(2));
     EM.addComponent<EstadoCmp>  (power);
     EM.addComponent<SelfDestCmp>(power, 7.);
     EM.addTag      <TInteract>  (power);
