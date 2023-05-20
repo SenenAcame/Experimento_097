@@ -58,7 +58,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
 
     renderInterfaceHits(GE, dt);
 
-    ImGui::SetNextWindowPos(ImVec2(width/10*0.4,height/10*7.5));
+    ImGui::SetNextWindowPos(ImVec2(width/10*1-75,height/10*8.3-75));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIHPIcon", NULL,
@@ -88,7 +88,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::PopStyleColor();
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(width/10*3.6,height/10*3.6));
+    ImGui::SetNextWindowPos(ImVec2(width/2-150,height/2-100));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIMira", NULL,
@@ -429,7 +429,6 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
         SoundVoices = SoundMaster;
     }
     
-   
     Sou.changeVCA(0,SoundAmbient);
     Sou.changeVCA(1,SoundMusic);
     Sou.changeVCA(2,SoundSFX);

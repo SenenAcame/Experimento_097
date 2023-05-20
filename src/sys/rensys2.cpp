@@ -57,6 +57,7 @@ size_t RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys) {
 
  size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys){
     size_t abandon = 3;
+    
     ImGUI_Prerender();
     
     

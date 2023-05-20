@@ -28,7 +28,7 @@ void GameMan::game() {
     UIsys         UISys;
     GraphicEngine GE;
     
-    //GE.glEng.setResolution(1920, 1080);
+    GE.glEng.setResolution(1280, 700);
     
     RenSys.initIMGUI(GE);
     init_config(GE);
@@ -176,7 +176,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
-                //SouSys.update (EM);
+                SouSys.update (EM);
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
                 if(UISys.pause == true){
@@ -225,7 +225,7 @@ size_t GameMan::bucleControles(GraphicEngine &GE ,RenSys2 &RenSys, UIsys &UISys)
 
 size_t GameMan::bucleSonido(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys, SoundSystem_t& Sou){
     size_t abandon { 5 };
-        
+    
     while(abandon == 5 && !glfwWindowShouldClose(GE.getWindow())) {
         //menu = RenSys.updateMenuDead(GE, UISys, menu);
         abandon = RenSys.updateMenuSonido(GE, UISys, Sou);
