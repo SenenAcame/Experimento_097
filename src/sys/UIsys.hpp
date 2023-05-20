@@ -37,6 +37,8 @@ struct UIsys {
     RTexture iconoSubfusil;
     RTexture iconoRonda;
     RTexture iconoBajas;
+    RTexture iconoMira;
+    RTexture iconoVida;
     
     int activateHit {0};
     bool hit1{false}, hit2{false}, hit3{false};
@@ -55,6 +57,7 @@ struct UIsys {
     float SoundMusic = 1;
     float SoundSFX = 1;
     float SoundVoices = 1;
+    bool iChangeMaster = false;
 
     //UI game
     void renderInterface(EntyMan& EM, GraphicEngine& GE, double dt);

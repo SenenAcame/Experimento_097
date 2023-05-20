@@ -12,11 +12,13 @@ void UIsys::iniText(){
     pausa.setImage("assets/Interface/1280x720/pantalla_pausa.png");
     
     //ICONS
-    iconoEscopeta.setImage("assets/Interface/1280x720/arma escopeta.png");
-    iconoPistola.setImage("assets/Interface/1280x720/arma pistola.png");
-    iconoSubfusil.setImage("assets/Interface/1280x720/arma fusil.png");
-    iconoRonda.setImage("assets/Interface/1280x720/rondas.png");
-    iconoBajas.setImage("assets/Interface/1280x720/bajas.png");
+    iconoEscopeta.setImage("assets/Interface/UI/arma escopeta.png");
+    iconoPistola.setImage("assets/Interface/UI/arma pistola.png");
+    iconoSubfusil.setImage("assets/Interface/UI/arma fusil.png");
+    iconoRonda.setImage("assets/Interface/UI/rondas.png");
+    iconoBajas.setImage("assets/Interface/UI/bajas.png");
+    iconoMira.setImage("assets/Interface/1280x720/mira_borde.png");
+    iconoVida.setImage("assets/Interface/UI/vida.png");
 }
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
@@ -31,7 +33,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
    
     int magazine = 0;
     int ammo     = 0;
-    double hp    = stats.hitpoints/100;
+    double hp    = (double)stats.hitpoints/100;
     int wave     = board.progres.actualWave;
     int kills    = board.wave.kills;
     unsigned int iconWeaponID = 0;
@@ -56,7 +58,21 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
 
     renderInterfaceHits(GE, dt);
 
-    ImGui::SetNextWindowPos(ImVec2(width/9.4,height/1.2));
+    ImGui::SetNextWindowPos(ImVec2(width/10*0.4,height/10*7.5));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIHPIcon", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconoVida.ID_, ImVec2(150,150));
+
+    //ImGui::PopStyleColor();
+    ImGui::End();
+
+
+    ImGui::SetNextWindowPos(ImVec2(width/10*1.6,height/10*8.3));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIHP", NULL,
@@ -66,12 +82,22 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     );
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, IM_COL32(255,0,0,255));
     //ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0,0,0,0));
-    ImGui::ProgressBar(hp,ImVec2(250,40), "");
+    ImGui::ProgressBar(hp,ImVec2(250,40),"");
 
     //ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     ImGui::End();
 
+    ImGui::SetNextWindowPos(ImVec2(width/10*3.6,height/10*3.6));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIMira", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconoMira.ID_, ImVec2(300,200));
+    ImGui::End();
 
     ImGui::SetNextWindowPos(ImVec2(width/2.38,0));
     ImGui::SetNextWindowSize(ImVec2(width,height));
@@ -255,7 +281,7 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/6.4));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
         
@@ -263,7 +289,7 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
     }
     ImGui::PopStyleColor();
 
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/4.4));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*4.5));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Sonido", ImVec2(200,100))){
         
@@ -271,7 +297,7 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
     }
     ImGui::PopStyleColor();
 
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*6));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
         
@@ -279,10 +305,11 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
     }
     ImGui::PopStyleColor();
 
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/2.4));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*7.5));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Salir", ImVec2(200,100))){
         
+        glfwSetWindowShouldClose(GE.getWindow(), GL_TRUE);
         next = 0;
     }
     ImGui::PopStyleColor();
@@ -343,7 +370,7 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
             
-            next = 1;
+            next = 3;
         }
         else{
             next = 0;
@@ -361,6 +388,7 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
+    auto masterPrevi = SoundMaster;
     
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
     
@@ -372,15 +400,18 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SliderFloat("Master:", &SoundMaster, 0.0f, 1.0f); 
-    ImGui::SliderFloat("Ambiente:", &SoundAmbient, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    ImGui::SliderFloat("Master", &SoundMaster, 0.0f, 1.0f); 
+    ImGui::SliderFloat("Ambiente", &SoundAmbient, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    ImGui::SliderFloat("Musica", &SoundMusic, 0.0f, 1.0f);
+    ImGui::SliderFloat("SFX", &SoundSFX, 0.0f, 1.0f);
+    ImGui::SliderFloat("Voces", &SoundVoices, 0.0f, 1.0f);
 
     ImGui::SetCursorPos(ImVec2(height/2,width/3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
             
-            next = 1;
+            next = 3;
         }
         else{
             next = 0;
@@ -390,8 +421,19 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     ImGui::PopStyleColor();
     ImGui::End();
 
-    //Sou.changeMasterVCA(SoundMaster);
-    //Sou.changeVCA(0,SoundAmbient);
+    if(masterPrevi != SoundMaster){
+        Sou.changeMasterVCA(SoundMaster);
+        SoundAmbient = SoundMaster;
+        SoundMusic = SoundMaster;
+        SoundSFX = SoundMaster;
+        SoundVoices = SoundMaster;
+    }
+    
+   
+    Sou.changeVCA(0,SoundAmbient);
+    Sou.changeVCA(1,SoundMusic);
+    Sou.changeVCA(2,SoundSFX);
+    Sou.changeVCA(3,SoundVoices);
     
 
     return next;
@@ -434,7 +476,6 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
     ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
-        std::cout<<"AQUI NO F\n";
         next = 4;
     }
     ImGui::PopStyleColor();

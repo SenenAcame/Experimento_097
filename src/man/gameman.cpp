@@ -90,8 +90,7 @@ void GameMan::game() {
             }
 
         }
-        
-        
+           
     }
     RenSys.EndImgui(GE);
 }
@@ -107,6 +106,7 @@ size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
 
 
 size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, size_t abandon, UIsys &UISys){
+    
     EntyMan&      EM = LM.getEM();
     ColSys2       ColSys;
     PhySys2       PhySys; 
