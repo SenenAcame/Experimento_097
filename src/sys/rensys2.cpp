@@ -58,13 +58,8 @@ size_t RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys) {
  size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys){
     size_t abandon = 3;
     ImGUI_Prerender();
-    
-    
     abandon = UISys.menuPausa(GE, abandon);
-    
-    
     ImGUI_Postrender(GE);
-
     return abandon;
  }
 
@@ -79,9 +74,7 @@ size_t RenSys2::updateMenuControles(GraphicEngine& GE, UIsys& UISys) {
 size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys, SoundSystem_t& Sou) {
     size_t abandon = 5;
     ImGUI_Prerender();
-
     abandon = UISys.menuSonido(GE, abandon, Sou);
-
     ImGUI_Postrender(GE);
     return abandon;
 }

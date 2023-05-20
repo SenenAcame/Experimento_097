@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <iostream>
 
-//int aux = 0;
+int aux = 0;
 
 /*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead) {
     auto& EM = LM.getEM();
@@ -177,6 +177,7 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
     //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
 
     recept_stats.hitpoints -= agress_stats.damage;
+    //std::cout<<"Impacto "<<aux++<<"\n";
 
     //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
 

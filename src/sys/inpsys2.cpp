@@ -153,13 +153,13 @@
 
     switch (invent.equipada) {
         case 0:
-            bullets = changeWeaponProcess(GE, invent, "assets/models/armas/pistola.obj", invent.gun);
+            bullets = changeWeaponProcess(GE, invent, "assets/models/armas/pistola/pistola.obj", invent.gun);
             break;
         case 1:
-            bullets = changeWeaponProcess(GE, invent, "assets/models/armas/escopeta.obj", invent.shot);
+            bullets = changeWeaponProcess(GE, invent, "assets/models/armas/escopeta/escopeta.obj", invent.shot);
             break;
         case 2:
-            bullets = changeWeaponProcess(GE, invent, "assets/models/armas/subfusil.obj", invent.rifle);
+            bullets = changeWeaponProcess(GE, invent, "assets/models/armas/fusil/fusil.obj", invent.rifle);
             break;
     }
 }
@@ -255,7 +255,7 @@ PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot, int lock) {
     auto& EM = LM.getEM();
 
     lock_Left = lock;
-    recoil(EM, GE, cam, wpn.recoil);
+    //recoil(EM, GE, cam, wpn.recoil);
     wpn.magazine--;
 
     if(is_shot)

@@ -90,8 +90,6 @@ void GameMan::game() {
             }
 
         }
-        
-        
     }
     RenSys.EndImgui(GE);
 }
@@ -107,97 +105,85 @@ size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
 
 
 size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, InpSys2 &InpSys, SoundSystem_t& SouSys, size_t abandon, UIsys &UISys){
-    EntyMan&      EM = LM.getEM();
-    ColSys2       ColSys;
-    PhySys2       PhySys; 
-    AISys         AISys;
-    NodeMapSys    MapSys;
-    LogicSystem   LogSys;
-    SpawnSystem   SpwSys;
-    SelfDestSys   DstSys;
-    PartSys       PartSys;
-    AnimMan AM(GE.glEng);
+    EntyMan&    EM = LM.getEM();
+    ColSys2     ColSys;
+    PhySys2     PhySys; 
+    AISys       AISys;
+    NodeMapSys  MapSys;
+    LogicSystem LogSys;
+    SpawnSystem SpwSys;
+    SelfDestSys DstSys;
+    PartSys     PartSys;
+    AnimMan     AM(GE.glEng);
 
-    
     bool dead { false };
-    size_t actualMenu {abandon};
+    size_t actualMenu { abandon };
     
     std::size_t map_ID = LM.createMap2(GE, SouSys);
     init_map(LM, GE, SouSys);
 
-    //ge.glEng.useFirstUnusedPFoco(0.f, -20.f, 5.f, 10.f, "White_light", 1);
-    //for (int i =0; i<6; i++) {
-    //    ge.glEng.setActiveFoco(i, true);
-    //}
+    //LM.createWeapon2(GE, Vec3{ -40, 2.8, -5 }, W_Type::Pistol, SouSys);
+    //LM.createWeapon2(GE, Vec3{ -40, 2.8, -5 }, W_Type::Shotgun, SouSys);
+    //LM.createWeapon2(GE, Vec3{ -40, 2.8, -5 }, W_Type::Fusil, SouSys);
+
+    //LM.createNormalEnemy  (GE, Vec3{ -40, 2.8, -5 }, SouSys);
+    //LM.createTankEnemy    (GE, Vec3{ -40, 3.2, -5 }, SouSys);
+    //LM.createDistanceEnemy(GE, Vec3{ -40, 2.5, -5 }, SouSys);
+
+    //LM.createNormalEnemyAnim  (GE, Vec3{ -40,   1, -5 }, SouSys);
+    LM.createTankEnemyAnim    (GE, Vec3{ -40, 3.2, -5 }, SouSys);
+    //LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
 
     constexpr double dt = 1.0 / 60;
 
     while(abandon == 1 && !dead && !glfwWindowShouldClose(GE.getWindow()) ) {
-        
-        
         switch (actualMenu) {
-            
-            case 3:{
-               
+            case 3: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 actualMenu = RenSys.updateMenuPausa( GE, UISys);
                 UISys.pause =false;
-                if(actualMenu == 0){
-                    
+                if(actualMenu == 0) {
                     abandon = actualMenu;
                 }
-                
-                
                 break;
-                
             }
-            case 4:{
-                
+            case 4: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 actualMenu = bucleControles( GE, RenSys, UISys);
-                
                 break;
             }
-            case 5:{
-                
+            case 5: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 actualMenu = bucleSonido(GE,RenSys, UISys, SouSys);
-                
                 break;
             }
-            default:{
+            default: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 EM.update();
                 RenSys.update2(EM, GE, UISys, dt);
                 MapSys.update3(EM, map_ID, dt);
                 InpSys.update2(LM, GE, SouSys, dt, UISys);
-                AISys. update2(LM, GE, dt);
+                //AISys. update2(LM, GE, dt);
                 PhySys.update (EM, dt);
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
                 //SouSys.update (EM);
-                SpwSys.update (LM, GE, SouSys, dt);
+                //SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
-                if(UISys.pause == true){
+                if(UISys.pause == true) {
                     actualMenu = 3;
                 }
                 break;
             }
-        
         }
         //ge.glEng.drawFocos();
     }
     
     LM.resetLevel(EM.getBoard().entyID, GE, SouSys);
     
-    if(dead)abandon=2;
-    else{
-        abandon = 0;
-    }
-
-    
-
+    if(dead) abandon = 2;
+    else     abandon = 0;
     return abandon;
 }
 

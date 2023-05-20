@@ -12,7 +12,7 @@ TNodo* GraphicEngine::createNode(std::string file, Vec3 sca, Vec3 rot, Vec3 tras
 }
 
 TNodo* GraphicEngine::createNodeAnim(std::string file, std::vector<std::string> anim, std::vector<int> framesAnim, Vec3 sca, Vec3 rot, Vec3 tras) {
-    return glEng.createModel( NULL, tras, rot, Vec3{2}, file, false, false, true, anim, framesAnim);
+    return glEng.createModel( NULL, tras, rot, sca, file, false, false, true, anim, framesAnim);
 }
 
 TNodo* GraphicEngine::createPlayer(Vec3 sca, Vec3 rot, Vec3 tras) {

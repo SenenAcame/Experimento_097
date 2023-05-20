@@ -33,9 +33,11 @@ struct LevelMan {
 
     /*NUEVO*/ Enty&  createNormalEnemy  (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
     /*NUEVO*/ Enty&  createDistanceEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
-    /*NUEVO*/ Enty&  createTankEnemy2   (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
+    /*NUEVO*/ Enty&  createTankEnemy    (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
 
-    /*NUEVO*/ Enty&  createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
+    /*NUEVO*/ Enty&  createNormalEnemyAnim  (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
+    /*NUEVO*/ Enty&  createDistanceEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
+    /*NUEVO*/ Enty&  createTankEnemyAnim    (GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus = {1,1,1});
 
     /*NUEVO*/ void   createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
         Vec3 dir, SoundSystem_t& SouSys, double const slfD = 2., double const pbx = 0, double const pby = 0);
