@@ -214,7 +214,7 @@
     std::string file_model        = "assets/models/personajes/monstruo3/enemigo_3.obj";
     std::vector<std::string> anim = { "monstruo3/caminar/monstruo3_caminar_"};
     std::vector<int> framesAnim   = { 165};
-    Vec3 base_stats = { 50, 30, 4 };
+    Vec3 base_stats = { 115, 30, 3.5 };
 
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -249,7 +249,7 @@
     std::string file_model        = "assets/models/personajes/monstruo1/enemigo1.obj";
     std::vector<std::string> anim = { "monstruo1/caminar/monstruo1_caminar_" };
     std::vector<int> framesAnim   = { 108};
-    Vec3 base_stats = { 20, 20, 5 };
+    Vec3 base_stats = { 20, 24, 6 };
 
     Enty& enemy = EM.createEntity();
     //CMPS

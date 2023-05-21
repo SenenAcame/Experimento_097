@@ -216,9 +216,9 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
     InpSys2::changeWeaponMethod(GE, invent, new_wpn.typeWe, old_wpn);
 
     switch(new_wpn.typeWe) {
-        case 0: invent.gun.ammo   += invent.gun.maxAmmo/10;   break;
-        case 1: invent.shot.ammo  += invent.shot.maxAmmo/10;  break;
-        case 2: invent.rifle.ammo += invent.rifle.maxAmmo/10; break;
+        case 0: invent.gun.ammo   += invent.gun.maxAmmo/4;   break;
+        case 1: invent.shot.ammo  += invent.shot.maxAmmo/4;  break;
+        case 2: invent.rifle.ammo += invent.rifle.maxAmmo/4; break;
     }
     EM.changeSound(EM.getComponent<SoundCmp>(player), 0);
     weapon.setDestroy();
@@ -325,7 +325,8 @@ void LogicSystem::chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy) 
 
     if(num <= bb.spawn_perc) {
         LM.createPowerUp(GE, phy);
-        bb.spawn_perc = 1;
+        if(bb.spawn_perc <= 8) {
+            bb.spawn_perc = bb.spawn_perc-18 ;
+        }
     }
-    else bb.spawn_perc++; 
 }

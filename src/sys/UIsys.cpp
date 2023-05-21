@@ -219,7 +219,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::Image((void*)(intptr_t)iconoBajas.ID_, ImVec2(250,150));
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(width/10,height/10*5.9));
+    ImGui::SetNextWindowPos(ImVec2(width/10-20,height/10*5.9));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIKills", NULL,

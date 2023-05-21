@@ -167,7 +167,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 SouSys.update (EM);
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
-
+                std::cout<<LM.getEM().getBoard().spawn_perc <<"\n";
                 if(UISys.pause == true) actualMenu = 3;
 
                 break;
