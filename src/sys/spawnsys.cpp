@@ -33,6 +33,7 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
 
     Enty& player = EM.getEntityById(bb.entyID);
     auto& room_ply = EM.getComponent<SalaCmp>(player);
+    auto& phy_ply = EM.getComponent<PhysicsCmp2>(player);
 
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& entity, SpawnCmp& spawn, PhysicsCmp2& phy, SalaCmp& room) {
@@ -42,10 +43,10 @@ void SpawnSystem::updateSpawnEnem(LevelMan& LM, GraphicEngine& GE, SoundSystem_t
                 spawn.clock        >= spawn.timer    && 
                 wave.total.reserve >  0              && 
                 wave.aliveEnem     <  wave.maximEnem &&
-                room_ply.sala      != room.sala
+                sqrt((phy_ply.x-phy.x)*(phy_ply.x-phy.x)+(phy_ply.z-phy.z)*(phy_ply.z-phy.z))>30
             };
             
-            if(posible_spawn) spawnProcess(LM, GE, SouSys, spawn, phy);
+            if(posible_spawn) {spawnProcess(LM, GE, SouSys, spawn, phy);}
         }
     );
 

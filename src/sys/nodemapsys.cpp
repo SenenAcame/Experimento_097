@@ -82,7 +82,7 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     ////);
 //}
 
-/*NUEVO*/ void NodeMapSys::update2(EntyMan& EM, size_t map_ID){
+/*NUEVO*/ /*void NodeMapSys::update2(EntyMan& EM, size_t map_ID){
     Enty& player = EM.getEntityById(EM.getBoard().entyID);
     Enty& map    = EM.getEntityById(map_ID);
 
@@ -147,7 +147,7 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
             }
         }
     );
-}
+}*/
 
 void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
     Enty& player = EM.getEntityById(EM.getBoard().entyID);
@@ -219,10 +219,10 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
     );
 }
 std::vector<sala> NodeMapSys::creaSalas2() {
-    float salasx[]={-36.8f, -36.8f, -40.4f, -57.95f, -75.5f, -79.1f, -79.1f, -61.55f, -54.35f, -96.65f, -100.25f, -100.25f, -57.95f, -57.95f, -79.1f, -36.8f, -58.f};
-    float salasz[]={-8.81f, -26.35f, -37.15f, -37.15f, -37.16f, -22.76f, -1.61f, -1.61f, -8.81f, -1.61f, -12.42f, -29.96f, -54.7f, -72.24f, 15.93f, 12.34f, 33.84f};
+    float salasx[]={-36.8f, -36.8f, -40.4f, -57.95f, -75.5f, -79.1f, -79.1f, -61.55f, -54.35f, -96.65f, -100.25f, -100.25f, -57.95f, -57.95f, -79.1f, -36.8f, -57.95f};
+    float salasz[]={-8.81f, -26.35f, -37.15f, -37.15f, -37.16f, -22.76f, -1.61f, -1.61f, -8.81f, -1.61f, -12.42f, -29.96f, -54.7f, -72.24f, 15.9f, 12.34f, 33.48f};
     float tamx[]=  {20.7/2, 7.2/2, 14.4/2, 20.7/2, 14.57/2, 7.2/2, 20.7/2, 14.4/2, 14.4/2, 14.4/2, 7.2/2, 20.7/2, 7.2/2, 20.7/2, 7.2/2, 7.2/2, 63/2};
-    float tamz[]=  {20.7/2, 14.39/2, 7.21/2, 20.7/2, 7.2/2, 21.6/2, 20.7/2, 7.2/2, 7.2/2, 7.2/2, 14.39/2, 20.7/2, 14.39/2, 20.7/2, 14.39/2, 21.59/2, 20.7/2};
+    float tamz[]=  {20.7/2, 14.39/2, 7.21/2, 20.7/2, 7.2/2, 21.6/2, 20.7/2, 7.2/2, 7.2/2, 7.2/2, 14.39/2, 20.7/2, 14.39/2, 20.7/2, 14.38/2, 21.58/2, 20.7/2};
 
     std::vector<sala> sala;
 
@@ -509,7 +509,7 @@ float NodeMapSys::calcularDist(nodomap comienzo, nodomap fin){
     return std::sqrt(dx*dx+dz*dz);
 }
 
-std::vector<sala> NodeMapSys::creaSalas() {
+/*std::vector<sala> NodeMapSys::creaSalas() {
 
     float salasx[]={-36.8f, -36.8f, -40.4f, -57.95f, -75.5f, -79.1f, -79.1f, -61.55f, -54.35f, -96.65f, -100.25f, -100.25f, -57.95f, -57.95f, -79.1f, -36.8f, -71.9f, -40.4f};
     float salasz[]={-8.81f, -26.35f, -37.15f, -37.15f, -37.16f, -22.76f, -1.61f, -1.61f, -8.81f, -1.61f, -12.42f, -29.96f, -54.7f, -72.24f, 15.93f, 12.34f, 33.48f, 33.48f};
@@ -616,3 +616,4 @@ std::vector<sala> NodeMapSys::creaSalas() {
 
     return sala;
 };
+*/

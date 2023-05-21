@@ -1,10 +1,6 @@
 #pragma once
 #include <cstdint>
 
-struct puerta {
-    float x {}, z {};
-};
-
 struct punto {
     float x {}, z {};
 };
@@ -44,8 +40,6 @@ struct nodomap {
 struct sala {
     float  x {}, z {};
     float  tamx {}, tamz {};
-    std::vector<puerta> puertas;
-    std::size_t open { 0 }; //0 = is close sala 1 = open sala
 };
 
 struct NodoCmp {
