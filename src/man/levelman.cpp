@@ -481,7 +481,7 @@ void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_
     componentsPlayer(player, SouSys);
     
     GE.playerModel->remove();
-    GE.createPlayerModel("assets/models/armas/pistola.obj");
+    GE.createPlayerModel("assets/models/armas/pistola/pistola.obj");
 
     resetBlackboard(player_ID);
 
