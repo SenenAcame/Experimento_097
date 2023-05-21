@@ -66,7 +66,14 @@ void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& Sou
         wave.aliveEnem     == 0 
     };
 
-    if(finished_wave) progres.inRound = false;
+    if(finished_wave) {
+        progres.inRound = false;
+        LM.getEM().foreach<SoundCMP, SYSTAG_Ronda>(
+            [&](Enty&, SoundCmp& voice){
+                LM.getEM().changeSound(voice, 0);
+            }
+        );
+    }
 
     else if(!progres.inRound) {
         //Tiempo entre oleadas

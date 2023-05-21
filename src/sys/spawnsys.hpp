@@ -18,6 +18,9 @@ struct SpawnSystem {
     using SALCMPs = MP::Typelist<SalaCmp, SpawnCmp>;
     using W_STAGs = MP::Typelist<TSpawn, TSpwWeapon>;
 
+    using SoundCMP = MP::Typelist<SoundCmp>;
+    using SYSTAG_Ronda = MP::Typelist<TRonda>;
+
     void update(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys, double const dt);
     
 private:

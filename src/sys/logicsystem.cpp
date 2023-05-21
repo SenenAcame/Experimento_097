@@ -16,6 +16,7 @@
             if(entity.hasTAG<TPlayer>()){
                 if(EM.getComponent<EstadisticaCmp>(entity).hitpoints <= 0) {
                     dead = true;
+                    EM.changeSound(EM.getComponent<SoundCmp>(entity), 2);
                 }
             }
             if(entity.hasTAG<TEnemy>()) {
@@ -128,6 +129,7 @@ void LogicSystem::colisionBullet(LevelMan& LM, GraphicEngine& GE, Enty& current,
     else if(colisioned.hasTAG<TEnemy>()){
         //bala hace daño al enemigo
         reciveDamge(LM, GE, colisioned, current);
+        
     }
 }
 
@@ -163,6 +165,7 @@ void LogicSystem::colisionPowerUp(LevelMan &LM, GraphicEngine &GE, Enty &current
 
     if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) return;
     UISys.hitInterface(GE);
+    EM.changeSound(EM.getComponent<SoundCmp>(receptor), 1);
     enemyStats.ClockAttackEnemy = 0;
     reciveDamge(LM, GE, receptor, agressor);
 }
@@ -172,13 +175,18 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
     auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
     auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
 
+    bool recep_is_enemy=receptor.hasTAG<TEnemy>();
+
+    //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
+
     recept_stats.hitpoints -= agress_stats.damage;
 
     if(!agressor.hasTAG<TEnemy>()) markDestroy(agressor);
 
     if(recept_stats.hitpoints <= 0) {
-        if(receptor.hasTAG<TEnemy>()) { 
+        if(recep_is_enemy) { 
             auto& phy = EM.getComponent<PhysicsCmp2>(receptor);
+            soundMonster(EM, receptor);
             chanceDrop(LM, GE, phy);
 
             EM.getComponent<AICmp>(receptor).behaviour = SB::Diying;
@@ -199,6 +207,7 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
     auto& invent  = EM.getComponent<InventarioCmp>(player);
     auto& new_wpn = EM.getComponent<WeaponCmp>(weapon);
     size_t old_wpn {};
+    
 
     //Busco el arma catual para desequiparla
     for(old_wpn = 0; old_wpn < invent.numWeapons - 1; old_wpn++)
@@ -211,13 +220,14 @@ void LogicSystem::cancelMove(EntyMan& EM, Enty& ent_move, double dt) {
         case 1: invent.shot.ammo  += invent.shot.maxAmmo/10;  break;
         case 2: invent.rifle.ammo += invent.rifle.maxAmmo/10; break;
     }
-    
+    EM.changeSound(EM.getComponent<SoundCmp>(player), 0);
     weapon.setDestroy();
 }
 
 void LogicSystem::increaseStat(EntyMan& EM, Enty& player, Enty& power) {
     auto& stats = EM.getComponent<EstadisticaCmp>(player);
     auto& power_type = EM.getComponent<PowerUp>(power);
+    EM.changeSound(EM.getComponent<SoundCmp>(power), 1);
 
     switch(power_type.type) {
         case PU_Type::Damage:
@@ -243,11 +253,13 @@ void LogicSystem::resetCollision(EstadoCmp& state) {
 void LogicSystem::soundMonster(EntyMan& EM, Enty& e) {
     auto& monster = EM.getComponent<SoundCmp>(e);
     EM.changeSound(monster, 2);
-    EM.foreach<SYSCMP_Player, SYSTAG_Player>(
-        [&](Enty&, SoundCmp& voice) {
-            EM.changeSound(voice, 1);
-        }
-    );
+    if((rand()%10)==0){
+        EM.foreach<SYSCMP_Player, SYSTAG_Player>(
+            [&](Enty&, SoundCmp& voice) {
+                EM.changeSound(voice, 3);
+            }
+        );
+    }
 }
 
 void LogicSystem::partialVelocities(EntyMan& EM, Enty& player, double dt) {

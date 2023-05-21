@@ -1,11 +1,11 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../util/waves_aux.hpp"
+#include "../sys/soundsystem.hpp"
 #include "../util/structs_aux.hpp"
 #include <cstddef>
 #include <numbers>
 
-struct SoundSystem_t;
 struct GraphicEngine;
 struct PartSys;
 
@@ -57,6 +57,7 @@ struct LevelMan {
     void resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys);
     void resetBlackboard(size_t player_ID);
     EntyMan& getEM() { return EM; }
+    SoundSystem_t& getSouSys() { return SouSys; }
 
 private:
     TwoAngles disperShotgun(uint8_t disp);
@@ -66,6 +67,7 @@ private:
     double    randAng(uint8_t ang);
 
     EntyMan EM;
+    SoundSystem_t SouSys;
 
     //void createSoundEffect(SoundSystem_t& SouSys);
     //Enty& createEnemy(SoundSystem_t& SouSys);

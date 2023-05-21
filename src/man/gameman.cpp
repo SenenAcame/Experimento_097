@@ -24,8 +24,8 @@ void GameMan::game() {
 
     RenSys2       RenSys;
     InpSys2       InpSys;
-    SoundSystem_t SouSys;
     LevelMan      LM;
+    SoundSystem_t& SouSys=LM.getSouSys();
     UIsys         UISys;
     GraphicEngine GE;
     
@@ -112,7 +112,8 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     AnimMan     AM(GE);
 
     bool dead { false };
-    size_t actualMenu { abandon };
+    size_t actualMenu {abandon};
+    soundsEffects(EM, SouSys);
     
     std::size_t map_ID = LM.createMap2(GE, SouSys);
     init_map(LM, GE, SouSys);
@@ -163,7 +164,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
-                //SouSys.update (EM);
+                SouSys.update (EM);
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
 
@@ -236,4 +237,18 @@ size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys)
     LM.createWpnSpawn(Vec3 { -60,  2.8, 40  }, GE, 16);
 
     return LM.createMap2(GE, SouSys);
+}
+
+void GameMan::soundsEffects(EntyMan& EM, SoundSystem_t& SouSys){
+    /*auto& pulso=EM.createEntity();
+    EM.addComponent<SoundCmp>      (pulso, SoundCmp{.programmerSoundContext = SouSys.createinstance(3)});
+    EM.addTag      <TPulso>        (pulso);*/
+
+    /*auto& pasos=EM.createEntity();
+    EM.addComponent<SoundCmp>      (pasos, SouSys.createinstance(4));
+    EM.addTag      <TPasos>        (pasos);*/
+
+    auto& ronda=EM.createEntity();
+    EM.addComponent<SoundCmp>      (ronda, SouSys.createinstance(8));
+    EM.addTag      <TRonda>        (ronda);
 }

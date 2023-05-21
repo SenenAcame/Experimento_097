@@ -203,7 +203,7 @@
         default: break;
     }
 
-    soundWeapon(EM);
+    soundWeapon(EM, invent.equipada);
 }
 
 /*NUEVO*/ void InpSys2::reloadProcess2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, Weapon& wpn) {
@@ -312,11 +312,14 @@ void InpSys2::digonalMove(PhysicsCmp2& phy, float const speed, bool const up, bo
     else if(down) phy.v_ang = 45;
 }
 
-void InpSys2::soundWeapon(EntyMan& EM) {
+void InpSys2::soundWeapon(EntyMan& EM, int esescopeta) {
     for(auto& a : EM.getEntities()){
         if(a.hasTAG<TWeapon>() && a.hasCMP<SoundCmp>()) {
             auto& sound = EM.getComponent<SoundCmp>(a);
-            EM.changeSound(sound, 1);
+            if(esescopeta == 1)
+                EM.changeSound(sound, 2);
+            else
+                EM.changeSound(sound, 1);
         }
     }
 }
