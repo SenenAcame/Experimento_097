@@ -66,6 +66,9 @@ struct UIsys {
     void hitInterface(GraphicEngine& GE);
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
 
+    float moveX = 0;
+    float moveY = 0;
+
     //menus
     size_t menuIni(GraphicEngine& GE, size_t next);
     size_t menuMuerto (GraphicEngine& GE, size_t next);
@@ -77,7 +80,7 @@ struct UIsys {
 
 
 
-    void iniText();
+    void iniText(GraphicEngine& GE);
 
     
 };

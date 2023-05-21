@@ -3,7 +3,7 @@
 #include "soundsystem.hpp"
 #include <cstddef>
 
-void UIsys::iniText(){
+void UIsys::iniText(GraphicEngine& GE){
 
     zarpazo.setImage("assets/Interface/1280x720/zarpazo.png");
     inicio.setImage("assets/Interface/1280x720/pantalla_inicio_fondo.png");
@@ -19,18 +19,28 @@ void UIsys::iniText(){
     iconoBajas.setImage("assets/Interface/UI/bajas.png");
     iconoMira.setImage("assets/Interface/1280x720/mira_borde.png");
     iconoVida.setImage("assets/Interface/UI/vida.png");
+
+    moveX=GE.glEng.getWidth()/2;
+    moveY=GE.glEng.getHeight()/2.5;
 }
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("This is some useful text");
-    auto* m_window = GE.getWindow();
     auto board = EM.getBoard();
     auto& player = EM.getEntityById(board.entyID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
     auto width     = GE.glEng.getWidth();
     auto height    = GE.glEng.getHeight();
-   
+    auto inRound   = board.progres.inRound;
+
+    if(inRound == false){
+        moveY = moveY-1.4;
+    }
+    else if(moveY!=GE.glEng.getHeight()/2.5){
+        moveY = GE.glEng.getHeight()/2.5;
+    }
+
     int magazine = 0;
     int ammo     = 0;
     double hp    = (double)stats.hitpoints/100;
@@ -57,6 +67,21 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     }
 
     renderInterfaceHits(GE, dt);
+
+    if(inRound == false){
+        ImGui::SetNextWindowPos(ImVec2(moveX,moveY));
+        ImGui::SetNextWindowSize(ImVec2(width,height));
+        ImGui::Begin(
+            "UIPRUEBANEXTROUND", NULL,
+            ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+            | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+            | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+        );
+        ImGui::Text("%d", wave+1);
+
+        //ImGui::PopStyleColor();
+        ImGui::End();
+    }
 
     ImGui::SetNextWindowPos(ImVec2(0,height/10*8.3-75));
     ImGui::SetNextWindowSize(ImVec2(width,height));

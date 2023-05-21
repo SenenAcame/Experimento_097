@@ -29,11 +29,11 @@ void GameMan::game() {
     UIsys         UISys;
     GraphicEngine GE;
     
-    GE.glEng.setResolution(1080, 700);
+    GE.glEng.setResolution(1280, 700);
     
     RenSys.initIMGUI(GE);
     init_config(GE);
-    UISys.iniText();
+    UISys.iniText(GE);
     
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     LM.getEM().getBoard().entyID = player_ID;
@@ -102,7 +102,7 @@ size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
     while(abandon == 0 && !glfwWindowShouldClose(GE.getWindow())) {
         abandon = RenSys.updateMenuInicio(GE, UISys);
     }
-    
+
     return abandon;
 }
 
