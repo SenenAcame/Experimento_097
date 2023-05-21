@@ -274,6 +274,7 @@
     //TAGS
     EM.addTag<TInteract>(enemy);
     EM.addTag<TEnemy>(enemy);
+    EM.addTag<TDistEnemy>(enemy);
 
     //viewBB(GE, enemy);
 

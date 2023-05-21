@@ -49,14 +49,11 @@ void GameMan::game() {
             case 0:{
                 menu = bucleInicio(RenSys, GE, UISys);
                 break;
-                //std::cout<<"menu = " << menu<<"\n";
             }
 
             case 1:{
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 while(!glfwWindowShouldClose(window) && menu == 1){
-                    
-                    
                     UISys.inGame = 1;
                     menu = bucleJuego(LM, GE, RenSys, InpSys, SouSys, menu, UISys) ;
                     UISys.inGame = 0;
@@ -89,7 +86,6 @@ void GameMan::game() {
                 }
                 break;
             }
-
         }
     }
     RenSys.EndImgui(GE);
@@ -165,7 +161,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 RenSys.update2(EM, GE, UISys, dt);
                 MapSys.update3(EM, map_ID, dt);
                 InpSys.update2(LM, GE, SouSys, dt, UISys);
-                AISys. update2(LM, GE, dt);
+                //AISys. update2(LM, GE, dt);
                 PhySys.update (EM, dt);
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
@@ -173,13 +169,12 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 //SouSys.update (EM);
                 //SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
-                if(UISys.pause == true) {
-                    actualMenu = 3;
-                }
+
+                if(UISys.pause == true) actualMenu = 3;
+
                 break;
             }
         }
-        //ge.glEng.drawFocos();
     }
     
     LM.resetLevel(EM.getBoard().entyID, GE, SouSys);

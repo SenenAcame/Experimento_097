@@ -19,11 +19,9 @@ struct Stat {
 };
 
 struct ExtraStats {
-    Stat life { .98f, 0.02f };
-    Stat damg { .99f, 0.01f };
-    Stat sped { .995f, 0.005f };
-    //Stat cd   { 1.0f, 0.f };
-    //Stat shot { 1.0f, 0.f };
+    Stat life { .95f, 0.05f };
+    Stat damg { .98f, 0.02f };
+    Stat sped { .99f, 0.01f };
 };
 
 struct WaveInfo {

@@ -9,8 +9,6 @@
 #include <cstdlib>
 #include <iostream>
 
-int aux = 0;
-
 /*NUEVO*/ void LogicSystem::update2(LevelMan& LM, GraphicEngine& GE, double dt, UIsys& UISys, bool& dead) {
     auto& EM = LM.getEM();
     EM.foreach<SYSCMPs, SYSTAGs>(
@@ -174,12 +172,7 @@ void LogicSystem::reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, E
     auto& recept_stats = EM.getComponent<EstadisticaCmp>(receptor);
     auto& agress_stats = EM.getComponent<EstadisticaCmp>(agressor);
 
-    //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
-
     recept_stats.hitpoints -= agress_stats.damage;
-    //std::cout<<"Impacto "<<aux++<<"\n";
-
-    //std::cout<<recept_stats.hitpoints<<" "<<agress_stats.damage<<"\n";
 
     if(!agressor.hasTAG<TEnemy>()) markDestroy(agressor);
 
@@ -231,7 +224,7 @@ void LogicSystem::increaseStat(EntyMan& EM, Enty& player, Enty& power) {
             stats.extra_dmg += .2; 
             break;
         case PU_Type::Speed: 
-            stats.speed     +=  2;
+            stats.speed     *=  1.2;
             break;
         case PU_Type::Health: 
             stats.hitpoints += 10;
@@ -266,7 +259,7 @@ void LogicSystem::partialVelocities(EntyMan& EM, Enty& player, double dt) {
     float dx, dz;
 
     //precalculo de coordenadas
-    preCalculation(copy_physics, player.hasTAG<TEnemy>(), dt);
+    preCalculation(copy_physics, dt);
 
     //comprobar colision en la siguiente posicion
     dx = ColSys2::calculateDist(copy_physics.x, wall_physc.x, state.width, wall_state.width);
@@ -279,8 +272,8 @@ void LogicSystem::partialVelocities(EntyMan& EM, Enty& player, double dt) {
     }
 }
 
-void LogicSystem::preCalculation(PhysicsCmp2& copy_physics, bool const is_enemy, double const dt) {
-    PhySys2::calculatePosition(is_enemy, copy_physics, dt);
+void LogicSystem::preCalculation(PhysicsCmp2& copy_physics, double const dt) {
+    PhySys2::calculatePosition(copy_physics, dt);
 }
 
 void LogicSystem::secondStep(EntyMan& EM, PhysicsCmp2& copy_physics, PhysicsCmp2& phy, EstadoCmp& state, size_t const wall_id, float const dx, float const dz, double const dt) {
@@ -318,7 +311,7 @@ void LogicSystem::chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy) 
 
     if(num <= bb.spawn_perc) {
         LM.createPowerUp(GE, phy);
-        //bb.spawn_perc = 1;
+        bb.spawn_perc = 1;
     }
     else bb.spawn_perc++; 
 }

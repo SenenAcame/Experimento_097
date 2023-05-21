@@ -1,17 +1,15 @@
 #pragma once
 #include "../util/types.hpp"
-#include "UIsys.hpp"
+#include "soundsystem.hpp"
 #include <cstddef>
 
-//struct TheEngine;
+struct UIsys;
 struct GraphicEngine;
+struct SoundSystem_t;
 
 struct RenSys2 {
-    using Render  = MP::Typelist<RenderCmp2>;
     using SYSCMPs = MP::Typelist<PhysicsCmp2, RenderCmp2>;
-    using BOXCMPs = MP::Typelist<PhysicsCmp2, EstadoCmp>;
     using SYSTAGs = MP::Typelist<>;
-    using SoundCMPs = MP::Typelist<SoundCmp>;
 
     static constexpr double PI { std::numbers::pi };
 
@@ -35,7 +33,6 @@ struct RenSys2 {
     void initIMGUI(GraphicEngine& GE);
     void ImGUI_Prerender() const noexcept;
     void ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE) const noexcept;
-    void ImGUI_renderOpenGlContext() const noexcept;
     void ImGUI_Postrender(GraphicEngine& GE) const noexcept;
     void EndImgui(GraphicEngine& GE);
 

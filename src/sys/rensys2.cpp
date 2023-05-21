@@ -35,7 +35,6 @@
     drawWorld(GE);
     UISys.renderInterface(EM, GE, dt); 
     
-    //ImGUI_RenderUI(EM, GE);
     ImGUI_Postrender(GE);
 }
 
@@ -55,18 +54,13 @@ size_t RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys) {
    return abandon;
 }
 
- size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, EntyMan& EM, SoundSystem_t& SouSys){
-    size_t abandon = 3;
-
-    ImGUI_Prerender();
-    
-    
-    abandon = UISys.menuPausa(GE, abandon, EM, SouSys);
-    
-    
-    ImGUI_Postrender(GE);
-    return abandon;
- }
+size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, EntyMan& EM, SoundSystem_t& SouSys){
+   size_t abandon = 3;
+   ImGUI_Prerender();
+   abandon = UISys.menuPausa(GE, abandon, EM, SouSys);
+   ImGUI_Postrender(GE);
+   return abandon;
+}
 
 size_t RenSys2::updateMenuControles(GraphicEngine& GE, UIsys& UISys) {
    size_t abandon = 4;
@@ -86,26 +80,14 @@ size_t RenSys2::updateMenuSonido(GraphicEngine& GE, UIsys& UISys, SoundSystem_t&
 
 void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
     auto& player = EM.getEntityById(EM.getBoard().entyID);
-    
     auto& ren    = EM.getComponent<RenderCmp2>(player);
-    auto& sala   = EM.getComponent<SalaCmp>(player);
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
-
-    //std::cout<<"Posicion jugador: "<<phy.x<<" "<<phy.y<<" "<<phy.z<<"\n";
-    //std::cout<<"Sala jugador: "<<sala.sala<<"\n";
     auto* cam = GE.getCamera();
-
     float pitch = cam->Pitch;
     float yaw   = cam->Yaw;
 
-    //std::cout<<"Valores de camara: "<<pitch<<" "<<yaw<<"\n";
-
     ren.node->setRotation(Vec3(0, -yaw, pitch));
-
     cam->updateCameraVectors();
-
-    //std::cout<<"Rotacion del nodo: "<<ren.node->getRotation().x<<" "<<ren.node->getRotation().y<<" "<<ren.node->getRotation().z<<"\n";
-
     phy.orienx = glm::radians(pitch);
     phy.orieny = glm::radians(yaw);
 }
@@ -141,37 +123,15 @@ void RenSys2::rotateEnemy(Enty& ent, RenderCmp2 &rend, PhysicsCmp2 &phy) {
 
 //IMGUI
 void RenSys2::initIMGUI(GraphicEngine& GE) {
-    //glfwSetErrorCallback([](auto error, auto description){
-    //    std::fprintf(stderr, "Glfw Error %d: %s\n", error, description);
-    //    throw std::runtime_error("GLFW ERROR");
-    //});
-    //if (!glfwInit())
-    //    throw std::runtime_error("ERROR GLFW INITIALIZATION");
-    //
-    //// GL 3.0 + GLSL 130
-    //constexpr const char* glsl_version = "#version 130";
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    ////glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    ////glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-    //auto* m_window = GE.getWindow();
-    //if (m_window == nullptr)
-    //throw std::runtime_error("ERROR GLFW creating WINDOW");
-    //glfwMakeContextCurrent(m_window);
-    //glfwSwapInterval(1); // Enable vsync
-    ////Esto de glew creo que no hace falta
-    ////if(glewInit() != GLEW_OK){
-    ////    throw std::runtime_error("ERROR GLFW init GLEW");
-    ////}
-
     constexpr const char* glsl_version = "#version 130";
     auto* m_window = GE.getWindow();
+
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -182,6 +142,7 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     ImGui_ImplOpenGL3_Init(glsl_version);
     ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chiller.ttf", 80.0f);
     ImGuiStyle& style = ImGui::GetStyle();
+
     //Color negro
     style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
     style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
@@ -203,18 +164,6 @@ void RenSys2::ImGUI_Prerender() const noexcept {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
-
-//void RenSys2::ImGUI_renderOpenGlContext() const noexcept {
-    //auto* frameB{m_framebuffer.get()};
-    //glDrawPixels(m_w, m_h, GL_RGBA, GL_UNSIGNED_BYTE, frameB);
-    //
-    ////int display_w, display_h;
-    ////glfwGetFramebufferSize(m_window, &display_w, &display_h);
-    ////glViewport(0, 0, display_w, display_h);
-    ////glClearColor(0.0, 0.0, 0.0, 0.0);
-    ////glClear(GL_COLOR_BUFFER_BIT);
-//}
-
 
 void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE) const noexcept{
     //ImGui::Text("This is some useful text");
@@ -313,7 +262,6 @@ void RenSys2::ImGUI_Postrender(GraphicEngine& GE) const noexcept {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(m_window);
-
 }
 
 void RenSys2::EndImgui(GraphicEngine& GE) {
@@ -322,8 +270,6 @@ void RenSys2::EndImgui(GraphicEngine& GE) {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    if(m_window) {
-        glfwDestroyWindow(m_window);
-    }
+    if(m_window) glfwDestroyWindow(m_window);
     glfwTerminate();
 }

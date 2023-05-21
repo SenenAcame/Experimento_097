@@ -19,7 +19,6 @@ struct AISys {
     [[nodiscard]] constexpr double distanceAngle(double const a, double const b) const noexcept;
     [[nodiscard]] constexpr double angularVelocity(Point const dist, double const orieny, double const time) const noexcept;
 
-    constexpr void arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept;
     /*NUEVO*/ constexpr void shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2& phy) const noexcept;
     void seek(Point const target, PhysicsCmp2& phyEnem, double const timeArrive) const noexcept;
     void persue(Point const target, PhysicsCmp2& phyEnem, Point const velPlayer, double const timeArrive) const noexcept;
@@ -29,7 +28,4 @@ struct AISys {
     void die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const noexcept;
     
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
-
-    ///*VIEJO*/ void update(EntyMan& EM, double dt, TheEngine& dev);
-    ///*VIEJO*/ constexpr void shoot (AICmp& ai, PhysicsCmp2 const& phy, EntyMan& EM, TheEngine& eng, Enty const& enem) const noexcept;
 };

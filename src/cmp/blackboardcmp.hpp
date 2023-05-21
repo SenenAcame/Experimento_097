@@ -9,7 +9,7 @@ struct BlackBoardCmp {
     std::size_t entyID { 0 };
     SB  behaviour { SB::Two_Steps };
 
-    double spawn_perc { 50.0 };
+    double spawn_perc { 1.0 };
 
     ExtraStats   difficult {};
     WaveInfo     wave      {};

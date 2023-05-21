@@ -33,7 +33,7 @@
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon2(LM, GE, equip, rend, 2); }
             if(keyboard.isKeyPressed(XK_Escape))            { 
                 UI.pause = true;
-                EM.foreach<SYSCMP_Weapon, SYSTAGs>(
+                EM.foreach<SOUNDCMP, SYSTAGs>(
                     [&](Enty& entity, SoundCmp& sound) {
                         SouSys.stopsound(sound);
                     }
@@ -276,7 +276,7 @@ PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot, int lock) {
     auto& EM = LM.getEM();
 
     lock_Left = lock;
-    //recoil(EM, GE, cam, wpn.recoil);
+    recoil(EM, GE, cam, wpn.recoil);
     wpn.magazine--;
 
     if(is_shot)

@@ -6,15 +6,7 @@ void PhySys2::update(EntyMan& EM, double delta) {
             bool is_bullet = enty.hasTAG<TBullet>() || enty.hasTAG<TEneBullet>();
             
             if(is_bullet) bulletPhysics(physic);
-            else {
-                bool enemy_is_diying = (enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Diying);
-                //bool player_or_enemy_not_shooting = !(enty.hasCMP<AICmp>() && EM.getComponent<AICmp>(enty).behaviour == SB::Shoot);
-                
-                if(enemy_is_diying) 
-                    physic.y -= 0.;
-                else //if(player_or_enemy_not_shooting) 
-                    entityPhysics(enty.hasTAG<TEnemy>(), physic, delta);
-            }
+            else          entityPhysics(physic, delta); 
         }
     );
 }
@@ -35,8 +27,8 @@ void PhySys2::bulletPhysics(PhysicsCmp2& p) const noexcept{
     p.z += p.vz;
 }
 
-void PhySys2::entityPhysics(bool const is_enemy, PhysicsCmp2& phy, double const dt) const noexcept{
-    calculatePosition(is_enemy, phy, dt);
+void PhySys2::entityPhysics(PhysicsCmp2& phy, double const dt) const noexcept{
+    calculatePosition(phy, dt);
 
     phy.v_lin += dt * phy.a_lin;
     phy.v_ang += dt * phy.a_ang;
@@ -49,7 +41,7 @@ void PhySys2::entityPhysics(bool const is_enemy, PhysicsCmp2& phy, double const 
     else              phy.v_lin += roz;  
 }
 
-void PhySys2::calculatePosition(bool const is_enemy, PhysicsCmp2& p, double const dt) {
+void PhySys2::calculatePosition(PhysicsCmp2& p, double const dt) {
     p.orieny += dt * p.v_ang;
 
     while (p.orieny > 2*PI) p.orieny -= 2*PI;

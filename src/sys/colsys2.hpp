@@ -32,15 +32,4 @@ struct ColSys2 {
     void static hitboxesMapaSimplePasillo7(LevelMan& LM) noexcept;
 
     void static create_HitBoxes(uint8_t const num, LevelMan& LM, float const pos_x[], float const pos_z[], float const widht[], float const depth[]);
-
-    ////salas del mapa original
-    ///*VIEJO*/ void static init_Hitoxes_Map(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalSala_Inicio(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalInicio_Adyacente(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalPatio(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalPatio_Adyacente(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalSala_Alejada(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalPasillo1(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalPasillo2(LevelMan& LM) noexcept;
-    ///*VIEJO*/ void static hitboxesMapaOriginalPasillo3(LevelMan& LM) noexcept;
 };

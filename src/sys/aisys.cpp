@@ -36,23 +36,6 @@
     return ang_vel;
 }
 
-//constexpr void AISys::arrive(AICmp& ai, PhysicsCmp2& phy) const noexcept {
-//    phy.v_ang = phy.a_lin = 0;
-//
-//    Point t_dist { ai.ox - phy.x, ai.oz - phy.z };
-//    auto t_lin_dist { distanceModule(t_dist) };
-//
-//    if  (t_lin_dist < ai.arrivalRadius) { ai.enable = false; return; }
-//
-//    auto t_ang_vel  { angularVelocity(t_dist, phy.orieny, ai.timeArrive) };
-//
-//    auto t_lin_vel  { capLimits(t_lin_dist/ai.timeArrive, phy.kMxVLin) };
-//    auto t_lin_acc  { (t_lin_vel - phy.v_lin)/ai.timeArrive };
-//
-//    phy.a_lin = capLimits(t_lin_acc, phy.kMxALin);
-//    phy.v_ang = capLimits(t_ang_vel, phy.kMxVAng);
-//}
-
 constexpr void AISys::shoot2(LevelMan& LM, GraphicEngine& GE, Enty const& enem, AICmp& ai, PhysicsCmp2& phy) const noexcept {
     phy.a_lin = phy.v_lin = 0;
 
@@ -172,10 +155,7 @@ void AISys::die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const 
             percept(bb, ai, dt);
             if(!ai.enable) return;
 
-            switch(ai.behaviour){
-                //case SB::Arrive: arrive(ai, phy); break;
-                //case SB::Seek:   seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
-                //case SB::Patrol: seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive); break;
+            switch(ai.behaviour) {
                 case SB::Patrol: find  (ai, phy); break;
                 case SB::Shoot:  shoot2(LM, GE, entity, ai, phy);
                 case SB::Two_Steps: {
