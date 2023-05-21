@@ -12,7 +12,7 @@
     unsigned int const size = 13;
 
     std::string models [size] {
-        "assets/models/mapas/Patio.obj",
+        "assets/models/mapas/patio.obj",
         "assets/models/mapas/Sala_1.obj",
         "assets/models/mapas/Sala_2.obj",
         "assets/models/mapas/Sala_3.obj",
