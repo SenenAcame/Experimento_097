@@ -30,7 +30,7 @@ struct InpSys2 {
 private:
     /*NUEVO*/ int  previousKeyStatus  (int k, int actual, int prev, int lock);
     /*NUEVO*/ int  previousMouseStatus(int k, int actual, int prev, int lock);
-    /*NUEVO*/ void updateStateWeapon(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, double const dt);
+    /*NUEVO*/ void updateStateWeapon(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, double const dt);
     /*NUEVO*/ void reload2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent);
     /*NUEVO*/ void reloadProcess2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, Weapon& wpn);
     /*NUEVO*/ void shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys);

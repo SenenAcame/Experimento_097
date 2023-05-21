@@ -20,7 +20,7 @@
             bool up = false, down = false;
             phy.v_lin = phy.v_ang = 0;
 
-            updateStateWeapon(LM, GE, equip, dt);
+            updateStateWeapon(LM, GE, equip, rend, dt);
 
             if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up   = true; }
@@ -177,7 +177,7 @@
     return { wpn.magazine, wpn.ammo };
 }
 
-/*NUEVO*/ void InpSys2::updateStateWeapon(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, double const dt) {
+/*NUEVO*/ void InpSys2::updateStateWeapon(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, RenderCmp2& rend, double const dt) {
     double time {};
     switch (invent.equipada) {
         case 0: time = invent.gun.reload_T;   break;
@@ -187,6 +187,7 @@
 
     if(invent.reloading == 1) {
         invent.clockReload += dt;
+        rend.node->rotate(Vec3{0, 0.1, 0});
         if(invent.clockReload >= time) reload2(LM, GE, invent);
     }
 

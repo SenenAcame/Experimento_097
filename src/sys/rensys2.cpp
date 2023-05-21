@@ -82,11 +82,22 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
     auto& player = EM.getEntityById(EM.getBoard().entyID);
     auto& ren    = EM.getComponent<RenderCmp2>(player);
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
+    auto& inv    = EM.getComponent<InventarioCmp>(player);
     auto* cam = GE.getCamera();
+
     float pitch = cam->Pitch;
     float yaw   = cam->Yaw;
 
-    ren.node->setRotation(Vec3(0, -yaw, pitch));
+    if(inv.reloading == 1) {
+        inv.ang_reload += inv.var_ang;
+        if(inv.ang_reload >= 5 || inv.ang_reload <= -5)
+            inv.var_ang *= -1;
+    }
+    else inv.ang_reload = 0;
+
+    float extra_rot = inv.ang_reload;
+
+    ren.node->setRotation(Vec3(0, -yaw, pitch + extra_rot));
     cam->updateCameraVectors();
     phy.orienx = glm::radians(pitch);
     phy.orieny = glm::radians(yaw);

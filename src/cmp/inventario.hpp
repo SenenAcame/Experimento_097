@@ -62,6 +62,8 @@ struct InventarioCmp {
     std::size_t reloading { 0 }; //0 not reloading 1 reloading
     double clockCadence   {};
     double clockReload    { 3 }; //always start to the hightes reload of weapon or the initial weapon
-
+    
+    float  ang_reload     { 0 };
+    float  var_ang        { 0.5 };
     static constexpr uint8_t id { 5 }; //0000100000
 };
