@@ -31,6 +31,37 @@ void GraphicEngine::setCameraPlayer(std::string file_model) {
     glEng.setCamera_(getCamera());
 }
 
+void GraphicEngine::setWindowClose() {
+    glfwSetWindowShouldClose(getWindow(), GL_TRUE);
+}
+
+void GraphicEngine::setWindowResolution(int width, int height) {
+    glEng.setResolution(width, height);
+}
+
+void GraphicEngine::beginScene() {
+    glEng.beginScene();
+}
+
+void GraphicEngine::drawScene() {
+    glEng.drawScene();
+}
+
+void GraphicEngine::drawAllScene() {
+    drawScene();
+    //glEng.drawParticles();
+    //glEng.drawBorder();
+    glEng.drawSkybox(0);
+}
+
+void GraphicEngine::endScene() {
+    glEng.endScene();
+}
+
+void GraphicEngine::removePlayerModel() {
+    playerModel->remove();
+}
+
 //TNodo* GraphicEngine::loadModel(std::string file) {
 //    return glEng.createModel(
 //        NULL,

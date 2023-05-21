@@ -298,19 +298,8 @@
 /*NUEVO*/ void LevelMan::createBullet2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
 Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double const pby) {
     std::string file_model = "assets/models/armas/bala.obj";
-
-    auto* model = GE.playerModel;
-    auto mat  = model->matTransf_;
-
-    Vec3 pos_b = { mat[3][0], mat[3][1], mat[3][2]
-        ///*X*/ tras.x * cos(pos.orieny) + tras.y * 0 + tras.z * (-sin(pos.orieny)),
-        ///*Y*/ tras.x * 0               + tras.y * 0 + tras.z * 0,
-        ///*Z*/ tras.x * sin(pos.orieny) + tras.y * 0 + tras.z * cos(pos.orieny)
-
-        ///*X*/ tras.x * cos(pos.orieny) * cos(pos.orienx) + tras.y * sin(pos.orienx) + tras.z * (-sin(pos.orieny)),
-        ///*Y*/ tras.x * (-sin(pos.orienx))                + tras.y * cos(pos.orienx) + tras.z * (-sin(pos.orienx)),
-        ///*Z*/ tras.x * sin(pos.orieny)                   + tras.y * 0               + tras.z * cos(pos.orieny) * cos(pos.orienx)
-    };
+    auto mat  = GE.getPlayerModelPos();
+    Vec3 pos_b = { mat.x, mat.y, mat.z };
 
     Enty& bullet = EM.createEntity();
     //CMPS
@@ -334,16 +323,11 @@ Vec3 dir, SoundSystem_t& SouSys, double const slfD, double const pbx, double con
 /*NUEVO*/ void LevelMan::createShotgunBullets2(GraphicEngine& GE, PhysicsCmp2& pos, EstadisticaCmp&& stats, 
 Vec3 dir, SoundSystem_t& SouSys, double const slfD, uint8_t dispersion) {
     for(uint8_t i = 0; i < 10; i++) {
-        //TwoAngles disp_angs = disperShotgun(dispersion);
-        //std::cout<<"Normalizado: "<<disp_angs.alfa<<" "<<disp_angs.beta<<"\n";
-        //createBullet2(GE, pos, EstadisticaCmp{stats}, dir, SouSys, slfD, disp_angs.alfa, disp_angs.beta);
-
         double ang_alp = randAng(dispersion);
         double ang_bet = randAng(dispersion);
-        //std::cout<<"Sin normalizar: "<<ang_alp<<" "<<ang_bet<<"\n";
+        
         createBullet2(GE, pos, EstadisticaCmp{stats}, dir, SouSys, slfD, ang_alp, ang_bet);
     }
-    //std::cout<<"\n";
 }
 
 /*NUEVO*/ void LevelMan::createEneBullet(GraphicEngine& GE, PhysicsCmp2&& phy, int dmg) {
@@ -403,17 +387,6 @@ void LevelMan::createHitBox(double const pos_x, double const pos_y, double const
     EM.addTag<TWall>    (wall);
     
 }
-
-//Enty& LevelMan::createSmallEnemy(float x_pos, float z_pos, TheEngine& dev, SoundSystem_t& SouSys) {
-//    Enty& enemy = createEnemy(SouSys);
-//    auto& stats = EM.addComponent<EstadisticaCmp>(enemy, EstadisticaCmp{.hitpoints=100, .damage=20, .speed=3.f});
-//    
-//    EM.addComponent<PhysicsCmp2>(enemy, PhysicsCmp2{.x=x_pos, .y=2.33, .z=z_pos, .kMxVLin = stats.speed});
-//    EM.addComponent<RenderCmp2> (enemy, dev.createModel("assets/models/monstruo1.obj","assets/textures/faerie2.bmp"));
-//    EM.addComponent<EstadoCmp>  (enemy, 0.875f, 2.33f, 0.85f);
-//    EM.addTag      <TSmallEnemy>(enemy);
-//    return enemy;
-//}
 
 Enty& LevelMan::createEneSpawn(Vec3 pos, GraphicEngine& GE, int room, double timer){
     Enty& spawn = createSpawn2(pos, GE, room, timer);
@@ -481,7 +454,7 @@ void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_
     InventarioCmp, SalaCmp, SoundCmp>(player);
     componentsPlayer(player, SouSys);
     
-    GE.playerModel->remove();
+    GE.removePlayerModel();
     GE.createPlayerModel("assets/models/armas/pistola/pistola.obj");
 
     resetBlackboard(player_ID);

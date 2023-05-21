@@ -29,7 +29,7 @@ void GameMan::game() {
     UIsys         UISys;
     GraphicEngine GE;
     
-    GE.glEng.setResolution(1280, 700);
+    GE.setWindowResolution(1280, 700);
     
     RenSys.initIMGUI(GE);
     init_config(GE);
@@ -43,8 +43,7 @@ void GameMan::game() {
     
     auto window = GE.getWindow();
 
-    while(!glfwWindowShouldClose(window) && playing == 0) {
-
+    while(!GE.getCloseWindow() && playing == 0) {
         switch (menu) {
             case 0:{
                 menu = bucleInicio(RenSys, GE, UISys);
@@ -53,7 +52,7 @@ void GameMan::game() {
 
             case 1:{
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-                while(!glfwWindowShouldClose(window) && menu == 1){
+                while(!GE.getCloseWindow() && menu == 1){
                     UISys.inGame = 1;
                     menu = bucleJuego(LM, GE, RenSys, InpSys, SouSys, menu, UISys) ;
                     UISys.inGame = 0;
@@ -63,7 +62,7 @@ void GameMan::game() {
 
             case 2:{
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                while(!glfwWindowShouldClose(window) && menu == 2){
+                while(!GE.getCloseWindow() && menu == 2){
                     menu = bucleDead(GE, RenSys, UISys);
                 }
                 break;
@@ -71,8 +70,7 @@ void GameMan::game() {
 
             case 4:{
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                while(!glfwWindowShouldClose(window) && menu == 4){
-                    
+                while(!GE.getCloseWindow() && menu == 4){
                     menu = bucleControles( GE, RenSys, UISys);
                 }
                 break;
@@ -80,8 +78,7 @@ void GameMan::game() {
 
             case 5:{
                 glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                while(!glfwWindowShouldClose(window) && menu == 5){
-                    
+                while(!GE.getCloseWindow() && menu == 5){
                     menu = bucleSonido( GE, RenSys, UISys, SouSys) ;
                 }
                 break;
@@ -94,7 +91,7 @@ void GameMan::game() {
 size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
     size_t abandon { 0 };
 
-    while(abandon == 0 && !glfwWindowShouldClose(GE.getWindow())) {
+    while(abandon == 0 && !GE.getCloseWindow()) {
         abandon = RenSys.updateMenuInicio(GE, UISys);
     }
 
@@ -112,7 +109,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     SpawnSystem SpwSys;
     SelfDestSys DstSys;
     PartSys     PartSys;
-    AnimMan     AM(GE.glEng);
+    AnimMan     AM(GE);
 
     bool dead { false };
     size_t actualMenu { abandon };
@@ -134,7 +131,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
 
     constexpr double dt = 1.0 / 60;
 
-    while(abandon == 1 && !dead && !glfwWindowShouldClose(GE.getWindow()) ) {
+    while(abandon == 1 && !dead && !GE.getCloseWindow() ) {
         switch (actualMenu) {
             case 3: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -167,7 +164,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
                 //SouSys.update (EM);
-                //SpwSys.update (LM, GE, SouSys, dt);
+                SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
 
                 if(UISys.pause == true) actualMenu = 3;
@@ -187,8 +184,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
 size_t GameMan::bucleDead(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
     size_t abandon { 2 };
         
-    while(abandon == 2 && !glfwWindowShouldClose(GE.getWindow())) {
-        //menu = RenSys.updateMenuDead(GE, UISys, menu);
+    while(abandon == 2 && !GE.getCloseWindow()) {
         abandon = RenSys.updateMenuDead(GE, UISys);
     }
 
@@ -198,8 +194,7 @@ size_t GameMan::bucleDead(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys){
 size_t GameMan::bucleControles(GraphicEngine &GE ,RenSys2 &RenSys, UIsys &UISys){
     size_t abandon { 4 };
         
-    while(abandon == 4 && !glfwWindowShouldClose(GE.getWindow())) {
-        //menu = RenSys.updateMenuDead(GE, UISys, menu);
+    while(abandon == 4 && !GE.getCloseWindow()) {
         abandon = RenSys.updateMenuControles(GE, UISys);
     }
 
@@ -209,7 +204,7 @@ size_t GameMan::bucleControles(GraphicEngine &GE ,RenSys2 &RenSys, UIsys &UISys)
 size_t GameMan::bucleSonido(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys, SoundSystem_t& Sou){
     size_t abandon { 5 };
     
-    while(abandon == 5 && !glfwWindowShouldClose(GE.getWindow())) {
+    while(abandon == 5 && !GE.getCloseWindow()) {
         //menu = RenSys.updateMenuDead(GE, UISys, menu);
         abandon = RenSys.updateMenuSonido(GE, UISys, Sou);
     }

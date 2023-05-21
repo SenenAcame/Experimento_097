@@ -149,7 +149,7 @@
 /*NUEVO*/ void InpSys2::changeWeaponMethod(GraphicEngine& GE, InventarioCmp& invent, size_t new_, size_t old_) {
     Mag_Amm bullets {};
 
-    GE.playerModel->remove();
+    GE.removePlayerModel();
     
     invent.inventary[new_] = 2;
     invent.inventary[old_] = 1;

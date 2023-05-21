@@ -20,25 +20,25 @@ void UIsys::iniText(GraphicEngine& GE){
     iconoMira.setImage("assets/Interface/1280x720/mira_borde.png");
     iconoVida.setImage("assets/Interface/UI/vida.png");
 
-    moveX=GE.glEng.getWidth()/2;
-    moveY=GE.glEng.getHeight()/2.5;
+    moveX=GE.getWidth()/2;
+    moveY=GE.getHeight()/2.5;
 }
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("This is some useful text");
-    auto board = EM.getBoard();
-    auto& player = EM.getEntityById(board.entyID);
-    auto& invent = EM.getComponent<InventarioCmp>(player);
-    auto stats     = EM.getComponent<EstadisticaCmp>(player);
-    auto width     = GE.glEng.getWidth();
-    auto height    = GE.glEng.getHeight();
-    auto inRound   = board.progres.inRound;
+    auto board      = EM.getBoard();
+    auto& player  = EM.getEntityById(board.entyID);
+    auto& invent  = EM.getComponent<InventarioCmp>(player);
+    auto stats      = EM.getComponent<EstadisticaCmp>(player);
+    auto width  = GE.getWidth();
+    auto height = GE.getHeight();
+    auto inRound    = board.progres.inRound;
 
     if(inRound == false){
         moveY = moveY-1.4;
     }
-    else if(moveY!=GE.glEng.getHeight()/2.5){
-        moveY = GE.glEng.getHeight()/2.5;
+    else if(moveY!=GE.getHeight()/2.5){
+        moveY = GE.getHeight()/2.5;
     }
 
     int magazine = 0;
@@ -201,8 +201,8 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
 void UIsys::hitInterface(GraphicEngine& GE){
 
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width = GE.getWidth();
+    auto height = GE.getHeight();
     int random = activateHit;
     while(activateHit == random)
         random = rand()%3+1;
@@ -230,9 +230,8 @@ void UIsys::hitInterface(GraphicEngine& GE){
 
 void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     auto* m_window = GE.getWindow();
-    auto width  = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
-
+    auto width  = GE.getWidth();
+    auto height = GE.getHeight();
     
     ImGui::SetNextWindowPos(ImVec2(randWidth1-300,randHeight2-225));
     ImGui::SetNextWindowSize(ImVec2(width, height));
@@ -292,8 +291,8 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
 size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
 
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width = GE.getWidth();
+    auto height = GE.getHeight();
 
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
     
@@ -309,8 +308,7 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.0f);
     ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
-    if(ImGui::Button("Jugar", ImVec2(200,100))){
-        
+    if(ImGui::Button("Jugar", ImVec2(200,100))) {
         next = 1;
     }
     ImGui::PopStyleColor();
@@ -318,21 +316,18 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
 
     ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*4.5));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
-    if(ImGui::Button("Sonido", ImVec2(200,100))){
-        
+    if(ImGui::Button("Sonido", ImVec2(200,100))) {
         next = 5;
     }
 
     ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*6));
-    if(ImGui::Button("Controles", ImVec2(200,100))){
-        
+    if(ImGui::Button("Controles", ImVec2(200,100))) {
         next = 4;
     }
 
     ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*7.5));
-    if(ImGui::Button("Salir", ImVec2(200,100))){
-        
-        glfwSetWindowShouldClose(GE.getWindow(), GL_TRUE);
+    if(ImGui::Button("Salir", ImVec2(200,100))) {
+        GE.setWindowClose();
         next = 0;
     }
     ImGui::PopStyleColor();
@@ -347,8 +342,8 @@ size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
     
     
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width = GE.getWidth();
+    auto height = GE.getHeight();
 
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)muerte.ID_, ImVec2(0, 0), ImVec2(width, height));
     
@@ -379,8 +374,8 @@ size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
 size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
 
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width = GE.getWidth();
+    auto height = GE.getHeight();
 
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)controles.ID_, ImVec2(0, 0), ImVec2(width, height));
     
@@ -414,8 +409,8 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
 size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
 
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width = GE.getWidth();
+    auto height = GE.getHeight();
     auto masterPrevi = SoundMaster;
     
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
@@ -485,8 +480,8 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSyste
    
     //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     auto* m_window = GE.getWindow();
-    auto width = GE.glEng.getWidth();
-    auto height = GE.glEng.getHeight();
+    auto width = GE.getWidth();
+    auto height = GE.getHeight();
 
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)pausa.ID_, ImVec2(0, 0), ImVec2(width, height));
     

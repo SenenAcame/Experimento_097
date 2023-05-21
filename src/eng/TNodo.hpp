@@ -37,6 +37,7 @@ struct TNodo {
 
     TNodo *getFather() const noexcept;
     vecNodo *getSons() noexcept;
+    Vec3 getPosition() { return Vec3{matTransf_[3][0], matTransf_[3][1], matTransf_[3][2]}; }
 
     //setters
     void setTranslation(Vec3 trans);

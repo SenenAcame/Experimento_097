@@ -27,7 +27,7 @@
             rotateWeapon(ent, rend, phy);
             
             rend.node->setTranslation(Vec3 { phy.x, phy.y, phy.z });
-            GE.glEng.drawScene();
+            GE.drawScene();
         }
     );
     updateCamera(EM, GE);
@@ -93,12 +93,9 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
 }
 
 void RenSys2::drawWorld(GraphicEngine &GE) {
-    GE.glEng.beginScene();
-    GE.glEng.drawScene();
-    //GE.glEng.drawParticles();
-    //GE.glEng.drawBorder();
-    GE.glEng.drawSkybox(0);
-    //GE.glEng.endScene();
+    GE.beginScene();
+    GE.drawAllScene();
+    //GE.endScene();
 }
 
 void RenSys2::rotateWeapon(Enty& ent, RenderCmp2 &rend, PhysicsCmp2 &phy) {
@@ -168,11 +165,11 @@ void RenSys2::ImGUI_Prerender() const noexcept {
 void RenSys2::ImGUI_RenderUI(EntyMan& EM, GraphicEngine& GE) const noexcept{
     //ImGui::Text("This is some useful text");
     auto* m_window = GE.getWindow();
-    auto& player = EM.getEntityById(EM.getBoard().entyID);
-    auto& invent = EM.getComponent<InventarioCmp>(player);
-    auto stats     = EM.getComponent<EstadisticaCmp>(player);
-    auto width     = GE.glEng.getWidth();
-    auto height    = GE.glEng.getHeight();
+    auto& player  = EM.getEntityById(EM.getBoard().entyID);
+    auto& invent  = EM.getComponent<InventarioCmp>(player);
+    auto stats      = EM.getComponent<EstadisticaCmp>(player);
+    auto width  = GE.getWidth();
+    auto height = GE.getHeight();
    
     int magazine = 0;
     int ammo = 0;

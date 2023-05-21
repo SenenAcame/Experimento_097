@@ -2,7 +2,6 @@
 #include "../util/types.hpp"
 #include "UIsys.hpp"
 
-//struct TheEngine;
 struct LevelMan;
 struct GraphicEngine;
 
