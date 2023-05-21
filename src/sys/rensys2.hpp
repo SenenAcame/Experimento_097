@@ -15,6 +15,7 @@ struct RenSys2 {
     static constexpr double PI { std::numbers::pi };
 
     /*NUEVO*/ void update2 (EntyMan& EM, GraphicEngine& GE, UIsys& UIsys, double dt);
+    void pantallaCarga(GraphicEngine& GE, UIsys& UISys, double progress);
     size_t updateMenuInicio(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuDead(GraphicEngine& GE, UIsys& UISys);
     size_t updateMenuPausa(GraphicEngine& GE, UIsys& UISys, EntyMan& EM, SoundSystem_t& SouSys);

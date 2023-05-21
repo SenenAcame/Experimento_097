@@ -439,7 +439,7 @@ Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
     return power;
 }
 
-void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys) {
+void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys, UIsys& UISys) {
 
     auto& player = EM.getEntityById(player_ID);
 
@@ -460,12 +460,13 @@ void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_
 
     resetBlackboard(player_ID);
 
-    //UISys.hit1 = false;
-    //UISys.hit2 = false;
-    //UISys.hit3 = false;
-    //UISys.clockHit1 = 0;
-    //UISys.clockHit2 = 0;
-    //UISys.clockHit3 = 0;
+    UISys.hit1 = false;
+    UISys.hit2 = false;
+    UISys.hit3 = false;
+    UISys.clockGolpe = 0;
+    UISys.clockHit1 = 0;
+    UISys.clockHit2 = 0;
+    UISys.clockHit3 = 0;
 
 
     EM.callDestroy();

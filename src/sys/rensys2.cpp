@@ -38,6 +38,13 @@
     ImGUI_Postrender(GE);
 }
 
+void RenSys2::pantallaCarga(GraphicEngine& GE, UIsys& UISys, double progress){
+
+    ImGUI_Prerender();
+    UISys.pantallaCarga(GE,  progress);
+    ImGUI_Postrender(GE);
+}
+
 size_t RenSys2::updateMenuInicio(GraphicEngine& GE, UIsys& UISys) {
     size_t abandon = 0;
     ImGUI_Prerender();
@@ -168,14 +175,15 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
-    ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/chiller.ttf", 80.0f);
+    ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/Interface/Font/floyd.TTF", 60.0f);
     ImGuiStyle& style = ImGui::GetStyle();
 
     //Color negro
     style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
-    style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
+    style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.0f, 0.55f, 0.0f, 0.8f);
     style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
     style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
+    style.Colors[ImGuiCol_Button] = ImVec4(0,0,0,0);
     //style.FramePadding = ImVec2(0.0f, 0.0f);
 }
 

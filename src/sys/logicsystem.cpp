@@ -231,10 +231,12 @@ void LogicSystem::increaseStat(EntyMan& EM, Enty& player, Enty& power) {
 
     switch(power_type.type) {
         case PU_Type::Damage:
-            stats.extra_dmg += .2; 
+            stats.extra_dmg += .2;
+            EM.getBoard().progres.powerDamage ++; 
             break;
         case PU_Type::Speed: 
             stats.speed     *=  1.2;
+            EM.getBoard().progres.powerSpeed ++;
             break;
         case PU_Type::Health: 
             stats.hitpoints += 10;

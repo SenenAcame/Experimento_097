@@ -42,6 +42,9 @@ struct WavesProgres {
 
     double clockNextWave { 0 };
     double timeBtwWaves  { 3 };
+
+    int powerDamage       {0};
+    int powerSpeed        {0};
     
     bool   inRound       { false };
 };

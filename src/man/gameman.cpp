@@ -109,7 +109,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     SpawnSystem SpwSys;
     SelfDestSys DstSys;
     PartSys     PartSys;
-    AnimMan     AM(GE);
+    AnimMan     AM(GE,RenSys, UISys);
 
     bool dead { false };
     size_t actualMenu {abandon};
@@ -175,7 +175,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
         }
     }
     
-    LM.resetLevel(EM.getBoard().entyID, GE, SouSys);
+    LM.resetLevel(EM.getBoard().entyID, GE, SouSys, UISys);
     
     if(dead) abandon = 2;
     else     abandon = 0;

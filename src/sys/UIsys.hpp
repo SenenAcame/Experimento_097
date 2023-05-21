@@ -27,10 +27,17 @@ struct UIsys {
 
     //hits
     RTexture zarpazo;
+    RTexture zarpazo1;
+    RTexture golpe;
+
+
+    //Pantallas
+    RTexture cargando;
     RTexture inicio;
     RTexture muerte;
     RTexture controles;
     RTexture pausa;
+   
     //RTexture sonido;
 
     //Icons
@@ -41,11 +48,13 @@ struct UIsys {
     RTexture iconoBajas;
     RTexture iconoMira;
     RTexture iconoVida;
+    RTexture iconoPower;
+    RTexture iconoSpeed;
     
     int activateHit {0};
-    bool hit1{false}, hit2{false}, hit3{false};
-    double cd {2};
-    double clockHit1 {}, clockHit2 {}, clockHit3 {};
+    bool hit1{false}, hit2{false}, hit3{false}, redHit{false};
+    double cd {2}, cdG{0.5};
+    double clockHit1 {}, clockHit2 {}, clockHit3 {}, clockGolpe{};
     int randWidth1 {}, randWidth2 {}, randWidth3 {};
     int randHeight1{}, randHeight2{}, randHeight3{};
     bool jugar{false};
@@ -75,6 +84,7 @@ struct UIsys {
     size_t menuControles (GraphicEngine& GE, size_t next);
     size_t menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSystem_t& Sou);
     size_t menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou);
+    void pantallaCarga(GraphicEngine& GE, double progress);
     bool inGame{false};
     bool pause{false};
 
