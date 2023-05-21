@@ -20,13 +20,13 @@ struct LogicSystem {
 
     void colisionWall     (EntyMan& EM, Enty& current, Enty& colisioned, double dt);
     void colisionPlayer2  (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
-    void colisionEnemy2   (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt);
+    void colisionEnemy2   (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys);
     void colisionEneBullet(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     void colisionBullet   (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     void colisionWeapon2  (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
     void colisionPowerUp  (LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned);
 
-    void receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
+    void receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor, UIsys& UISys);
     void reciveDamge(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor);
     void markDestroy(Enty& enty_to_dele) { enty_to_dele.setDestroy(); }
     void cancelMove(EntyMan& EM, Enty& ent_move, double dt);

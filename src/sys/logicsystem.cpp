@@ -46,7 +46,7 @@ int aux = 0;
         }
         else if(entity.hasTAG<TEnemy>()){
             //proceso Colision Enemy
-            colisionEnemy2(LM, GE, entity, entity_colisioned, dt);
+            colisionEnemy2(LM, GE, entity, entity_colisioned, dt, UISys);
         }
         else if(entity.hasTAG<TEneBullet>()){
             //proceso Colision Bullet
@@ -88,7 +88,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
     else if(colisioned.hasTAG<TEnemy>()) {
         //jugador recibe daño del enemigo
-        receiveEntityDamage2(LM, GE, current, colisioned);
+        receiveEntityDamage2(LM, GE, current, colisioned, UISys);
     }
     else if(colisioned.hasTAG<TEneBullet>()) {
         //jugador recibe daño de bala enemiga
@@ -106,7 +106,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
 }
 
-/*NUEVO*/ void LogicSystem::colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt) {
+/*NUEVO*/ void LogicSystem::colisionEnemy2(LevelMan& LM, GraphicEngine& GE, Enty& current, Enty& colisioned, double dt, UIsys& UISys) {
     if(colisioned.hasTAG<TWall>()){
         //moverse hacia atras
         auto& EM = LM.getEM();
@@ -114,7 +114,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     }
     else if(colisioned.hasTAG<TPlayer>()){
         //enemigo hace daño al jugador
-        receiveEntityDamage2(LM, GE, colisioned, current);
+        receiveEntityDamage2(LM, GE, colisioned, current, UISys);
     }
     else if(colisioned.hasTAG<TBullet>()){
         //enemigo recibe daño de la bala
@@ -159,12 +159,12 @@ void LogicSystem::colisionPowerUp(LevelMan &LM, GraphicEngine &GE, Enty &current
     }
 }
 
-/*NUEVO*/ void LogicSystem::receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor) {
+/*NUEVO*/ void LogicSystem::receiveEntityDamage2(LevelMan& LM, GraphicEngine& GE, Enty& receptor, Enty& agressor, UIsys& UISys) {
     auto& EM = LM.getEM();
     auto& enemyStats = EM.getComponent<EstadisticaCmp>(agressor);
 
     if(enemyStats.ClockAttackEnemy < enemyStats.attackSpeedEnemy) return;
-
+    UISys.hitInterface(GE);
     enemyStats.ClockAttackEnemy = 0;
     reciveDamge(LM, GE, receptor, agressor);
 }

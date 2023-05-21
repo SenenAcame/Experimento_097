@@ -22,6 +22,8 @@ struct UIsys {
     
     using SYSCMPs      = MP::Typelist<PhysicsCmp2>;
     using SYSTAGs      = MP::Typelist<>;
+    using SoundCMPs    = MP::Typelist<SoundCmp>;
+    using MAPTAGs      = MP::Typelist<TMap>;
 
     //hits
     RTexture zarpazo;
@@ -37,6 +39,8 @@ struct UIsys {
     RTexture iconoSubfusil;
     RTexture iconoRonda;
     RTexture iconoBajas;
+    RTexture iconoMira;
+    RTexture iconoVida;
     
     int activateHit {0};
     bool hit1{false}, hit2{false}, hit3{false};
@@ -55,24 +59,28 @@ struct UIsys {
     float SoundMusic = 1;
     float SoundSFX = 1;
     float SoundVoices = 1;
+    bool iChangeMaster = false;
 
     //UI game
     void renderInterface(EntyMan& EM, GraphicEngine& GE, double dt);
     void hitInterface(GraphicEngine& GE);
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
 
+    float moveX = 0;
+    float moveY = 0;
+
     //menus
     size_t menuIni(GraphicEngine& GE, size_t next);
     size_t menuMuerto (GraphicEngine& GE, size_t next);
     size_t menuControles (GraphicEngine& GE, size_t next);
-    size_t menuPausa (GraphicEngine& GE, size_t next);
+    size_t menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSystem_t& Sou);
     size_t menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou);
     bool inGame{false};
     bool pause{false};
 
 
 
-    void iniText();
+    void iniText(GraphicEngine& GE);
 
     
 };

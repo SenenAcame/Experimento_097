@@ -3,7 +3,7 @@
 #include "soundsystem.hpp"
 #include <cstddef>
 
-void UIsys::iniText(){
+void UIsys::iniText(GraphicEngine& GE){
 
     zarpazo.setImage("assets/Interface/1280x720/zarpazo.png");
     inicio.setImage("assets/Interface/1280x720/pantalla_inicio_fondo.png");
@@ -12,26 +12,38 @@ void UIsys::iniText(){
     pausa.setImage("assets/Interface/1280x720/pantalla_pausa.png");
     
     //ICONS
-    iconoEscopeta.setImage("assets/Interface/1280x720/arma escopeta.png");
-    iconoPistola.setImage("assets/Interface/1280x720/arma pistola.png");
-    iconoSubfusil.setImage("assets/Interface/1280x720/arma fusil.png");
-    iconoRonda.setImage("assets/Interface/1280x720/rondas.png");
-    iconoBajas.setImage("assets/Interface/1280x720/bajas.png");
+    iconoEscopeta.setImage("assets/Interface/UI/capsula escopeta pequeño.png");
+    iconoPistola.setImage("assets/Interface/UI/capsula pistola pequeño.png");
+    iconoSubfusil.setImage("assets/Interface/UI/capsula fusil.png");
+    iconoRonda.setImage("assets/Interface/UI/rondas.png");
+    iconoBajas.setImage("assets/Interface/UI/bajas.png");
+    iconoMira.setImage("assets/Interface/1280x720/mira_borde.png");
+    iconoVida.setImage("assets/Interface/UI/vida.png");
+
+    moveX=GE.glEng.getWidth()/2;
+    moveY=GE.glEng.getHeight()/2.5;
 }
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("This is some useful text");
-    auto* m_window = GE.getWindow();
     auto board = EM.getBoard();
     auto& player = EM.getEntityById(board.entyID);
     auto& invent = EM.getComponent<InventarioCmp>(player);
     auto stats     = EM.getComponent<EstadisticaCmp>(player);
     auto width     = GE.glEng.getWidth();
     auto height    = GE.glEng.getHeight();
-   
+    auto inRound   = board.progres.inRound;
+
+    if(inRound == false){
+        moveY = moveY-1.4;
+    }
+    else if(moveY!=GE.glEng.getHeight()/2.5){
+        moveY = GE.glEng.getHeight()/2.5;
+    }
+
     int magazine = 0;
     int ammo     = 0;
-    double hp    = stats.hitpoints/100;
+    double hp    = (double)stats.hitpoints/100;
     int wave     = board.progres.actualWave;
     int kills    = board.wave.kills;
     unsigned int iconWeaponID = 0;
@@ -56,7 +68,35 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
 
     renderInterfaceHits(GE, dt);
 
-    ImGui::SetNextWindowPos(ImVec2(width/9.4,height/1.2));
+    if(inRound == false){
+        ImGui::SetNextWindowPos(ImVec2(moveX,moveY));
+        ImGui::SetNextWindowSize(ImVec2(width,height));
+        ImGui::Begin(
+            "UIPRUEBANEXTROUND", NULL,
+            ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+            | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+            | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+        );
+        ImGui::Text("%d", wave+1);
+
+        //ImGui::PopStyleColor();
+        ImGui::End();
+    }
+
+    ImGui::SetNextWindowPos(ImVec2(0,height/10*8.3-75));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIHPIcon", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconoVida.ID_, ImVec2(150,150));
+
+    //ImGui::PopStyleColor();
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(width/10*2-95,height/10*8.3-20));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIHP", NULL,
@@ -66,14 +106,24 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     );
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, IM_COL32(255,0,0,255));
     //ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0,0,0,0));
-    ImGui::ProgressBar(hp,ImVec2(250,40), "");
+    ImGui::ProgressBar(hp,ImVec2(250,40),"");
 
     //ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     ImGui::End();
 
+    ImGui::SetNextWindowPos(ImVec2(width/2-150,height/2-100));
+    ImGui::SetNextWindowSize(ImVec2(width,height));
+    ImGui::Begin(
+        "UIMira", NULL,
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
+        | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
+    );
+    ImGui::Image((void*)(intptr_t)iconoMira.ID_, ImVec2(300,200));
+    ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(width/2.38,0));
+    ImGui::SetNextWindowPos(ImVec2(width/2-90,0));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIiconWave", NULL,
@@ -96,7 +146,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::Text("%d", wave);
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(0,height/1.5));
+    ImGui::SetNextWindowPos(ImVec2(0,height/10*6.5-75));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIiconKills", NULL,
@@ -104,10 +154,10 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    ImGui::Image((void*)(intptr_t)iconoBajas.ID_, ImVec2(200,100));
+    ImGui::Image((void*)(intptr_t)iconoBajas.ID_, ImVec2(250,150));
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(width/10,height/1.5));
+    ImGui::SetNextWindowPos(ImVec2(width/10,height/10*5.9));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIKills", NULL,
@@ -120,7 +170,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("HP: %d", hp);
     //ImGui::Text("%d/%d", magazine, ammo );
     
-    ImGui::SetNextWindowPos(ImVec2(width/1.4,height/1.4));
+    ImGui::SetNextWindowPos(ImVec2(width/10*8.2-250,height/10*8-125));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIiconWeapon", NULL,
@@ -128,11 +178,11 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
-    ImGui::Image((void*)(intptr_t)iconWeaponID, ImVec2(240,130));
+    ImGui::Image((void*)(intptr_t)iconWeaponID, ImVec2(500,300));
     ImGui::End();
 
     ImGui::End();
-    ImGui::SetNextWindowPos(ImVec2(width/1.2,height/1.3));
+    ImGui::SetNextWindowPos(ImVec2(width/10*8.2,height/10*8));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIInventary", NULL,
@@ -184,11 +234,11 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     auto height = GE.glEng.getHeight();
 
     
-    ImGui::SetNextWindowPos(ImVec2(randWidth1,randHeight2));
+    ImGui::SetNextWindowPos(ImVec2(randWidth1-300,randHeight2-225));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit1", NULL,
-         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -202,7 +252,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     }
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(randWidth2,randHeight2));
+    ImGui::SetNextWindowPos(ImVec2(randWidth2-350,randHeight3-300));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit2", NULL,
@@ -212,7 +262,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit2 == true) {
         clockHit2 += dt;
-        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(800, 750));
+        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(700, 600));
         if(clockHit2 >= cd) {
             hit2 = false;
             clockHit2 = 0;
@@ -220,7 +270,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     }
     ImGui::End();
 
-    ImGui::SetNextWindowPos(ImVec2(randWidth3,randHeight3));
+    ImGui::SetNextWindowPos(ImVec2(randWidth3-325,randHeight3-250));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit3", NULL,
@@ -230,7 +280,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     );
     if(hit3 == true) {
         clockHit3 += dt;
-        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(850, 800));
+        ImGui::Image((void*)(intptr_t)zarpazo.ID_, ImVec2(650, 500));
         if(clockHit3 >= cd) {
             hit3 = false;
             clockHit3 = 0;
@@ -255,34 +305,34 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/6.4));
+
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.0f);
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*3));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
         
         next = 1;
     }
     ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
 
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/4.4));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*4.5));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Sonido", ImVec2(200,100))){
         
         next = 5;
     }
-    ImGui::PopStyleColor();
 
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*6));
     if(ImGui::Button("Controles", ImVec2(200,100))){
         
         next = 4;
     }
-    ImGui::PopStyleColor();
 
-    ImGui::SetCursorPos(ImVec2(height/1.7,width/2.4));
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
+    ImGui::SetCursorPos(ImVec2(width/10*1.1,height/10*7.5));
     if(ImGui::Button("Salir", ImVec2(200,100))){
         
+        glfwSetWindowShouldClose(GE.getWindow(), GL_TRUE);
         next = 0;
     }
     ImGui::PopStyleColor();
@@ -310,9 +360,13 @@ size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+     ImGui::SetCursorPos(ImVec2(width/10*7,height/10*4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Jugar", ImVec2(200,100))){
+        next = 1;
+    }
+    ImGui::SetCursorPos(ImVec2(width/10*7,height/10*6));
+    if(ImGui::Button("Inicio", ImVec2(200,100))){
         next = 0;
     }
     ImGui::PopStyleColor();
@@ -338,14 +392,15 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
         ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::SetCursorPos(ImVec2(width/10*8,height/10*8));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
-            
-            next = 1;
+
+            next = 3;
         }
         else{
+
             next = 0;
         }
         
@@ -361,26 +416,39 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     auto* m_window = GE.getWindow();
     auto width = GE.glEng.getWidth();
     auto height = GE.glEng.getHeight();
+    auto masterPrevi = SoundMaster;
     
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)inicio.ID_, ImVec2(0, 0), ImVec2(width, height));
     
     //ImGui::PushStyleVar(ImGuiCol_WindowBg);
-    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowPos(ImVec2(width/10,height/10*3));
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "MenuSonido", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
-    ImGui::SliderFloat("Master:", &SoundMaster, 0.0f, 1.0f); 
-    ImGui::SliderFloat("Ambiente:", &SoundAmbient, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.55f);
+    float defaultFont = ImGui::GetFont()->Scale;
+    ImGui::GetFont()->Scale /=1.5;
+    ImGui::PushFont(ImGui::GetFont());
 
-    ImGui::SetCursorPos(ImVec2(height/2,width/3));
+    ImGui::SliderFloat("Master", &SoundMaster, 0.0f, 1.0f); 
+    ImGui::SliderFloat("Ambiente", &SoundAmbient, 0.0f, 1.0f);      
+    ImGui::SliderFloat("Musica", &SoundMusic, 0.0f, 1.0f);
+    ImGui::SliderFloat("SFX", &SoundSFX, 0.0f, 1.0f);
+    ImGui::SliderFloat("Voces", &SoundVoices, 0.0f, 1.0f);
+    
+    ImGui::GetFont()->Scale =defaultFont;
+    ImGui::PopFont();
+    ImGui::PopItemWidth();
+
+    ImGui::SetCursorPos(ImVec2(width/10*3,height/10*5));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Volver", ImVec2(200,100))){
         if(inGame == true){
             
-            next = 1;
+            next = 3;
         }
         else{
             next = 0;
@@ -390,15 +458,30 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     ImGui::PopStyleColor();
     ImGui::End();
 
-    //Sou.changeMasterVCA(SoundMaster);
-    //Sou.changeVCA(0,SoundAmbient);
+    if(masterPrevi != SoundMaster){
+        Sou.changeMasterVCA(SoundMaster);
+        SoundAmbient = SoundMaster;
+        SoundMusic = SoundMaster;
+        SoundSFX = SoundMaster;
+        SoundVoices = SoundMaster;
+    }
+    
+    Sou.changeVCA(0,SoundAmbient);
+    Sou.changeVCA(1,SoundMusic);
+    Sou.changeVCA(2,SoundSFX);
+    Sou.changeVCA(3,SoundVoices);
     
 
     return next;
 }
 
-size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
-    
+size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSystem_t& SouSys){
+    EM.foreach<SoundCMPs, MAPTAGs>(
+        [&](Enty& entity, SoundCmp& sound) {
+            sound.play=true;
+            sound.loop=true;
+        }
+    );
    
     //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     auto* m_window = GE.getWindow();
@@ -434,7 +517,6 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next){
     ImGui::SetCursorPos(ImVec2(height/1.7,width/3.4));
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(0, 0, 0,0)));
     if(ImGui::Button("Controles", ImVec2(200,100))){
-        std::cout<<"AQUI NO F\n";
         next = 4;
     }
     ImGui::PopStyleColor();

@@ -55,10 +55,15 @@ size_t RenSys2::updateMenuDead(GraphicEngine& GE, UIsys& UISys) {
    return abandon;
 }
 
- size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys){
+ size_t RenSys2::updateMenuPausa(GraphicEngine& GE, UIsys& UISys, EntyMan& EM, SoundSystem_t& SouSys){
     size_t abandon = 3;
+
     ImGUI_Prerender();
-    abandon = UISys.menuPausa(GE, abandon);
+    
+    
+    abandon = UISys.menuPausa(GE, abandon, EM, SouSys);
+    
+    
     ImGUI_Postrender(GE);
     return abandon;
  }
@@ -179,6 +184,10 @@ void RenSys2::initIMGUI(GraphicEngine& GE) {
     ImGuiStyle& style = ImGui::GetStyle();
     //Color negro
     style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
+    style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
+    style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
+    style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.55f, 0.0f, 1.f);
+    //style.FramePadding = ImVec2(0.0f, 0.0f);
 }
 
 void RenSys2::ImGUI_Prerender() const noexcept {

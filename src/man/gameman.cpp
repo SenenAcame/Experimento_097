@@ -21,18 +21,19 @@
 #include "../sys/partsys.hpp"
 
 void GameMan::game() {
-    LevelMan      LM;
+
     RenSys2       RenSys;
     InpSys2       InpSys;
     SoundSystem_t SouSys;
+    LevelMan      LM;
     UIsys         UISys;
     GraphicEngine GE;
     
-    //GE.glEng.setResolution(1920, 1080);
+    GE.glEng.setResolution(1280, 700);
     
     RenSys.initIMGUI(GE);
     init_config(GE);
-    UISys.iniText();
+    UISys.iniText(GE);
     
     size_t player_ID = LM.createPlayer2(GE, Vec3{-35, 3.5, -5}, SouSys);
     LM.getEM().getBoard().entyID = player_ID;
@@ -100,6 +101,7 @@ size_t GameMan::bucleInicio(RenSys2& RenSys, GraphicEngine& GE, UIsys& UISys){
     while(abandon == 0 && !glfwWindowShouldClose(GE.getWindow())) {
         abandon = RenSys.updateMenuInicio(GE, UISys);
     }
+
     return abandon;
 }
 
@@ -140,7 +142,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
         switch (actualMenu) {
             case 3: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                actualMenu = RenSys.updateMenuPausa( GE, UISys);
+                actualMenu = RenSys.updateMenuPausa( GE, UISys, EM, SouSys);
                 UISys.pause =false;
                 if(actualMenu == 0) {
                     abandon = actualMenu;
@@ -168,7 +170,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
-                //SouSys.update (EM);
+                SouSys.update (EM);
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
                 if(UISys.pause == true) {
@@ -211,7 +213,7 @@ size_t GameMan::bucleControles(GraphicEngine &GE ,RenSys2 &RenSys, UIsys &UISys)
 
 size_t GameMan::bucleSonido(GraphicEngine& GE, RenSys2& RenSys, UIsys& UISys, SoundSystem_t& Sou){
     size_t abandon { 5 };
-        
+    
     while(abandon == 5 && !glfwWindowShouldClose(GE.getWindow())) {
         //menu = RenSys.updateMenuDead(GE, UISys, menu);
         abandon = RenSys.updateMenuSonido(GE, UISys, Sou);
