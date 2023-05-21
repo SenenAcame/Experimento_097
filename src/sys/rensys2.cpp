@@ -84,7 +84,7 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& inv    = EM.getComponent<InventarioCmp>(player);
     auto* cam = GE.getCamera();
-
+    
     float pitch      = cam->Pitch;
     float yaw        = cam->Yaw;
     TwoAngles angles = walkAndReload(inv, phy.v_lin);

@@ -96,6 +96,7 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
             int salaene = getSala(map_cmp, p.x, p.z);
             if(ai.behaviour != SB::Diying) {
                 if(salaene == salaplayer || salaene == -1) {
+
                     if(en.hasTAG<TDistEnemy>()) EM.getComponent<SalaCmp>(player).sala = salaplayer; 
 
                     EM.getComponent<SalaCmp>(en).sala = salaene;
@@ -157,14 +158,15 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
 
     int salaplayer = getSala(map_cmp, phy_cmp.x, phy_cmp.z);
 
+    EM.getComponent<SalaCmp>(player).sala = salaplayer;
+
     EM.foreach<EneCMPs, EneTAGs>(
         [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
             int salaene = getSala(map_cmp, p.x, p.z);
             if(ai.behaviour != SB::Diying) {
                 if(salaene == salaplayer || salaene == -1) {
-                    ai.cooldown_ruta=0;
-                    if(en.hasTAG<TDistEnemy>()) EM.getComponent<SalaCmp>(player).sala = salaplayer; 
-
+                    ai.cooldown_ruta = 0;
+                    
                     EM.getComponent<SalaCmp>(en).sala = salaene;
 
                     bool sameSala = 
@@ -177,7 +179,7 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                 }
                 else {
                     ai.behaviour=SB::Patrol;
-                    if(ai.cooldown_ruta>0){
+                    if(ai.cooldown_ruta>0) {
                         ai.cooldown_ruta-=dt;
                     }
                     else{
