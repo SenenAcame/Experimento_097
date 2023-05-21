@@ -62,21 +62,6 @@ void GraphicEngine::removePlayerModel() {
     playerModel->remove();
 }
 
-//TNodo* GraphicEngine::loadModel(std::string file) {
-//    return glEng.createModel(
-//        NULL,
-//        Vec3(1,0,0),
-//        Vec3(0.f),
-//        Vec3(1.f),
-//        file
-//    );
-//}
-
-//void GraphicEngine::loadTexture(TNodo* node, std::string text) {
-//    RTexture* texture = glEng.getRG()->getResource<RTexture>(text);
-//    node->setTexture(texture);
-//}
-
 //void GraphicEngine::drawHitbox(Vec3 pos, Vec3 hitb) {
 //
 //    ResourceGestor* rg = glEng.getRG();

@@ -84,7 +84,7 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
     auto& phy    = EM.getComponent<PhysicsCmp2>(player);
     auto& inv    = EM.getComponent<InventarioCmp>(player);
     auto* cam = GE.getCamera();
-    
+
     float pitch      = cam->Pitch;
     float yaw        = cam->Yaw;
     TwoAngles angles = walkAndReload(inv, phy.v_lin);
@@ -102,8 +102,8 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
 TwoAngles RenSys2::walkAndReload(InventarioCmp &inv, double speed) {
     if(inv.reloading == 1) {
         inv.ang_reload += inv.var_ang;
-        if(inv.ang_reload >= 10 || inv.ang_reload <= -10)
-            inv.var_ang *= -1;
+        //if(inv.ang_reload >= 10 || inv.ang_reload <= -10)
+        //    inv.var_ang *= -1;
     }
     else inv.ang_reload = 0;
 

@@ -21,13 +21,12 @@
 #include "../sys/partsys.hpp"
 
 void GameMan::game() {
-
-    RenSys2       RenSys;
-    InpSys2       InpSys;
-    LevelMan      LM;
-    SoundSystem_t& SouSys=LM.getSouSys();
-    UIsys         UISys;
-    GraphicEngine GE;
+    RenSys2        RenSys;
+    InpSys2        InpSys;
+    LevelMan       LM;
+    SoundSystem_t& SouSys = LM.getSouSys();
+    UIsys          UISys;
+    GraphicEngine  GE;
     
     GE.setWindowResolution(1280, 700);
     
