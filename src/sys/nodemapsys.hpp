@@ -12,13 +12,13 @@ struct NodeMapSys {
     using MapTAGsSpawns = MP::Typelist<TSpawn>;
     using EneTAGs       = MP::Typelist<TEnemy>;
 
-    /*VIEJO*/ void update (EntyMan& EM);
-    /*NUEVO*/ void update2(EntyMan& EM, std::size_t map_ID);
+    ///*VIEJO*/ void update (EntyMan& EM);
+    ///*NUEVO*/ void update2(EntyMan& EM, std::size_t map_ID);
     void update3(EntyMan& EM, std::size_t map_ID, double);
     
     int getSala(NodoCmp& map, float x, float z);
     void vaciaPadres(std::vector<nodomap>);
-    std::vector<sala> static creaSalas();
+    //std::vector<sala> static creaSalas();
     std::vector<sala> static creaSalas2();
     std::vector<nodomap> static creaNodos();
     std::vector<nodomap> aEstrella(std::vector<nodomap>, nodomap, nodomap);

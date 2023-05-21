@@ -29,7 +29,7 @@
 
     Enty& map = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(map);
-    EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas(), .nodos=NodeMapSys::creaNodos()});
+    EM.addComponent<NodoCmp>    (map, NodoCmp{.salas = NodeMapSys::creaSalas2(), .nodos=NodeMapSys::creaNodos()});
     EM.addComponent<SoundCmp>   (map, SoundCmp{.programmerSoundContext = SouSys.createinstance(0), .parametro = 0, .play = true, .loop=true});
     EM.addTag<TMap>(map);
 
