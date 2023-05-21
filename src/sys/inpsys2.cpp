@@ -19,31 +19,39 @@
         [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
             bool up = false, down = false;
 
-
-            //if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer) {
-            //    notReloading(LM, eng, equip); 
-            //    equip.clockReload = 0;
+            //double weaponReloadTimer = 0;
+            //double magazine          = 0;
+            //double maxMagazine       = 0;
+            //double retroceso         = 0;
+            //switch (equip.equipada) {
+            //    case 0: 
+            //        weaponReloadTimer = equip.gun.reload_T;
+            //        magazine          = equip.gun.magazine;
+            //        maxMagazine       = equip.gun.maxMagazine;
+            //        retroceso         = equip.gun.recoil;
+            //    break;
+            //    case 1: 
+            //        weaponReloadTimer = equip.shot.reload_T;
+            //        magazine          = equip.shot.magazine;
+            //        maxMagazine       = equip.shot.maxMagazine;
+            //        retroceso         = equip.shot.recoil;
+            //    break;
+            //    case 2: 
+            //        weaponReloadTimer = equip.rifle.reload_T;
+            //        magazine          = equip.rifle.magazine;
+            //        maxMagazine       = equip.rifle.maxMagazine;
+            //        retroceso         = equip.rifle.recoil;
+            //    break;
+            //    default: break;
             //}
-            //else if(equip.reloading == 1) {
-            //    equip.clockReload+=dt;
-            //}
-            //if(mouse.isLeftPressed()) { 
+            //if(mouse.isButtonPressed(LEFT_Button)) { 
             //    if(equip.reloading == 0 && magazine > 0) {
-            //        movementMouse(eng, rend, phy, retroceso); 
-            //        shoot(LM, player, eng, SS, equip);
+            //        //shoot(LM, player, eng, SS, equip);
             //    }
             //    else if (magazine == 0 && equip.reloading == 0){
-            //        movementMouse(eng, rend, phy, 0);
-            //        reload(LM, eng, equip); 
-            //    }
-            //    else {
-            //        movementMouse(eng, rend, phy, 0);
+            //        //reload(LM, eng, equip); 
             //    }
             //}
-            //else{
-            //    movementMouse(eng, rend, phy, 0);
-            //}
-
             //if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer) {
             //    //notReloading(LM, eng, equip); 
             //    //equip.clockReload = 0;
@@ -53,8 +61,6 @@
             //}
 
             equip.clockCadence += dt;
-
-
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
