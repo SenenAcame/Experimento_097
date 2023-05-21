@@ -134,7 +134,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
 
     //LM.createNormalEnemyAnim  (GE, Vec3{ -40,   1, -5 }, SouSys);
     //LM.createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys);
-    LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
+    //LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
 
     constexpr double dt = 1.0 / 60;
 
@@ -171,7 +171,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
                 //SouSys.update (EM);
-                SpwSys.update (LM, GE, SouSys, dt);
+                //SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
                 if(UISys.pause == true) {
                     actualMenu = 3;

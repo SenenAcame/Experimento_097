@@ -18,17 +18,16 @@
     EM.foreach<SYSCMPs, SYSTAGs>(
         [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
             bool up = false, down = false;
-
-            if(equip.reloading == 1) { equip.clockReload += dt; }
-            equip.clockCadence += dt;
             phy.v_lin = phy.v_ang = 0;
+
+            updateStateWeapon(LM, GE, equip, dt);
 
             if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
             if(keyboard.isKeyPressed(input.key_up))         { phy.v_lin =  stats.speed; up   = true; }
             if(keyboard.isKeyPressed(input.key_down))       { phy.v_lin = -stats.speed; down = true; }
             if(keyboard.isKeyPressed(input.key_left))       { digonalMove(phy, -stats.speed, up, down); }
             if(keyboard.isKeyPressed(input.key_right))      { digonalMove(phy, stats.speed, down, up); }
-            if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { reload2(LM, GE, equip); }
+            if(keyboard.isKeyPressed(input.key_rldCrrAmmo)) { equip.reloading = 1; }
             if(keyboard.isKeyPressed(input.key_weapon1))    { changeWeapon2(LM, GE, equip, rend, 0); }
             if(keyboard.isKeyPressed(input.key_weapon2) && equip.inventary[1] != 0) { changeWeapon2(LM, GE, equip, rend, 1); }
             if(keyboard.isKeyPressed(input.key_weapon3) && equip.inventary[2] != 0) { changeWeapon2(LM, GE, equip, rend, 2); }
@@ -178,6 +177,22 @@
     return { wpn.magazine, wpn.ammo };
 }
 
+/*NUEVO*/ void InpSys2::updateStateWeapon(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, double const dt) {
+    double time {};
+    switch (invent.equipada) {
+        case 0: time = invent.gun.reload_T;   break;
+        case 1: time = invent.shot.reload_T;  break;
+        case 2: time = invent.rifle.reload_T; break;
+    }
+
+    if(invent.reloading == 1) {
+        invent.clockReload += dt;
+        if(invent.clockReload >= time) reload2(LM, GE, invent);
+    }
+
+    invent.clockCadence += dt;
+}
+
 /*NUEVO*/ void InpSys2::reload2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent) {
     auto& EM = LM.getEM();
     switch (invent.equipada) {
@@ -201,29 +216,30 @@
         wpn.magazine = wpn.ammo;
         wpn.ammo     = 0;
     }
-
-    invent.reloading = 1;
+    invent.clockReload = 0;
+    invent.reloading   = 0;
 }
 
 /*NUEVO*/ void InpSys2::shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys) {
     Mag_Tim_Cad values {};
     
     switch (invent.equipada) {
-        case 0: values = shootProcess(invent.gun);   break;
-        case 1: values = shootProcess(invent.shot);  break;
-        case 2: values = shootProcess(invent.rifle); break;
+        case 0: values = valuesWeapon(invent.gun);   break;
+        case 1: values = valuesWeapon(invent.shot);  break;
+        case 2: values = valuesWeapon(invent.rifle); break;
     }
-    
-    if(invent.reloading == 1 && invent.clockReload <= values.tim) return;
 
+    bool reloading = invent.reloading == 1 && invent.clockReload <= values.tim;
+    if(reloading) return;
+    
     invent.clockReload = 0;
     invent.reloading   = 0;
     
     if(values.mag > 0) createBullet2(LM, GE, invent, phy, SouSys, values.cad);
-    else               reload2(LM, GE, invent);
+    else               invent.reloading = 1;
 }
 
-/*NUEVO*/ Mag_Tim_Cad InpSys2::shootProcess(Weapon& wpn) {
+/*NUEVO*/ Mag_Tim_Cad InpSys2::valuesWeapon(Weapon& wpn) {
     return { wpn.magazine, wpn.reload_T, wpn.cadence };
 }
 

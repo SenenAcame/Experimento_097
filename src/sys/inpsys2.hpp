@@ -33,12 +33,13 @@ struct InpSys2 {
     ///*VIEJO*/ void checkPressed(const irr::SEvent& event, KeySym k);
 
 private:
-    /*NUEVO*/ int previousKeyStatus  (int k, int actual, int prev, int lock);
-    /*NUEVO*/ int previousMouseStatus(int k, int actual, int prev, int lock);
+    /*NUEVO*/ int  previousKeyStatus  (int k, int actual, int prev, int lock);
+    /*NUEVO*/ int  previousMouseStatus(int k, int actual, int prev, int lock);
+    /*NUEVO*/ void updateStateWeapon(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, double const dt);
     /*NUEVO*/ void reload2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent);
     /*NUEVO*/ void reloadProcess2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, Weapon& wpn);
     /*NUEVO*/ void shoot2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys);
-    /*NUEVO*/ Mag_Tim_Cad shootProcess(Weapon& wpn);
+    /*NUEVO*/ Mag_Tim_Cad valuesWeapon(Weapon& wpn);
     /*NUEVO*/ void createBullet2(LevelMan& LM, GraphicEngine& GE, InventarioCmp& invent, PhysicsCmp2& phy, SoundSystem_t& SouSys, double cadenciaWeapon);
     
     void bulletProcess(LevelMan& LM, GraphicEngine& GE, ECamera* cam, Weapon& wpn, 
