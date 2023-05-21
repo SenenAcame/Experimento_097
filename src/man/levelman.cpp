@@ -177,7 +177,7 @@
     int init_frame = rand() % frames;
 
     std::string file_model        = "assets/models/personajes/monstruo2/enemigo2.obj";
-    std::vector<std::string> anim = { "monstruo2/caminar_2/monstruo2_caminar_" };
+    std::vector<std::string> anim = { "monstruo2/caminar/monstruo2_caminar_" };
     std::vector<int> framesAnim   = { frames };
     Vec3 base_stats = { 20, 20, 5 };
 
@@ -253,7 +253,7 @@
 
     Enty& enemy = EM.createEntity();
     //CMPS
-    defineAI(enemy, SB::Two_Steps, 0.1);
+    defineAI(enemy, SB::Shoot, 1.);
 
     auto& stats = EM.addComponent<EstadisticaCmp>(
         enemy, 

@@ -132,7 +132,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
 
     //LM.createNormalEnemyAnim  (GE, Vec3{ -40,   1, -5 }, SouSys);
     //LM.createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys);
-    //LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
+    LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
 
     constexpr double dt = 1.0 / 60;
 
