@@ -1,5 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
+#include "../util/structs_aux.hpp"
 #include "soundsystem.hpp"
 #include <cstddef>
 
@@ -28,6 +29,7 @@ struct RenSys2 {
     void drawWorld(GraphicEngine& GE);
     void rotateWeapon(Enty& ent, RenderCmp2& rend, PhysicsCmp2& phy);
     void rotateEnemy (Enty& ent, RenderCmp2& rend, PhysicsCmp2& phy);
+    static TwoAngles walkAndReload(InventarioCmp& inv, double speed);
 
     //IMGUI
     void initIMGUI(GraphicEngine& GE);

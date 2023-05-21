@@ -85,22 +85,42 @@ void RenSys2::updateCamera(EntyMan& EM, GraphicEngine& GE) {
     auto& inv    = EM.getComponent<InventarioCmp>(player);
     auto* cam = GE.getCamera();
 
-    float pitch = cam->Pitch;
-    float yaw   = cam->Yaw;
+    float pitch      = cam->Pitch;
+    float yaw        = cam->Yaw;
+    TwoAngles angles = walkAndReload(inv, phy.v_lin);
 
+    float total_x = -yaw  + angles.alfa;
+    float total_y = pitch + angles.beta;
+
+    ren.node->setRotation(Vec3(0, total_x, total_y));
+    cam->updateCameraVectors();
+
+    phy.orienx = glm::radians(pitch);
+    phy.orieny = glm::radians(yaw);
+}
+
+TwoAngles RenSys2::walkAndReload(InventarioCmp &inv, double speed) {
     if(inv.reloading == 1) {
         inv.ang_reload += inv.var_ang;
-        if(inv.ang_reload >= 5 || inv.ang_reload <= -5)
+        if(inv.ang_reload >= 10 || inv.ang_reload <= -10)
             inv.var_ang *= -1;
     }
     else inv.ang_reload = 0;
 
-    float extra_rot = inv.ang_reload;
-
-    ren.node->setRotation(Vec3(0, -yaw, pitch + extra_rot));
-    cam->updateCameraVectors();
-    phy.orienx = glm::radians(pitch);
-    phy.orieny = glm::radians(yaw);
+    if(speed != 0){
+        inv.ang_walk_x += inv.var_x;
+        inv.ang_walk_y += inv.var_y;
+        if(inv.ang_walk_x >= 3 || inv.ang_walk_x <= -3)
+            inv.var_x *= -1;
+        if(inv.ang_walk_y >= 3 || inv.ang_walk_y <= -3)
+            inv.var_y *= -1;
+    }
+    else {
+        inv.ang_walk_x = 0;
+        inv.ang_walk_y = 0;
+    }
+    
+    return { inv.ang_walk_x, inv.ang_walk_y + inv.ang_reload };
 }
 
 void RenSys2::drawWorld(GraphicEngine &GE) {

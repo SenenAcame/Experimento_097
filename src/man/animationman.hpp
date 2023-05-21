@@ -5,9 +5,9 @@
 struct AnimMan {
 
     AnimMan(GraphicEngine& GE) {
-        //initEnemy1Anim(GE);
-        //initEnemy2Anim(GE);
-        //initEnemy3Anim(GE);
+        initEnemy1Anim(GE);
+        initEnemy2Anim(GE);
+        initEnemy3Anim(GE);
     }
 
     void initEnemy1Anim(GraphicEngine& GE) {

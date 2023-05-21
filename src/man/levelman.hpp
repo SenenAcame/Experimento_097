@@ -1,18 +1,13 @@
 #pragma once
 #include "../util/types.hpp"
 #include "../util/waves_aux.hpp"
-//#include "../eng/engine.hpp"
+#include "../util/structs_aux.hpp"
 #include <cstddef>
 #include <numbers>
 
 struct SoundSystem_t;
 struct GraphicEngine;
 struct PartSys;
-
-
-struct TwoAngles {
-    double alfa { 0 }, beta { 0 };
-};
 
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;

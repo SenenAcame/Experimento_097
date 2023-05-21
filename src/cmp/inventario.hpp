@@ -65,5 +65,9 @@ struct InventarioCmp {
     
     float  ang_reload     { 0 };
     float  var_ang        { 0.5 };
+
+    float ang_walk_x { 0 }, ang_walk_y { 0 };
+    float      var_x { 0.2 },    var_y { 0.2 };
+
     static constexpr uint8_t id { 5 }; //0000100000
 };

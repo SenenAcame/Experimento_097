@@ -158,13 +158,13 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 RenSys.update2(EM, GE, UISys, dt);
                 MapSys.update3(EM, map_ID, dt);
                 InpSys.update2(LM, GE, SouSys, dt, UISys);
-                //AISys. update2(LM, GE, dt);
+                AISys. update2(LM, GE, dt);
                 PhySys.update (EM, dt);
                 ColSys.update (EM);
                 LogSys.update2(LM, GE, dt, UISys, dead);
                 PhySys.update_after_colision(EM, dt);
                 //SouSys.update (EM);
-                //SpwSys.update (LM, GE, SouSys, dt);
+                SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
 
                 if(UISys.pause == true) actualMenu = 3;
