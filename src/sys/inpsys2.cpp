@@ -19,8 +19,42 @@
         [&](Enty& player, InputCmp2& input, RenderCmp2& rend, PhysicsCmp2& phy, InventarioCmp& equip, EstadisticaCmp& stats) {
             bool up = false, down = false;
 
-            if(equip.reloading == 1) { equip.clockReload += dt; }
+
+            //if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer) {
+            //    notReloading(LM, eng, equip); 
+            //    equip.clockReload = 0;
+            //}
+            //else if(equip.reloading == 1) {
+            //    equip.clockReload+=dt;
+            //}
+            //if(mouse.isLeftPressed()) { 
+            //    if(equip.reloading == 0 && magazine > 0) {
+            //        movementMouse(eng, rend, phy, retroceso); 
+            //        shoot(LM, player, eng, SS, equip);
+            //    }
+            //    else if (magazine == 0 && equip.reloading == 0){
+            //        movementMouse(eng, rend, phy, 0);
+            //        reload(LM, eng, equip); 
+            //    }
+            //    else {
+            //        movementMouse(eng, rend, phy, 0);
+            //    }
+            //}
+            //else{
+            //    movementMouse(eng, rend, phy, 0);
+            //}
+
+            //if(equip.reloading == 1 && equip.clockReload >= weaponReloadTimer) {
+            //    //notReloading(LM, eng, equip); 
+            //    //equip.clockReload = 0;
+            //}
+            //else if(equip.reloading == 1) { 
+            //    equip.clockReload += dt; 
+            //}
+
             equip.clockCadence += dt;
+
+
             phy.v_lin = phy.v_ang = 0;
 
             if(mouse.isButtonPressed(LEFT_Button))          { shoot2(LM, GE, equip, phy, SouSys); }
