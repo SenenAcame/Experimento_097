@@ -325,8 +325,11 @@ void LogicSystem::chanceDrop(LevelMan& LM, GraphicEngine& GE, PhysicsCmp2& phy) 
 
     if(num <= bb.spawn_perc) {
         LM.createPowerUp(GE, phy);
-        if(bb.spawn_perc <= 8) {
+        if(bb.spawn_perc > 8) {
             bb.spawn_perc = bb.spawn_perc-18 ;
+        }
+        else{
+            bb.spawn_perc = 8 ;
         }
     }
 }
