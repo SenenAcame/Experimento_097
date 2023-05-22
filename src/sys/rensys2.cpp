@@ -50,7 +50,7 @@
 
     drawWorld(GE);
 
-    ImGUI_RenderUI();
+    //ImGUI_RenderUI();
     ImGUI_Postrender(GE);
 }
 

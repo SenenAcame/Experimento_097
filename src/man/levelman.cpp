@@ -478,8 +478,8 @@ void LevelMan::cleanHitsInterface(TheEngine& dev ,double dt) {
 
 /*NUEVO*/ Enty& LevelMan::createNormalEnemyAnim(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
     std::string file_model = "assets/models/personajes/monstruo2/enemigo2.obj";
-    std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_caminar_1", "monstruo2/caminar/monstruo2_caminar_1"};
-    std::vector<int> framesAnim = {181,181};
+    std::vector<std::string> anim = {"monstruo2/caminar/monstruo2_caminar", /*"monstruo2/caminar/monstruo2_caminar_1"*/};
+    std::vector<int> framesAnim = {111,/*181*/};
     Enty& enemy = EM.createEntity();
     //CMPS
     defineAI(enemy);
