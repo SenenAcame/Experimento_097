@@ -358,7 +358,6 @@ private:
         {XK_odiaeresis      , false},
         {XK_division        , false},
         {XK_oslash          , false},
-        {XK_ooblique        , false},
         {XK_ugrave          , false},
         {XK_uacute          , false},
         {XK_ucircumflex     , false},
