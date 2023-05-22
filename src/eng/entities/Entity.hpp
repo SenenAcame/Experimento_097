@@ -10,6 +10,8 @@
 struct Entity {
     Entity(){};
 
+    ~Entity(){};
+
     virtual void draw(Mat4 mat, bool border) = 0;
 
     bool unused_ {true};
