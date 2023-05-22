@@ -284,7 +284,7 @@ PhysicsCmp2& phy, SoundSystem_t& SouSys, double extra, bool is_shot, int lock) {
         LM.createShotgunBullets2(
             GE, phy, 
             EstadisticaCmp { 
-                .damage = static_cast<int>(5 * extra), 
+                .damage = static_cast<int>(8 * extra), 
                 .speed  = 0.5f 
             }, 
             GE.getFrontCamera(), SouSys

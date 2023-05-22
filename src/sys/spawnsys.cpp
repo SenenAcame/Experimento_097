@@ -79,6 +79,7 @@ void SpawnSystem::updateWave(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& Sou
     else if(!progres.inRound) {
         //Tiempo entre oleadas
         progres.clockNextWave += dt;
+        LM.getEM().getComponent<EstadisticaCmp>(LM.getEM().getEntityById(bb.entyID)).hitpoints = 100;
 
         bool toNextWave = progres.clockNextWave >= progres.timeBtwWaves;
 

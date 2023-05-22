@@ -214,7 +214,7 @@
     std::string file_model        = "assets/models/personajes/monstruo3/enemigo_3.obj";
     std::vector<std::string> anim = { "monstruo3/caminar/monstruo3_caminar_"};
     std::vector<int> framesAnim   = { 165};
-    Vec3 base_stats = { 50, 30, 4 };
+    Vec3 base_stats = { 115, 30, 3.5 };
 
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -249,7 +249,7 @@
     std::string file_model        = "assets/models/personajes/monstruo1/enemigo1.obj";
     std::vector<std::string> anim = { "monstruo1/caminar/monstruo1_caminar_" };
     std::vector<int> framesAnim   = { 108};
-    Vec3 base_stats = { 20, 20, 5 };
+    Vec3 base_stats = { 20, 24, 6 };
 
     Enty& enemy = EM.createEntity();
     //CMPS
@@ -439,7 +439,7 @@ Enty& LevelMan::createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy) {
     return power;
 }
 
-void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys) {
+void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys, UIsys& UISys) {
 
     auto& player = EM.getEntityById(player_ID);
 
@@ -460,12 +460,13 @@ void LevelMan::resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_
 
     resetBlackboard(player_ID);
 
-    //UISys.hit1 = false;
-    //UISys.hit2 = false;
-    //UISys.hit3 = false;
-    //UISys.clockHit1 = 0;
-    //UISys.clockHit2 = 0;
-    //UISys.clockHit3 = 0;
+    UISys.hit1 = false;
+    UISys.hit2 = false;
+    UISys.hit3 = false;
+    UISys.clockGolpe = 0;
+    UISys.clockHit1 = 0;
+    UISys.clockHit2 = 0;
+    UISys.clockHit3 = 0;
 
 
     EM.callDestroy();

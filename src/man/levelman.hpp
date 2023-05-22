@@ -2,12 +2,14 @@
 #include "../util/types.hpp"
 #include "../util/waves_aux.hpp"
 #include "../sys/soundsystem.hpp"
+#include "../sys/UIsys.hpp"
 #include "../util/structs_aux.hpp"
 #include <cstddef>
 #include <numbers>
 
 struct GraphicEngine;
 struct PartSys;
+struct UIsys;
 
 struct LevelMan {
     using voidCMP = MP::Typelist<PhysicsCmp2>;
@@ -54,7 +56,7 @@ struct LevelMan {
 
     Enty& createPowerUp(GraphicEngine& GE, PhysicsCmp2& phy);
 
-    void resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys);
+    void resetLevel(std::size_t player_ID, GraphicEngine& GE, SoundSystem_t& SouSys, UIsys& UISys);
     void resetBlackboard(size_t player_ID);
     EntyMan& getEM() { return EM; }
     SoundSystem_t& getSouSys() { return SouSys; }
