@@ -84,7 +84,7 @@ void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int
     
     if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive);
     else {
-        bool inRoom { sala == 0 ||sala == 3 ||sala == 6 ||sala == 11 ||sala == 13 || sala == 16};
+        bool inRoom { sala == 0 || sala == 3 || sala == 6 || sala == 11 || sala == 13 || sala == 16 };
 
         if(inRoom) ai.rad = 5.;
         else       ai.rad = 1.;
@@ -112,30 +112,20 @@ constexpr void AISys::percept(BlackBoardCmp const& board, AICmp& ai, double cons
 }
 
 void AISys::find(AICmp& ai, PhysicsCmp2& phy){
-    double desv_x=0;
-    double desv_z=0;
-    if(ai.ruta.size()>1){
+    double desv_x = 0;
+    double desv_z = 0;
+
+    if(ai.ruta.size() > 1) {
+        float dist_nodos    = sqrt((ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
+        float dist_ene_nodo = sqrt((phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
         
-        /*if(ai.xrand)
-            desv_x+=ai.random;
-        else
-            desv_x-=ai.random;
-        if(ai.zrand)
-            desv_z+=ai.random;
-        else
-            desv_z-=ai.random;*/
-        float dist_nodos=sqrt((ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
-        float dist_ene_nodo=sqrt((phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
-        if(dist_ene_nodo<=dist_nodos)
-            ai.ruta.pop_back();
-        //else if(phy.x>=ai.ruta.at(ai.ruta.size()-1).coord.x-1+desv_x && phy.x<=ai.ruta.at(ai.ruta.size()-1).coord.x+1+desv_x && phy.z>=ai.ruta.at(ai.ruta.size()-1).coord.z-1+desv_z && phy.z<=ai.ruta.at(ai.ruta.size()-1).coord.z+1+desv_z){
-        //    ai.ruta.pop_back();
-        //}
+        if(dist_ene_nodo <= dist_nodos) ai.ruta.pop_back();
     }
-    if(ai.ruta.size()>0){
-        ai.ox=ai.ruta.at(ai.ruta.size()-1).coord.x+desv_x;
-        ai.oz=ai.ruta.at(ai.ruta.size()-1).coord.z+desv_z;
-        seek  ({ ai.ox, ai.oz }, phy, ai.timeArrive);
+
+    if(ai.ruta.size() > 0) {
+        ai.ox = ai.ruta.at(ai.ruta.size()-1).coord.x+desv_x;
+        ai.oz = ai.ruta.at(ai.ruta.size()-1).coord.z+desv_z;
+        seek({ ai.ox, ai.oz }, phy, ai.timeArrive);
     }
 }
 

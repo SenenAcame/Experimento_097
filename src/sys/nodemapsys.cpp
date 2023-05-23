@@ -17,138 +17,6 @@ int NodeMapSys::getSala(NodoCmp& map, float x, float z) {
     return devol;
 }
 
-///*VIEJO*/ void NodeMapSys::update(EntyMan& EM){
-    //float playerposx, playerposz;
-    //Enty player;
-    //NodoCmp map;
-    //EM.foreach<PlayCMPs, PlayTAGs>(
-    //    [&](Enty& p, PhysicsCmp2& phy) {
-    //        playerposx = phy.x;
-    //        playerposz = phy.z;
-    //        player = p;
-    //    }
-    //);
-    //EM.foreach<NodoCMPs, MapTAGs>(
-    //    [&](Enty& en, NodoCmp& n) {
-    //        map = n;
-    //    }
-    //);
-    //int salaplayer = getSala(map, playerposx, playerposz);
-    //EM.foreach<EneCMPs, EneTAGs>(
-    //    [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
-    //        int salaene = getSala(map, p.x, p.z);
-    //        if(ai.behaviour != SB::Diying) {
-    //            if(salaene == salaplayer || salaene == -1) {
-    //                if(en.hasTAG<TDistEnemy>()) EM.getComponent<SalaCmp>(player).sala = salaplayer; 
-    //
-    //                EM.getComponent<SalaCmp>(en).sala = salaene;
-    //
-    //                bool sameSala = 
-    //                    en.hasTAG<TDistEnemy>() && 
-    //                    sqrt((p.x-playerposx)*(p.x-playerposx)+(p.z-playerposz)*(p.z-playerposz)) < 40 && 
-    //                    salaene != -1;
-    //
-    //                if(sameSala) ai.behaviour = SB::Shoot;
-    //                else         ai.behaviour = SB::Two_Steps;
-    //            }
-    //            else {
-    //                EM.getComponent<SalaCmp>(player).sala = salaplayer;
-    //                EM.getComponent<SalaCmp>(en).sala = salaene ;
-    //                ai.behaviour = SB::Patrol;
-    //                puerta nextcoord = { 0, 0 };
-    //                float dist = MAXFLOAT;
-    //                for(unsigned int i = 0; i < map.salas.at(salaene).puertas.size(); i++) {
-    //                    float distx = playerposx-map.salas.at(salaene).puertas.at(i).x;
-    //                    float distz = playerposz-map.salas.at(salaene).puertas.at(i).z;
-    //                    float minDist = sqrt((distx*distx)+(distz*distz));
-    //                    if(dist > minDist) {
-    //                        dist = minDist;
-    //                        nextcoord = map.salas.at(salaene).puertas.at(i);
-    //                    }
-    //                }
-    //                ai.ox = nextcoord.x;
-    //                ai.oz = nextcoord.z;
-    //            }
-    //        }
-    //    }
-    //);
-    ////EM.foreach<MapTAGsSpawns>(
-    ////    //poner temporizador para que no compruebe todo el rato
-    ////    [&](Enty& spawn, PhysicsCmp2& p, SpawnCmp& spawnC) {
-    ////        if( spawnC.sala == salaplayer){
-    ////            spawnC.active = 1;
-    ////        }
-    ////    }
-    ////);
-//}
-
-/*NUEVO*/ /*void NodeMapSys::update2(EntyMan& EM, size_t map_ID){
-    Enty& player = EM.getEntityById(EM.getBoard().entyID);
-    Enty& map    = EM.getEntityById(map_ID);
-
-    auto& phy_cmp = EM.getComponent<PhysicsCmp2>(player);
-    auto& map_cmp = EM.getComponent<NodoCmp>(map);
-
-    int salaplayer = getSala(map_cmp, phy_cmp.x, phy_cmp.z);
-
-    EM.foreach<EneCMPs, EneTAGs>(
-        [&](Enty& en, PhysicsCmp2& p, AICmp& ai) {
-            int salaene = getSala(map_cmp, p.x, p.z);
-            if(ai.behaviour != SB::Diying) {
-                if(salaene == salaplayer || salaene == -1) {
-
-                    if(en.hasTAG<TDistEnemy>()) EM.getComponent<SalaCmp>(player).sala = salaplayer; 
-
-                    EM.getComponent<SalaCmp>(en).sala = salaene;
-
-                    bool sameSala = 
-                        en.hasTAG<TDistEnemy>() && 
-                        sqrt((p.x-phy_cmp.x)*(p.x-phy_cmp.x)+(p.z-phy_cmp.z)*(p.z-phy_cmp.z)) < 10 && 
-                        salaene != -1;
-
-                    if(sameSala) ai.behaviour = SB::Shoot;
-                    else         ai.behaviour = SB::Two_Steps;
-                }
-                else {
-                    puerta nextcoord = { 0, 0 };
-                    if((salaplayer == 10 || salaplayer == 11) && salaene == 6) {
-                        nextcoord = { -89.95, -0.6 };
-                    }
-                    else if(salaene == 10 && salaplayer != 11) {
-                        nextcoord = { -100.74, -4.22 };
-                    }
-                    else if(salaene == 9 && salaplayer != 11 && salaplayer != 10) {
-                        nextcoord = { -88.95, -1.61 };
-                    }
-                    else {
-                        float dist = FLT_MAX;
-
-                        EM.getComponent<SalaCmp>(player).sala = salaplayer;
-                        EM.getComponent<SalaCmp>(en).sala = salaene ;
-
-                        ai.behaviour = SB::Patrol;
-
-                        //std::cout << salaplayer << std::endl;
-                        //std::cout << salaene << std::endl;
-
-                        for(unsigned int i = 0; i < map_cmp.salas.at(salaene).puertas.size(); i++) {
-                            float distx = phy_cmp.x - map_cmp.salas.at(salaene).puertas.at(i).x;
-                            float distz = phy_cmp.z - map_cmp.salas.at(salaene).puertas.at(i).z;
-                            float minDist = sqrt((distx*distx) + (distz*distz));
-                            if(dist > minDist) {
-                                dist = minDist;
-                                nextcoord = map_cmp.salas.at(salaene).puertas.at(i);
-                            }
-                        }
-                    }
-                    ai.ox = nextcoord.x;
-                    ai.oz = nextcoord.z;
-                }
-            }
-        }
-    );
-}*/
-
 void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
     Enty& player = EM.getEntityById(EM.getBoard().entyID);
     Enty& map    = EM.getEntityById(map_ID);
@@ -183,7 +51,6 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                         ai.cooldown_ruta-=dt;
                     }
                     else{
-                    //    ai.cooldown_ruta=3;
                         float dist_player = FLT_MAX;
                         float dist_ene = FLT_MAX;
                         nodomap player_nod;
@@ -193,15 +60,11 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                                 player_nod=map_cmp.nodos.at(i);
                                 dist_player=sqrt((map_cmp.nodos.at(i).coord.x-phy_cmp.x)*(map_cmp.nodos.at(i).coord.x-phy_cmp.x)+(map_cmp.nodos.at(i).coord.z-phy_cmp.z)*(map_cmp.nodos.at(i).coord.z-phy_cmp.z));
                             }
-                            //std::cout<<"Distancia del nodo "<<map_cmp.nodos.at(i).num<<" es "<<sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z))<<std::endl;
                             if(sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z))<dist_ene){
                                 enemy_nod=map_cmp.nodos.at(i);
                                 dist_ene=sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z));
                             }
                         }
-                        //std::cout<<"Player nodo:"<<player_nod.num<<std::endl;
-                        //std::cout<<"Enemy nodo:"<<enemy_nod.num<<std::endl;
-                        //std::cout<<"Enemy pos X: "<<p.x<<" , Z"<<p.z<<std::endl;
                         std::vector<nodomap> camino=aEstrella(map_cmp.nodos, enemy_nod, player_nod);
                         if(ai.ruta.size()>0)
                             ai.ruta.clear();
@@ -527,8 +390,6 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodos.push_back(nodo34);
     nodos.push_back(nodo35);
 
-    //std::cout<<"Nodoacual: "<<nodos.at(0).nodos_adya.at(0).num<<" tamaño:"<<nodos.at(0).nodos_adya.at(0).nodos_adya.size()<<std::endl;
-
     return nodos;
 }
 
@@ -550,7 +411,6 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
 
     while (!frontera.empty()) {
         nodomap nodoActual = frontera.top();
-        //std::cout<<"Nodoacual: "<<nodoActual.num<<" tamaño:"<<nodoActual.nodos_adya.size()<<std::endl;
         frontera.pop();
         if (nodoActual.num == objetivo.num) {
             std::vector<nodomap> camino;
@@ -559,9 +419,6 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                 nodoActual = *nodoActual.padre;
             }
             camino.push_back(inicio);
-            //for(int i=0;i<camino.size();i++){
-            //    std::cout<<i<<"Ruta: "<<camino.at(i).num<<std::endl;
-            //}
             return camino;
         }
         visitados.push_back(nodoActual);
@@ -577,9 +434,6 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                     }
                     float costoActual = nodoActual.total + 1;
                     float costoEstimado = costoActual + calcularDist(nodos.at(i), objetivo);
-                    //std::cout<<"Vecino: "<<nodos.at(i).num<<" tamaño: "<<nodos.at(i).nodos_adya.size()<<std::endl;
-                    //if(nodos.at(i).padre!=nullptr)
-                    //std::cout<<"Padre vecino: "<<nodos.at(i).padre->num<<std::endl;
                     if ((nodos.at(i).padre == nullptr || costoEstimado < nodos.at(i).total + nodos.at(i).estimado)) {
                         nodos.at(i).total = costoActual;
                         nodos.at(i).estimado = calcularDist(nodos.at(i), objetivo);
@@ -593,7 +447,6 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
             }
         }
     }
-    //std::cout<<"No hay ruta"<<std::endl;
     return std::vector<nodomap>();
 }
 
@@ -602,112 +455,3 @@ float NodeMapSys::calcularDist(nodomap comienzo, nodomap fin){
     float dz=fin.coord.z-comienzo.coord.z;
     return std::sqrt(dx*dx+dz*dz);
 }
-
-/*std::vector<sala> NodeMapSys::creaSalas() {
-
-    float salasx[]={-36.8f, -36.8f, -40.4f, -57.95f, -75.5f, -79.1f, -79.1f, -61.55f, -54.35f, -96.65f, -100.25f, -100.25f, -57.95f, -57.95f, -79.1f, -36.8f, -71.9f, -40.4f};
-    float salasz[]={-8.81f, -26.35f, -37.15f, -37.15f, -37.16f, -22.76f, -1.61f, -1.61f, -8.81f, -1.61f, -12.42f, -29.96f, -54.7f, -72.24f, 15.93f, 12.34f, 33.48f, 33.48f};
-    float tamx[]=  {20.7/2, 7.2/2, 14.4/2, 20.7/2, 14.57/2, 7.2/2, 20.7/2, 14.4/2, 14.4/2, 14.4/2, 7.2/2, 20.7/2, 7.2/2, 20.7/2, 7.2/2, 7.2/2, 35.1/2, 27.9/2};
-    float tamz[]=  {20.7/2, 14.39/2, 7.21/2, 20.7/2, 7.2/2, 21.6/2, 20.7/2, 7.2/2, 7.2/2, 7.2/2, 14.39/2, 20.7/2, 14.39/2, 20.7/2, 14.39/2, 21.59/2, 20.7/2, 20.7/2};
-
-    std::vector<sala> sala;
-    std::vector<std::vector<puerta>> todaspuertas;
-    std::vector<puerta> puertass1;
-    puertass1.push_back({-36.8, -19.66});
-    puertass1.push_back({-47.65, -8.81});
-    puertass1.push_back({-36.8, 2.5});
-
-    std::vector<puerta> puertass2;
-    puertass2.push_back({-36.8, -18.66});
-    puertass2.push_back({-36.8, -34.05});
-
-    std::vector<puerta> puertass3;
-    puertass3.push_back({-35.8, -33.05});
-    puertass3.push_back({-48.1, -37.15});
-
-    std::vector<puerta> puertass4;
-    puertass4.push_back({-47.1, -37.15});
-    puertass4.push_back({-69.3, -38.15});
-    puertass4.push_back({-57.97, -48});
-
-    std::vector<puerta> puertass5;
-    puertass5.push_back({-68.3, -37.15});
-    puertass5.push_back({-79.1, -33.06});
-
-    std::vector<puerta> puertass6;
-    puertass6.push_back({-79.1, -34.06});
-    puertass6.push_back({-79.1, -11.46});
-
-    std::vector<puerta> puertass7;
-    puertass7.push_back({-79.1, -12.46});
-    puertass7.push_back({-68.25, -1.6});
-    puertass7.push_back({-89.95, -0.6});
-    puertass7.push_back({-79.1, 9.74});
-
-    std::vector<puerta> puertass8;
-    puertass8.push_back({-69.25, -1.6});
-    puertass8.push_back({-56.95, -5.71});
-
-    std::vector<puerta> puertass9;
-    puertass9.push_back({-46.65, -8.81});
-    puertass9.push_back({-58.95, -4.71});
-
-    std::vector<puerta> puertass10;
-    puertass10.push_back({-88.95, -1.61});
-    puertass10.push_back({-101.74, -5.72});
-
-    std::vector<puerta> puertass11;
-    puertass11.push_back({-99.74, -4.22});
-    puertass11.push_back({-100.24, -20.61});
-
-    std::vector<puerta> puertass12;
-    puertass12.push_back({-100.24, -18.61});
-
-    std::vector<puerta> puertass13;
-    puertass13.push_back({-57.97, -47});
-    puertass13.push_back({-57.97, -62.89});
-
-    std::vector<puerta> puertass14;
-    puertass14.push_back({-57.97, -60.89});
-
-    std::vector<puerta> puertass15;
-    puertass15.push_back({-79.1, 7.74});
-    puertass15.push_back({-79.1, 24.13});
-
-    std::vector<puerta> puertass16;
-    puertass16.push_back({-36.8, 0.5});
-    puertass16.push_back({-36.8, 24.13});
-
-    std::vector<puerta> puertass17;
-    puertass17.push_back({-36.8, 22.13});
-    puertass17.push_back({-53.35, 33.47});
-
-    std::vector<puerta> puertass18;
-    puertass18.push_back({-79.1, 22.13});
-    puertass17.push_back({-55.35, 33.47});
-
-    todaspuertas.push_back(puertass1);
-    todaspuertas.push_back(puertass2);
-    todaspuertas.push_back(puertass3);
-    todaspuertas.push_back(puertass4);
-    todaspuertas.push_back(puertass5);
-    todaspuertas.push_back(puertass6);
-    todaspuertas.push_back(puertass7);
-    todaspuertas.push_back(puertass8);
-    todaspuertas.push_back(puertass9);
-    todaspuertas.push_back(puertass10);
-    todaspuertas.push_back(puertass11);
-    todaspuertas.push_back(puertass12);
-    todaspuertas.push_back(puertass13);
-    todaspuertas.push_back(puertass14);
-    todaspuertas.push_back(puertass15);
-    todaspuertas.push_back(puertass16);
-    todaspuertas.push_back(puertass17);
-    todaspuertas.push_back(puertass18);
-
-    for(unsigned int i = 0; i < todaspuertas.size(); i++)
-        sala.push_back({ salasx[i], salasz[i], tamx[i], tamz[i], todaspuertas.at(i) });
-
-    return sala;
-};
-*/
