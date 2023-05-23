@@ -84,7 +84,7 @@ void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int
     
     if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive);
     else {
-        bool inRoom { sala == 0 ||sala == 3 ||sala == 6 ||sala == 11 ||sala == 13 };
+        bool inRoom { sala == 0 ||sala == 3 ||sala == 6 ||sala == 11 ||sala == 13 || sala == 16};
 
         if(inRoom) ai.rad = 5.;
         else       ai.rad = 1.;
