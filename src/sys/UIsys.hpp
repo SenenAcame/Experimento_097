@@ -78,6 +78,11 @@ struct UIsys {
     float moveX = 0;
     float moveY = 0;
 
+    //debug
+    bool quitar = false;
+    bool quitarF = false;
+    bool quitarFB = false;
+
     //menus
     size_t menuIni(GraphicEngine& GE, size_t next);
     size_t menuMuerto (GraphicEngine& GE, size_t next);

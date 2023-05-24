@@ -1,6 +1,7 @@
 #pragma once
 #include "UIsys.hpp"
 #include "soundsystem.hpp"
+#include <GL/gl.h>
 #include <cstddef>
 #include <string>
 
@@ -54,7 +55,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     int wave     = board.progres.actualWave;
     int kills    = board.wave.kills;
     unsigned int iconWeaponID = 0;
-    
+
     switch (invent.equipada) {
         case 0:
             magazine = invent.gun.magazine;
@@ -74,6 +75,9 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     }
 
     renderInterfaceHits(GE, dt);
+
+    
+    
 
     if(inRound == false){
         ImGui::SetNextWindowPos(ImVec2(moveX,moveY));
@@ -576,14 +580,11 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSyste
             sound.loop=true;
         }
     );
-   
     //0 Ini 1 game 2 dead 3 pause 4 controls 5 sound
     auto* m_window = GE.getWindow();
     auto width = GE.getWidth();
     auto height = GE.getHeight();
 
-    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)pausa.ID_, ImVec2(0, 0), ImVec2(width, height));
-    
     //ImGui::PushStyleVar(ImGuiCol_WindowBg);
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 15.0f);
     ImGui::SetNextWindowPos(ImVec2(0,0));
@@ -620,6 +621,34 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSyste
  
     ImGui::PopStyleVar();
     ImGui::End();
+
+
+    ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)pausa.ID_, ImVec2(0, 0), ImVec2(width, height));
+    
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImVec2(200,400));
+    ImGui::Begin(
+        "Debug", NULL);
+    ImGui::Checkbox("Clipping Back", &quitar); 
+    ImGui::Checkbox("Clipping Front", &quitarF);
+    ImGui::Checkbox("Clipping Bouth", &quitarFB);
+    //ImGui::PopStyleColor();
+    ImGui::End();
+        
+    if(quitar == true){
+        glDisable(GL_CULL_FACE);
+    }
+    else{
+        glEnable(GL_CULL_FACE);
+    }
+    if(quitarF == true)glCullFace(GL_FRONT);
+    else{
+        glEnable(GL_CULL_FACE);
+    }
+    if(quitarFB == true)glCullFace(GL_FRONT_AND_BACK);
+    else{
+        glEnable(GL_CULL_FACE);
+    }
     
     return next;
 }
