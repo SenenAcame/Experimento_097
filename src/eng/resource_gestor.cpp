@@ -6,6 +6,7 @@ ResourceGestor::ResourceGestor() {
     std::get<1>(resources_).reserve(1000);
     std::get<2>(resources_).reserve(1000);
     std::get<3>(resources_).reserve(1000);
+    std::get<4>(resources_).reserve(1000);
 }
 
 ResourceGestor::ResourceGestor(unsigned int size) {
@@ -14,4 +15,5 @@ ResourceGestor::ResourceGestor(unsigned int size) {
     std::get<1>(resources_).reserve(size);
     std::get<2>(resources_).reserve(size);
     std::get<3>(resources_).reserve(size);
+    std::get<4>(resources_).reserve(size);
 }
