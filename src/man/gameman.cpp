@@ -175,8 +175,6 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 if(UISys.pause == true) actualMenu = 3;
                 while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
                 ++frames;
-                
-                UISys.fps(GE, start, frames);
                 RenSys.ImGUI_Postrender(GE);
                 break;
             }
@@ -184,7 +182,12 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     }
     
     LM.resetLevel(EM.getBoard().entyID, GE, SouSys, UISys);
-    
+    bool salir = false;
+    while (salir == false){
+        RenSys.ImGUI_Prerender();
+        salir = UISys.fps(GE, start, frames);
+        RenSys.ImGUI_Postrender(GE);
+    }
     if(dead) abandon = 2;
     else     abandon = 0;
     return abandon;

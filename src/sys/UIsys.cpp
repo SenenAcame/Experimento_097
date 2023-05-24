@@ -33,8 +33,9 @@ void UIsys::iniText(GraphicEngine& GE){
     moveY=GE.getHeight()/2.5;
 }
 
-void UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames){
-
+bool UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames){
+        
+        bool result = false;
         constexpr double dt = 1.0 / 60;
         auto end = std::chrono::high_resolution_clock::now();
         auto ellapse =  (end - start).count(); //how many nano sec has pass
@@ -52,10 +53,16 @@ void UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start,
         ImGui::Text("TIMEPO (s): %d", ellapseS);
         ImGui::Text("Frames (s): %d", frames);
         ImGui::Text("FPS (s): %d", double(frames)/ellapseS);
+
+        if(ImGui::Button("Salir", ImVec2(300,100))) {
+            result = true;
+        }
         ImGui::GetFont()->Scale =defaultFont;
         ImGui::PopFont();
         //ImGui::PopStyleColor();
         ImGui::End();
+
+        return result;
 }
 
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
@@ -652,7 +659,7 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSyste
     ImGui::GetBackgroundDrawList()->AddImage((void*)(intptr_t)pausa.ID_, ImVec2(0, 0), ImVec2(width, height));
     
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::SetNextWindowSize(ImVec2(200,400));
+    ImGui::SetNextWindowSize(ImVec2(700,400));
     ImGui::Begin(
         "Debug", NULL);
     ImGui::Checkbox("Clipping Back", &quitar); 
