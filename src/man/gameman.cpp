@@ -135,8 +135,8 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     constexpr int64_t nanos_per_frame {1000000000/maxFPS};
     int64_t frames = 0;
     
-
     while(abandon == 1 && !dead && !GE.getCloseWindow() ) {
+        
         switch (actualMenu) {
             case 3: {
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -158,6 +158,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 break;
             }
             default: {
+                
                 auto frame_start = std::chrono::high_resolution_clock::now();
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 EM.update();
@@ -173,8 +174,12 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
                 if(UISys.pause == true) actualMenu = 3;
-                while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+                while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){
+                    //std::cout<<"FRAME START: " << (std::chrono::high_resolution_clock::now() - frame_start).count() << "\n";
+                    //std::cout<<"NANOS PER FRAME: " << nanos_per_frame <<"\n";
+                }
                 ++frames;
+                //std::cout<<"FRAMES: " << frames <<"\n";
                 RenSys.ImGUI_Postrender(GE);
                 break;
             }
@@ -184,8 +189,11 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     LM.resetLevel(EM.getBoard().entyID, GE, SouSys, UISys);
     bool salir = false;
     std::chrono::system_clock::time_point end = std::chrono::high_resolution_clock::now();
-    double ellapse =  (end - start).count(); //how many nano sec has pass
+    std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep ellapse =  (end - start).count(); //how many nano sec has pass
+    //auto ellapse2 = (end - start).count();
     double ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+    //auto ellapseS2 =  double(ellapse)/1000000000.;
+    
     while (salir == false){
         RenSys.ImGUI_Prerender();
         salir = UISys.fps(GE, start, frames, end, ellapse, ellapseS);

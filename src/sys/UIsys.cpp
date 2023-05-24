@@ -34,7 +34,7 @@ void UIsys::iniText(GraphicEngine& GE){
 }
 
 bool UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames,
- std::chrono::system_clock::time_point end, double ellapse, double ellapseS){
+ std::chrono::system_clock::time_point end, std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep ellapse, double ellapseS){
         
         bool result = false;
         

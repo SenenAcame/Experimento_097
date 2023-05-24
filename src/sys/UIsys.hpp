@@ -77,7 +77,7 @@ struct UIsys {
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
 
     bool fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames,
-    std::chrono::system_clock::time_point end, double ellapse, double ellapseS);
+    std::chrono::system_clock::time_point end, std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep, double ellapseS);
 
     float moveX = 0;
     float moveY = 0;
