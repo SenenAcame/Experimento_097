@@ -34,7 +34,7 @@ void UIsys::iniText(GraphicEngine& GE){
 }
 
 bool UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames,
- std::chrono::system_clock::time_point end, std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep ellapse, double ellapseS){
+ std::chrono::system_clock::time_point end, int64_t ellapse, double ellapseS){
         
         bool result = false;
         
@@ -673,13 +673,9 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSyste
         glEnable(GL_CULL_FACE);
     }
     if(quitarF == true)glCullFace(GL_FRONT);
-    else{
-        glEnable(GL_CULL_FACE);
-    }
+    
     if(quitarFB == true)glCullFace(GL_FRONT_AND_BACK);
-    else{
-        glEnable(GL_CULL_FACE);
-    }
+    
     
     return next;
 }

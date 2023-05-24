@@ -17,6 +17,7 @@
 #include "animationman.hpp"
 #include <chrono>
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include "../sys/partsys.hpp"
 
@@ -189,16 +190,19 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     LM.resetLevel(EM.getBoard().entyID, GE, SouSys, UISys);
     bool salir = false;
     std::chrono::system_clock::time_point end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep ellapse =  (end - start).count(); //how many nano sec has pass
+    int64_t ellapse =  (end - start).count(); //how many nano sec has pass
     //auto ellapse2 = (end - start).count();
-    double ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
-    //auto ellapseS2 =  double(ellapse)/1000000000.;
+    double ellapseS =  double(ellapse)/1000000000; //how many sec has pass
+    //auto ellapseS2 =  double(ellapse)/1000000000;
+    std::cout<< "TIEMPO (s):" <<ellapseS <<"\n";
+    std::cout<< "Frames :" <<frames <<"\n";
+    std::cout<< "FPS :" <<frames/ellapseS <<"\n";
     
-    while (salir == false){
+    /*while (salir == false){
         RenSys.ImGUI_Prerender();
         salir = UISys.fps(GE, start, frames, end, ellapse, ellapseS);
         RenSys.ImGUI_Postrender(GE);
-    }
+    }*/
     if(dead) abandon = 2;
     else     abandon = 0;
     return abandon;
