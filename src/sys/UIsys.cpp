@@ -33,13 +33,11 @@ void UIsys::iniText(GraphicEngine& GE){
     moveY=GE.getHeight()/2.5;
 }
 
-bool UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames){
+bool UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames,
+ std::chrono::system_clock::time_point end, double ellapse, double ellapseS){
         
         bool result = false;
-        constexpr double dt = 1.0 / 60;
-        auto end = std::chrono::high_resolution_clock::now();
-        auto ellapse =  (end - start).count(); //how many nano sec has pass
-        auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+        
 
         ImGui::SetNextWindowPos(ImVec2(0,0));
         ImGui::SetNextWindowSize(ImVec2(500,300));

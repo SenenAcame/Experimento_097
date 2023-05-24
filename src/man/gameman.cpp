@@ -183,9 +183,12 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     
     LM.resetLevel(EM.getBoard().entyID, GE, SouSys, UISys);
     bool salir = false;
+    std::chrono::system_clock::time_point end = std::chrono::high_resolution_clock::now();
+    double ellapse =  (end - start).count(); //how many nano sec has pass
+    double ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
     while (salir == false){
         RenSys.ImGUI_Prerender();
-        salir = UISys.fps(GE, start, frames);
+        salir = UISys.fps(GE, start, frames, end, ellapse, ellapseS);
         RenSys.ImGUI_Postrender(GE);
     }
     if(dead) abandon = 2;
