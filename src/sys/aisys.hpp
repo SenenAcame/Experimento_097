@@ -1,7 +1,6 @@
 #pragma once
 #include "../util/types.hpp"
 
-//struct TheEngine;
 struct LevelMan;
 struct GraphicEngine;
 
@@ -28,4 +27,5 @@ struct AISys {
     void die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const noexcept;
     
     /*NUEVO*/ void update2(LevelMan& LM, GraphicEngine& GE, double dt);
+    void correctRad(AICmp& ai, int const sala) const noexcept;
 };

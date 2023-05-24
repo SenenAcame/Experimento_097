@@ -84,13 +84,7 @@ void AISys::twoSteps(AICmp& ai, PhysicsCmp2& phyEnem, Point const velPlayer, int
     
     if(t_lin_dist <= ai.rad) seek(target, phyEnem, ai.timeArrive);
     else {
-        bool inRoom { sala == 0 || sala == 3 || sala == 6 || sala == 11 || sala == 13 || sala == 16 };
-
-        if(inRoom) ai.rad = 5.;
-        else       ai.rad = 1.;
-
-        ai.flock_x = cos(ai.ang) * ai.rad;
-        ai.flock_z = sin(ai.ang) * ai.rad;
+        correctRad(ai, sala);
         
         Point flock_targ { ai.flock_x + ai.ox, ai.flock_z + ai.oz };
         seek(flock_targ, phyEnem, ai.timeArrive);
@@ -165,4 +159,14 @@ void AISys::die(Enty& enemy, PhysicsCmp2& phyEnem, RenderCmp2& renderEne) const 
             }
         }
     );
+}
+
+void AISys::correctRad(AICmp &ai, const int sala) const noexcept{
+    bool inRoom { sala == 0 || sala == 3 || sala == 6 || sala == 11 || sala == 13 || sala == 16 };
+
+    if(inRoom) ai.rad = 5.;
+    else       ai.rad = 1.;
+
+    ai.flock_x = cos(ai.ang) * ai.rad;
+    ai.flock_z = sin(ai.ang) * ai.rad;
 }
