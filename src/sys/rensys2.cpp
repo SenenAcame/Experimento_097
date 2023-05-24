@@ -35,7 +35,7 @@
     drawWorld(GE);
     UISys.renderInterface(EM, GE, dt); 
     
-    ImGUI_Postrender(GE);
+    //ImGUI_Postrender(GE);
 }
 
 void RenSys2::pantallaCarga(GraphicEngine& GE, UIsys& UISys, double progress){

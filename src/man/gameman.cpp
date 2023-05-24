@@ -130,6 +130,11 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     //LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
 
     constexpr double dt = 1.0 / 60;
+    auto start = std::chrono::high_resolution_clock::now();
+    constexpr int64_t maxFPS {60};
+    constexpr int64_t nanos_per_frame {1000000000/maxFPS};
+    int64_t frames = 0;
+    
 
     while(abandon == 1 && !dead && !GE.getCloseWindow() ) {
         switch (actualMenu) {
@@ -153,6 +158,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 break;
             }
             default: {
+                auto frame_start = std::chrono::high_resolution_clock::now();
                 glfwSetInputMode(GE.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 EM.update();
                 RenSys.update2(EM, GE, UISys, dt);
@@ -167,7 +173,11 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
                 SpwSys.update (LM, GE, SouSys, dt);
                 DstSys.update (EM, dt);
                 if(UISys.pause == true) actualMenu = 3;
-
+                while ((std::chrono::high_resolution_clock::now() - frame_start).count() < nanos_per_frame){}
+                ++frames;
+                
+                UISys.fps(GE, start, frames);
+                RenSys.ImGUI_Postrender(GE);
                 break;
             }
         }

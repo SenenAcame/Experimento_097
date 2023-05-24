@@ -3,6 +3,7 @@
 #include "../eng/engine2.hpp"
 #include "soundsystem.hpp"
 #include <cstddef>
+#include <cstdint>
 #include <iterator>
 //IMGUI
 #include <GL/gl.h>
@@ -74,6 +75,8 @@ struct UIsys {
     void renderInterface(EntyMan& EM, GraphicEngine& GE, double dt);
     void hitInterface(GraphicEngine& GE);
     void renderInterfaceHits(GraphicEngine& GE ,double dt);
+
+    void fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames);
 
     float moveX = 0;
     float moveY = 0;

@@ -3,6 +3,7 @@
 #include "soundsystem.hpp"
 #include <GL/gl.h>
 #include <cstddef>
+#include <cstdint>
 #include <string>
 
 void UIsys::iniText(GraphicEngine& GE){
@@ -32,6 +33,31 @@ void UIsys::iniText(GraphicEngine& GE){
     moveY=GE.getHeight()/2.5;
 }
 
+void UIsys::fps(GraphicEngine& GE , std::chrono::system_clock::time_point start, int64_t frames){
+
+        constexpr double dt = 1.0 / 60;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto ellapse =  (end - start).count(); //how many nano sec has pass
+        auto ellapseS =  double(ellapse)/1000000000.; //how many sec has pass
+
+        ImGui::SetNextWindowPos(ImVec2(0,0));
+        ImGui::SetNextWindowSize(ImVec2(500,300));
+        ImGui::Begin(
+            "UIPRUEBANEXTROUND", NULL
+            
+        );
+        float defaultFont = ImGui::GetFont()->Scale;
+        ImGui::GetFont()->Scale *=0.5;
+        ImGui::PushFont(ImGui::GetFont());
+        ImGui::Text("TIMEPO (s): %d", ellapseS);
+        ImGui::Text("Frames (s): %d", frames);
+        ImGui::Text("FPS (s): %d", double(frames)/ellapseS);
+        ImGui::GetFont()->Scale =defaultFont;
+        ImGui::PopFont();
+        //ImGui::PopStyleColor();
+        ImGui::End();
+}
+
 void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("This is some useful text");
     auto board      = EM.getBoard();
@@ -56,6 +82,9 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     int kills    = board.wave.kills;
     unsigned int iconWeaponID = 0;
 
+    double currentTime = glfwGetTime();
+   
+
     switch (invent.equipada) {
         case 0:
             magazine = invent.gun.magazine;
@@ -75,9 +104,6 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     }
 
     renderInterfaceHits(GE, dt);
-
-    
-    
 
     if(inRound == false){
         ImGui::SetNextWindowPos(ImVec2(moveX,moveY));
