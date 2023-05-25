@@ -63,16 +63,16 @@
 /*NUEVO*/ Enty& LevelMan::createEnemy(GraphicEngine &GE, Vec3 pos, SoundSystem_t &SouSys, Type_Enemy type, ExtraStats plus) {
     switch (type) {
         case Type_Enemy::Normal:
-            //createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
-            createNormalEnemyAnim(GE, Vec3{ pos.x, 1, pos.z }, SouSys, plus);
+            createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
+            //createNormalEnemyAnim(GE, Vec3{ pos.x, 1, pos.z }, SouSys, plus);
             break;
         case Type_Enemy::Tank:
-            //createTankEnemy(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
-            createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys, plus);
+            createTankEnemy(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
+            //createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys, plus);
             break;
         case Type_Enemy::Distance:
-            //createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys);
-            createDistanceEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
+            createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys);
+            //createDistanceEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
             break;
     }
 }
