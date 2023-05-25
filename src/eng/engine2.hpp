@@ -31,8 +31,9 @@ struct GraphicEngine {
     uint16_t     getHeight() { return glEng.getHeight(); }
     uint16_t      getWidth() { return glEng.getWidth(); }
     Vec3 getPlayerModelPos() { return playerModel->getPosition(); }
-
-private:
     GlEngine glEng {};
+    
+private:
+    
     TNodo* playerModel {};
 };

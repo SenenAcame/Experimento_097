@@ -4,6 +4,8 @@
 #include "soundsystem.hpp"
 #include <cstddef>
 #include <iterator>
+#include "../eng/GLgEngine.hpp"
+
 //IMGUI
 #include <GL/gl.h>
 #include <imgui/src/imgui.h>
@@ -17,6 +19,7 @@
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
 struct GraphicEngine;
+struct GLFWwindow;
 
 struct UIsys {
     
@@ -84,6 +87,8 @@ struct UIsys {
     size_t menuControles (GraphicEngine& GE, size_t next);
     size_t menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSystem_t& Sou);
     size_t menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou);
+    bool pantallaCompleta = false;
+    size_t resolution = 1;
     void pantallaCarga(GraphicEngine& GE, double progress);
     bool inGame{false};
     bool pause{false};

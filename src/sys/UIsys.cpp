@@ -1,6 +1,6 @@
-#pragma once
 #include "UIsys.hpp"
 #include "soundsystem.hpp"
+#include <GLFW/glfw3.h>
 #include <cstddef>
 #include <string>
 
@@ -76,11 +76,12 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     renderInterfaceHits(GE, dt);
 
     if(inRound == false){
+        
         ImGui::SetNextWindowPos(ImVec2(moveX,moveY));
         ImGui::SetNextWindowSize(ImVec2(width,height));
         ImGui::Begin(
             "UIPRUEBANEXTROUND", NULL,
-            ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+            ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
             | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
             | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
         );
@@ -94,7 +95,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIHPIcon", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -109,7 +110,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIPowerIcon", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -123,7 +124,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIPowerText", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -136,7 +137,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UISpeedIcon", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -149,7 +150,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UISpeedText", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -162,7 +163,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIHP", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -178,7 +179,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIMira", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -189,7 +190,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIiconWave", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -201,7 +202,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIWave", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -212,7 +213,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIiconKills", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -223,7 +224,7 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIKills", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -232,11 +233,11 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     //ImGui::Text("HP: %d", hp);
     //ImGui::Text("%d/%d", magazine, ammo );
     
-    ImGui::SetNextWindowPos(ImVec2(width/10*8.2-250,height/10*8-125));
+    ImGui::SetNextWindowPos(ImVec2(width/10*8.2-250,height/10*7.5-125));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIiconWeapon", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -244,11 +245,11 @@ void UIsys::renderInterface(EntyMan& EM, GraphicEngine& GE, double dt) {
     ImGui::End();
 
     ImGui::End();
-    ImGui::SetNextWindowPos(ImVec2(width/10*7.7,height/10*8.4));
+    ImGui::SetNextWindowPos(ImVec2(width/10*7.7,height/10*7.9));
     ImGui::SetNextWindowSize(ImVec2(width,height));
     ImGui::Begin(
         "UIInventary", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -320,7 +321,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit1", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -339,7 +340,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit1", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -357,7 +358,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit2", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -375,7 +376,7 @@ void UIsys::renderInterfaceHits(GraphicEngine& GE ,double dt){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "Hit3", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs
         | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus
     );
@@ -403,7 +404,7 @@ size_t UIsys::menuIni (GraphicEngine& GE, size_t next){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "MenuIni", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
 
@@ -453,7 +454,7 @@ size_t UIsys::menuMuerto (GraphicEngine& GE, size_t next){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "MenuMuerto", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
     ImGui::SetCursorPos(ImVec2(width/10*7,height/10*4));
@@ -484,7 +485,7 @@ size_t UIsys::menuControles (GraphicEngine& GE, size_t next){
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "MenuIni", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
     ImGui::SetCursorPos(ImVec2(width/10*8-100,height/10*8));
@@ -525,7 +526,7 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 15.0f);
     ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.55f);
     float defaultFont = ImGui::GetFont()->Scale;
-    ImGui::GetFont()->Scale /=1.5;
+    ImGui::GetFont()->Scale *=0.5;
     ImGui::PushFont(ImGui::GetFont());
 
     ImGui::SliderFloat("Master", &SoundMaster, 0.0f, 1.0f); 
@@ -533,10 +534,14 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     ImGui::SliderFloat("Musica", &SoundMusic, 0.0f, 1.0f);
     ImGui::SliderFloat("SFX", &SoundSFX, 0.0f, 1.0f);
     ImGui::SliderFloat("Voces", &SoundVoices, 0.0f, 1.0f);
+
+    ImGui::Checkbox("Pantalla completa", &pantallaCompleta);
     
     ImGui::GetFont()->Scale =defaultFont;
     ImGui::PopFont();
     ImGui::PopItemWidth();
+
+
 
     ImGui::SetCursorPos(ImVec2(width/10*3,height/10*5));
     if(ImGui::Button("Volver", ImVec2(300,100))){
@@ -558,6 +563,17 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
         SoundMusic = SoundMaster;
         SoundSFX = SoundMaster;
         SoundVoices = SoundMaster;
+    }
+    if(pantallaCompleta == true){
+        glfwMaximizeWindow(m_window);
+        const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GE.glEng.setResolution(mode->width, mode->height);
+        moveX=GE.getWidth()/2;
+        moveY=GE.getHeight()/2.5;
+        //glfwSetWindowSize(m_window,mode->width, mode->height);
+    }
+    else{
+        glfwRestoreWindow(m_window);
     }
     
     Sou.changeVCA(0,SoundAmbient);
@@ -590,7 +606,7 @@ size_t UIsys::menuPausa (GraphicEngine& GE, size_t next, EntyMan& EM, SoundSyste
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::Begin(
         "MenuPausa", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
     ImGui::SetCursorPos(ImVec2(width/10*4,height/10*2.5));
@@ -639,7 +655,7 @@ void UIsys::pantallaCarga(GraphicEngine& GE, double progress ){
     
     ImGui::Begin(
         "Cargand", NULL,
-        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+        ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar 
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollWithMouse 
     );
     
