@@ -574,6 +574,7 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     }
     else{
         glfwRestoreWindow(m_window);
+        GE.glEng.setResolution(1280, 720);
         moveX=GE.getWidth()/2;
         moveY=GE.getHeight()/2.5;
     }
