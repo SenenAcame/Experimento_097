@@ -118,6 +118,7 @@ void AISys::find(AICmp& ai, PhysicsCmp2& phy){
     }
 
     if(ai.ruta.size() > 0) {
+        //std::cout<<"Voy a: "<<ai.ruta.at(ai.ruta.size()-1).coord.x<<", "<<ai.ruta.at(ai.ruta.size()-1).coord.z<<" nodo: "<<ai.ruta.at(ai.ruta.size()-1).num<<std::endl;
         ai.ox = ai.ruta.at(ai.ruta.size()-1).coord.x+desv_x;
         ai.oz = ai.ruta.at(ai.ruta.size()-1).coord.z+desv_z;
         seek({ ai.ox, ai.oz }, phy, ai.timeArrive);

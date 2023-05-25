@@ -75,6 +75,7 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                         if(camino.size()>3){
                             ai.cooldown_ruta=3;
                         }
+                        std::cout<<"Player en: "<<phy_cmp.x<<", "<<phy_cmp.z<<std::endl;
                         vaciaPadres(map_cmp.nodos);
                     }
                 }
@@ -185,9 +186,9 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodomap nodo7 = nodomap{ 7, punto7 };
     nodomap nodo8 = nodomap{ 8, punto8 };
     nodomap nodo9 = nodomap{ 9, punto9 };
-    nodomap nodo10 = nodomap{ 10, punto0 };
-    nodomap nodo11 = nodomap{ 11, punto0 };
-    nodomap nodo12 = nodomap{ 12, punto0 };
+    nodomap nodo10 = nodomap{ 10, punto10 };
+    nodomap nodo11 = nodomap{ 11, punto11 };
+    nodomap nodo12 = nodomap{ 12, punto12 };
     nodomap nodo13 = nodomap{ 13, punto13 };
     nodomap nodo14 = nodomap{ 14, punto14 };
     nodomap nodo15 = nodomap{ 15, punto15 };
@@ -428,6 +429,10 @@ std::vector<nodomap> NodeMapSys::aEstrella(std::vector<nodomap> nodos, nodomap i
                 nodoActual = *nodoActual.padre;
             }
             camino.push_back(inicio);
+            /*std::cout<<"Patata"<<std::endl;
+            for(int i=0;i<camino.size();i++){
+                std::cout<<camino.at(i).num<<" posicion "<<camino.at(i).coord.x<<", "<<camino.at(i).coord.z<<std::endl;
+            }*/
             return camino;
         }
         visitados.push_back(nodoActual);
