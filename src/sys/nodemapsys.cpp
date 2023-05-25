@@ -56,13 +56,14 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                         nodomap player_nod;
                         nodomap enemy_nod;
                         for(int i=0;i<map_cmp.nodos.size();i++){
-                            if(sqrt((map_cmp.nodos.at(i).coord.x-phy_cmp.x)*(map_cmp.nodos.at(i).coord.x-phy_cmp.x)+(map_cmp.nodos.at(i).coord.z-phy_cmp.z)*(map_cmp.nodos.at(i).coord.z-phy_cmp.z))<dist_player){
+                            if(static_cast<float>(sqrt((map_cmp.nodos.at(i).coord.x-phy_cmp.x)*(map_cmp.nodos.at(i).coord.x-phy_cmp.x)+(map_cmp.nodos.at(i).coord.z-phy_cmp.z)*(map_cmp.nodos.at(i).coord.z-phy_cmp.z)))<dist_player){
                                 player_nod=map_cmp.nodos.at(i);
                                 dist_player=sqrt((map_cmp.nodos.at(i).coord.x-phy_cmp.x)*(map_cmp.nodos.at(i).coord.x-phy_cmp.x)+(map_cmp.nodos.at(i).coord.z-phy_cmp.z)*(map_cmp.nodos.at(i).coord.z-phy_cmp.z));
                             }
-                            if(sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z))<dist_ene){
+                            if(static_cast<float>(sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z)))<dist_ene){
                                 enemy_nod=map_cmp.nodos.at(i);
                                 dist_ene=sqrt((map_cmp.nodos.at(i).coord.x-p.x)*(map_cmp.nodos.at(i).coord.x-p.x)+(map_cmp.nodos.at(i).coord.z-p.z)*(map_cmp.nodos.at(i).coord.z-p.z));
+                                
                             }
                         }
                         std::vector<nodomap> camino=aEstrella(map_cmp.nodos, enemy_nod, player_nod);
@@ -71,7 +72,7 @@ void NodeMapSys::update3(EntyMan& EM, std::size_t map_ID, double dt){
                         for(int i=0;i<camino.size();i++){
                             ai.ruta.push_back(camino.at(i));
                         }
-                        if(camino.size()>5){
+                        if(camino.size()>3){
                             ai.cooldown_ruta=3;
                         }
                         vaciaPadres(map_cmp.nodos);
@@ -123,12 +124,12 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     punto punto16 = { -58.64, -8.83 };
     punto punto17 = { -99.83, -2 };
     punto punto18 = { -100.69, -22.22 };
-    punto punto19 = { -36.51, 12.13 };
+    punto punto19 = { -37, 3.62 };
     punto punto21 = { -37.12, -21.41 };
     punto punto22 = { -45.42, -38.2 };
     punto punto23 = { -57.48, -54.85 };
     punto punto25 = { -49.81, -9.16 };
-    punto punto26 = { -67.19, -1.89 };
+    punto punto26 = { -67.19, -1.7 };
     punto punto27 = { -79, 16 };
     punto punto29 = { -70.69, -37.6 };
     punto punto30 = { -79.42, -14.38 };
@@ -137,6 +138,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     punto punto33 = { -57.48, -37.3 };
     punto punto34 = { -78.64, -1.7 };
     punto punto35 = { -35.75, -8.73 };
+    punto punto36 = { -37, 21 };
 
     std::vector<nodomap> Vnodo0;
     std::vector<nodomap> Vnodo1;
@@ -171,6 +173,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     std::vector<nodomap> Vnodo33;
     std::vector<nodomap> Vnodo34;
     std::vector<nodomap> Vnodo35;
+    std::vector<nodomap> Vnodo36;
 
     nodomap nodo0 = nodomap{ 0, punto0 };
     nodomap nodo1 = nodomap{ 1, punto1 };
@@ -205,6 +208,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodomap nodo33 = nodomap{ 33, punto33 };
     nodomap nodo34 = nodomap{ 34, punto34 };
     nodomap nodo35 = nodomap{ 35, punto35 };
+    nodomap nodo36 = nodomap{ 36, punto36 };
 
     Vnodo0.push_back(nodo35);
     Vnodo0.push_back(nodo1);
@@ -262,7 +266,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo13.push_back(nodo14);
 
     Vnodo14.push_back(nodo13);
-    Vnodo14.push_back(nodo19);
+    Vnodo14.push_back(nodo36);
 
     Vnodo15.push_back(nodo26);
     Vnodo15.push_back(nodo16);
@@ -276,7 +280,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo18.push_back(nodo32);
 
     Vnodo19.push_back(nodo0);
-    Vnodo19.push_back(nodo14);
+    Vnodo19.push_back(nodo36);
 
     Vnodo21.push_back(nodo2);
     Vnodo21.push_back(nodo3);
@@ -321,6 +325,9 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     Vnodo35.push_back(nodo1);
     Vnodo35.push_back(nodo2);
 
+    Vnodo36.push_back(nodo19);
+    Vnodo36.push_back(nodo14);
+
     nodo0.putnodo(Vnodo0);
     nodo1.putnodo(Vnodo1);
     nodo2.putnodo(Vnodo2);
@@ -354,6 +361,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodo33.putnodo(Vnodo33);
     nodo34.putnodo(Vnodo34);
     nodo35.putnodo(Vnodo35);
+    nodo36.putnodo(Vnodo36);
 
     std::vector<nodomap> nodos;
     nodos.push_back(nodo0);
@@ -389,6 +397,7 @@ std::vector<nodomap> NodeMapSys::creaNodos() {
     nodos.push_back(nodo33);
     nodos.push_back(nodo34);
     nodos.push_back(nodo35);
+    nodos.push_back(nodo36);
 
     return nodos;
 }

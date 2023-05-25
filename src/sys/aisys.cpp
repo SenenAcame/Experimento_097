@@ -113,7 +113,8 @@ void AISys::find(AICmp& ai, PhysicsCmp2& phy){
         float dist_nodos    = sqrt((ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(ai.ruta.at(ai.ruta.size()-1).coord.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(ai.ruta.at(ai.ruta.size()-1).coord.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
         float dist_ene_nodo = sqrt((phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)*(phy.x-ai.ruta.at(ai.ruta.size()-2).coord.x)+(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z)*(phy.z-ai.ruta.at(ai.ruta.size()-2).coord.z));
         
-        if(dist_ene_nodo <= dist_nodos) ai.ruta.pop_back();
+        if(dist_ene_nodo <= dist_nodos)
+            ai.ruta.pop_back();
     }
 
     if(ai.ruta.size() > 0) {
