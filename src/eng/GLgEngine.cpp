@@ -134,12 +134,20 @@ GlEngine::GlEngine() {
 
     // Skybox
     std::vector<std::string> faces {
+        "assets/skybox/right.jpg",
+        "assets/skybox/left.jpg",
+        "assets/skybox/top.jpg",
+        "assets/skybox/bottom.jpg",
+        "assets/skybox/front.jpg",
+        "assets/skybox/back.jpg"
+        /*
         "assets/skybox/fondito.jpg",
         "assets/skybox/fondito.jpg",
         "assets/skybox/fondito.jpg",
         "assets/skybox/fondito.jpg",
         "assets/skybox/fondito.jpg",
         "assets/skybox/fondito.jpg"
+        */
     };
 
     Skybox.initSkybox();
