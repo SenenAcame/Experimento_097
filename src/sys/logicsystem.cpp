@@ -92,6 +92,7 @@ void LogicSystem::colisionWall(EntyMan& EM, Enty& current, Enty& colisioned, dou
     else if(colisioned.hasTAG<TEneBullet>()) {
         //jugador recibe daño de bala enemiga
         //auto& EM = LM.getEM();
+        UISys.hitInterface(GE);
         reciveDamge(LM, GE, current, colisioned);
     }
     else if(colisioned.hasTAG<TWeapon>()) {
