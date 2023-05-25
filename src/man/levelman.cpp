@@ -43,12 +43,12 @@
     createEstante(posEst1, GE);
     Vec3 posEst2 = Vec3{-72, 1.5, 9};
     createEstante(posEst2, GE);
-    Vec3 posEst3 = Vec3{-67, 1.5, -26.9};
-    createEstante(posEst3, GE);
+    //Vec3 posEst3 = Vec3{-67, 1.5, -26.9};
+    //createEstante(posEst3, GE);
     Vec3 posEst4 = Vec3{-52, 1.5, -26.9};
     createEstante(posEst4, GE);
-    Vec3 posEst5 = Vec3{-52, 1.5, -61.9};
-    createEstante(posEst5, GE);
+    //Vec3 posEst5 = Vec3{-52, 1.5, -61.9};
+    //createEstante(posEst5, GE);
     Vec3 posEst6 = Vec3{-67, 1.5, -61.9};
     createEstante(posEst6, GE);
 
