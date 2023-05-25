@@ -150,6 +150,13 @@ GlEngine::~GlEngine(){
 
 }
 
+void GlEngine::get_resolution() {
+    const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+    width_ = mode->width;
+    height_ = mode->height;
+}
+
 void GlEngine::initOpenGL() {
     //_________GLFW INIT_____________
     glfwInit();
@@ -160,13 +167,14 @@ void GlEngine::initOpenGL() {
     #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
-
+    //get_resolution();
     //______CREATE GLFW WINDOW__________
-    window = glfwCreateWindow(width_, height_, "Experimento 097", NULL, NULL);
+    window = glfwCreateWindow(width_, height_, "Experimento 097",NULL, NULL);
     if(window == NULL) throw std::runtime_error("GLFW Error creating Window");
     
     //pantalla grande
     //glfwMaximizeWindow(window);
+    
 
     //elimina la pantalla grande
     //glfwRestoreWindow(window);

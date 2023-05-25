@@ -35,6 +35,8 @@ struct GlEngine {
     //
     void createNode(TNodo *father, TNodo *son, bool UI = false);
 
+    void get_resolution();
+    
     // Crea una camara con los parametros para setearla
     TNodo *createCamera(TNodo *father, Vec3 trans, Vec3 rot, Vec3 sca);
 
