@@ -39,6 +39,16 @@
         EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
 
+    //Decoracion prueba
+    std::string file_model = "assets/models/decoracion/estanteria.obj";
+    Enty& estant = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(estant, PhysicsCmp2 { .x = -50, .y = 1.5, .z = -5 });
+    EM.addComponent<RenderCmp2> (estant, RenderCmp2 { .node = GE.createNode(file_model) } );
+    EM.addComponent<EstadoCmp>(estant, 3.f, 4.f, 1.f);
+    EM.addTag<TWall>(estant);
+    EM.addTag<TInteract>(estant);
+
+
     return map.getID();
 }
 
@@ -198,7 +208,7 @@
     auto& rend = EM.addComponent<RenderCmp2>(enemy, RenderCmp2 { .node = GE.createNodeAnim(file_model, anim, framesAnim, Vec3{2}) });
     rend.node->getEntity<EModel>()->currentAnim = 0;
 
-    EM.addComponent<EstadoCmp>(enemy, 1.f, 2.5f, 1.f);
+    EM.addComponent<EstadoCmp>(enemy, 0.7f, 2.5f, 0.7f);
     EM.addComponent<SoundCmp> (enemy, SouSys.createinstance(7));
     EM.addComponent<SalaCmp>  (enemy);
     //TAGS
