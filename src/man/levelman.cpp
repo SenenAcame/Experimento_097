@@ -41,6 +41,12 @@
 
     Vec3 posEst1 = Vec3{-45, 1.5, 1.5};
     createEstante(posEst1, GE);
+    Vec3 posEst2 = Vec3{-75, 1.5, 9};
+    createEstante(posEst2, GE);
+    Vec3 posEst3 = Vec3{-65, 1.5, -26.9};
+    createEstante(posEst3, GE);
+    Vec3 posEst4 = Vec3{-52, 1.5, -26.9};
+    createEstante(posEst4, GE);
 
     return map.getID();
 }
