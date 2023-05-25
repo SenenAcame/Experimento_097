@@ -25,6 +25,8 @@ struct LevelMan {
 
     /*NUEVO*/ size_t createMap2(GraphicEngine& GE, SoundSystem_t& SouSys);
 
+    /*NUEVO*/ void createEstante(Vec3 pos, GraphicEngine& GE);
+
     /*NUEVO*/ size_t createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys);
 
     /*NUEVO*/ Enty&  createEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, Type_Enemy type, ExtraStats plus = {1,1,1});

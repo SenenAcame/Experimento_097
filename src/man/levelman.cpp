@@ -39,16 +39,21 @@
         EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
 
-    //Decoracion prueba
-    //std::string file_model = "assets/models/decoracion/estanteria.obj";
-    //Enty& estant = EM.createEntity();
-    //EM.addComponent<PhysicsCmp2>(estant, PhysicsCmp2 { .x = -50, .y = 1.5, .z = -5 });
-    //EM.addComponent<RenderCmp2> (estant, RenderCmp2 { .node = GE.createNode(file_model) } );
-    //EM.addComponent<EstadoCmp>(estant, 3.f, 4.f, 1.f);
-    //EM.addTag<TWall>(estant);
-    //EM.addTag<TInteract>(estant);
+    Vec3 posEst1 = Vec3{-45, 1.5, 1.5};
+    createEstante(posEst1, GE);
 
     return map.getID();
+}
+
+void LevelMan::createEstante(Vec3 pos, GraphicEngine& GE) {
+    //Decoracion prueba
+    std::string file_model = "assets/models/decoracion/estanteria.obj";
+    Enty& estant = EM.createEntity();
+    EM.addComponent<PhysicsCmp2>(estant, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
+    EM.addComponent<RenderCmp2> (estant, RenderCmp2 { .node = GE.createNode(file_model) } );
+    EM.addComponent<EstadoCmp>(estant, 3.f, 4.f, 1.f);
+    EM.addTag<TWall>(estant);
+    EM.addTag<TInteract>(estant);
 }
 
 /*NUEVO*/ size_t LevelMan::createPlayer2(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys) {
