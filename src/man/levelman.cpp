@@ -43,12 +43,12 @@
     createEstante(posEst1, GE);
     Vec3 posEst2 = Vec3{-72, 1.5, 9};
     createEstante(posEst2, GE);
-    //Vec3 posEst3 = Vec3{-67, 1.5, -26.9};
-    //createEstante(posEst3, GE);
+    Vec3 posEst3 = Vec3{-67, 1.5, -26.9};
+    createEstante(posEst3, GE);
     Vec3 posEst4 = Vec3{-52, 1.5, -26.9};
     createEstante(posEst4, GE);
-    //Vec3 posEst5 = Vec3{-52, 1.5, -61.9};
-    //createEstante(posEst5, GE);
+    Vec3 posEst5 = Vec3{-52, 1.5, -61.9};
+    createEstante(posEst5, GE);
     Vec3 posEst6 = Vec3{-67, 1.5, -61.9};
     createEstante(posEst6, GE);
 
@@ -57,7 +57,7 @@
 
 void LevelMan::createEstante(Vec3 pos, GraphicEngine& GE) {
     //Decoracion prueba
-    std::string file_model = "assets/models/decoracion/estanteria_cosas2.obj";
+    std::string file_model = "assets/models/decoracion/estanteria.obj";
     Enty& estant = EM.createEntity();
     EM.addComponent<PhysicsCmp2>(estant, PhysicsCmp2 { .x = pos.x, .y = pos.y, .z = pos.z });
     EM.addComponent<RenderCmp2> (estant, RenderCmp2 { .node = GE.createNode(file_model) } );
