@@ -39,6 +39,15 @@
         EM.addComponent<RenderCmp2> (room, RenderCmp2 { .node = GE.createNode(models[i]) });
     }
 
+    //Decoracion prueba
+    //std::string file_model = "assets/models/decoracion/estanteria.obj";
+    //Enty& estant = EM.createEntity();
+    //EM.addComponent<PhysicsCmp2>(estant, PhysicsCmp2 { .x = -50, .y = 1.5, .z = -5 });
+    //EM.addComponent<RenderCmp2> (estant, RenderCmp2 { .node = GE.createNode(file_model) } );
+    //EM.addComponent<EstadoCmp>(estant, 3.f, 4.f, 1.f);
+    //EM.addTag<TWall>(estant);
+    //EM.addTag<TInteract>(estant);
+
     return map.getID();
 }
 
