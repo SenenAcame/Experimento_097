@@ -574,6 +574,8 @@ size_t UIsys::menuSonido (GraphicEngine& GE, size_t next, SoundSystem_t& Sou){
     }
     else{
         glfwRestoreWindow(m_window);
+        moveX=GE.getWidth()/2;
+        moveY=GE.getHeight()/2.5;
     }
     
     Sou.changeVCA(0,SoundAmbient);
