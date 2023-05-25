@@ -28,7 +28,7 @@ void GameMan::game() {
     UIsys          UISys;
     GraphicEngine  GE;
     
-    GE.setWindowResolution(1280, 700);
+    GE.setWindowResolution(1080, 720);
     
     RenSys.initIMGUI(GE);
     init_config(GE);
@@ -129,7 +129,7 @@ size_t GameMan::bucleJuego(LevelMan &LM, GraphicEngine &GE, RenSys2 &RenSys, Inp
     //LM.createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys);
     //LM.createDistanceEnemyAnim(GE, Vec3{ -40, 2.5, -5 }, SouSys);
 
-    constexpr double dt = 1.0 / 60;
+    constexpr double dt = 1.0 / 30;
     auto start = std::chrono::high_resolution_clock::now();
     constexpr int64_t maxFPS {60};
     constexpr int64_t nanos_per_frame {1000000000/maxFPS};
