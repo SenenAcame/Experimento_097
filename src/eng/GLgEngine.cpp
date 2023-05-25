@@ -169,7 +169,7 @@ void GlEngine::initOpenGL() {
     #endif
     //get_resolution();
     //______CREATE GLFW WINDOW__________
-    window = glfwCreateWindow(width_, height_, "Experimento 097",glfwGetPrimaryMonitor(), NULL);
+    window = glfwCreateWindow(width_, height_, "Experimento 097",/*glfwGetPrimaryMonitor()*/NULL, NULL);
     if(window == NULL) throw std::runtime_error("GLFW Error creating Window");
     
     //pantalla grande
