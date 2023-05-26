@@ -228,15 +228,15 @@ size_t GameMan::init_map(LevelMan& LM, GraphicEngine& GE, SoundSystem_t& SouSys)
     ColSys2::init_Hitoxes_Map2(LM);
 
     // SPAWN ENEMIGOS
-    LM.createEneSpawn(Vec3{ -30,  0, -3  }, GE, 0);
-    LM.createEneSpawn(Vec3{ -59,  0, -30 }, GE, 3);
-    LM.createEneSpawn(Vec3{ -84,  0, -6  }, GE, 6);
-    LM.createEneSpawn(Vec3{ -103, 0, -32 }, GE, 11);
-    LM.createEneSpawn(Vec3{ -53,  0, -77 }, GE, 13);
+    LM.createEneSpawn(Vec3{ -35.75,  0, -8.73  }, GE, 0);
+    LM.createEneSpawn(Vec3{ -57,  0, -37 }, GE, 3);
+    LM.createEneSpawn(Vec3{ -91,  0, -1.6  }, GE, 6);
+    LM.createEneSpawn(Vec3{ -100, 0, -22 }, GE, 11);
+    LM.createEneSpawn(Vec3{ -57,  0, -64 }, GE, 13);
     LM.createEneSpawn(Vec3{ -60,  0, 28  }, GE, 16);
 
     // SPAWN ARMAS
-    LM.createWpnSpawn(Vec3 { -30,  2.8, -13 }, GE, 0);
+    LM.createWpnSpawn(Vec3 { -35.75,  2.8, -13 }, GE, 0);
     LM.createWpnSpawn(Vec3 { -58,  2.8, -31 }, GE, 3);
     LM.createWpnSpawn(Vec3 { -77,  2.8, 4   }, GE, 6);
     LM.createWpnSpawn(Vec3 { -100, 2.8, -35 }, GE, 11);
