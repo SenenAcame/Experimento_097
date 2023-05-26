@@ -58,7 +58,7 @@ GlEngine::GlEngine() {
 
     // foco direccional
     createFoco(NULL, trans, rot, scl, 
-               1.0f,                        //  intensidad
+               0.5f,                        //  intensidad
                direct,                      //  tipo  
                1,                           //  aper
                1,                           //  angAttenuation
@@ -72,7 +72,7 @@ GlEngine::GlEngine() {
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
-               1.0f,                        //  intensidad
+               0.5f,                        //  intensidad
                point,                       //  tipo  
                1,                           //  aper
                1,                           //  angAttenuation
@@ -86,7 +86,7 @@ GlEngine::GlEngine() {
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
-               1.0f,                        //  intensidad
+               0.5f,                        //  intensidad
                point,                       //  tipo  
                1,                           //  aper
                1,                           //  angAttenuation
@@ -100,7 +100,7 @@ GlEngine::GlEngine() {
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
-               1.0f,                        //  intensidad
+               0.5f,                        //  intensidad
                point,                       //  tipo  
                1,                           //  aper
                1,                           //  angAttenuation
@@ -114,7 +114,7 @@ GlEngine::GlEngine() {
                scolor );               //  shader
     
     createFoco(NULL, trans2, rot, scl, 
-               1.0f,                        //  intensidad
+               1.f,                        //  intensidad
                point,                       //  tipo  
                1,                           //  aper
                1,                           //  angAttenuation

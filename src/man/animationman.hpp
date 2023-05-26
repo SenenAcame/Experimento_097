@@ -9,17 +9,17 @@ struct UIsys;
 struct AnimMan {
 
     AnimMan(GraphicEngine& GE, RenSys2& Ren, UIsys& UI) {
-        //double progreso = 0;
-        //Ren.pantallaCarga(GE, UI, progreso);
-        //initEnemy1Anim(GE);
-        //progreso += 0.33;
-        //Ren.pantallaCarga(GE, UI, progreso);
-        //initEnemy2Anim(GE);
-        //progreso += 0.33;
-        //Ren.pantallaCarga(GE, UI, progreso);
-        //initEnemy3Anim(GE);
-        //progreso += 0.33;
-        //Ren.pantallaCarga(GE, UI, progreso);
+        double progreso = 0;
+        Ren.pantallaCarga(GE, UI, progreso);
+        initEnemy1Anim(GE);
+        progreso += 0.33;
+        Ren.pantallaCarga(GE, UI, progreso);
+        initEnemy2Anim(GE);
+        progreso += 0.33;
+        Ren.pantallaCarga(GE, UI, progreso);
+        initEnemy3Anim(GE);
+        progreso += 0.33;
+        Ren.pantallaCarga(GE, UI, progreso);
     }
 
     void initEnemy1Anim(GraphicEngine& GE) {

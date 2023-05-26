@@ -87,16 +87,16 @@ void LevelMan::createEstante(Vec3 pos, GraphicEngine& GE) {
 /*NUEVO*/ Enty& LevelMan::createEnemy(GraphicEngine &GE, Vec3 pos, SoundSystem_t &SouSys, Type_Enemy type, ExtraStats plus) {
     switch (type) {
         case Type_Enemy::Normal:
-            createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
-            //createNormalEnemyAnim(GE, Vec3{ pos.x, 1, pos.z }, SouSys, plus);
+            //createNormalEnemy(GE, Vec3{ pos.x, 2.8, pos.z }, SouSys, plus);
+            createNormalEnemyAnim(GE, Vec3{ pos.x, 1, pos.z }, SouSys, plus);
             break;
         case Type_Enemy::Tank:
-            createTankEnemy(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
-            //createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys, plus);
+            //createTankEnemy(GE, Vec3{ pos.x, 3.2, pos.z }, SouSys, plus);
+            createTankEnemyAnim    (GE, Vec3{ -40, 1.6, -5 }, SouSys, plus);
             break;
         case Type_Enemy::Distance:
-            createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys);
-            //createDistanceEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
+            //createDistanceEnemy(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys);
+            createDistanceEnemyAnim(GE, Vec3{ pos.x, 2.5, pos.z }, SouSys, plus);
             break;
     }
 }
@@ -137,7 +137,7 @@ void LevelMan::createEstante(Vec3 pos, GraphicEngine& GE) {
 
 /*NUEVO*/ Enty& LevelMan::createTankEnemy(GraphicEngine& GE, Vec3 pos, SoundSystem_t& SouSys, ExtraStats plus) {
     std::string file_model = "assets/models/personajes/monstruo3/enemigo_3.obj";
-    Vec3 base_stats = { 20, 20, 4 };
+    Vec3 base_stats = { 80, 20, 4 };
     
     Enty& enemy = EM.createEntity();
     //CMPS 
@@ -238,7 +238,7 @@ void LevelMan::createEstante(Vec3 pos, GraphicEngine& GE) {
     std::string file_model        = "assets/models/personajes/monstruo3/enemigo_3.obj";
     std::vector<std::string> anim = { "monstruo3/caminar/monstruo3_caminar_"};
     std::vector<int> framesAnim   = { 165};
-    Vec3 base_stats = { 115, 30, 3.5 };
+    Vec3 base_stats = { 100, 30, 3.5 };
 
     Enty& enemy = EM.createEntity();
     //CMPS

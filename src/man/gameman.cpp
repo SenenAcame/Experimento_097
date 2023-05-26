@@ -28,7 +28,7 @@ void GameMan::game() {
     UIsys          UISys;
     GraphicEngine  GE;
     
-    GE.setWindowResolution(1080, 720);
+    GE.setWindowResolution(1280, 720);
     
     RenSys.initIMGUI(GE);
     init_config(GE);
